@@ -1,12 +1,20 @@
 ﻿using UnityEngine;
 
-
 // 싱글톤 클래스의 베이스가 될 클래스이다.
 public class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static bool shuttingDown = false;
     private static object lockCheck = new object();
     private static T instance;
+
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this.GetComponent<T>();
+            this.name = typeof(T).ToString() + " (Singleton)";
+        }
+    }
 
     public static T Instance
     {
@@ -16,9 +24,8 @@ public class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
             {
                 Debug.Log("[Singleton] Instance '" + typeof(T) + "' already destroyed. Returning null.");
                 return null;
-
             }
-
+            
             lock (lockCheck) // Thread Safe
             {
                 if (instance == null)

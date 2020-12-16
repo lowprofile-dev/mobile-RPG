@@ -1,113 +1,275 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : SingletonBase<SoundManager>
 {
-    private const int    audioCount  = 30; // 최대 동시재생 오디오 개수.
-    private const string bgmPath     = "Sound/BGM/";
-    private const string effectPath  = "Sound/Effect/";
+    // 오디오 경로
+    private const string    _bgmPath            = "Sound/BGM/";
+    private const string    _effectPath         = "Sound/Effect/";
 
-    private GameObject   bgmContainer;
-    private GameObject[] effectContainer;
+    private const int       _audioCount         = 30; // 최대 동시재생 오디오 개수.
 
+    // 사운드 컨테이너
+    private GameObject      _bgmContainer1;
+    private GameObject      _bgmContainer2;
+    private GameObject[]    _effectContainer;
 
-    /// <summary>
+    // 각 사운드의 음량
+    public float _masterVolume  = 1.0f;
+    public float _bgmVolume     = 1.0f;
+    public float _effectVolume  = 1.0f;
+    public float _uiVolume      = 1.0f;
+
+    // distance 비례 음량
+    private const float     _minDistanceVolume  = 15; // 거리가 이만큼 될때부터 소리가 작아지기 시작
+    
     /// 초기 사운드들을 배치하도록 한다.
-    /// </summary>
     public void InitSound()
     {
-        effectContainer = new GameObject[audioCount];
+        _effectContainer = new GameObject[_audioCount];
 
-        for (int i = 0; i < audioCount; i++)
+        for (int i = 0; i < _audioCount; i++)
         {
-            effectContainer[i] = ResourceManager.Instance.Instantiate("EffectContainer" + i, "Prefab/Etc/Container/AudioSource", transform);
+            _effectContainer[i] = ResourceManager.Instance.Instantiate("EffectContainer" + i, "Prefab/Etc/Container/AudioSource", transform);
         }
 
-        bgmContainer = ResourceManager.Instance.Instantiate("Prefab/Etc/Container/AudioSource", transform);
-        bgmContainer.name = "bgmPlayer";
-        bgmContainer.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0);
-        Debug.Log(effectContainer.Length);
+        _bgmContainer1 = ResourceManager.Instance.Instantiate("bgmPlayer1", "Prefab/Etc/Container/AudioSource", transform);
+        _bgmContainer2 = ResourceManager.Instance.Instantiate("bgmPlayer2", "Prefab/Etc/Container/AudioSource", transform);
+        _bgmContainer1.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0);
+        _bgmContainer2.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0);
     }
 
-    /// <summary>
-    /// 해당 사운드를 적절한 SoundContainer에 배치, 재생시킨다.
-    /// </summary>
-    public void SetSoundToAudio(SoundType type, string soundPath, bool isLoop = false, float vol = 1.0f)
+    // BGM을 재생시킨다. 기본적으로 FadeIn / Out이 적용된다.
+    public void PlayBGM(string soundPath, float vol = 1.0f, bool startImmediatly = false)
     {
+        AudioSource startSource;
+        AudioSource endSource;
 
-        if (type == SoundType.BGM) // BGM Case
+        if (_bgmContainer1.GetComponent<AudioSource>().isPlaying)
         {
-            AudioSource bgmSource = bgmContainer.GetComponent<AudioSource>();
-            bgmSource.clip = Resources.Load(bgmPath + soundPath) as AudioClip;
-            bgmSource.loop = isLoop;
-            bgmSource.volume = vol;
-            bgmSource.Play();
-            bgmContainer.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, Time.realtimeSinceStartup);
+            startSource = _bgmContainer2.GetComponent<AudioSource>();
+            endSource = _bgmContainer1.GetComponent<AudioSource>();
+            _bgmContainer2.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, Time.realtimeSinceStartup);
         }
 
-        else // Effect & Ui Case
+        else
         {
-            bool findPos = false;
-            int targetPos = -1;
+            startSource = _bgmContainer1.GetComponent<AudioSource>();
+            endSource = _bgmContainer2.GetComponent<AudioSource>();
+            _bgmContainer1.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, Time.realtimeSinceStartup);
+        }
 
-            for (int i = 0; i < audioCount; i++) // 전체를 돌며 정지된 사운드나 빈 clip을 찾는다.
+        startSource.clip = Resources.Load(_bgmPath + soundPath) as AudioClip;
+        startSource.loop = true;
+
+        if(startImmediatly)
+        {
+            // 현재 재생중인 BGM 즉시 중지시킴
+            StopCoroutine("FadeOutBGM");
+            endSource.Stop();
+
+            // 재생할 BGM 즉시 FadeIn
+            StopCoroutine("FadeInBGM");
+            StartCoroutine(FadeInBGM(startSource, 2));
+        }
+
+        else // 현재 재생중인 음악 FadeOut으로 정지 후, 재생할 음악 FadeIn으로 재생
+        {
+            StopCoroutine("FadeOutBGM");
+            StartCoroutine(FadeOutBGM(endSource, 2, startSource, true));
+        }
+    }
+
+    // BGM을 정지시킨다. 별도의 입력이 없으면 fadeOut으로 정지시킨다.
+    public void PauseBGM(bool stopImmediatly = false)
+    {
+        AudioSource sourceA = _bgmContainer1.GetComponent<AudioSource>();
+        AudioSource sourceB = _bgmContainer2.GetComponent<AudioSource>();
+
+        if (sourceA.isPlaying)
+        {
+            if (stopImmediatly) sourceA.Stop();
+            else
             {
-                AudioSource currentSource = effectContainer[i].GetComponent<AudioSource>();
-                if (currentSource.clip == null || !currentSource.isPlaying)
+                StopCoroutine("FadeOutBGM");
+                StopCoroutine(FadeOutBGM(sourceA, 2));
+            }
+        }
+
+        if (sourceB.isPlaying)
+        {
+            if (stopImmediatly) sourceB.Stop();
+            else
+            {
+                StopCoroutine("FadeOutBGM");
+                StopCoroutine(FadeOutBGM(sourceB, 2));
+            }
+        }
+    }
+
+    // BGM을 서서히 재생시킨다.
+    private IEnumerator FadeInBGM(AudioSource fadeInTarget, float period)
+    {
+        fadeInTarget.Play();
+        fadeInTarget.volume = 0;
+
+        float curTime = 0;
+        while (true)
+        {
+            curTime += Time.deltaTime;
+
+            fadeInTarget.volume = _masterVolume * _bgmVolume * Mathf.Lerp(0, 1, curTime / period);
+
+            if (curTime >= period)
+            {
+                break;
+            }
+
+            yield return null;
+        }
+    }
+
+    // BGM을 서서히 정지시킨다. isChange가 true일 경우, 정지 후에 타겟 BGM을 서서히 재생시킨다.
+    private IEnumerator FadeOutBGM(AudioSource fadeOutTarget, float period, AudioSource fadeInTarget = null, bool isChange = false)
+    {
+        float curTime = 0;
+
+        while (true)
+        {
+            curTime += Time.deltaTime;
+
+            fadeOutTarget.volume = _masterVolume * _bgmVolume * Mathf.Lerp(1, 0, curTime / period);
+
+            if (curTime >= period)
+            {
+                break;
+            }
+
+            yield return null;
+        }
+
+        fadeOutTarget.volume = 0;
+        fadeOutTarget.Stop();
+
+        if(isChange && fadeInTarget != null)
+        {
+            StopCoroutine("FadeInBGM");
+            StartCoroutine(FadeInBGM(fadeInTarget, period));
+        }
+    }
+
+    // SoundContainer 중 적합한 사운드 컨테이너 Index를 찾아 반환한다.
+    private int FindEffectContainerPosition()
+    {
+        bool findPos = false;
+        int targetPos = -1;
+
+        for (int i = 0; i < _audioCount; i++) // 전체를 돌며 정지된 사운드나 빈 clip을 찾는다.
+        {
+            AudioSource currentSource = _effectContainer[i].GetComponent<AudioSource>();
+            if (currentSource.clip == null || !currentSource.isPlaying)
+            {
+                findPos = true;
+                targetPos = i;
+            }
+        }
+
+        if (!findPos) // 모두 재생중인 상태 -> 가장 플레이한지 오래된 clip을 찾는다.
+        {
+            float minStartTime = float.MaxValue;
+
+            for (int i = 0; i < _audioCount; i++)
+            {
+                AudioSource currentSource = _effectContainer[i].GetComponent<AudioSource>();
+                SoundInfor currentInfor = currentSource.GetComponent<SoundInfor>();
+
+                if (currentSource.GetComponent<SoundInfor>().StartTime < minStartTime)
                 {
-                    findPos = true;
+                    minStartTime = currentInfor.StartTime;
                     targetPos = i;
                 }
             }
-
-            if (!findPos) // 모두 재생중인 상태 -> 가장 플레이한지 오래된 clip을 찾는다.
-            {
-                float minStartTime = float.MaxValue;
-
-                for (int i = 0; i < audioCount; i++)
-                {
-                    AudioSource currentSource = effectContainer[i].GetComponent<AudioSource>();
-                    SoundInfor currentInfor = currentSource.GetComponent<SoundInfor>();
-
-                    if (currentSource.GetComponent<SoundInfor>().StartTime < minStartTime)
-                    {
-                        minStartTime = currentInfor.StartTime;
-                        targetPos = i;
-                    }
-                }
-
-                if (targetPos != -1)
-                {
-                    findPos = true;
-                }
-            }
-
-            if (findPos) // 위치를 찾았다면 해당 container에 infor 대입 및 초기화
-            {
-                AudioSource targetSource = effectContainer[targetPos].GetComponent<AudioSource>();
-
-                switch (type)
-                {
-                    case SoundType.EFFECT:
-                        targetSource.clip = Resources.Load(effectPath + soundPath) as AudioClip;
-                        bgmContainer.GetComponent<SoundInfor>().SetInfor(SoundType.EFFECT, Time.realtimeSinceStartup);
-                        break;
-                    case SoundType.UI:
-                        targetSource.clip = Resources.Load(effectPath + soundPath) as AudioClip;
-                        bgmContainer.GetComponent<SoundInfor>().SetInfor(SoundType.UI, Time.realtimeSinceStartup);
-                        break;
-                }
-
-                targetSource.Play();
-                targetSource.loop = isLoop;
-                targetSource.volume = vol;
-            }
-
-            else
-            {
-                Debug.LogError("Cannot find old playing sound, cannot play audioSource");
-            }
         }
+
+        return targetPos;
+    }
+
+    // Effect / UI 사운드를 재생하도록 한다.
+    public void PlayEffect(SoundType type, string soundPath, float volume = 1.0f, float distance = 0f, bool isLoop = false)
+    {
+        int targetPos = FindEffectContainerPosition();
+
+        AudioSource targetSource = _effectContainer[targetPos].GetComponent<AudioSource>();
+
+        switch (type)
+        {
+            case SoundType.EFFECT:
+                targetSource.clip = Resources.Load(_effectPath + soundPath) as AudioClip;
+                targetSource.volume = _masterVolume * _effectVolume * volume * ((distance > _minDistanceVolume) ? (_minDistanceVolume / distance) : 1); // distance가 최소 distanceVolume보다 크면 거리에 비례한 적은 소리를 배출하도록 한다.
+                _effectContainer[targetPos].GetComponent<SoundInfor>().SetInfor(SoundType.EFFECT, Time.realtimeSinceStartup);
+                break;
+            case SoundType.UI:
+                targetSource.clip = Resources.Load(_effectPath + soundPath) as AudioClip;
+                targetSource.volume = _masterVolume * _uiVolume * volume; // ui는 어디서든 volume만큼의 소리를 낸다.
+                _effectContainer[targetPos].GetComponent<SoundInfor>().SetInfor(SoundType.UI, Time.realtimeSinceStartup);
+                break;
+        }
+
+        targetSource.Play();
+        targetSource.loop = isLoop;
+    }
+
+    // BGM의 볼륨을 조절
+    public void ChangeBGMVolume(float volume)
+    {
+        if (volume <= 0) volume = 0.0001f;
+
+        if (_bgmContainer1.GetComponent<AudioSource>().isPlaying) _bgmContainer1.GetComponent<AudioSource>().volume *= (volume / _bgmVolume);
+        if(_bgmContainer2.GetComponent<AudioSource>().isPlaying) _bgmContainer2.GetComponent<AudioSource>().volume *= (volume / _bgmVolume);
+        _bgmVolume = volume;
+    }
+
+    // Effect의 볼륨을 조절
+    public void ChangeEffectVolume(float volume)
+    {
+        if (volume <= 0) volume = 0.0001f;
+
+        for (int i=0; i<_audioCount; i++)
+        {
+            if(_effectContainer[i].GetComponent<SoundInfor>().SoundType == SoundType.EFFECT && _effectContainer[i].GetComponent<AudioSource>().isPlaying)
+                _effectContainer[i].GetComponent<AudioSource>().volume *= (volume / _effectVolume);
+        }
+
+        _effectVolume = volume;
+    }
+
+    // UI의 볼륨을 조절
+    public void ChangeUIVolume(float volume)
+    {
+        if (volume <= 0) volume = 0.0001f;
+
+        for (int i = 0; i < _audioCount; i++)
+        {
+            if (_effectContainer[i].GetComponent<SoundInfor>().SoundType == SoundType.UI && _effectContainer[i].GetComponent<AudioSource>().isPlaying)
+                _effectContainer[i].GetComponent<AudioSource>().volume *= (volume / _uiVolume);
+        }
+
+        _uiVolume = volume;
+    }
+
+    // 마스터 볼륨을 조절
+    public void ChangeMasterVolume(float volume)
+    {
+        if (volume <= 0) volume = 0.0001f;
+        _bgmContainer1.GetComponent<AudioSource>().volume *= (volume / _masterVolume);
+        _bgmContainer2.GetComponent<AudioSource>().volume *= (volume / _masterVolume);
+
+        for (int i = 0; i < _audioCount; i++)
+        {
+            if (_effectContainer[i].GetComponent<AudioSource>().isPlaying)
+                _effectContainer[i].GetComponent<AudioSource>().volume *= (volume / _masterVolume);
+        }
+
+        _masterVolume = volume;
     }
 }

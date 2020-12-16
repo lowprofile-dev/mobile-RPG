@@ -23,14 +23,39 @@ public class ResourceManager : SingletonBase<ResourceManager>
         }
     }
 
+    // 다양한 Instantiate 방법 //
+
+    // 이름을 입력해 생성하는 방법.
     public GameObject Instantiate(string name, string path, Transform parent = null)
     {
         GameObject obj = Instantiate(path, parent);
+        obj.name = name;
+        
+        return obj;
+    }
+
+    // 위치, 각도를 입력해 생성하는 방법.
+    public GameObject Instantiate(string path, Vector3 position, Quaternion rotation, Transform parent = null)
+    {
+        GameObject obj = Instantiate(path, parent);
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
+
+        return obj;
+    }
+
+    // 이름, 위치, 각도를 입력해 생성하는 방법.
+    public GameObject Instantiate(string name, string path, Vector3 position, Quaternion rotation, Transform parent = null)
+    {
+        GameObject obj = Instantiate(path, parent);
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
         obj.name = name;
 
         return obj;
     }
 
+    // 가장 베이직한 생성법. 경로만 입력한다.
     public GameObject Instantiate(string path, Transform parent = null)
     {
         Object source = null;

@@ -7,7 +7,7 @@ public class GameManager : SingletonBase<GameManager>
     void Start()
     {
         SoundManager.Instance.InitSound();
-        SoundManager.Instance.SetSoundToAudio(SoundType.BGM, "BGM_01", true);
+        SoundManager.Instance.PlayBGM("BGM_01");
     }
 
     void Update()
@@ -17,12 +17,13 @@ public class GameManager : SingletonBase<GameManager>
 
     void SoundTester()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0)) SoundManager.Instance.SetSoundToAudio(SoundType.EFFECT, "Coin/coin_01");
-        else if(Input.GetKeyDown(KeyCode.Alpha1)) SoundManager.Instance.SetSoundToAudio(SoundType.EFFECT, "Coin/coin_02");
-        else if(Input.GetKeyDown(KeyCode.Alpha2)) SoundManager.Instance.SetSoundToAudio(SoundType.EFFECT, "Coin/coin_03");
-        else if(Input.GetKeyDown(KeyCode.Alpha3)) SoundManager.Instance.SetSoundToAudio(SoundType.EFFECT, "Coin/coin_04");
-        else if(Input.GetKeyDown(KeyCode.Alpha4)) SoundManager.Instance.SetSoundToAudio(SoundType.EFFECT, "Coin/coin_05");
-        else if(Input.GetKeyDown(KeyCode.Alpha5)) SoundManager.Instance.SetSoundToAudio(SoundType.BGM, "BGM_02", true);
-        else if(Input.GetKeyDown(KeyCode.Alpha6)) SoundManager.Instance.SetSoundToAudio(SoundType.BGM, "BGM_01", true);
+        if(Input.GetKeyDown(KeyCode.Alpha0)) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Coin/coin_01", 1, 0);
+        else if(Input.GetKeyDown(KeyCode.Alpha1)) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Coin/coin_02", 1, 10);
+        else if(Input.GetKeyDown(KeyCode.Alpha2)) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Coin/coin_03", 1, 20);
+        else if(Input.GetKeyDown(KeyCode.Alpha3)) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Coin/coin_04", 1, 30);
+        else if(Input.GetKeyDown(KeyCode.Alpha4)) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Coin/coin_05", 1, 40);
+        else if(Input.GetKeyDown(KeyCode.Alpha5)) SoundManager.Instance.PlayBGM("BGM_02", 1, true);
+        else if(Input.GetKeyDown(KeyCode.Alpha6)) SoundManager.Instance.PlayBGM("BGM_01", 1, false);
+        else if(Input.GetKeyDown(KeyCode.Alpha7)) SoundManager.Instance.PlayEffect(SoundType.UI, "Coin/coin_06", 1, 40);
     }
 }
