@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
 public class StateMachine
 {
     private State _currentState;
@@ -36,5 +35,5 @@ public class StateMachine
         _currentState.EnterState();
     }
 }
-*/
+
 
