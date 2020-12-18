@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UILoaderManager : MonoBehaviour
+public class UILoaderManager : SingletonBase<UILoaderManager>
 {
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            if (SceneManager.GetSceneByName("UIScene").isLoaded == false)
-                SceneManager.LoadSceneAsync("UIScene", LoadSceneMode.Additive);
-            else
-                SceneManager.UnloadSceneAsync("UIScene");
-        }
+        //if (Input.GetKeyDown(KeyCode.F1))
+        //{
+        //    if (SceneManager.GetSceneByName("UIScene").isLoaded == false)
+        //        SceneManager.LoadSceneAsync("UIScene", LoadSceneMode.Additive);
+        //    else
+        //        SceneManager.UnloadSceneAsync("UIScene");
+        //}
+
         if (Input.GetKeyDown(KeyCode.F2))
         {
             if (SceneManager.GetSceneByName("CheckScene").isLoaded == false)
@@ -19,7 +20,13 @@ public class UILoaderManager : MonoBehaviour
             else
                 SceneManager.UnloadSceneAsync("CheckScene");
         }
-
+        if(Input.GetKeyDown(KeyCode.F3))
+        {
+            if (SceneManager.GetSceneByName("TEST1").isLoaded == false)
+                SceneManager.LoadSceneAsync("TEST1" , LoadSceneMode.Additive);
+            else
+                SceneManager.UnloadSceneAsync("TEST1");
+        }
         //if (Input.GetKeyDown(KeyCode.F3))
         //{
         //    if (SceneManager.GetSceneByName("Level2").isLoaded)
