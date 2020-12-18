@@ -155,8 +155,9 @@ public class Table : ScriptableObject
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Table))]
-public class DataEditor : Editor
+public class DataEditor : Editor 
 {
     Table data;
 
@@ -230,3 +231,4 @@ public class DataEditor : Editor
         EditorUtility.SetDirty(target);
     }
 }
+#endif
