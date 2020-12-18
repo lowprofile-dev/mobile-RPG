@@ -27,7 +27,4 @@ public class GameManager : SingletonBase<GameManager>
         else if(Input.GetKeyDown(KeyCode.Alpha6)) SoundManager.Instance.PlayBGM("BGM_01", 1, false);
         else if(Input.GetKeyDown(KeyCode.Alpha7)) SoundManager.Instance.PlayEffect(SoundType.UI, "Coin/coin_06", 1, 40);
     }
-
-    
-    
 }
