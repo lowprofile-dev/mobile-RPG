@@ -18,7 +18,7 @@ public class StateIdle_TestPlayer : State
 
     public override void UpdateState()
     {
-        Debug.Log("Idle Update");
+        //Debug.Log("Idle Update");
         if (Input.GetKeyDown(KeyCode.A) ||
             Input.GetKeyDown(KeyCode.W) ||
             Input.GetKeyDown(KeyCode.D) ||

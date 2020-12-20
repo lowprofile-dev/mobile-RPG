@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class UIButtonManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     //[SerializeField] private Button AttackBtn;
     [SerializeField] private Button InvincibleBtn;
@@ -23,7 +23,11 @@ public class UIButtonManager : MonoBehaviour
         SkillAbtn.onClick.AddListener(SkillAClick);
         SkillBbtn.onClick.AddListener(SkillBClick);
         SkillCbtn.onClick.AddListener(SkillCClick);
-        OptionBtn.onClick.AddListener(OptionClick);     
+        OptionBtn.onClick.AddListener(OptionClick);
+    }
+    private void Start()
+    {
+        UILoaderManager.Instance.AddScene("CameraTest");
     }
 
     private void OptionClick()
