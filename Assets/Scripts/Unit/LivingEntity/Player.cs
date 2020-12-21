@@ -14,9 +14,14 @@ public class Player : LivingEntity
 
     protected override void Update()
     {
-       _rigidbody.transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Time.deltaTime);
-        MyStateMachine.UpdateState();
-        if (_hp <= 0) MyStateMachine.SetState("DIE");
+        if(!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
+        {
+           _rigidbody.transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Time.deltaTime);
+            MyStateMachine.UpdateState();
+            if (_hp <= 0) MyStateMachine.SetState("DIE");
+        }
+
+        CheckInteractObject();
     }
 
     protected override void InitObject()
@@ -39,4 +44,19 @@ public class Player : LivingEntity
         MyStateMachine.SetState("IDLE");
     }
 
+    public void CheckInteractObject()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 1.9f);
+            for(int i=0; i<colliders.Length; i++)
+            {
+                if(colliders[i].GetComponent<NonLivingEntity>())
+                {
+                    colliders[i].GetComponent<NonLivingEntity>().Interaction();
+                    break;
+                }
+            }
+        }
+    }
 }

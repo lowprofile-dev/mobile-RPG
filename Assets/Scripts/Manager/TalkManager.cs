@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using CSVReader;
 
 public class TalkManager : SingletonBase<TalkManager>
 {

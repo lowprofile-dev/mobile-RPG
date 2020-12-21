@@ -6,6 +6,10 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
 {
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            CloseScene("CameraTest");
+        }
 
         if (Input.GetKeyDown(KeyCode.F2))
         {
@@ -25,13 +29,14 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
                 SceneManager.UnloadSceneAsync("TEST1");
         }
 
-        if(Input.GetKeyDown(KeyCode.F4))
+        if(Input.GetKeyDown(KeyCode.F5))
         {
             if (SceneManager.GetSceneByName("QuestCheckScene").isLoaded == false)
                 SceneManager.LoadSceneAsync("QuestCheckScene", LoadSceneMode.Additive);
             else
                 SceneManager.UnloadSceneAsync("QuestCheckScene");
         }
+
 
         //if (Input.GetKeyDown(KeyCode.F3))
         //{
