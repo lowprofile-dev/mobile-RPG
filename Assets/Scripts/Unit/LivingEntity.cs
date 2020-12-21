@@ -11,7 +11,7 @@ public class LivingEntity : Unit
 {
     protected float _initHp;
     protected float _hp;
-
+    public StateMachine MyStateMachine;
     protected virtual void Start()
     {
         InitObject();
