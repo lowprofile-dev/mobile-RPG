@@ -139,3 +139,103 @@ public class StateDie_TestPlayer : State
     }
 }
 
+public class StateAvoid_TestPlayer : State
+{
+
+    public StateAvoid_TestPlayer(LivingEntity parent)
+    {
+        _parentEntity = parent;
+        _myStateMachine = parent.MyStateMachine;
+    }
+
+    public override void EnterState()
+    {
+        Debug.Log("Enter Avoid");
+    }
+
+    public override void UpdateState()
+    {
+        Debug.Log("Update Avoid");
+    }
+
+    public override void EndState()
+    {
+        Debug.Log("End Avoid");
+    }
+}
+
+public class StateSkillA_TestPlayer : State
+{
+
+    public StateSkillA_TestPlayer(LivingEntity parent)
+    {
+        _parentEntity = parent;
+        _myStateMachine = parent.MyStateMachine;
+    }
+
+    public override void EnterState()
+    {
+        Debug.Log("Enter SkillA");
+    }
+
+    public override void UpdateState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void EndState()
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
+public class StateSkillB_TestPlayer : State
+{
+
+    public StateSkillB_TestPlayer(LivingEntity parent)
+    {
+        _parentEntity = parent;
+        _myStateMachine = parent.MyStateMachine;
+    }
+
+    public override void EnterState()
+    {
+        Debug.Log("Enter SkillB");
+    }
+
+    public override void UpdateState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void EndState()
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
+public class StateSkillC_TestPlayer : State
+{
+
+    public StateSkillC_TestPlayer(LivingEntity parent)
+    {
+        _parentEntity = parent;
+        _myStateMachine = parent.MyStateMachine;
+    }
+
+    public override void EnterState()
+    {
+        Debug.Log("Enter SkillC");
+    }
+
+    public override void UpdateState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void EndState()
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
