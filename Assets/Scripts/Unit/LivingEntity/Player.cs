@@ -4,19 +4,40 @@ using UnityEngine;
 
 public class Player : LivingEntity
 {
-    private Rigidbody _rigidbody;
+    [SerializeField]
+    private CharacterController characterController;
+    [SerializeField]
+    private float speed = 6f;
+    [SerializeField]
+    private float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
+    [SerializeField]
+    private Transform cam;
+
     protected override void Start()
     {
         base.Start();
-
-        _rigidbody = GetComponent<Rigidbody>();
     }
 
     protected override void Update()
     {
         if(!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
-           _rigidbody.transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Time.deltaTime);
+            //_rigidbody.transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Time.deltaTime);
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+            Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
+
+            if (direction.magnitude >= 0.1f)
+            {
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+                Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                characterController.Move(moveDir.normalized * speed * Time.deltaTime);
+            }
+
             MyStateMachine.UpdateState();
             if (_hp <= 0) MyStateMachine.SetState("DIE");
         }
