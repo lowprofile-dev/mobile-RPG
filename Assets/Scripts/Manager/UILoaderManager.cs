@@ -27,6 +27,15 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
             else
                 SceneManager.UnloadSceneAsync("TEST1");
         }
+
+        if(Input.GetKeyDown(KeyCode.F4))
+        {
+            if (SceneManager.GetSceneByName("QuestCheckScene").isLoaded == false)
+                SceneManager.LoadSceneAsync("QuestCheckScene", LoadSceneMode.Additive);
+            else
+                SceneManager.UnloadSceneAsync("QuestCheckScene");
+        }
+
         //if (Input.GetKeyDown(KeyCode.F3))
         //{
         //    if (SceneManager.GetSceneByName("Level2").isLoaded)

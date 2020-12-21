@@ -7,6 +7,9 @@ public enum SoundType
     BGM, EFFECT, UI
 }
 
+/// <summary>
+/// 사운드 관련 정보를 모아두는 클래스이다.
+/// </summary>
 public class SoundInfor : MonoBehaviour
 {
     private SoundType   soundType; public SoundType SoundType { get { return soundType; } }

@@ -23,7 +23,7 @@ public class TestMonsterAction : MonsterAction
     public override void UpdateState()
     {
         switch (_currentState)
-        {
+        { 
             case STATE.STATE_IDLE:
                 Search();
                 break;

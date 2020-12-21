@@ -5,8 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonBase<GameManager>
 {
+    public bool isInteracting;
+
     void Start()
     {
+        isInteracting = false;
+
         SoundManager.Instance.InitSound();
         SoundManager.Instance.PlayBGM("BGM_01");
     }

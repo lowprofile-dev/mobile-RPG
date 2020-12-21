@@ -30,6 +30,13 @@ namespace CSVReader
             TextAsset textAsset = Resources.Load(filePath) as TextAsset;
             //전체 데이터를 줄단위로 나누자
             string[] arrayLineData = Regex.Split(textAsset.text, LineSplit);
+
+            // CSV의 \a를 ,로 바꿔준다.
+            for (int i=0; i<arrayLineData.Length; i++)
+            {
+                Regex.Replace(arrayLineData[i], @"\\a", ",");
+            }
+
             //데이터는 Header + value + 공란줄(마지막) 로 되어 있으므로 최소 2줄이상 있어야 정상적인 파일임
             if(arrayLineData != null && arrayLineData.Length >= 3)
             {

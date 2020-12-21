@@ -7,7 +7,7 @@ public class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
     private static object lockCheck = new object();
     private static T instance;
 
-    public void Awake()
+    public virtual void Awake()
     {
         if (instance == null)
         {

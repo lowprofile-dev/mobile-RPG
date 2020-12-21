@@ -7,7 +7,7 @@ public enum STATE
     STATE_IDLE, STATE_MOVE, STATE_ATTACK, STATE_DIE
 }
 
-public class LivingEntity : MonoBehaviour
+public class LivingEntity : Unit
 {
     protected float _initHp;
     protected float _hp;
