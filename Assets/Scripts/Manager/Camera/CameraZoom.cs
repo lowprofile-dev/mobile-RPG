@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-
+using UnityEngine.EventSystems;
 public class CameraZoom : MonoBehaviour
 {
     CinemachineVirtualCamera cinemachineCamera;
