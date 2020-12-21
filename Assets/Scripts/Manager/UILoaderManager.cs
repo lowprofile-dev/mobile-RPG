@@ -95,7 +95,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
            
             SceneManager.UnloadSceneAsync(currentName);
 
-            StartCoroutine(Loading(targetName, LoadSceneMode.Additive));
+            StartCoroutine(Loading(targetName, LoadSceneMode.Single));
         }
         else
         {

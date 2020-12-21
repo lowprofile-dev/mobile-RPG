@@ -5,30 +5,46 @@ using UnityEngine;
 
 public class Player : LivingEntity
 {
-    private Rigidbody _rigidbody;
-    private Vector3 dir;
     private float count = 1f;
     private bool avoidButtonClick = false;
     private State saveState = null;
     [SerializeField] private float avoid_power = 10f;
+    [SerializeField] private CharacterController characterController;
+    [SerializeField] private float speed = 6f;
+    [SerializeField] private float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
+    [SerializeField] private Transform cam;
+    private Vector3 direction;
+    private Vector3 moveDir;
     protected override void Start()
     {
         base.Start();
-
-        _rigidbody = GetComponent<Rigidbody>();
     }
 
     protected override void Update()
     {
         if(!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
-            dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
             PlayerAvoidance();
 
             Debug.Log("State : " + MyStateMachine.GetState());
 
             PlayerSkill();
+
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+            direction = new Vector3(horizontal, 0, vertical).normalized;
+
+            if (direction.magnitude >= 0.1f)
+            {
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+                moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                characterController.Move(moveDir.normalized * speed * Time.deltaTime);
+            }
 
             MyStateMachine.UpdateState();
             if (_hp <= 0) MyStateMachine.SetState("DIE");
@@ -64,10 +80,11 @@ public class Player : LivingEntity
                 count = 1f;
                 MyStateMachine.SetState(saveState);
             }
-            if (dir == Vector3.zero) _rigidbody.transform.Translate(Vector3.forward * Time.deltaTime * avoid_power);
-            else _rigidbody.transform.Translate(dir * Time.deltaTime * avoid_power);
+            if (direction == Vector3.zero) characterController.Move(Vector3.forward * speed * Time.deltaTime * avoid_power);
+
+            else characterController.Move(direction * speed * Time.deltaTime * avoid_power);
         }
-        else _rigidbody.transform.Translate(dir * Time.deltaTime);
+        else characterController.Move(direction * speed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && avoidButtonClick == false)
         {
