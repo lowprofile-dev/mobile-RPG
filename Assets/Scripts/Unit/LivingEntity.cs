@@ -12,6 +12,7 @@ public class LivingEntity : Unit
     [SerializeField] protected float _initHp; public float initHp { get { return _initHp; } }
     protected float _hp; public float hp { get { return _hp; } }
 
+    public Animation MyAnimation;
     public StateMachine MyStateMachine;
     protected virtual void Start()
     {

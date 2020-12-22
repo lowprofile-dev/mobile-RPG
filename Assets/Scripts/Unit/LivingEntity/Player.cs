@@ -5,6 +5,7 @@ using UnityEngine;
 using SimpleInputNamespace;
 public class Player : LivingEntity
 {
+    public static Player Instance;
     private float count = 1f;
     private bool avoidButtonClick = false;
     private State saveState = null;
@@ -18,10 +19,14 @@ public class Player : LivingEntity
     private Vector3 moveDir;
     [SerializeField] private Quaternion rotateAngle;
     public Joystick joystick;
+    float horizontal;
+    float vertical;
     protected override void Start()
     {
         base.Start();
+        Instance = this;
         joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
+        MyAnimation = GetComponent<Animation>();
     }
 
     protected override void Update()
@@ -31,26 +36,38 @@ public class Player : LivingEntity
             PlayerAvoidance();
 
             PlayerSkill();
-            float horizontal = joystick.GetX_axis().value;
-            float vertical = joystick.GetY_axis().value;
 
-            direction = new Vector3(horizontal, 0, vertical).normalized;
-
-            if (direction.magnitude >= 0.1f)
-            {
-                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-                transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-                moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-                characterController.Move(moveDir.normalized * speed * Time.deltaTime);
-            }
-
-            MyStateMachine.UpdateState();
-            if (_hp <= 0) MyStateMachine.SetState("DIE");
+            PlayerMove();
         }
 
         CheckInteractObject();
+    }
+
+    public void PlayerMove()
+    {
+        horizontal = joystick.GetX_axis().value;
+        vertical = joystick.GetY_axis().value;
+
+        direction = new Vector3(horizontal, 0, vertical).normalized;
+
+        if (direction.magnitude >= 0.1f)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            characterController.Move(moveDir.normalized * speed * Time.deltaTime);
+        }
+
+        MyStateMachine.UpdateState();
+        if (_hp <= 0) MyStateMachine.SetState("DIE");
+    }
+
+    public bool IsMove()
+    {
+        if (horizontal != 0 && vertical != 0) return true;
+        else return false;
     }
 
     public void PlayerSkill()

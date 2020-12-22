@@ -7,6 +7,7 @@ public class StateIdle_TestPlayer : State
     public StateIdle_TestPlayer(LivingEntity parent)
     {
         _parentEntity = parent;
+        _myAnimation = parent.MyAnimation;
         _myStateMachine = parent.MyStateMachine;
     }
 
@@ -18,19 +19,15 @@ public class StateIdle_TestPlayer : State
 
     public override void UpdateState()
     {
-        //Debug.Log("Idle Update");
-        if (Input.GetKeyDown(KeyCode.A) ||
-            Input.GetKeyDown(KeyCode.W) ||
-            Input.GetKeyDown(KeyCode.D) ||
-            Input.GetKeyDown(KeyCode.S))
+        
+        if (Player.Instance.IsMove())
         {
             _myStateMachine.SetState("MOVE");
         }
-
-        if(Input.GetMouseButtonDown(0))
-        {
-            _myStateMachine.SetState("ATTACK");
-        }
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    _myStateMachine.SetState("ATTACK");
+        //}
     }
 
     public override void EndState()
@@ -44,26 +41,23 @@ public class StateMove_TestPlayer : State
     public StateMove_TestPlayer(LivingEntity parent)
     {
         _parentEntity = parent;
+        _myAnimation = parent.MyAnimation;
         _myStateMachine = parent.MyStateMachine;
     }
 
     public override void EnterState()
     {
         Debug.Log("Move Enter");
-
     }
-
     public override void UpdateState()
     {
         //_action.Move();
         Debug.Log("Move Update");
-        if (!(Input.GetKey(KeyCode.A) ||
-          Input.GetKey(KeyCode.W) ||
-          Input.GetKey(KeyCode.D) ||
-          Input.GetKey(KeyCode.S)))
+        if(!Player.Instance.IsMove())
         {
             _myStateMachine.SetState("IDLE");
         }
+        
 
         if (Input.GetMouseButtonDown(0))
         {
