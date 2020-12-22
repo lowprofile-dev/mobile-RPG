@@ -1,16 +1,24 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 
 public class MonsterAction : MonoBehaviour
 {
     protected GameObject _target;
     protected Monster _monster;
-    protected STATE _currentState;    
+    protected STATE _currentState;
+
+    [SerializeField] protected float _findRange;
+    [SerializeField] protected float _attackRange;
+    [SerializeField] protected float _limitTraceRange;
+    protected float _traceTimer;
 
     public virtual void InitObject()
     {
         _monster = GetComponent<Monster>();
         _target = GameObject.FindGameObjectWithTag("Player");
         _currentState = STATE.STATE_IDLE;
+        _traceTimer = 0;
     }
 
     public virtual void ChangeState(STATE targetState)
@@ -50,5 +58,113 @@ public class MonsterAction : MonoBehaviour
     public virtual void Die()
     {
 
+    }
+
+    public virtual void Damaged(float dmg)
+    {
+
+    }
+
+    public virtual void FindStart()
+    {
+
+    }
+
+    public virtual void AttackStart()
+    {
+
+    }
+
+    public virtual void AttackExit()
+    {
+
+    }
+    
+    public virtual IEnumerator DoFindAction()
+    {
+        yield return null;
+    }
+
+    public virtual IEnumerator AttackTarget()
+    {
+        yield return null;
+    }
+
+    public virtual IEnumerator DoAttackAction()
+    {
+        yield return null;
+    }
+
+    public virtual IEnumerator DoCastingAction()
+    {
+        yield return null;
+    }
+
+    public virtual void CastStart()
+    {
+        
+    }
+
+    public virtual void CastExit()
+    {
+
+    }
+
+    public virtual void Cast()
+    {
+
+    }
+
+    protected virtual void UpdateMonster()
+    {
+
+    }
+
+    public virtual void DeathCheck()
+    {
+
+    }
+
+    public bool NoHPCheck()
+    {
+        if(_monster.hp <= 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public virtual void CheckLimitPlayerDistance()
+    {
+        // 캐릭터와 적의 거리가 limit 이상일때
+        if(Vector3.Distance(_target.transform.position, transform.position) >= _limitTraceRange)
+        {
+            _traceTimer += Time.deltaTime;
+            // 타이머가 재생된다.
+        
+            if(_traceTimer > 2)
+            {
+                // 상태를 바꾼다.
+                ChangeState(STATE.STATE_IDLE);
+                _traceTimer = 0;
+            }
+        }
+
+        // 거리가 가깝다면
+        else
+        {
+            _traceTimer = 0;
+        }
+    }
+
+    public virtual void DeathStart()
+    {
+
+    }
+
+    public virtual IEnumerator DoDeathAction()
+    {
+        yield return null;
     }
 }

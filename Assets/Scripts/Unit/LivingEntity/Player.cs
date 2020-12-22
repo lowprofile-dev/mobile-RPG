@@ -16,7 +16,7 @@ public class Player : LivingEntity
     {
         if(!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
-           _rigidbody.transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Time.deltaTime);
+           _rigidbody.transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Time.deltaTime * 5);
             MyStateMachine.UpdateState();
             if (_hp <= 0) MyStateMachine.SetState("DIE");
         }
