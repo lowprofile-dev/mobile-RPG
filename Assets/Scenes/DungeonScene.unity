@@ -120,7 +120,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 84e2fadadc6948c4995c86831ce83e29, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &5278820
 GameObject:
   m_ObjectHideFlags: 3
@@ -204,6 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 100472590}
   - component: {fileID: 100472589}
+  - component: {fileID: 100472591}
   m_Layer: 0
   m_Name: Dungeon Generator
   m_TagString: Untagged
@@ -269,6 +270,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &100472591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100472588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76f356143a516846a54607aa83a9ae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority: 0
+  BakeMode: 1
+  AddNavMeshLinksBetweenRooms: 0
+  NavMeshAgentTypes:
+  - AgentTypeID: 0
+    AreaTypeID: 0
+    DisableLinkWhenDoorIsClosed: 1
+  NavMeshLinkDistanceFromDoorway: 2.5
+  AutoGenerateFullRebakeSurfaces: 1
+  FullRebakeTargets: []
 --- !u!1 &193112191
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,7 +643,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326440162}
-  m_LocalRotation: {x: -0.29992324, y: 0.29992312, z: -0.64034826, w: 0.6403486}
+  m_LocalRotation: {x: -0.29992327, y: 0.2999231, z: -0.6403483, w: 0.64034855}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1507,7 +1530,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110116772}
-  m_LocalRotation: {x: 0.13417786, y: -0.000000031173656, z: 0.000000045739785, w: 0.9909573}
+  m_LocalRotation: {x: 0.13417786, y: -0.000000031173656, z: 0.00000004573978, w: 0.9909573}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1641,7 +1664,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479575216}
-  m_LocalRotation: {x: 0.52573127, y: 0.000000026386536, z: -0.00000001630778, w: 0.8506508}
+  m_LocalRotation: {x: 0.52573127, y: 0.000000038322987, z: -0.000000023684915, w: 0.8506508}
   m_LocalPosition: {x: 7, y: 71, z: -35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1747,7 +1770,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612281565}
-  m_LocalRotation: {x: 0.13417786, y: 0.0000000037652885, z: -0.000000005524649, w: 0.9909573}
+  m_LocalRotation: {x: 0.13417786, y: 0.000000011667938, z: -0.00000001711987, w: 0.9909573}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
