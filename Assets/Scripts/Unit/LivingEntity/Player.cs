@@ -147,6 +147,7 @@ public class Player : LivingEntity
         _hp = 10;
         MyAnimator = new Animator();
         MyAnimator = GameObject.Find("Player").GetComponent<Animator>();
+
         MyStateMachine = new StateMachine();
         State Idle = new StateIdle_TestPlayer(this);
         State Move = new StateMove_TestPlayer(this);
