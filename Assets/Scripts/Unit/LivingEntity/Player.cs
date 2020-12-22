@@ -26,11 +26,11 @@ public class Player : LivingEntity
         if(!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
 
-            PlayerAvoidance();
+            //PlayerAvoidance();
 
-            Debug.Log("State : " + MyStateMachine.GetState());
+            //Debug.Log("State : " + MyStateMachine.GetState());
 
-            PlayerSkill();
+            //PlayerSkill();
 
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");

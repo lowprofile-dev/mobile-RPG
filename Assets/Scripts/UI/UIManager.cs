@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
-        UILoaderManager.Instance.AddScene("CameraTest");
+        UILoaderManager.Instance.AddScene("DungeonScene");
     }
 
     private void OptionClick()
