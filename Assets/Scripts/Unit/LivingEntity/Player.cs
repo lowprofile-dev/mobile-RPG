@@ -30,13 +30,11 @@ public class Player : LivingEntity
         {
             PlayerAvoidance();
 
-            Debug.Log("State : " + MyStateMachine.GetState());
-
             PlayerSkill();
             float horizontal = joystick.GetX_axis().value;
             float vertical = joystick.GetY_axis().value;
 
-              direction = new Vector3(horizontal, 0, vertical).normalized;
+            direction = new Vector3(horizontal, 0, vertical).normalized;
 
             if (direction.magnitude >= 0.1f)
             {
