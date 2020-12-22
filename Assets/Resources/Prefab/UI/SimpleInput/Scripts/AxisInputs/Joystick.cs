@@ -137,9 +137,18 @@ namespace SimpleInputNamespace
 			movementAreaRadiusSqr = movementAreaRadius * movementAreaRadius;
 			deadzoneRadiusSqr = deadzoneRadius * deadzoneRadius;
 		}
+
+        public SimpleInput.AxisInput GetX_axis()
+        {
+            return xAxis;
+        }
+        public SimpleInput.AxisInput GetY_axis()
+        {
+            return yAxis;
+        }
 #endif
 
-		public void OnPointerDown( PointerEventData eventData )
+        public void OnPointerDown( PointerEventData eventData )
 		{
 			joystickHeld = true;
 
@@ -186,6 +195,8 @@ namespace SimpleInputNamespace
 
 			xAxis.value = m_value.x;
 			yAxis.value = m_value.y;
+            Debug.Log("x : " + xAxis.value);
+            Debug.Log("y : " + yAxis.value);
 		}
 
 		public void OnPointerUp( PointerEventData eventData )

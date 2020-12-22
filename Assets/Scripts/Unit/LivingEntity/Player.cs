@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using SimpleInputNamespace;
 public class Player : LivingEntity
 {
     private float count = 1f;
@@ -16,24 +16,24 @@ public class Player : LivingEntity
     [SerializeField] private Transform cam;
     private Vector3 direction;
     private Vector3 moveDir;
+    [SerializeField] private Quaternion rotateAngle;
+    public Joystick joystick;
     protected override void Start()
     {
         base.Start();
+        joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
     }
 
     protected override void Update()
     {
         if(!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
+            PlayerAvoidance();
 
-            //PlayerAvoidance();
+            PlayerSkill();
+            float horizontal = joystick.GetX_axis().value;
+            float vertical = joystick.GetY_axis().value;
 
-            //Debug.Log("State : " + MyStateMachine.GetState());
-
-            //PlayerSkill();
-
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
             direction = new Vector3(horizontal, 0, vertical).normalized;
 
             if (direction.magnitude >= 0.1f)
@@ -74,17 +74,17 @@ public class Player : LivingEntity
         if (avoidButtonClick)
         {
             count += 1f;
+         
             if (count > avoid_power)
             {
                 avoidButtonClick = false;
                 count = 1f;
                 MyStateMachine.SetState(saveState);
             }
-            if (direction == Vector3.zero) characterController.Move(Vector3.forward * speed * Time.deltaTime * avoid_power);
+            if (direction == Vector3.zero) characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
 
-            else characterController.Move(direction * speed * Time.deltaTime * avoid_power);
+            else characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
         }
-        else characterController.Move(direction * speed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && avoidButtonClick == false)
         {
