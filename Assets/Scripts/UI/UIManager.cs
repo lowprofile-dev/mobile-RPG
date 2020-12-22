@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
     void InvincibleClick() //회피
     {
         Debug.Log("회피");
-        
+        Player.Instance.SetAvoidButton();
     }
 
 }

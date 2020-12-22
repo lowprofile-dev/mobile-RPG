@@ -39,7 +39,7 @@ namespace SimpleInputNamespace
 		private bool canFollowPointer = false;
 #pragma warning restore 0649
 
-		private bool joystickHeld = false;
+		public bool joystickHeld = false;
 		private Vector2 pointerInitialPos;
 
 		private float _1OverMovementAreaRadius;
@@ -165,6 +165,11 @@ namespace SimpleInputNamespace
 				RectTransformUtility.ScreenPointToLocalPointInRectangle( joystickTR, eventData.position, eventData.pressEventCamera, out pointerInitialPos );
 		}
 
+        public bool getHold()
+        {
+            return joystickHeld;
+        }
+
 		public void OnDrag( PointerEventData eventData )
 		{
 			Vector2 pointerPos;
@@ -196,8 +201,6 @@ namespace SimpleInputNamespace
 
 			xAxis.value = m_value.x;
 			yAxis.value = m_value.y;
-            Debug.Log("x : " + xAxis.value);
-            Debug.Log("y : " + yAxis.value);
 		}
 
 		public void OnPointerUp( PointerEventData eventData )

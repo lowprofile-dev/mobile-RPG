@@ -31,8 +31,12 @@ public class StateMachine
     public void SetState(string stateName)
     {
         if(_currentState != null) _currentState.EndState();
-        _currentState = _statesDic[stateName];
-        _currentState.EnterState();
+        if (_currentState == _statesDic[stateName]) return;
+        else
+        {
+            _currentState = _statesDic[stateName];
+            _currentState.EnterState();
+        }
     }
     public void SetState(State inputState)
     {

@@ -3,21 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SimpleInputNamespace;
+using UnityEngine.EventSystems;
 public class Player : LivingEntity
 {
     public static Player Instance;
-    private float count = 1f;
+    
     private bool avoidButtonClick = false;
-    private State saveState = null;
     [SerializeField] private float avoid_power = 10f;
+    private float count = 0f;
+    private State saveState = null;
+
+    private bool AttackButtonClick = false;
+    private bool SkillA_ButtonClick = false;
+    private bool SkillB_ButtonClick = false;
+    private bool SkillC_ButtonClick = false;
+
     [SerializeField] private CharacterController characterController;
     [SerializeField] private float speed = 6f;
     [SerializeField] private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     [SerializeField] private Transform cam;
+
     private Vector3 direction;
     private Vector3 moveDir;
     [SerializeField] private Quaternion rotateAngle;
+
     public Joystick joystick;
     float horizontal;
     float vertical;
@@ -26,7 +36,6 @@ public class Player : LivingEntity
         base.Start();
         Instance = this;
         joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
-        MyAnimation = GetComponent<Animation>();
     }
 
     protected override void Update()
@@ -35,9 +44,16 @@ public class Player : LivingEntity
         {
             PlayerAvoidance();
 
-            PlayerSkill();
-
             PlayerMove();
+
+            if(Input.GetKeyDown(KeyCode.P))
+            {
+                _hp = 0;
+            }
+
+            if (_hp <= 0) MyStateMachine.SetState("DIE");
+
+            Debug.Log(MyStateMachine.GetState());
         }
 
         CheckInteractObject();
@@ -59,64 +75,78 @@ public class Player : LivingEntity
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             characterController.Move(moveDir.normalized * speed * Time.deltaTime);
         }
-
         MyStateMachine.UpdateState();
-        if (_hp <= 0) MyStateMachine.SetState("DIE");
     }
 
     public bool IsMove()
     {
-        if (horizontal != 0 && vertical != 0) return true;
+        if (joystick.getHold()) return true;
         else return false;
     }
 
-    public void PlayerSkill()
+    public void PlayerSkillA()
     {
-       if( Input.GetKeyDown(KeyCode.Alpha1))
-       {
-            MyStateMachine.SetState("SKILL_A");
-       }
-       else if(Input.GetKeyDown(KeyCode.Alpha2))
-       {
-            MyStateMachine.SetState("SKILL_B");
-       }
-        else if(Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            MyStateMachine.SetState("SKILL_C");
-        }
+        MyStateMachine.SetState("SKILL_A");
+    }
+    public void PlayerSkillB()
+    {
+        MyStateMachine.SetState("SKILL_B");
+    }
+    public void PlayerSkillC()
+    {
+        MyStateMachine.SetState("SKILL_C");
     }
 
+    public void PlayerAttack()
+    {
+        MyStateMachine.SetState("ATTACK");
+    }
+
+    public bool IsAttack()
+    {
+        return AttackButtonClick;
+    }
+
+    public void SetAttackButton(bool attackbutton)
+    {
+        AttackButtonClick = attackbutton;
+    }
     public void PlayerAvoidance()
     {
         if (avoidButtonClick)
         {
+            if(count == 0f) MyStateMachine.SetState("AVOID");
+
             count += 1f;
-         
+
             if (count > avoid_power)
             {
                 avoidButtonClick = false;
-                count = 1f;
+                count = 0f;
                 MyStateMachine.SetState(saveState);
             }
             if (direction == Vector3.zero) characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
 
             else characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
         }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift) && avoidButtonClick == false)
-        {
-            avoidButtonClick = true;
-            saveState = MyStateMachine.GetState();
-            MyStateMachine.SetState("AVOID");
-        }
+        else saveState = MyStateMachine.GetState();
     }
-
+    public bool IsAvoidance()
+    {
+        if (avoidButtonClick) return true;
+        else return false;
+    }
+    public void SetAvoidButton()
+    {
+        avoidButtonClick = true;
+    }
     protected override void InitObject()
     {
         //임의 값
         _initHp = 10;
         _hp = 10;
-
+        MyAnimator = new Animator();
+        MyAnimator = GameObject.Find("Player").GetComponent<Animator>();
         MyStateMachine = new StateMachine();
         State Idle = new StateIdle_TestPlayer(this);
         State Move = new StateMove_TestPlayer(this);
@@ -154,4 +184,5 @@ public class Player : LivingEntity
             }
         }
     }
+
 }

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class StateIdle_TestPlayer : State
 {
     public StateIdle_TestPlayer(LivingEntity parent)
     {
         _parentEntity = parent;
-        _myAnimation = parent.MyAnimation;
         _myStateMachine = parent.MyStateMachine;
+        _myAnimator = parent.MyAnimator;
     }
 
     public override void EnterState()
@@ -19,15 +20,18 @@ public class StateIdle_TestPlayer : State
 
     public override void UpdateState()
     {
-        
+
         if (Player.Instance.IsMove())
         {
             _myStateMachine.SetState("MOVE");
+            _myAnimator.SetTrigger("Move");
         }
-        //if(Input.GetMouseButtonDown(0))
-        //{
-        //    _myStateMachine.SetState("ATTACK");
-        //}
+        else if(Player.Instance.IsAttack())
+        {
+            _myStateMachine.SetState("ATTACK");
+            _myAnimator.SetTrigger("Attack");
+        }
+
     }
 
     public override void EndState()
@@ -41,27 +45,29 @@ public class StateMove_TestPlayer : State
     public StateMove_TestPlayer(LivingEntity parent)
     {
         _parentEntity = parent;
-        _myAnimation = parent.MyAnimation;
         _myStateMachine = parent.MyStateMachine;
+        _myAnimator = parent.MyAnimator;
+
     }
 
     public override void EnterState()
     {
         Debug.Log("Move Enter");
+ 
+
     }
     public override void UpdateState()
     {
         //_action.Move();
         Debug.Log("Move Update");
-        if(!Player.Instance.IsMove())
+        if (!Player.Instance.IsMove())
         {
             _myStateMachine.SetState("IDLE");
+            _myAnimator.SetTrigger("Idle");
         }
-        
-
-        if (Input.GetMouseButtonDown(0))
+        else
         {
-            _myStateMachine.SetState("ATTACK");
+     
         }
     }
 
@@ -80,6 +86,8 @@ public class StateAttack_TestPlayer : State
     {
         _parentEntity = parent;
         _myStateMachine = parent.MyStateMachine;
+        _myAnimator = parent.MyAnimator;
+
     }
 
     public override void EnterState()
@@ -89,18 +97,14 @@ public class StateAttack_TestPlayer : State
 
     public override void UpdateState()
     {
-        counter += Time.deltaTime;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            counter = 0;
-        }
-
-        if(counter > timer)
+    //        counter += Time.deltaTime;
+        if(_myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime 
+            >= _myAnimator.runtimeAnimatorController.animationClips[2].length/2)
         {
             _myStateMachine.SetState("IDLE");
-            counter = 0f;
+            _myAnimator.SetTrigger("Idle");
         }
+       
     }
 
     public override void EndState()
@@ -115,21 +119,26 @@ public class StateDie_TestPlayer : State
     {
         _parentEntity = parent;
         _myStateMachine = parent.MyStateMachine;
+        _myAnimator = parent.MyAnimator;
+
     }
 
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
+        _myAnimator.SetBool("Die",true);
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        if (_myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime
+            >= _myAnimator.runtimeAnimatorController.animationClips[2].length / 2)
+        {
+            _myAnimator.SetBool("Die", false);
+        }
     }
 
     public override void EndState()
     {
-        throw new System.NotImplementedException();
     }
 }
 
@@ -140,16 +149,23 @@ public class StateAvoid_TestPlayer : State
     {
         _parentEntity = parent;
         _myStateMachine = parent.MyStateMachine;
+        _myAnimator = parent.MyAnimator;
     }
 
     public override void EnterState()
     {
         Debug.Log("Enter Avoid");
+        _myAnimator.SetTrigger("Avoid");
     }
 
     public override void UpdateState()
     {
-        Debug.Log("Update Avoid");
+        //if (_myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime
+        //    >= _myAnimator.runtimeAnimatorController.animationClips[3].length)
+        //{
+            _myStateMachine.SetState("IDLE");
+            _myAnimator.SetTrigger("Idle");
+        //}
     }
 
     public override void EndState()
