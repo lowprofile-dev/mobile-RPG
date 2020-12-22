@@ -61,8 +61,8 @@ public class CameraManager : MonoBehaviour
         float fDis = 0f;
         if (Input.touchCount == 2 && (Input.touches[0].phase == TouchPhase.Moved || Input.touches[1].phase == TouchPhase.Moved))
         {
-            //if (EventSystem.current.IsPointerOverGameObject() == false)
-            //{
+            if (EventSystem.current.IsPointerOverGameObject() == false)
+            {
                 m_fToucDis = (Input.touches[0].position - Input.touches[1].position).sqrMagnitude;
 
                 fDis = (m_fToucDis - m_fOldToucDis) * 0.01f;
@@ -78,7 +78,7 @@ public class CameraManager : MonoBehaviour
                 CinemachineCamera.GetRig(0).m_Lens.OrthographicSize = Mathf.Lerp(CinemachineCamera.GetRig(0).m_Lens.OrthographicSize, m_fFieldOfView, Time.deltaTime * 5);
                 
                 m_fOldToucDis = m_fToucDis;
-            //}
+            }
         }
 
     }

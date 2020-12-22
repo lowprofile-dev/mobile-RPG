@@ -130,13 +130,14 @@ namespace SimpleInputNamespace
 			SimpleInput.OnUpdate -= OnUpdate;
 		}
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 		private void OnValidate()
 		{
 			_1OverMovementAreaRadius = 1f / movementAreaRadius;
 			movementAreaRadiusSqr = movementAreaRadius * movementAreaRadius;
 			deadzoneRadiusSqr = deadzoneRadius * deadzoneRadius;
 		}
+    
 
         public SimpleInput.AxisInput GetX_axis()
         {
@@ -146,7 +147,7 @@ namespace SimpleInputNamespace
         {
             return yAxis;
         }
-#endif
+
 
         public void OnPointerDown( PointerEventData eventData )
 		{

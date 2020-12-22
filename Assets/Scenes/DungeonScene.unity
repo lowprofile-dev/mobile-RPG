@@ -186,7 +186,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5278820}
-  m_LocalRotation: {x: 0.13367131, y: 0.0000010235375, z: -0.0000015001449, w: 0.9910258}
+  m_LocalRotation: {x: 0.13367134, y: -0.000000013714457, z: 0.000000020100558, w: 0.99102575}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -620,7 +620,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326440162}
-  m_LocalRotation: {x: -0.29992327, y: 0.2999231, z: -0.6403483, w: 0.64034855}
+  m_LocalRotation: {x: -0.29992324, y: 0.29992312, z: -0.64034826, w: 0.6403486}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1507,8 +1507,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110116772}
-  m_LocalRotation: {x: 0.13417786, y: 0.0000000037692693, z: -0.0000000055304925,
-    w: 0.9909573}
+  m_LocalRotation: {x: 0.13417786, y: -0.000000031173656, z: 0.000000045739785, w: 0.9909573}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1577,7 +1576,6 @@ GameObject:
   - component: {fileID: 1479575218}
   - component: {fileID: 1479575217}
   - component: {fileID: 1479575220}
-  - component: {fileID: 1479575221}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1643,7 +1641,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479575216}
-  m_LocalRotation: {x: 0.52573127, y: 0.000000026392541, z: -0.000000016311494, w: 0.8506508}
+  m_LocalRotation: {x: 0.52573127, y: 0.000000026386536, z: -0.00000001630778, w: 0.8506508}
   m_LocalPosition: {x: 7, y: 71, z: -35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1684,20 +1682,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1479575221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1479575216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa58b475bfc33045bf6b1677893a338, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TouchSensitivity_x: 10
-  TouchSensitivity_y: 10
 --- !u!1 &1612281565
 GameObject:
   m_ObjectHideFlags: 3
@@ -1763,7 +1747,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612281565}
-  m_LocalRotation: {x: 0.13417786, y: -0.00000002407129, z: 0.000000035318784, w: 0.9909573}
+  m_LocalRotation: {x: 0.13417786, y: 0.0000000037652885, z: -0.000000005524649, w: 0.9909573}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1782,10 +1766,8 @@ GameObject:
   - component: {fileID: 1627597954}
   - component: {fileID: 1627597955}
   - component: {fileID: 1627597953}
-  - component: {fileID: 1627597956}
-  - component: {fileID: 1627597957}
   m_Layer: 0
-  m_Name: CM vcam1
+  m_Name: PlayerCamera
   m_TagString: PlayerFollowCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1798,7 +1780,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1627597952}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80cd14a1476906344b8f15b4730c7ff1, type: 3}
   m_Name: 
@@ -1864,7 +1846,7 @@ MonoBehaviour:
     m_MaxSpeed: 2
     m_AccelTime: 0.2
     m_DecelTime: 0.1
-    m_InputAxisName: z
+    m_InputAxisName: 
     m_InputAxisValue: 0
     m_InvertInput: 1
     m_MinValue: 0
@@ -1924,52 +1906,6 @@ MonoBehaviour:
   - {fileID: 1110116773}
   - {fileID: 1612281566}
   - {fileID: 5278821}
---- !u!114 &1627597956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627597952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27977f8d54995394a957fc55e6b77787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minScale: 0.5
-  maxScale: 1
-  zAxis:
-    Value: 0.5
-    m_SpeedMode: 0
-    m_MaxSpeed: 50
-    m_AccelTime: 0.1
-    m_DecelTime: 0.1
-    m_InputAxisName: Mouse ScrollWheel
-    m_InputAxisValue: 0
-    m_InvertInput: 0
-    m_MinValue: 0
-    m_MaxValue: 1
-    m_Wrap: 0
-    m_Recentering:
-      m_enabled: 0
-      m_WaitTime: 1
-      m_RecenteringTime: 2
-      m_LegacyHeadingDefinition: -1
-      m_LegacyVelocityFilterStrength: -1
---- !u!114 &1627597957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1627597952}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa58b475bfc33045bf6b1677893a338, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TouchSensitivity_x: 10
-  TouchSensitivity_y: 10
 --- !u!1 &1699888914
 GameObject:
   m_ObjectHideFlags: 3
