@@ -28,8 +28,6 @@ public class Player : LivingEntity
 
             PlayerAvoidance();
 
-            Debug.Log("State : " + MyStateMachine.GetState());
-
             PlayerSkill();
 
             float horizontal = Input.GetAxis("Horizontal");
@@ -80,11 +78,10 @@ public class Player : LivingEntity
                 count = 1f;
                 MyStateMachine.SetState(saveState);
             }
-            if (direction == Vector3.zero) characterController.Move(Vector3.forward * speed * Time.deltaTime * avoid_power);
+            if (direction == Vector3.zero) characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
 
-            else characterController.Move(direction * speed * Time.deltaTime * avoid_power);
+            else characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
         }
-        else characterController.Move(direction * speed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && avoidButtonClick == false)
         {
