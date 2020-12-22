@@ -15,13 +15,14 @@ public class CameraManager : MonoBehaviour
         CinemachineCore.GetInputAxis = this.HandleAxisInputDelegate;
         CinemachineCamera = GetComponent<CinemachineFreeLook>();
     }
+
     private void Update()
     {
         ZoomInOut();
     }
 
-    public float TouchSensitivity_x = 10f;
-    public float TouchSensitivity_y = 10f;
+    [SerializeField]private float TouchSensitivity_x = 5f;
+    //public float TouchSensitivity_y = 10f;
 
     float m_fOldToucDis = 0f;       // 터치 이전 거리를 저장
     float m_fFieldOfView = 5;     // 카메라의 FieldOfView의 기본값
@@ -33,20 +34,35 @@ public class CameraManager : MonoBehaviour
             case "rotationX":
                 if (Input.touchCount > 0)
                 {
+                    Touch[] touch = Input.touches;
                     //Is mobile touch
-                    // if 조이스틱 터치가 아닐경우 추가하기.
-                    if(EventSystem.current.IsPointerOverGameObject() == false)
-                    return Input.touches[0].deltaPosition.x / TouchSensitivity_x;
+                    for (int i = 0; i < touch.Length; i++)
+                    {
+                        if ((touch[i].phase == TouchPhase.Moved || touch[i].phase == TouchPhase.Stationary) && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(i).fingerId) == false)
+                            return Input.touches[i].deltaPosition.x / TouchSensitivity_x;
+                    }           
                 }
+#if UNITY_EDITOR
                 else if (Input.GetMouseButton(0))
                 {
                     // is mouse click
                     if (EventSystem.current.IsPointerOverGameObject() == false)
                         return Input.GetAxis("Mouse X");
                 }
+#endif
+
+#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
+                else if (Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    // mobile touch click
+                    if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false)
+                        return Input.GetAxis("Mouse X");
+                }
+#endif
+                
                 break;
             default:
-#if UNITYEDITOR
+#if UNITY_EDITOR
                 Debug.LogError("Input <" + axisName + "> not recognized.", this);
 #endif
                 break;
@@ -61,7 +77,7 @@ public class CameraManager : MonoBehaviour
         float fDis = 0f;
         if (Input.touchCount == 2 && (Input.touches[0].phase == TouchPhase.Moved || Input.touches[1].phase == TouchPhase.Moved))
         {
-            if (EventSystem.current.IsPointerOverGameObject() == false)
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false)
             {
                 m_fToucDis = (Input.touches[0].position - Input.touches[1].position).sqrMagnitude;
 
