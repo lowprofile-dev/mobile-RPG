@@ -8,19 +8,25 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
     {
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            CloseScene("CameraTest");
+            AddScene("DungeonScene");
         }
 
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            AddScene("CheckScene");
+            CloseScene("DungeonScene");
         }
 
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            CloseScene("CheckScene");
+            AddScene("VillageScene");
         }
 
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            CloseScene("VillageScene");
+        }
+
+        /*
         if(Input.GetKeyDown(KeyCode.F4))
         {
             if (SceneManager.GetSceneByName("TEST1").isLoaded == false)
@@ -36,7 +42,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
             else
                 SceneManager.UnloadSceneAsync("QuestCheckScene");
         }
-
+        */
 
         //if (Input.GetKeyDown(KeyCode.F3))
         //{

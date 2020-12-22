@@ -26,9 +26,11 @@ public class Player : LivingEntity
         if(!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
 
-            PlayerAvoidance();
+            //PlayerAvoidance();
 
-            PlayerSkill();
+            //Debug.Log("State : " + MyStateMachine.GetState());
+
+            //PlayerSkill();
 
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
@@ -78,10 +80,11 @@ public class Player : LivingEntity
                 count = 1f;
                 MyStateMachine.SetState(saveState);
             }
-            if (direction == Vector3.zero) characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
+            if (direction == Vector3.zero) characterController.Move(Vector3.forward * speed * Time.deltaTime * avoid_power);
 
-            else characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
+            else characterController.Move(direction * speed * Time.deltaTime * avoid_power);
         }
+        else characterController.Move(direction * speed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && avoidButtonClick == false)
         {
