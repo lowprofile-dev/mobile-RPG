@@ -15,8 +15,10 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void AttackBtnClick()
     {
-        if (isBtnDown) Debug.Log("공격중");
-        Player.Instance.SetAttackButton(isBtnDown);
+        if (isBtnDown)
+        {
+            if (Player.Instance != null) Player.Instance.SetAttackButton(isBtnDown);
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData) // 쭉누르기

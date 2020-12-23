@@ -24,7 +24,6 @@ public class TestMonsterAction : MonsterAction
     protected override void UpdateMonster()
     {
         DeathCheck();
-        Debug.Log("CURRENT STATE : " + _currentState);
     }
 
     public override void UpdateState()

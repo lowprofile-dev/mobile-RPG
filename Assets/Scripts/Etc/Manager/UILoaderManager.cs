@@ -2,8 +2,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class UILoaderManager : SingletonBase<UILoaderManager>
 {
+    [SerializeField] private GameObject PlayerUI;
+   
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))
@@ -131,7 +134,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
 
     IEnumerator Loading(string name , LoadSceneMode mode)
     {
-
+        PlayerUI.SetActive(false);
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(name , mode);
 
         while (!asyncOperation.isDone)
@@ -139,6 +142,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
             yield return null;
             Debug.Log("Loading  : " + (asyncOperation.progress * 100) + "%");
         }
+        PlayerUI.SetActive(true);
 
     }
 

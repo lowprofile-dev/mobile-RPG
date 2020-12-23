@@ -28,19 +28,32 @@ public class Player : LivingEntity
     private Vector3 moveDir;
     [SerializeField] private Quaternion rotateAngle;
 
-    public Joystick joystick;
+    public GameObject joyStickObj;
+    public Joystick joystick = null;
+    
     float horizontal;
     float vertical;
+
+    private void Awake()
+    {
+        Debug.Log("PREV " + Instance);
+        Instance = this;
+        Debug.Log("AFTER " + Instance);
+    }
+
     protected override void Start()
     {
         base.Start();
-        Instance = this;
-        joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
+        joyStickObj = GameObject.FindGameObjectWithTag("Joystick");
+        //joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
     }
 
     protected override void Update()
     {
-        if(!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
+        // if(joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        if (joystick == null) joystick = joyStickObj.GetComponent<Joystick>();
+
+        if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
             PlayerAvoidance();
 
@@ -109,6 +122,7 @@ public class Player : LivingEntity
 
     public void SetAttackButton(bool attackbutton)
     {
+        Debug.Log("asd");
         AttackButtonClick = attackbutton;
     }
     public void PlayerAvoidance()
