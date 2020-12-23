@@ -1,0 +1,1467 @@
+fileFormatVersion: 2
+guid: 6c66d788e6365eb45951a7766e178bf8
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: body_zomb
+    100002: brian_mesh_dead
+    100004: butt_zomb
+    100006: eye_l_zomb
+    100008: eye_r_zomb
+    100010: face_zomb
+    100012: hair_zomb
+    100014: head_zomb
+    100016: left_arm_zomb
+    100018: left_hand_zomb
+    100020: left_shoulder_zomb
+    100022: //RootNode
+    100024: right_arm_zomb
+    100026: right_hand_zomb
+    100028: right_shoulder_zomb
+    100030: root
+    400000: body_zomb
+    400002: brian_mesh_dead
+    400004: butt_zomb
+    400006: eye_l_zomb
+    400008: eye_r_zomb
+    400010: face_zomb
+    400012: hair_zomb
+    400014: head_zomb
+    400016: left_arm_zomb
+    400018: left_hand_zomb
+    400020: left_shoulder_zomb
+    400022: //RootNode
+    400024: right_arm_zomb
+    400026: right_hand_zomb
+    400028: right_shoulder_zomb
+    400030: root
+    4300000: brian_mesh_dead
+    7400000: zombie_bind
+    7400002: zombie_idle_01
+    7400004: zombie_idle_02
+    7400006: zombie_walk
+    7400008: zombie_bite
+    7400010: zombie_hit_front
+    7400012: zombie_hit_left
+    7400014: zombie_hit_right
+    7400016: zombie_panic
+    7400018: zombie_jump
+    7400020: zombie_fly_up
+    7400022: zombie_trans_fall
+    7400024: zombie_fall_idle
+    7400026: zombie_land
+    7400028: zombie_die
+    7400030: zombie_stir_ground
+    7400032: zombie_getup
+    7400034: zombie_attack
+    7400036: Take 0010
+    7400038: Take 0011
+    7400040: Take 0012
+    7400042: zombie_getup
+    9500000: //RootNode
+    13700000: brian_mesh_dead
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: micro_zombie_brian_mat
+    second: {fileID: 2100000, guid: d0e90a3c11c660243baa44fed937ffe8, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: zombie_bind
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: zombie_idle_01
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_idle_02
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_walk
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_bite
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_hit_front
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_hit_left
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_hit_right
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_panic
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_jump
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_fly_up
+      takeName: Take 001
+      firstFrame: 399
+      lastFrame: 407
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: zombie_trans_fall
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_fall_idle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_land
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_die
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_stir_ground
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_getup
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_attack
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Take 0010
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Take 0011
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Take 0012
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: zombie_getup
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 950
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: brian_mesh_dead
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/butt_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_l_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/eye_r_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/face_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/head_zomb/hair_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/left_shoulder_zomb/left_arm_zomb/left_hand_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb
+        weight: 1
+      - path: root/butt_zomb/body_zomb/right_shoulder_zomb/right_arm_zomb/right_hand_zomb
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
