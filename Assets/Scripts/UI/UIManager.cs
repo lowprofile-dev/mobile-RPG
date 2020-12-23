@@ -26,12 +26,12 @@ public class UIManager : MonoBehaviour
         SkillCbtn.onClick.AddListener(SkillCClick);
         OptionBtn.onClick.AddListener(OptionClick);
     }
-    private void Start()
+    void Start()
     {
         UILoaderManager.Instance.AddScene("DungeonScene");
     }
 
-    private void OptionClick()
+    void OptionClick()
     {
         Debug.Log("옵션");
     }

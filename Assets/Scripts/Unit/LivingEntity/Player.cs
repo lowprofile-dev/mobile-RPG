@@ -28,7 +28,6 @@ public class Player : LivingEntity
     private Vector3 moveDir;
     [SerializeField] private Quaternion rotateAngle;
 
-    public GameObject joyStickObj;
     public Joystick joystick = null;
     
     float horizontal;
@@ -36,22 +35,19 @@ public class Player : LivingEntity
 
     private void Awake()
     {
-        Debug.Log("PREV " + Instance);
         Instance = this;
-        Debug.Log("AFTER " + Instance);
     }
 
     protected override void Start()
     {
         base.Start();
-        joyStickObj = GameObject.FindGameObjectWithTag("Joystick");
         //joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
     }
 
     protected override void Update()
     {
         // if(joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
-        if (joystick == null) joystick = joyStickObj.GetComponent<Joystick>();
+        if (joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
 
         if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
@@ -66,7 +62,7 @@ public class Player : LivingEntity
 
             if (_hp <= 0) MyStateMachine.SetState("DIE");
 
-            Debug.Log(MyStateMachine.GetState());
+           // Debug.Log(MyStateMachine.GetState());
         }
 
         CheckInteractObject();

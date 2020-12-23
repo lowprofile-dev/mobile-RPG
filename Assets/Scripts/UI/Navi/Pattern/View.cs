@@ -12,6 +12,10 @@ public class View : MonoBehaviour
     VIEWTYPE viewtype;
     [SerializeField] private string _viewName; public string viewName { get { return _viewName; } }
 
+    private void OnEnable()
+    {
+        _viewName = gameObject.name;
+    }
     void Update()
     {
         switch (viewtype)

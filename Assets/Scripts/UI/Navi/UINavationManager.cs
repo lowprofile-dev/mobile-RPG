@@ -5,29 +5,33 @@ using UnityEngine;
 public class UINavationManager : SingletonBase<UINavationManager>
 {
     Dictionary<string, Navigation> navigationDic;
-    public Canvas canvas;
+    public GameObject viewObj;
 
     void Start()
     {
-        canvas = GameObject.FindGameObjectWithTag("View").GetComponent<Canvas>();
+        viewObj = GameObject.FindGameObjectWithTag("View");
 
         navigationDic = new Dictionary<string, Navigation>();
 
-        navigationDic["playerInfoNav"] = new Navigation();
-        navigationDic["etcNav"] = new Navigation();
+        navigationDic["PlayerUI"] = new Navigation();
+        navigationDic["SubUI"] = new Navigation();
 
-        PushToNav("playerInfoNav", "PlayerUI_View");
+        PushToNav("PlayerUI_View");
         //PushToNav("etcNav", "SubUI_View");
     }
 
-    public View PushToNav(string name, string viewName)
+    public View PushToNav(string viewName)
     {
-        return navigationDic[name].Push(viewName);
+        string[] key = viewName.Split('_');
+        Debug.Log(key[0]);
+        return navigationDic[key[0]].Push(viewName);
     }
 
-    public View PopToNav(string name, string viewName)
+    public View PopToNav(string viewName)
     {
-        return navigationDic[name].Pop(viewName);
+        string[] key = viewName.Split('_');
+        Debug.Log(key[0]);
+        return navigationDic[key[0]].Pop(viewName);
     }
 
     public Navigation returnNav(string name)

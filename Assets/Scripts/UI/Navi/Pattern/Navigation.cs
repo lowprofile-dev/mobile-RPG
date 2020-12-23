@@ -20,7 +20,7 @@ public class Navigation
             current.Hide();
         }
 
-        current = UINavationManager.Instance.canvas.transform.Find(name).GetComponent<View>();
+        current = UINavationManager.Instance.viewObj.transform.Find(name).GetComponent<View>();
         viewStack.Push(current);
         current.Show();
         

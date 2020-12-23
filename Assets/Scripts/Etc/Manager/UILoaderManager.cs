@@ -135,6 +135,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
     IEnumerator Loading(string name , LoadSceneMode mode)
     {
         PlayerUI.SetActive(false);
+
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(name , mode);
 
         while (!asyncOperation.isDone)
