@@ -28,7 +28,6 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
         {
             CloseScene("VillageScene");
         }
-
         /*
         if(Input.GetKeyDown(KeyCode.F4))
         {

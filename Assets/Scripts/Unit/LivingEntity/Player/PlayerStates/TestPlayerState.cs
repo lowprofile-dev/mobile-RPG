@@ -14,29 +14,21 @@ public class StateIdle_TestPlayer : State
 
     public override void EnterState()
     {
-        Debug.Log("Idle Enter");
-
+        _myAnimator.SetTrigger("Idle");
     }
 
     public override void UpdateState()
     {
+        if (Player.Instance.GetMove()) _myStateMachine.SetState("MOVE");
 
-        if (Player.Instance.IsMove())
-        {
-            _myStateMachine.SetState("MOVE");
-            _myAnimator.SetTrigger("Move");
-        }
-        else if(Player.Instance.IsAttack())
-        {
-            _myStateMachine.SetState("ATTACK");
-            _myAnimator.SetTrigger("Attack");
-        }
+        if (Player.Instance.GetAttackButton()) _myStateMachine.SetState("ATTACK");
 
+        if (Player.Instance.GetAvoidance()) _myStateMachine.SetState("AVOID");
     }
 
     public override void EndState()
     {
-        Debug.Log("Idle End");
+        _myAnimator.ResetTrigger("Idle");
     }
 }
 
@@ -52,28 +44,19 @@ public class StateMove_TestPlayer : State
 
     public override void EnterState()
     {
-        Debug.Log("Move Enter");
- 
-
+        _myAnimator.SetTrigger("Move");
     }
     public override void UpdateState()
     {
-        //_action.Move();
-        Debug.Log("Move Update");
-        if (!Player.Instance.IsMove())
-        {
-            _myStateMachine.SetState("IDLE");
-            _myAnimator.SetTrigger("Idle");
-        }
-        else
-        {
-     
-        }
+        if (Player.Instance.GetAttackButton()) _myStateMachine.SetState("ATTACK");
+
+        if (Player.Instance.GetAvoidance()) _myStateMachine.SetState("AVOID");
+
+        if (!Player.Instance.GetMove()) _myStateMachine.SetState("IDLE");
     }
 
     public override void EndState()
     {
-        Debug.Log("Move End");
 
     }
 }
@@ -87,28 +70,52 @@ public class StateAttack_TestPlayer : State
         _parentEntity = parent;
         _myStateMachine = parent.MyStateMachine;
         _myAnimator = parent.MyAnimator;
-
     }
 
     public override void EnterState()
     {
-        counter = 0.0f;
+       
+        _myAnimator.SetTrigger("Attack");
+        Player.Instance.SetAttackButton(false);
     }
 
     public override void UpdateState()
     {
-    //        counter += Time.deltaTime;
-        if(_myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime 
-            >= _myAnimator.runtimeAnimatorController.animationClips[2].length/2)
-        {
-            _myStateMachine.SetState("IDLE");
-            _myAnimator.SetTrigger("Idle");
-        }
-       
+
+        _myStateMachine.SetState("IDLE");
+
     }
 
     public override void EndState()
     {
+
+    }
+}
+
+public class StateAvoid_TestPlayer : State
+{
+
+    public StateAvoid_TestPlayer(LivingEntity parent)
+    {
+        _parentEntity = parent;
+        _myStateMachine = parent.MyStateMachine;
+        _myAnimator = parent.MyAnimator;
+    }
+
+    public override void EnterState()
+    {
+        _myAnimator.SetTrigger("Avoid");
+
+    }
+
+    public override void UpdateState()
+    {
+        _myStateMachine.SetState("IDLE");
+    }
+
+    public override void EndState()
+    {
+
     }
 }
 
@@ -125,52 +132,15 @@ public class StateDie_TestPlayer : State
 
     public override void EnterState()
     {
-        _myAnimator.SetBool("Die",true);
     }
 
     public override void UpdateState()
     {
-        if (_myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime
-            >= _myAnimator.runtimeAnimatorController.animationClips[2].length / 2)
-        {
-            _myAnimator.SetBool("Die", false);
-        }
+        
     }
 
     public override void EndState()
     {
-    }
-}
-
-public class StateAvoid_TestPlayer : State
-{
-
-    public StateAvoid_TestPlayer(LivingEntity parent)
-    {
-        _parentEntity = parent;
-        _myStateMachine = parent.MyStateMachine;
-        _myAnimator = parent.MyAnimator;
-    }
-
-    public override void EnterState()
-    {
-        Debug.Log("Enter Avoid");
-        _myAnimator.SetTrigger("Avoid");
-    }
-
-    public override void UpdateState()
-    {
-        //if (_myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime
-        //    >= _myAnimator.runtimeAnimatorController.animationClips[3].length)
-        //{
-            _myStateMachine.SetState("IDLE");
-            _myAnimator.SetTrigger("Idle");
-        //}
-    }
-
-    public override void EndState()
-    {
-        Debug.Log("End Avoid");
     }
 }
 
@@ -181,21 +151,22 @@ public class StateSkillA_TestPlayer : State
     {
         _parentEntity = parent;
         _myStateMachine = parent.MyStateMachine;
+        _myAnimator = parent.MyAnimator;
+
     }
 
     public override void EnterState()
     {
-        Debug.Log("Enter SkillA");
+        _myAnimator.SetTrigger("SkillA");
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        _myStateMachine.SetState("IDLE");
     }
 
     public override void EndState()
     {
-        throw new System.NotImplementedException();
     }
 }
 
@@ -206,21 +177,22 @@ public class StateSkillB_TestPlayer : State
     {
         _parentEntity = parent;
         _myStateMachine = parent.MyStateMachine;
+        _myAnimator = parent.MyAnimator;
+
     }
 
     public override void EnterState()
     {
-        Debug.Log("Enter SkillB");
+        _myAnimator.SetTrigger("SkillB");
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        _myStateMachine.SetState("IDLE");
     }
 
     public override void EndState()
     {
-        throw new System.NotImplementedException();
     }
 }
 
@@ -231,21 +203,23 @@ public class StateSkillC_TestPlayer : State
     {
         _parentEntity = parent;
         _myStateMachine = parent.MyStateMachine;
+        _myAnimator = parent.MyAnimator;
+
     }
 
     public override void EnterState()
     {
-        Debug.Log("Enter SkillC");
+        _myAnimator.SetTrigger("SkillC");
+
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        _myStateMachine.SetState("IDLE");
     }
 
     public override void EndState()
     {
-        throw new System.NotImplementedException();
     }
 }
 

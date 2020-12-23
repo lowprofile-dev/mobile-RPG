@@ -18,6 +18,11 @@ public class Player : LivingEntity
     private bool SkillB_ButtonClick = false;
     private bool SkillC_ButtonClick = false;
 
+    [SerializeField] public GameObject skillAEffect;
+    [SerializeField] public GameObject skillBEffect;
+    [SerializeField] public GameObject skillCEffect;
+    [SerializeField] public Transform firePoint;
+
     [SerializeField] private CharacterController characterController;
     [SerializeField] private float speed = 6f;
     [SerializeField] private float turnSmoothTime = 0.1f;
@@ -61,8 +66,6 @@ public class Player : LivingEntity
             }
 
             if (_hp <= 0) MyStateMachine.SetState("DIE");
-
-           // Debug.Log(MyStateMachine.GetState());
         }
 
         CheckInteractObject();
@@ -87,31 +90,35 @@ public class Player : LivingEntity
         MyStateMachine.UpdateState();
     }
 
-    public bool IsMove()
+    public bool GetMove()
     {
-        if (joystick.getHold()) return true;
-        else return false;
+        return joystick.getHold();
     }
 
     public void PlayerSkillA()
     {
         MyStateMachine.SetState("SKILL_A");
+        GameObject skill = Instantiate(skillAEffect);
+        skill.transform.position = firePoint.position;
+        skill.transform.rotation = transform.rotation; 
     }
     public void PlayerSkillB()
     {
         MyStateMachine.SetState("SKILL_B");
+        GameObject skill = Instantiate(skillBEffect);
+        skill.transform.position = firePoint.position;
+        skill.transform.rotation = transform.rotation;
+
     }
     public void PlayerSkillC()
     {
         MyStateMachine.SetState("SKILL_C");
+        GameObject skill = Instantiate(skillCEffect);
+        skill.transform.position = firePoint.position;
+        skill.transform.rotation = transform.rotation;
     }
 
-    public void PlayerAttack()
-    {
-        MyStateMachine.SetState("ATTACK");
-    }
-
-    public bool IsAttack()
+    public bool GetAttackButton()
     {
         return AttackButtonClick;
     }
@@ -120,34 +127,30 @@ public class Player : LivingEntity
     {
         AttackButtonClick = attackbutton;
     }
+
     public void PlayerAvoidance()
     {
         if (avoidButtonClick)
         {
-            if(count == 0f) MyStateMachine.SetState("AVOID");
-
             count += 1f;
 
             if (count > avoid_power)
             {
                 avoidButtonClick = false;
                 count = 0f;
-                MyStateMachine.SetState(saveState);
             }
             if (direction == Vector3.zero) characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
 
             else characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
         }
-        else saveState = MyStateMachine.GetState();
     }
-    public bool IsAvoidance()
+    public bool GetAvoidance()
     {
-        if (avoidButtonClick) return true;
-        else return false;
+        return avoidButtonClick;
     }
-    public void SetAvoidButton()
+    public void SetAvoidButton(bool avoidbutton)
     {
-        avoidButtonClick = true;
+        avoidButtonClick = avoidbutton;
     }
     protected override void InitObject()
     {
