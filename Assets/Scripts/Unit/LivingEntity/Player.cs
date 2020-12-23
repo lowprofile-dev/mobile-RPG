@@ -118,7 +118,6 @@ public class Player : LivingEntity
 
     public void SetAttackButton(bool attackbutton)
     {
-        Debug.Log("asd");
         AttackButtonClick = attackbutton;
     }
     public void PlayerAvoidance()
