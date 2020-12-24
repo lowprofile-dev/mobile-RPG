@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CSVReader.Data("id")]
-public class CardData : ScriptableObject
+public class CardData
 {
     public int id;
-    public string cardName;   
-    public string grade;
-    public string floatInitValue;
-    public string floatAddValue;
-    public string effectname;
+    public string cardName;
+    public string iconImg;
+    public string effectId;
+    public string description;
+    public string joke;
 }
 
-public enum CARDGRADE
-{
-    NORMAL, RARE, EPIC, LEGENDARY
-}

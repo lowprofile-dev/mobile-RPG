@@ -5,7 +5,7 @@ using UnityEngine;
 /// CSV를 통해 읽어온 퀘스트 데이터베이스
 /// </summary>
 [CSVReader.Data("id")]
-public class QuestData : ScriptableObject
+public class QuestData 
 {
     public int id; // 퀘스트 ID
     public string questName; // 퀘스트 이름

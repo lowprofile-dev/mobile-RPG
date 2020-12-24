@@ -5,7 +5,7 @@ using UnityEngine;
 /// CSV를 통해 읽어온 대화 데이터베이스
 /// </summary>
 [CSVReader.Data("convId")]
-public class TalkData : ScriptableObject
+public class TalkData
 {
     public int convId; // 전체 대화 ID
     public int npcId; // 대화의 주체가 되는 NPC ID

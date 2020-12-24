@@ -15,8 +15,8 @@ public class UINavationManager : SingletonBase<UINavationManager>
 
         navigationDic["PlayerUI"] = new Navigation();
         navigationDic["SubUI"] = new Navigation();
-
         PushToNav("PlayerUI_View");
+        //PushToNav("SubUI_CardUIView");
         //PushToNav("etcNav", "SubUI_View");
     }
 

@@ -6,4 +6,5 @@ using TMPro;
 
 public class PlayerUIView : View
 {
+
 }

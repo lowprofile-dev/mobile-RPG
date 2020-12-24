@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using System.Text.RegularExpressions;
+using System;
 
 namespace CSVReader
 {
@@ -57,7 +58,14 @@ namespace CSVReader
                         //데이터 세팅
                         for(int column = 0; column < tempLine.Length; ++column)
                         {
-                            arrayData[row - 1, column] = tempLine[column];
+                            try
+                            {
+                                arrayData[row - 1, column] = tempLine[column];
+                            }
+                            catch(Exception e)
+                            {
+                                Debug.Log("EXCEPTION 발생");
+                            }
                         }
                     }
                     //테이블 생성
