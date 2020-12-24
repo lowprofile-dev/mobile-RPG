@@ -14,6 +14,7 @@ public class LivingEntity : Unit
 
     public StateMachine MyStateMachine;
     public Animator MyAnimator;
+
     protected virtual void Start()
     {
         InitObject();

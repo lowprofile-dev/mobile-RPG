@@ -11,6 +11,7 @@ public class MonsterAction : MonoBehaviour
     [SerializeField] protected float _findRange;
     [SerializeField] protected float _attackRange;
     [SerializeField] protected float _limitTraceRange;
+    [SerializeField] protected float _speed;
     protected float _traceTimer;
 
     public virtual void InitObject()

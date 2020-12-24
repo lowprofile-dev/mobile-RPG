@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class TestMonsterAction : MonsterAction
+public class DragonAction : MonsterAction
 {
     NavMeshAgent _navMeshAgent;
     Coroutine _attackCoroutine;
@@ -33,7 +33,7 @@ public class TestMonsterAction : MonsterAction
 
         // 스테이트별 업데이트 내용
         switch (_currentState)
-        { 
+        {
             case STATE.STATE_IDLE:
                 Search();
                 break;
@@ -96,6 +96,7 @@ public class TestMonsterAction : MonsterAction
             case STATE.STATE_FIND:
                 break;
             case STATE.STATE_TRACE:
+                TraceExit();
                 break;
             case STATE.STATE_DEBUFF:
                 break;
@@ -112,6 +113,11 @@ public class TestMonsterAction : MonsterAction
             default:
                 break;
         }
+    }
+
+    private void TraceExit()
+    {
+        _monster.MyAnimator.SetBool("Walk", false);
     }
 
     /// <summary>
@@ -148,8 +154,6 @@ public class TestMonsterAction : MonsterAction
         // 타겟과의 거리가 공격 범위보다 커지면
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
         {
-            //_navMeshAgent.isStopped = true;
-
             _monster.MyAnimator.SetBool("Attack", false);
             ChangeState(STATE.STATE_IDLE);
         }
@@ -186,6 +190,10 @@ public class TestMonsterAction : MonsterAction
             {
                 ChangeState(STATE.STATE_CAST);
             }
+
+            yield return null;
+
+            _monster.MyAnimator.SetBool("Attack", false);
         }
     }
 
@@ -193,7 +201,7 @@ public class TestMonsterAction : MonsterAction
     {
         _castCoroutine = StartCoroutine(DoCastingAction());
     }
-    
+
     public override void Cast()
     {
         base.Cast();
@@ -228,11 +236,18 @@ public class TestMonsterAction : MonsterAction
     {
         base.Search();
 
-        if(Vector3.Distance(_target.transform.position, _monster.transform.position) < _findRange)
+        //if(Math.Sqrt(Math.Pow(_monster.transform.position.x - _target.transform.position.x , 2) + Math.Pow(_monster.transform.position.z - _target.transform.position.z , 2)) < _findRange)
+        //{
+        //    ChangeState(STATE.STATE_FIND);
+        //    _monster.MyAnimator.SetBool("Walk", true);
+        //}
+
+        if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _findRange)
         {
             ChangeState(STATE.STATE_FIND);
             _monster.MyAnimator.SetBool("Walk", true);
         }
+
     }
 
     public override void FindStart()
@@ -245,7 +260,7 @@ public class TestMonsterAction : MonsterAction
         // 인식 행동 진행
         StartCoroutine(DoFindAction());
     }
-    
+
     public override IEnumerator DoFindAction()
     {
         yield return new WaitForSeconds(1);

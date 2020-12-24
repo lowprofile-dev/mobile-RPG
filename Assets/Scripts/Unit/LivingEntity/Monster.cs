@@ -38,7 +38,7 @@ public class Monster : LivingEntity
     [SerializeField] protected ATTACKTYPE _attackType; public ATTACKTYPE attackType { get { return _attackType; } }
     [SerializeField] protected int _attackPattern; public int attackPattern { get { return _attackPattern; } }
     [SerializeField] protected string _description; public string description { get { return _description; } }
-
+    [SerializeField] protected float _speed;
     [SerializeField] protected int _castPercent; public int castPercent { get { return _castPercent; } }
     [SerializeField] protected float _attackTime; public float attackTime { get { return _attackTime; } }
     [SerializeField] protected float _attackDamage; public float attackDamage { get { return _attackDamage; } }
@@ -48,6 +48,7 @@ public class Monster : LivingEntity
     protected override void Start()
     {
         base.Start();
+        MyAnimator = GetComponent<Animator>();
     }
 
     protected override void Update()

@@ -7,6 +7,7 @@ public class TestMonster : Monster
     protected override void Start()
     {
         base.Start();
+        
     }
 
     protected override void Update()

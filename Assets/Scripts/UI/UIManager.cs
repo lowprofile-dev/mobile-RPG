@@ -68,7 +68,7 @@ public class UIManager : SingletonBase<UIManager>
     public void PlayerInfoClick()
     {
         Debug.Log("플레이어 정보창");
-        UINavationManager.Instance.PushToNav("SubUI_PlayerInfo");
+        UINavationManager.Instance.PushToNav("SubUI_Info");
     }
 
 }
