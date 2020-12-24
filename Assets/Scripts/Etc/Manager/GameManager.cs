@@ -14,7 +14,7 @@ public class GameManager : SingletonBase<GameManager>
         SoundManager.Instance.InitSound();
         SoundManager.Instance.PlayBGM("BGM_01");
     }
-
+    
     void Update()
     {
         SoundTester();
