@@ -121,7 +121,6 @@ public class TestMonsterAction : MonsterAction
     {
         base.Move();
         _navMeshAgent.SetDestination(_target.transform.position);
-
         // Run StepSound 재생
 
         // 사거리 내에 적 존재 시 발동
@@ -149,7 +148,10 @@ public class TestMonsterAction : MonsterAction
         // 타겟과의 거리가 공격 범위보다 커지면
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
         {
-            ChangeState(STATE.STATE_TRACE);
+            //_navMeshAgent.isStopped = true;
+
+            _monster.MyAnimator.SetBool("Attack", false);
+            ChangeState(STATE.STATE_IDLE);
         }
     }
 
@@ -175,6 +177,8 @@ public class TestMonsterAction : MonsterAction
 
             // 공격 행동 한다.
             StartCoroutine(DoAttackAction());
+            _monster.MyAnimator.SetBool("Attack", true);
+
 
             // 일정 확률로 캐스팅 상태로 바꾼다.
             int toCastRandomValue = UnityEngine.Random.Range(0, 100);
@@ -227,6 +231,7 @@ public class TestMonsterAction : MonsterAction
         if(Vector3.Distance(_target.transform.position, _monster.transform.position) < _findRange)
         {
             ChangeState(STATE.STATE_FIND);
+            _monster.MyAnimator.SetBool("Walk", true);
         }
     }
 
@@ -253,6 +258,7 @@ public class TestMonsterAction : MonsterAction
         if (_currentState != STATE.STATE_DIE && NoHPCheck())
         {
             ChangeState(STATE.STATE_DIE);
+            _monster.MyAnimator.SetTrigger("doDie");
         }
     }
 
