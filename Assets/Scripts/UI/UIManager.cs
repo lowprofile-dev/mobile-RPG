@@ -13,6 +13,7 @@ public class UIManager : SingletonBase<UIManager>
     [SerializeField] private Button SkillAbtn;
     [SerializeField] private Button SkillBbtn;
     [SerializeField] private Button SkillCbtn;
+    [SerializeField] private Button InventoryBtn;
     [SerializeField] private Button OptionBtn;
 
     // Start is called before the first frame update
@@ -24,8 +25,16 @@ public class UIManager : SingletonBase<UIManager>
         SkillAbtn.onClick.AddListener(SkillAClick);
         SkillBbtn.onClick.AddListener(SkillBClick);
         SkillCbtn.onClick.AddListener(SkillCClick);
+        InventoryBtn.onClick.AddListener(InventoryClick);
         OptionBtn.onClick.AddListener(OptionClick);
     }
+
+    void InventoryClick()
+    {
+        Debug.Log("인벤토리");
+        UINavationManager.Instance.PushToNav("SubUI_Bag");
+    }
+
     void Start()
     {
         UILoaderManager.Instance.AddScene("DungeonScene");
