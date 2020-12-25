@@ -6,6 +6,11 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 {
     private Dictionary<string, Queue<GameObject>> objectPool = new Dictionary<string, Queue<GameObject>>();
 
+    public void InitObjectPoolManager()
+    {
+
+    }
+
     public void ClearObjectPool() // 오브젝트풀에 적재되어있는 모든 것 없애기
     {
         objectPool.Clear();

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Talk : ScriptableObject
+public class Talk
 {
     private TalkData _talkData; public TalkData talkData { get { return _talkData; } }
 

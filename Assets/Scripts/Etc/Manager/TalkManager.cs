@@ -16,7 +16,7 @@ public class TalkManager : SingletonBase<TalkManager>
     public HashSet<Quest> currentQuests = new HashSet<Quest>();     // 진행중인 퀘스트 목록
     public HashSet<Quest> endedQuests = new HashSet<Quest>();       // 종료된 퀘스트 목록
 
-    private void Start()
+    public void InitTalkManager()
     {
         talkDatas = new Dictionary<int, Talk>();
         questDatas = new Dictionary<int, Quest>();

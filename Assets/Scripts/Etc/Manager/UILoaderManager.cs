@@ -5,8 +5,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class UILoaderManager : SingletonBase<UILoaderManager>
 {
-    [SerializeField] private GameObject PlayerUI;
+    private GameObject PlayerUI;
    
+    public void InitUILoaderManager()
+    {
+        PlayerUI = GameObject.Find("PlayerUI_View");
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))
@@ -143,7 +148,5 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
             Debug.Log("Loading  : " + (asyncOperation.progress * 100) + "%");
         }
         PlayerUI.SetActive(true);
-
     }
-
 }

@@ -29,35 +29,38 @@ public class Navigation
 
     public View Pop()
     {
-        viewStack.Peek().Hide();
-        viewStack.Pop();
-        if(viewStack.Peek() != null)
+        if(viewStack.Count > 0)
         {
-            viewStack.Peek().Show();
-        }
+            viewStack.Peek().Hide();
+            viewStack.Pop();
 
+            if (viewStack.Count > 0) viewStack.Peek().Show();
+        }
         return viewStack.Peek();
     }
 
     public View Pop(string name)
     {
-        while(viewStack.Peek() != null)
+        Debug.Log("VIEWSTACK : " + viewStack);
+        while(viewStack.Count > 0)
         {
-            viewStack.Pop();
-
-            if(viewStack.Peek().viewName == name)
+            Debug.Log("currnet : " + viewStack.Peek().viewName + " " + name);
+            if (viewStack.Peek().viewName == name)
             {
                 viewStack.Pop();
                 break;
             }
+
+            viewStack.Pop();
         }
 
+        if (viewStack.Count > 0) viewStack.Peek().Show();
         return viewStack.Peek();
     }
 
     public View PopAll()
     {
-        while(viewStack.Peek() != null)
+        while(viewStack.Count > 0)
         {
             viewStack.Pop();
         }

@@ -15,7 +15,7 @@ public class CardManager : SingletonBase<CardManager>
     public int[,] dungeonCardData;
     public int currentStage;
 
-    private void Start()
+    public void InitCardManager()
     {
         currentCards = new List<Card>();
         dungeonCardData = new int[4, 9];
@@ -25,8 +25,6 @@ public class CardManager : SingletonBase<CardManager>
 
         GetEffectData();
         GetCardData();
-
-        Debug.Log(_cardData.Count);
     }
 
     private void GetCardData()

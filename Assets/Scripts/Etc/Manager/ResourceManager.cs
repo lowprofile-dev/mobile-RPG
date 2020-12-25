@@ -8,6 +8,11 @@ public class ResourceManager : SingletonBase<ResourceManager>
 {
     public Dictionary<string, Object> resourceContainer = new Dictionary<string, Object>();
 
+    public void InitResourceManager()
+    {
+
+    }
+
     public static Object Load(string path)
     {
         Object obj = Resources.Load(path);

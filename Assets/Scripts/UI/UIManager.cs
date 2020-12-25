@@ -7,7 +7,6 @@ using UnityEngine.EventSystems;
 
 public class UIManager : SingletonBase<UIManager>
 {
-
     //[SerializeField] private Button AttackBtn;
     [SerializeField] private Button InvincibleBtn;
     [SerializeField] private Button SkillAbtn;
@@ -16,11 +15,21 @@ public class UIManager : SingletonBase<UIManager>
     [SerializeField] private Button InventoryBtn;
     [SerializeField] private Button OptionBtn;
 
-    // Start is called before the first frame update
-
-    private void OnEnable()
+    public void InitUIManager()
     {
-        //AttackBtn.onClick.AddListener(AttackClick);
+        Transform playerView = GameObject.Find("PlayerUI_View").transform;
+        InvincibleBtn = playerView.Find("InvincibleFrame").GetComponent<Button>();
+        SkillAbtn = playerView.Find("SkillA").GetComponent<Button>();
+        SkillBbtn = playerView.Find("SkillB").GetComponent<Button>();
+        SkillCbtn = playerView.Find("SkillC").GetComponent<Button>();
+        InventoryBtn = playerView.Find("Inventory").GetComponent<Button>();
+        OptionBtn = playerView.Find("Option").GetComponent<Button>();
+
+        AddListenerToUI();
+    }
+
+    public void AddListenerToUI()
+    {
         InvincibleBtn.onClick.AddListener(InvincibleClick);
         SkillAbtn.onClick.AddListener(SkillAClick);
         SkillBbtn.onClick.AddListener(SkillBClick);

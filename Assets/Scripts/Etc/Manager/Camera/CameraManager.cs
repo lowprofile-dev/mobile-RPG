@@ -16,6 +16,11 @@ public class CameraManager : MonoBehaviour
         CinemachineCamera = GetComponent<CinemachineFreeLook>();
     }
 
+    public void InitCameraManager()
+    {
+
+    }
+
     private void Update()
     {
         ZoomInOut();

@@ -1166,13 +1166,14 @@ GameObject:
   - component: {fileID: 1799623980296434725}
   - component: {fileID: 1799623980296434724}
   - component: {fileID: 1799623980296434727}
+  - component: {fileID: 840380761}
   m_Layer: 5
-  m_Name: CardUI_View
+  m_Name: SubUI_CardUIView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1799623980296434722
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1211,7 +1212,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: -2040161809
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1254,6 +1255,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &840380761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799623980296434726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e480b79c3c55b0148897cceeb55240e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _viewName: SubUI_CardUIView
 --- !u!1 &1799623980335338794
 GameObject:
   m_ObjectHideFlags: 0
@@ -2709,7 +2723,7 @@ PrefabInstance:
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_Name
-      value: RoomArea_Img (6)
+      value: RoomArea_Img_6
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484142, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
@@ -2834,7 +2848,7 @@ PrefabInstance:
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_Name
-      value: RoomArea_Img (7)
+      value: RoomArea_Img_7
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484142, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
@@ -2959,7 +2973,7 @@ PrefabInstance:
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_Name
-      value: RoomArea_Img (8)
+      value: RoomArea_Img_8
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484142, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
@@ -3084,7 +3098,7 @@ PrefabInstance:
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_Name
-      value: RoomArea_Img (5)
+      value: RoomArea_Img_5
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484142, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
@@ -3214,7 +3228,7 @@ PrefabInstance:
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_Name
-      value: RoomArea_Img
+      value: RoomArea_Img_0
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484142, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
@@ -3339,7 +3353,7 @@ PrefabInstance:
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_Name
-      value: RoomArea_Img (1)
+      value: RoomArea_Img_1
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484142, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
@@ -3464,7 +3478,7 @@ PrefabInstance:
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_Name
-      value: RoomArea_Img (3)
+      value: RoomArea_Img_3
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484142, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
@@ -3589,7 +3603,7 @@ PrefabInstance:
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_Name
-      value: RoomArea_Img (4)
+      value: RoomArea_Img_4
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484142, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
@@ -3714,7 +3728,7 @@ PrefabInstance:
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_Name
-      value: RoomArea_Img (2)
+      value: RoomArea_Img_2
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484142, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}

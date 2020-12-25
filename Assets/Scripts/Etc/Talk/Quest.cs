@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 퀘스트의 정보 및 기능이 담겨있다.
 /// </summary>
-public class Quest : ScriptableObject
+public class Quest
 {
     private TalkManager _talkManager; // 토크매니저 캐싱
 
