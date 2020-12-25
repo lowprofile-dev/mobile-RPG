@@ -9,6 +9,7 @@ public class DragonAction : MonsterAction
     NavMeshAgent _navMeshAgent;
     Coroutine _attackCoroutine;
     Coroutine _castCoroutine;
+    private float idleCnt = 0;
 
     public override void InitObject()
     {
@@ -34,10 +35,17 @@ public class DragonAction : MonsterAction
         // 스테이트별 업데이트 내용
         switch (_currentState)
         {
+            case STATE.STATE_SPAWN:
+                SpawnAction();
+                break;
             case STATE.STATE_IDLE:
                 Search();
                 break;
+            case STATE.STATE_STIRR:
+                GroundSearch();
+                break;
             case STATE.STATE_FIND:
+                FindPlayer();
                 break;
             case STATE.STATE_TRACE:
                 Move();
@@ -61,12 +69,20 @@ public class DragonAction : MonsterAction
     {
         switch (targetState)
         {
+            case STATE.STATE_SPAWN:
+                SpawnStart();
+                break;
             case STATE.STATE_IDLE:
+                IdleStart();
+                break;
+            case STATE.STATE_STIRR:
+                StirrStart();
                 break;
             case STATE.STATE_FIND:
                 FindStart();
                 break;
             case STATE.STATE_TRACE:
+                TraceStart();
                 break;
             case STATE.STATE_DEBUFF:
                 break;
@@ -92,8 +108,13 @@ public class DragonAction : MonsterAction
         switch (targetState)
         {
             case STATE.STATE_IDLE:
+                IdleExit();
+                break;
+            case STATE.STATE_STIRR:
+                StirrExit();
                 break;
             case STATE.STATE_FIND:
+                FindExit();
                 break;
             case STATE.STATE_TRACE:
                 TraceExit();
@@ -115,9 +136,24 @@ public class DragonAction : MonsterAction
         }
     }
 
+    private void FindExit()
+    {
+        //_monster.MyAnimator.SetBool("Panic", false);
+    }
+
+    private void StirrExit()
+    {
+        //_monster.MyAnimator.SetBool("Stirr", false);
+    }
+
+    private void IdleExit()
+    {
+       // _monster.MyAnimator.SetBool("Idle", false);
+    }
+
     private void TraceExit()
     {
-        _monster.MyAnimator.SetBool("Walk", false);
+       //_monster.MyAnimator.SetBool("Walk", false);
     }
 
     /// <summary>
@@ -126,6 +162,7 @@ public class DragonAction : MonsterAction
     public override void Move()
     {
         base.Move();
+        _navMeshAgent.isStopped = false;
         _navMeshAgent.SetDestination(_target.transform.position);
         // Run StepSound 재생
 
@@ -153,8 +190,7 @@ public class DragonAction : MonsterAction
 
         // 타겟과의 거리가 공격 범위보다 커지면
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
-        {
-            _monster.MyAnimator.SetBool("Attack", false);
+        {       
             ChangeState(STATE.STATE_IDLE);
         }
     }
@@ -171,30 +207,52 @@ public class DragonAction : MonsterAction
 
     public override IEnumerator AttackTarget()
     {
+
         while (true)
         {
-            yield return new WaitForSeconds(_monster.attackTime);
-
-            // 사운드 재생
-            Debug.Log(_monster.monsterName + "의 공격!");
-            _target.GetComponent<LivingEntity>().Damaged(_monster.attackDamage);
-
-            // 공격 행동 한다.
-            StartCoroutine(DoAttackAction());
-            _monster.MyAnimator.SetBool("Attack", true);
-
-
-            // 일정 확률로 캐스팅 상태로 바꾼다.
-            int toCastRandomValue = UnityEngine.Random.Range(0, 100);
-            if (toCastRandomValue < _monster.castPercent)
-            {
-                ChangeState(STATE.STATE_CAST);
-            }
-
             yield return null;
+           // yield return new WaitForSeconds(_attackSpeed);
 
-            _monster.MyAnimator.SetBool("Attack", false);
+            if (CanAttackState())
+            {
+                //_navMeshAgent.stoppingDistance = 2f;
+                _navMeshAgent.isStopped = true;
+                _navMeshAgent.SetDestination(_target.transform.position);
+                yield return new WaitForSeconds(_attackSpeed);
+
+                _navMeshAgent.isStopped = false;
+                _navMeshAgent.speed = 30f;
+
+                // 사운드 재생
+                Debug.Log(_monster.monsterName + "의 공격!");
+                _target.GetComponent<LivingEntity>().Damaged(_monster.attackDamage);
+
+                // 공격 행동 한다.
+                StartCoroutine(DoAttackAction());
+
+                if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+                    _monster.MyAnimator.SetTrigger("Attack");
+
+                yield return new WaitForSeconds(0.5f);
+
+                _navMeshAgent.speed = _speed;
+                _navMeshAgent.stoppingDistance = _attackRange;
+                ChangeState(STATE.STATE_TRACE);
+
+                // 일정 확률로 캐스팅 상태로 바꾼다.
+                //int toCastRandomValue = UnityEngine.Random.Range(0, 100);
+
+                //if (toCastRandomValue < _monster.castPercent)
+                //{
+                //    ChangeState(STATE.STATE_CAST);
+                //}
+            }
+            else
+            {
+                ChangeState(STATE.STATE_TRACE);
+            }
         }
+
     }
 
     public override void CastStart()
@@ -229,6 +287,7 @@ public class DragonAction : MonsterAction
     public override IEnumerator DoAttackAction()
     {
         // 아무튼 뭔가를 한다
+
         yield return null;
     }
 
@@ -236,16 +295,20 @@ public class DragonAction : MonsterAction
     {
         base.Search();
 
-        //if(Math.Sqrt(Math.Pow(_monster.transform.position.x - _target.transform.position.x , 2) + Math.Pow(_monster.transform.position.z - _target.transform.position.z , 2)) < _findRange)
-        //{
-        //    ChangeState(STATE.STATE_FIND);
-        //    _monster.MyAnimator.SetBool("Walk", true);
-        //}
+        idleCnt += Time.deltaTime;
+
+        if (idleCnt > 3)
+        {
+            idleCnt = 0;
+            if (UnityEngine.Random.Range(1,100) <= 30)
+            ChangeState(STATE.STATE_STIRR);
+        }
+
 
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _findRange)
         {
+            
             ChangeState(STATE.STATE_FIND);
-            _monster.MyAnimator.SetBool("Walk", true);
         }
 
     }
@@ -254,6 +317,11 @@ public class DragonAction : MonsterAction
     {
         base.FindStart();
 
+       
+            _monster.MyAnimator.SetBool("Panic", true);
+        
+        
+        transform.LookAt(_target.transform.position);
         // 위에 느낌표가 뜬다.
         // 소리를 낸다.
 
@@ -263,8 +331,6 @@ public class DragonAction : MonsterAction
 
     public override IEnumerator DoFindAction()
     {
-        yield return new WaitForSeconds(1);
-        ChangeState(STATE.STATE_TRACE);
         yield return null;
     }
 
@@ -292,4 +358,49 @@ public class DragonAction : MonsterAction
         DestroyImmediate(this.gameObject);
     }
 
+    private void IdleStart()
+    {
+        _monster.MyAnimator.SetTrigger("Idle");
+        _navMeshAgent.isStopped = true;
+    }
+    private void SpawnAction()
+    {
+
+        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            ChangeState(STATE.STATE_IDLE);
+        }
+    }
+
+    private void FindPlayer()
+    {
+        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            ChangeState(STATE.STATE_TRACE);
+        }
+
+    }
+
+    private void GroundSearch()
+    {
+        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            ChangeState(STATE.STATE_IDLE);
+        }
+    }
+
+    private void SpawnStart()
+    {
+        _monster.MyAnimator.SetTrigger("Spawn");
+    }
+
+    private void TraceStart()
+    {
+        _monster.MyAnimator.SetTrigger("Walk");
+    }
+
+    private void StirrStart()
+    {
+        _monster.MyAnimator.SetTrigger("Stirr");
+    }
 }

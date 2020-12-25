@@ -23,14 +23,14 @@ public class UINavationManager : SingletonBase<UINavationManager>
     public View PushToNav(string viewName)
     {
         string[] key = viewName.Split('_');
-        Debug.Log(key[0]);
+
         return navigationDic[key[0]].Push(viewName);
     }
 
     public View PopToNav(string viewName)
     {
         string[] key = viewName.Split('_');
-        Debug.Log(key[0]);
+
         return navigationDic[key[0]].Pop(viewName);
     }
 

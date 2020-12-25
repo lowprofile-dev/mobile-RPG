@@ -12,6 +12,9 @@ public class MonsterAction : MonoBehaviour
     [SerializeField] protected float _attackRange;
     [SerializeField] protected float _limitTraceRange;
     [SerializeField] protected float _speed;
+    [SerializeField] protected float _distance;
+    [SerializeField] protected float _attackSpeed;
+    [SerializeField] private LayerMask layerMask;
     protected float _traceTimer;
 
     public virtual void InitObject()
@@ -50,6 +53,29 @@ public class MonsterAction : MonoBehaviour
 
     public virtual void Attack()
     {
+       
+
+    }
+    protected bool CanAttackState()
+    {
+        Vector3 targetDir = new Vector3(_target.transform.position.x - transform.position.x, 0f, _target.transform.position.z - transform.position.z);
+
+        Physics.Raycast(new Vector3(transform.position.x, 0.5f, transform.position.z), targetDir, out RaycastHit hit, 30f, layerMask);
+
+        _distance = Vector3.Distance(_target.transform.position, transform.position);
+
+        if(hit.transform == null)
+        {
+            return false;
+        }
+        if(hit.transform.CompareTag("Player") && _distance <= _attackRange)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public virtual void Move()
