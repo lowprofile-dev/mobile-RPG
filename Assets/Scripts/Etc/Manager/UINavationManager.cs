@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class UINavationManager : SingletonBase<UINavationManager>
@@ -16,7 +15,7 @@ public class UINavationManager : SingletonBase<UINavationManager>
         navigationDic["PlayerUI"] = new Navigation();
         navigationDic["SubUI"] = new Navigation();
         PushToNav("PlayerUI_View");
-        //PushToNav("etcNav", "SubUI_View");
+        //PushToNav("SubUI_CardUIView");
     }
 
     public void UpdateNavigationManager()
@@ -26,12 +25,12 @@ public class UINavationManager : SingletonBase<UINavationManager>
 
     public void ControlCardUIView()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             PushToNav("SubUI_CardUIView");
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha9))
+        if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             PopToNav("SubUI_CardUIView");
         }

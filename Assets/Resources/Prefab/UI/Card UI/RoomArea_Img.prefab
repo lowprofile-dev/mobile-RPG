@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5759919929096789513}
   - component: {fileID: 2224095379198645090}
   m_Layer: 5
-  m_Name: RoomTypeIcon_Img (1)
+  m_Name: CardIcon_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 6757580022872998380}
   - component: {fileID: 4247436900346810552}
   m_Layer: 5
-  m_Name: RoomTypeIcon_Img
+  m_Name: CardFrame_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c8de558d1809a431b853143ea7327b0d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c6c887cce7af543b0bf0b150917f449c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 6992378448214357696}
   - component: {fileID: 3195056972521519381}
   m_Layer: 5
-  m_Name: RoomTypeIcon_Img (1)
+  m_Name: CardIcon_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 5673594643969249690}
   - component: {fileID: 8179078186709909555}
   m_Layer: 5
-  m_Name: RoomTypeIcon_Img
+  m_Name: CardFrame_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -376,7 +376,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c8de558d1809a431b853143ea7327b0d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a2cffcaec0f9b4ff18ef979fbd9c8b8b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -397,9 +397,9 @@ GameObject:
   - component: {fileID: 4963162448815007461}
   - component: {fileID: 4963162448815007463}
   - component: {fileID: 4963162448815007462}
-  - component: {fileID: 6564813861296028182}
+  - component: {fileID: 4291507306907130489}
   m_Layer: 5
-  m_Name: ImageFrame_img
+  m_Name: ImageFrame_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,7 +462,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6564813861296028182
+--- !u!114 &4291507306907130489
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -471,25 +471,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4963162448815007460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce76b7a490bd74f34a2f2752641aea24, type: 3}
+  m_Script: {fileID: 11500000, guid: a7be078926b3448089fe9995b32f75f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectFactor: 0
-  m_Width: 0.385
-  m_Softness: 1
-  m_Color: {r: 1, g: 0.9363208, b: 0.9009434, a: 1}
-  m_ColorMode: 1
-  m_TransitionTexture: {fileID: 2800000, guid: 3e04c247fb2604af186173fce0bc62de, type: 3}
-  m_EffectArea: 1
-  m_KeepAspectRatio: 1
-  m_Player:
-    play: 1
-    initialPlayDelay: 0
-    duration: 1.91
-    loop: 1
-    loopDelay: 0.9
-    updateMode: 0
-  m_Reverse: 0
+  m_TargetEffect: {fileID: 5456982823411089143}
 --- !u!1 &4963162449229146511
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,7 +487,7 @@ GameObject:
   - component: {fileID: 4963162449229146498}
   - component: {fileID: 4963162449229146497}
   m_Layer: 5
-  m_Name: Room3_Img
+  m_Name: CardList2_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -577,7 +562,7 @@ GameObject:
   - component: {fileID: 4963162449441141443}
   - component: {fileID: 4963162449441141442}
   m_Layer: 5
-  m_Name: Room4_Img
+  m_Name: CardList3_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -651,7 +636,7 @@ GameObject:
   - component: {fileID: 4963162449501748139}
   - component: {fileID: 4963162449501748141}
   - component: {fileID: 4963162449501748140}
-  - component: {fileID: 2366201619930852868}
+  - component: {fileID: 5219077728418116486}
   m_Layer: 5
   m_Name: nameFrame_Img
   m_TagString: Untagged
@@ -716,7 +701,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2366201619930852868
+--- !u!114 &5219077728418116486
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -725,25 +710,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4963162449501748138}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce76b7a490bd74f34a2f2752641aea24, type: 3}
+  m_Script: {fileID: 11500000, guid: a7be078926b3448089fe9995b32f75f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectFactor: 0
-  m_Width: 0.385
-  m_Softness: 1
-  m_Color: {r: 1, g: 0.9363208, b: 0.9009434, a: 1}
-  m_ColorMode: 1
-  m_TransitionTexture: {fileID: 2800000, guid: 3e04c247fb2604af186173fce0bc62de, type: 3}
-  m_EffectArea: 1
-  m_KeepAspectRatio: 1
-  m_Player:
-    play: 1
-    initialPlayDelay: 0
-    duration: 1.91
-    loop: 1
-    loopDelay: 0.9
-    updateMode: 0
-  m_Reverse: 0
+  m_TargetEffect: {fileID: 5456982823411089143}
 --- !u!1 &4963162449664937687
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,7 +726,7 @@ GameObject:
   - component: {fileID: 4963162449664937674}
   - component: {fileID: 4963162449664937673}
   m_Layer: 5
-  m_Name: Room2_Img
+  m_Name: CardList1_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -830,9 +800,9 @@ GameObject:
   - component: {fileID: 4963162449684325140}
   - component: {fileID: 4963162449684325142}
   - component: {fileID: 4963162449684325141}
-  - component: {fileID: 6388167490205278178}
+  - component: {fileID: 2623215006647058607}
   m_Layer: 5
-  m_Name: CardFrame
+  m_Name: CardIcon_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -894,7 +864,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6388167490205278178
+--- !u!114 &2623215006647058607
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -903,25 +873,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4963162449684325139}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce76b7a490bd74f34a2f2752641aea24, type: 3}
+  m_Script: {fileID: 11500000, guid: a7be078926b3448089fe9995b32f75f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectFactor: 0
-  m_Width: 0.385
-  m_Softness: 1
-  m_Color: {r: 1, g: 0.9363208, b: 0.9009434, a: 1}
-  m_ColorMode: 1
-  m_TransitionTexture: {fileID: 2800000, guid: 3e04c247fb2604af186173fce0bc62de, type: 3}
-  m_EffectArea: 1
-  m_KeepAspectRatio: 1
-  m_Player:
-    play: 1
-    initialPlayDelay: 0
-    duration: 1.91
-    loop: 1
-    loopDelay: 0.9
-    updateMode: 0
-  m_Reverse: 0
+  m_TargetEffect: {fileID: 5456982823411089143}
 --- !u!1 &4963162449814014028
 GameObject:
   m_ObjectHideFlags: 0
@@ -934,7 +889,7 @@ GameObject:
   - component: {fileID: 4963162449814014031}
   - component: {fileID: 4963162449814014030}
   m_Layer: 5
-  m_Name: Room1_Img
+  m_Name: CardList0_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1164,8 +1119,9 @@ GameObject:
   - component: {fileID: 4963162450455689053}
   - component: {fileID: 4963162450455689052}
   - component: {fileID: 5456982823411089143}
+  - component: {fileID: 7202248801973057038}
   m_Layer: 5
-  m_Name: CardBase_Img
+  m_Name: CardBase_Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1251,13 +1207,56 @@ MonoBehaviour:
   m_EffectArea: 1
   m_KeepAspectRatio: 1
   m_Player:
-    play: 1
+    play: 0
     initialPlayDelay: 0
     duration: 1.91
-    loop: 1
-    loopDelay: 0.9
+    loop: 0
+    loopDelay: 0
     updateMode: 0
   m_Reverse: 0
+--- !u!114 &7202248801973057038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4963162450455689050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 4963162450455689052}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4963162450780484141
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,6 +1270,7 @@ GameObject:
   - component: {fileID: 4963162450780484143}
   - component: {fileID: 5043371991457900914}
   - component: {fileID: 3897625469988543967}
+  - component: {fileID: 8338398237407575982}
   m_Layer: 5
   m_Name: RoomArea_Img
   m_TagString: Untagged
@@ -1376,6 +1376,38 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8338398237407575982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4963162450780484141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f1cb5235b38ba478d91a5311e981d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _roomAreaImg: {fileID: 4963162450780484143}
+  _roomFramesImg:
+  - {fileID: 8179078186709909555}
+  - {fileID: 5381756431164740579}
+  - {fileID: 4247436900346810552}
+  - {fileID: 7716138188214060313}
+  _roomIconsImg:
+  - {fileID: 5363749246007658416}
+  - {fileID: 3628310688779691724}
+  - {fileID: 6992378448214357696}
+  - {fileID: 5759919929096789513}
+  _cardBtn: {fileID: 7202248801973057038}
+  _cardNameText: {fileID: 4963162450197356877}
+  _cardFrameImg: {fileID: 4963162448815007462}
+  _cardIconImg: {fileID: 4963162449684325141}
+  _isSetImg: {fileID: 3433457219578638767}
+  _rerollICONImg: {fileID: 2528023573395865952}
+  _level1Sprite: {fileID: 21300000, guid: a2cffcaec0f9b4ff18ef979fbd9c8b8b, type: 3}
+  _level2Sprite: {fileID: 21300000, guid: 8f78f97a2d8e7498388d20b064d09528, type: 3}
+  _level3Sprite: {fileID: 21300000, guid: c6c887cce7af543b0bf0b150917f449c, type: 3}
 --- !u!1 &5263695861328447521
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,7 +1421,7 @@ GameObject:
   - component: {fileID: 5363749246007658416}
   - component: {fileID: 8590489161671691618}
   m_Layer: 5
-  m_Name: RoomTypeIcon_Img (1)
+  m_Name: CardIcon_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1507,7 +1539,7 @@ GameObject:
   - component: {fileID: 3628310688779691724}
   - component: {fileID: 8034739371712556591}
   m_Layer: 5
-  m_Name: RoomTypeIcon_Img (1)
+  m_Name: CardIcon_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1624,7 +1656,7 @@ GameObject:
   - component: {fileID: 2187008775484602149}
   - component: {fileID: 5381756431164740579}
   m_Layer: 5
-  m_Name: RoomTypeIcon_Img
+  m_Name: CardFrame_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1677,7 +1709,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c8de558d1809a431b853143ea7327b0d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8f78f97a2d8e7498388d20b064d09528, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1832,7 +1864,7 @@ GameObject:
   - component: {fileID: 5100362871894828410}
   - component: {fileID: 7716138188214060313}
   m_Layer: 5
-  m_Name: RoomTypeIcon_Img
+  m_Name: CardFrame_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2208,9 +2240,9 @@ GameObject:
   - component: {fileID: 2007239898176146127}
   - component: {fileID: 8856367426838708164}
   - component: {fileID: 3433457219578638767}
-  - component: {fileID: 7804642402396605442}
+  - component: {fileID: 4076679797373677908}
   m_Layer: 5
-  m_Name: SetBtn_Img
+  m_Name: IsSet_Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2273,7 +2305,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7804642402396605442
+--- !u!114 &4076679797373677908
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2282,22 +2314,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8439543324887331770}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce76b7a490bd74f34a2f2752641aea24, type: 3}
+  m_Script: {fileID: 11500000, guid: a7be078926b3448089fe9995b32f75f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectFactor: 0
-  m_Width: 0.385
-  m_Softness: 1
-  m_Color: {r: 1, g: 0.9363208, b: 0.9009434, a: 1}
-  m_ColorMode: 1
-  m_TransitionTexture: {fileID: 2800000, guid: 3e04c247fb2604af186173fce0bc62de, type: 3}
-  m_EffectArea: 1
-  m_KeepAspectRatio: 1
-  m_Player:
-    play: 1
-    initialPlayDelay: 0
-    duration: 1.91
-    loop: 1
-    loopDelay: 0.9
-    updateMode: 0
-  m_Reverse: 0
+  m_TargetEffect: {fileID: 5456982823411089143}

@@ -41,10 +41,8 @@ public class Navigation
 
     public View Pop(string name)
     {
-        Debug.Log("VIEWSTACK : " + viewStack);
         while(viewStack.Count > 0)
         {
-            Debug.Log("currnet : " + viewStack.Peek().viewName + " " + name);
             if (viewStack.Peek().viewName == name)
             {
                 viewStack.Pop();

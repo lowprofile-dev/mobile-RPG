@@ -16,5 +16,4 @@ public class UINavigation : MonoBehaviour
         ViewManager.Push(obj);
         obj.SetActive(true);
     }
-
 }

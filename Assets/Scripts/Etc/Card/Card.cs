@@ -8,16 +8,34 @@ public class Card
 
     public int level;
     public List<CardEffect> effectList;
+    public bool isSet;
     public bool isSetOn;
     public bool isPlaced;
+
+    public Card(Card copyCard)
+    {
+        cardData = copyCard.cardData;
+        level = 1;
+        isSet = false;
+        isSetOn = false;
+        isPlaced = false;
+
+        effectList = new List<CardEffect>(copyCard.effectList);
+    }
 
     public Card(CardData data)
     {
         level = 1;
         cardData = data;
+        isSet = false;
         isSetOn = false;
 
         effectList = new List<CardEffect>();
+    }
+
+    public void AddNewEffect(CardEffect effect)
+    {
+        effectList.Add(effect);
     }
 
     public void RefineCardData()
