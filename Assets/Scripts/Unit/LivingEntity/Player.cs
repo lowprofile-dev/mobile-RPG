@@ -39,7 +39,7 @@ public class Player : LivingEntity
     float vertical;
 
     PartSelection selection;
-
+    FaceCam faceCam;
     private void Awake()
     {
         Instance = this;
@@ -48,9 +48,11 @@ public class Player : LivingEntity
     protected override void Start()
     {
         base.Start();
+        faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         selection = GetComponent<PartSelection>();
         selection.Start();
         selection.Init();
+        faceCam.Init(transform.Find("PlayerAvatar").gameObject);
         //joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
     }
 
@@ -68,7 +70,7 @@ public class Player : LivingEntity
 
             selection.Update();
 
-            if(Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(KeyCode.P))
             {
                 _hp = 0;
             }
