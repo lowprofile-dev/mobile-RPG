@@ -10,11 +10,16 @@ public class DragonAction : MonsterAction
     Coroutine _attackCoroutine;
     Coroutine _castCoroutine;
     private float idleCnt = 0;
+    private bool panic = false;
+    Vector3 spawnPostion;
+    Vector3 aroundPos;
 
     public override void InitObject()
     {
         base.InitObject();
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        panic = true;
+        spawnPostion = transform.position;
     }
 
     private void Update()
@@ -148,6 +153,7 @@ public class DragonAction : MonsterAction
 
     private void IdleExit()
     {
+        StopCoroutine(Around());
        // _monster.MyAnimator.SetBool("Idle", false);
     }
 
@@ -191,7 +197,7 @@ public class DragonAction : MonsterAction
         // 타겟과의 거리가 공격 범위보다 커지면
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
         {       
-            ChangeState(STATE.STATE_IDLE);
+            ChangeState(STATE.STATE_TRACE);
         }
     }
 
@@ -221,7 +227,6 @@ public class DragonAction : MonsterAction
                 yield return new WaitForSeconds(_attackSpeed);
 
                 _navMeshAgent.isStopped = false;
-                _navMeshAgent.speed = 30f;
 
                 // 사운드 재생
                 Debug.Log(_monster.monsterName + "의 공격!");
@@ -229,6 +234,8 @@ public class DragonAction : MonsterAction
 
                 // 공격 행동 한다.
                 StartCoroutine(DoAttackAction());
+
+                transform.LookAt(_target.transform);
 
                 if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
                     _monster.MyAnimator.SetTrigger("Attack");
@@ -299,28 +306,39 @@ public class DragonAction : MonsterAction
 
         if (idleCnt > 3)
         {
+            panic = true;
             idleCnt = 0;
-            if (UnityEngine.Random.Range(1,100) <= 30)
-            ChangeState(STATE.STATE_STIRR);
+            if (UnityEngine.Random.Range(1, 100) <= 30)
+                ChangeState(STATE.STATE_STIRR);
         }
-
-
-        if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _findRange)
+       
+    }
+    private IEnumerator Around()
+    {
+        while (true)
         {
-            
-            ChangeState(STATE.STATE_FIND);
-        }
+            yield return null;
 
+          if (Vector3.Distance(transform.position, aroundPos) >= 0.5f)
+          {
+                yield return new WaitForSeconds(2f);
+                aroundPos = new Vector3(UnityEngine.Random.Range(spawnPostion.x - 3f, spawnPostion.x + 3f), spawnPostion.y, UnityEngine.Random.Range(spawnPostion.z - 3f, spawnPostion.z + 3f));
+                _navMeshAgent.SetDestination(aroundPos);
+          }
+        }
     }
 
     public override void FindStart()
     {
         base.FindStart();
 
-       
-            _monster.MyAnimator.SetBool("Panic", true);
-        
-        
+        if (panic)
+        {
+            _monster.MyAnimator.SetTrigger("Panic");
+            panic = false;
+        }
+
+        _navMeshAgent.isStopped = true;
         transform.LookAt(_target.transform.position);
         // 위에 느낌표가 뜬다.
         // 소리를 낸다.
@@ -360,8 +378,12 @@ public class DragonAction : MonsterAction
 
     private void IdleStart()
     {
+        aroundPos = new Vector3(UnityEngine.Random.Range(spawnPostion.x - 3f, spawnPostion.x + 3f), spawnPostion.y, UnityEngine.Random.Range(spawnPostion.z - 3f, spawnPostion.z + 3f));
+        _navMeshAgent.SetDestination(aroundPos);
+
+        StartCoroutine(Around());
         _monster.MyAnimator.SetTrigger("Idle");
-        _navMeshAgent.isStopped = true;
+        //_navMeshAgent.isStopped = true;
     }
     private void SpawnAction()
     {
@@ -374,8 +396,10 @@ public class DragonAction : MonsterAction
 
     private void FindPlayer()
     {
+
         if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
+            _navMeshAgent.isStopped = false;
             ChangeState(STATE.STATE_TRACE);
         }
 
@@ -402,5 +426,30 @@ public class DragonAction : MonsterAction
     private void StirrStart()
     {
         _monster.MyAnimator.SetTrigger("Stirr");
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Player"))
+        {
+            StartCoroutine(DoHitAction());
+        }
+    }
+
+    private IEnumerator DoHitAction()
+    {
+        yield return null;
+        _monster.MyAnimator.SetTrigger("Hit");
+
+        //데미지를 입는다.
+
+        while (true)
+        {
+            if(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+            {
+                StopCoroutine(DoHitAction());
+                ChangeState(STATE.STATE_IDLE);
+            }
+        }
     }
 }

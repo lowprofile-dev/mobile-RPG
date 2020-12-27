@@ -41,7 +41,7 @@ public class UIManager : SingletonBase<UIManager>
     void InventoryClick()
     {
         Debug.Log("인벤토리");
-        UINavationManager.Instance.PushToNav("SubUI_Bag");
+        UINavationManager.Instance.PushToNav("SubUI_Inventory");
     }
 
     void Start()
@@ -52,7 +52,7 @@ public class UIManager : SingletonBase<UIManager>
     public void OptionClick()
     {
         Debug.Log("옵션");
-        UINavationManager.Instance.PushToNav("SubUI_PlayerInfo");
+        UINavationManager.Instance.PushToNav("SubUI_Info");
     }
     public void SkillAClick() //A버튼 스킬
     {

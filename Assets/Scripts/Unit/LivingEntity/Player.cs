@@ -38,6 +38,8 @@ public class Player : LivingEntity
     float horizontal;
     float vertical;
 
+    PartSelection selection;
+    FaceCam faceCam;
     private void Awake()
     {
         Instance = this;
@@ -46,6 +48,11 @@ public class Player : LivingEntity
     protected override void Start()
     {
         base.Start();
+        faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
+        selection = GetComponent<PartSelection>();
+        selection.Start();
+        selection.Init();
+        faceCam.Init(transform.Find("PlayerAvatar").gameObject);
         //joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
     }
 
@@ -56,11 +63,14 @@ public class Player : LivingEntity
 
         if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
+
             PlayerAvoidance();
 
             PlayerMove();
 
-            if(Input.GetKeyDown(KeyCode.P))
+            selection.Update();
+
+            if (Input.GetKeyDown(KeyCode.P))
             {
                 _hp = 0;
             }
@@ -158,7 +168,7 @@ public class Player : LivingEntity
         _initHp = 10;
         _hp = 10;
         MyAnimator = new Animator();
-        MyAnimator = GameObject.Find("Player").GetComponent<Animator>();
+        MyAnimator = GameObject.Find("PlayerAvatar").GetComponent<Animator>();
 
         MyStateMachine = new StateMachine();
         State Idle = new StateIdle_TestPlayer(this);
