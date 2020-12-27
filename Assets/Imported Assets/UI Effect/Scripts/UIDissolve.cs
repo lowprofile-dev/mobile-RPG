@@ -73,6 +73,15 @@ namespace Coffee.UIEffects
             }
         }
 
+        public bool Reverse
+        {
+            get { return m_Reverse; }
+            set
+            {
+                m_Reverse = value;
+            }
+        }
+
         /// <summary>
         /// Edge width.
         /// </summary>

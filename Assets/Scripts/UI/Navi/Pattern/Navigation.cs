@@ -36,7 +36,7 @@ public class Navigation
 
             if (viewStack.Count > 0) viewStack.Peek().Show();
         }
-        return viewStack.Peek();
+        return viewStack.Count > 0 ? viewStack.Peek() : null;
     }
 
     public View Pop(string name)
@@ -45,6 +45,7 @@ public class Navigation
         {
             if (viewStack.Peek().viewName == name)
             {
+                viewStack.Peek().Hide();
                 viewStack.Pop();
                 break;
             }
@@ -53,7 +54,7 @@ public class Navigation
         }
 
         if (viewStack.Count > 0) viewStack.Peek().Show();
-        return viewStack.Peek();
+        return viewStack.Count > 0 ? viewStack.Peek() : null;
     }
 
     public View PopAll()

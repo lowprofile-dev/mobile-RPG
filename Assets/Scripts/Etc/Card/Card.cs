@@ -8,19 +8,25 @@ public class Card
 
     public int level;
     public List<CardEffect> effectList;
+    public List<CardEffect> addedSetEffectList;
+    public CardEffect setEffect;
+
     public bool isSet;
     public bool isSetOn;
-    public bool isPlaced;
+
+    public Card copyedCard;
 
     public Card(Card copyCard)
     {
+        copyedCard = copyCard;
         cardData = copyCard.cardData;
         level = 1;
         isSet = false;
         isSetOn = false;
-        isPlaced = false;
 
         effectList = new List<CardEffect>(copyCard.effectList);
+
+        addedSetEffectList = new List<CardEffect>();
     }
 
     public Card(CardData data)
@@ -31,11 +37,36 @@ public class Card
         isSetOn = false;
 
         effectList = new List<CardEffect>();
+        addedSetEffectList = new List<CardEffect>();
+    }
+
+    public string EffectToString()
+    {
+        string effectString = "";
+
+        for(int i=0; i<effectList.Count; i++)
+        {
+            if(effectList[i].effectData.isSet)
+            {
+                effectString += "세트효과 : ";
+            }
+
+            effectString += effectList[i].GetDescription(this);
+
+            if (effectList.Count - 1 != i) effectString += "\n";
+        }
+
+        return effectString;
     }
 
     public void AddNewEffect(CardEffect effect)
     {
         effectList.Add(effect);
+    }
+
+    public void AddNewSetEffect(CardEffect effect)
+    {
+        addedSetEffectList.Add(effect);
     }
 
     public void RefineCardData()
@@ -44,7 +75,6 @@ public class Card
         for (int i = 0; i < split.Length; i++)
         {
             effectList.Add(CardManager.Instance.effectData[int.Parse(split[i])]);
-            effectList[effectList.Count - 1].SetEffectParent(this);
         }
     }
 
@@ -54,6 +84,11 @@ public class Card
         {
             effectList[i].StartEffect();
         }
+
+        for(int i=0; i<addedSetEffectList.Count; i++)
+        {
+            addedSetEffectList[i].StartEffect();
+        }
     }
 
     public virtual void CardUpdate()
@@ -62,6 +97,11 @@ public class Card
         {
             effectList[i].UpdateEffect();
         }
+
+        for(int i=0; i<addedSetEffectList.Count; i++)
+        {
+            addedSetEffectList[i].UpdateEffect();
+        }
     }
 
     public virtual void CardEnd()
@@ -69,6 +109,11 @@ public class Card
         for (int i = 0; i < effectList.Count; i++)
         {
             effectList[i].EndEffect();
+        }
+
+        for(int i=0; i<addedSetEffectList.Count; i++)
+        {
+            addedSetEffectList[i].EndEffect();
         }
     }
 }

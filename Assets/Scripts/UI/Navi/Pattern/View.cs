@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum VIEWTYPE
+public enum VIEWTYPE
 {
     VIEWTYPE_ISAPPEARING, VIEWTYPE_APPEARED, VIEWTYPE_ISDISAPPEARING, VIEWTYPE_DISAPPEARED
 }
 
 public class View : MonoBehaviour
 {
-    VIEWTYPE viewtype;
+    protected VIEWTYPE viewtype;
     [SerializeField] private string _viewName; public string viewName { get { return _viewName; } }
 
     private void OnEnable()

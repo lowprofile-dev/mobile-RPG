@@ -1,6 +1,5 @@
 ﻿using CSVReader;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -16,6 +15,9 @@ public class CardManager : SingletonBase<CardManager>
     public Card[,] dungeonCardData;
     public int currentStage;
 
+    /// <summary>
+    /// 카드 매니저 초기화 (데이터를 받고, 정제하며, 초기화한다)
+    /// </summary>
     public void InitCardManager()
     {
         currentCards = new List<Card>();
@@ -28,6 +30,17 @@ public class CardManager : SingletonBase<CardManager>
         GetCardData();
     }
 
+    /// <summary>
+    /// 현재 스테이지, 위치의 카드를 반환한다.
+    /// </summary>
+    public Card GetCardCntStage(int pos)
+    {
+        return dungeonCardData[currentStage, pos];
+    }
+
+    /// <summary>
+    /// CSV로부터 카드 데이터를 받아 정제한다.
+    /// </summary>
     private void GetCardData()
     {
         Table table = CSVReader.Reader.ReadCSVToTable("CSVData/CardData");
@@ -40,6 +53,9 @@ public class CardManager : SingletonBase<CardManager>
         }
     }
 
+    /// <summary>
+    /// CSV로부터 효과 데이터를 받아 정제한다.
+    /// </summary>
     private void GetEffectData()
     {
         Table table = CSVReader.Reader.ReadCSVToTable("CSVData/CardEffectData");
@@ -51,21 +67,26 @@ public class CardManager : SingletonBase<CardManager>
             _effectData[data.id].RefineEffectData();
         }
     }
-
+    
+    /// <summary>
+    /// 중복을 방지하여 새로운 카드들을 던전에 배치한다.
+    /// </summary>
     public void SetNewCard()
     {
+        for (int i = 0; i < 9; i++) dungeonCardData[currentStage, i] = null;
+
         for (int i = 0; i < 9; i++)
         {
             while (true)
             {
                 int cardNum = UnityEngine.Random.Range(0, _cardData.Count);
 
-                Card card = new Card(_cardData.Values.ElementAt(cardNum));
+                Card randomCard = _cardData.Values.ElementAt(cardNum);
+                Card card = new Card(randomCard);
 
-                if (!card.isPlaced)
+                if (!FindEqualCardInStage(card))
                 {
                     dungeonCardData[currentStage, i] = card;
-                    card.isPlaced = true;
 
                     RandomLevelToCard(card);
                     RandomSetToCard(card);
@@ -75,93 +96,101 @@ public class CardManager : SingletonBase<CardManager>
         }
     }
 
-    public void RandomLevelToCard(Card card)
+    /// <summary>
+    /// 해당 위치에 새로운 카드를 중복을 방지하여 배치한다.
+    /// </summary>
+    public void SetNewCard(int pos)
     {
-        int levelRandom = Random.Range(0, 100);
-
-        if (levelRandom >= 80) card.level = 3;
-        else if (levelRandom >= 50) card.level = 2;
-        else card.level = 1;
-    }
-
-    public void RandomSetToCard(Card card)
-    {
-        if (Random.Range(0, 100) < 30) AddSetToCard(card);
-    }
-
-    public void AddSetToCard(Card card)
-    {
-        while(true)
+        while (true)
         {
-            CardEffect effect = _effectData.Values.ElementAt(Random.Range(0, _effectData.Count));
+            int cardNum = UnityEngine.Random.Range(0, _cardData.Count);
 
-            if(effect.effectData.isSet)
+            Card randomCard = _cardData.Values.ElementAt(cardNum);
+            Card card = new Card(randomCard);
+
+            if (!FindEqualCardInStage(card))
             {
-                card.AddNewEffect(effect);
-                card.isSetOn = false;
-                card.isSet = true;
+                dungeonCardData[currentStage, pos] = card;
+
+                RandomLevelToCard(card);
+                RandomSetToCard(card);
                 break;
             }
         }
     }
 
-    public void CheckBingo()
+    /// <summary>
+    /// 카드가 중복되는지 여부를 검사한다.
+    /// </summary>
+    public bool FindEqualCardInStage(Card card)
     {
-        HashSet<int> bingoNums = new HashSet<int>();
-
-        bool isSet = true;
-        for (int i = 0; i < 3; i++)
+        bool isHere = false;
+        for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j < 3; j++)
+            if (dungeonCardData[currentStage, i] == null)
             {
-                if (!dungeonCardData[currentStage, i + (j * 3)].isSetOn) // 종
-                {
-                    isSet = false;
-                }
+                continue;
             }
 
-            if (isSet)
+            if (dungeonCardData[currentStage, i].cardData.id == card.cardData.id)
             {
-                bingoNums.Add(i);
-                bingoNums.Add(i+3);
-                bingoNums.Add(i+6);
-            }
-
-            isSet = true;
-
-            for (int j = 0; j < 3; j++)
-            {
-                if (!dungeonCardData[currentStage, j + (i * 3)].isSetOn) // 횡
-                {
-                    isSet = false;
-                }
-            }
-
-            if (isSet)
-            {
-                bingoNums.Add(i*3);
-                bingoNums.Add(i*3+1);
-                bingoNums.Add(i*3+2);
+                isHere = true;
+                break;
             }
         }
 
-        if (dungeonCardData[currentStage, 0].isSetOn || dungeonCardData[currentStage, 4].isSetOn || dungeonCardData[currentStage, 8].isSetOn)
-        {
-            bingoNums.Add(0);
-            bingoNums.Add(4);
-            bingoNums.Add(8);
-        }
+        return isHere;
+    }
 
-        if (dungeonCardData[currentStage, 2].isSetOn || dungeonCardData[currentStage, 4].isSetOn || dungeonCardData[currentStage, 7].isSetOn)
-        {
-            bingoNums.Add(2);
-            bingoNums.Add(4);
-            bingoNums.Add(7);
-        }
+    /// <summary>
+    /// 랜덤으로 카드 레벨을 정한다.
+    /// </summary>
+    public void RandomLevelToCard(Card card)
+    {
+        int levelRandom = Random.Range(0, 100);
 
-        foreach (int nums in bingoNums)
+        if (levelRandom >= 80)
         {
-            //  Effect 맵에 추가
+            card.level = 3;
+        }
+        else if (levelRandom >= 50)
+        {
+            card.level = 2;
+        }
+        else
+        {
+            card.level = 1;
+        }
+    }
+
+    /// <summary>
+    /// 랜덤으로 카드의 세트효과 여부를 정한다.
+    /// </summary>
+    public void RandomSetToCard(Card card)
+    {
+        if (Random.Range(0, 100) < 30)
+        {
+            AddSetToCard(card);
+        }
+    }
+
+    /// <summary>
+    /// 랜덤으로 세트효과가 있는 카드에 세트효과를 부여한다.
+    /// </summary>
+    public void AddSetToCard(Card card)
+    {
+        while (true)
+        {
+            CardEffect effect = _effectData.Values.ElementAt(Random.Range(0, _effectData.Count));
+
+            if (effect.effectData.isSet)
+            {
+                card.AddNewEffect(effect);
+                card.isSetOn = false;
+                card.isSet = true;
+                card.setEffect = effect;
+                break;
+            }
         }
     }
 }

@@ -3,10 +3,9 @@ using UnityEditor;
 
 public class CardEffect
 {
-    public Card parentCard;
     public CardEffectData effectData;
     public float[] gradeNum;
-    
+
     public CardEffect(CardEffectData data)
     {
         effectData = data;
@@ -16,13 +15,8 @@ public class CardEffect
     {
         gradeNum = new float[3];
         gradeNum[0] = effectData.gradeOneValue;
-        gradeNum[0] = effectData.gradeTwoValue;
-        gradeNum[0] = effectData.gradeThreeValue;
-    }
-
-    public void SetEffectParent(Card card)
-    {
-        parentCard = card;
+        gradeNum[1] = effectData.gradeTwoValue;
+        gradeNum[2] = effectData.gradeThreeValue;
     }
 
     public virtual void StartEffect()
@@ -38,5 +32,13 @@ public class CardEffect
     public virtual void EndEffect()
     {
 
+    }
+
+    public string GetDescription(Card card)
+    {
+        string description = effectData.description;
+        description = description.Replace(";", effectData.effectName);
+        description = description.Replace(":", gradeNum[card.level - 1].ToString());
+        return description;
     }
 }

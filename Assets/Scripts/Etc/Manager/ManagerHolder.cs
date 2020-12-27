@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class ManagerHolder : SingletonBase<ManagerHolder>
 {
-   [HideInInspector] public UIManager uiManager;
-   [HideInInspector] public GameManager gameManager;
-   [HideInInspector] public CardManager cardManager;
-   [HideInInspector] public TalkManager talkManager;
-   [HideInInspector] public SoundManager soundManager;
-   [HideInInspector] public CameraManager cameraManager;
-   [HideInInspector] public ResourceManager resourceManager;
-   [HideInInspector] public UILoaderManager uiLoaderManager;
-   [HideInInspector] public ObjectPoolManager objectPoolManager;
-   [HideInInspector] public UINavationManager uiNavationManager;
+    [HideInInspector] public UIManager uiManager;
+    [HideInInspector] public GameManager gameManager;
+    [HideInInspector] public CardManager cardManager;
+    [HideInInspector] public TalkManager talkManager;
+    [HideInInspector] public SoundManager soundManager;
+    [HideInInspector] public CameraManager cameraManager;
+    [HideInInspector] public StatusManager statusManager;
+    [HideInInspector] public ResourceManager resourceManager;
+    [HideInInspector] public UILoaderManager uiLoaderManager;
+    [HideInInspector] public ObjectPoolManager objectPoolManager;
+    [HideInInspector] public UINavationManager uiNavationManager;
 
     private void Start()
     {
@@ -46,6 +47,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         soundManager = (SoundManager)AddManager<SoundManager>();
         uiNavationManager = (UINavationManager)AddManager<UINavationManager>();
         uiManager = (UIManager)AddManager<UIManager>();
+        statusManager = (StatusManager)AddManager<StatusManager>();
     }
 
     private void InitManagers()
@@ -53,6 +55,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         gameManager.InitGameManager();
         resourceManager.InitResourceManager();
         objectPoolManager.InitObjectPoolManager();
+        statusManager.InitStatusManager();
         cameraManager.InitCameraManager();
         uiLoaderManager.InitUILoaderManager();
         talkManager.InitTalkManager();
