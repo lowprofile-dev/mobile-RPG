@@ -49,6 +49,10 @@ public class MonsterAction : MonoBehaviour
 
     public virtual void Search()
     {
+        if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _findRange)
+        {
+            ChangeState(STATE.STATE_FIND);
+        }
     }
 
     public virtual void Attack()
@@ -70,6 +74,7 @@ public class MonsterAction : MonoBehaviour
         }
         if(hit.transform.CompareTag("Player") && _distance <= _attackRange)
         {
+
             return true;
         }
         else
@@ -177,7 +182,6 @@ public class MonsterAction : MonoBehaviour
                 _traceTimer = 0;
             }
         }
-
         // 거리가 가깝다면
         else
         {
