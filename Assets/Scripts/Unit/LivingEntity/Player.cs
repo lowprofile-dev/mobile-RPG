@@ -43,7 +43,7 @@ public class Player : LivingEntity
     PartSelection selection;
     FaceCam faceCam;
 
-    GameObject nearObject;
+    Dictionary<string, int> playerItems = new Dictionary<string, int>();
 
     private void Awake()
     {
@@ -221,8 +221,17 @@ public class Player : LivingEntity
     {
         if (other.tag == "Item")
         {
-            nearObject = other.gameObject;
-            Debug.Log("아이템!");
+            Item itemInfo = other.gameObject.GetComponent<Item>();
+            Debug.Log(itemInfo.itemName + " 아이템 획득!");
+            if (playerItems.ContainsKey(itemInfo.name))
+            {
+                playerItems.Add(itemInfo.name, playerItems[itemInfo.itemName] + 1);
+            }
+            else
+            {
+                playerItems.Add(itemInfo.name, 1);
+            }
+            Destroy(other.gameObject);
         }
     }
 }
