@@ -8,6 +8,7 @@ public class DragonAction : MonsterAction
 {
     NavMeshAgent _navMeshAgent;
     Coroutine _attackCoroutine;
+    Coroutine _idleCoroutine;
     Coroutine _castCoroutine;
     private float idleCnt = 0;
     private bool panic = false;
@@ -20,6 +21,7 @@ public class DragonAction : MonsterAction
         _navMeshAgent = GetComponent<NavMeshAgent>();
         panic = true;
         spawnPostion = transform.position;
+        _navMeshAgent.stoppingDistance = _attackRange;
     }
 
     private void Update()
@@ -30,6 +32,7 @@ public class DragonAction : MonsterAction
     protected override void UpdateMonster()
     {
         DeathCheck();
+        PlayerDeathCheck();
     }
 
     public override void UpdateState()
@@ -60,6 +63,7 @@ public class DragonAction : MonsterAction
                 Attack();
                 break;
             case STATE.STATE_KILL:
+                KillPlayer();        
                 break;
             case STATE.STATE_DEBUFF:
                 break;
@@ -95,6 +99,7 @@ public class DragonAction : MonsterAction
                 AttackStart();
                 break;
             case STATE.STATE_KILL:
+                KillStart();
                 break;
             case STATE.STATE_DIE:
                 DeathStart();
@@ -106,6 +111,12 @@ public class DragonAction : MonsterAction
                 break;
         }
 
+    }
+
+    private void KillStart()
+    {
+        _monster.MyAnimator.SetTrigger("Laugh");
+        _navMeshAgent.enabled = false;
     }
 
     public override void ExitState(STATE targetState)
@@ -143,23 +154,23 @@ public class DragonAction : MonsterAction
 
     private void FindExit()
     {
-        //_monster.MyAnimator.SetBool("Panic", false);
+        
     }
 
     private void StirrExit()
     {
-        //_monster.MyAnimator.SetBool("Stirr", false);
+        _navMeshAgent.isStopped = false;
     }
 
     private void IdleExit()
     {
-        StopCoroutine(Around());
-       // _monster.MyAnimator.SetBool("Idle", false);
+        if(_idleCoroutine != null)
+        StopCoroutine(_idleCoroutine);
     }
 
     private void TraceExit()
     {
-       //_monster.MyAnimator.SetBool("Walk", false);
+       
     }
 
     /// <summary>
@@ -221,31 +232,24 @@ public class DragonAction : MonsterAction
 
             if (CanAttackState())
             {
-                //_navMeshAgent.stoppingDistance = 2f;
-                _navMeshAgent.isStopped = true;
-                _navMeshAgent.SetDestination(_target.transform.position);
                 yield return new WaitForSeconds(_attackSpeed);
 
-                _navMeshAgent.isStopped = false;
-
-                // 사운드 재생
-                Debug.Log(_monster.monsterName + "의 공격!");
-                _target.GetComponent<LivingEntity>().Damaged(_monster.attackDamage);
-
-                // 공격 행동 한다.
-                StartCoroutine(DoAttackAction());
+                _navMeshAgent.SetDestination(_target.transform.position);
 
                 transform.LookAt(_target.transform);
 
                 if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
                     _monster.MyAnimator.SetTrigger("Attack");
 
-                yield return new WaitForSeconds(0.5f);
+                // 사운드 재생
+                Debug.Log(_monster.monsterName + "의 공격!");
+                _target.GetComponent<LivingEntity>().Damaged(_monster.attackDamage);
 
-                _navMeshAgent.speed = _speed;
-                _navMeshAgent.stoppingDistance = _attackRange;
-                ChangeState(STATE.STATE_TRACE);
+                // 공격 행동 한다.
+                //StartCoroutine(DoAttackAction());
 
+                ChangeState(STATE.STATE_IDLE);
+                
                 // 일정 확률로 캐스팅 상태로 바꾼다.
                 //int toCastRandomValue = UnityEngine.Random.Range(0, 100);
 
@@ -256,7 +260,7 @@ public class DragonAction : MonsterAction
             }
             else
             {
-                ChangeState(STATE.STATE_TRACE);
+                ChangeState(STATE.STATE_IDLE);
             }
         }
 
@@ -323,6 +327,8 @@ public class DragonAction : MonsterAction
           {
                 yield return new WaitForSeconds(2f);
                 aroundPos = new Vector3(UnityEngine.Random.Range(spawnPostion.x - 3f, spawnPostion.x + 3f), spawnPostion.y, UnityEngine.Random.Range(spawnPostion.z - 3f, spawnPostion.z + 3f));
+                _monster.MyAnimator.SetTrigger("Idle");
+                _navMeshAgent.isStopped = false;
                 _navMeshAgent.SetDestination(aroundPos);
           }
         }
@@ -360,6 +366,13 @@ public class DragonAction : MonsterAction
             _monster.MyAnimator.SetTrigger("doDie");
         }
     }
+    public override void PlayerDeathCheck()
+    {
+        if (_currentState != STATE.STATE_KILL && _target.GetComponent<LivingEntity>().hp <= 0)
+        {
+            ChangeState(STATE.STATE_KILL);         
+        }
+    }
 
     public override void DeathStart()
     {
@@ -381,9 +394,8 @@ public class DragonAction : MonsterAction
         aroundPos = new Vector3(UnityEngine.Random.Range(spawnPostion.x - 3f, spawnPostion.x + 3f), spawnPostion.y, UnityEngine.Random.Range(spawnPostion.z - 3f, spawnPostion.z + 3f));
         _navMeshAgent.SetDestination(aroundPos);
 
-        StartCoroutine(Around());
+        _idleCoroutine = StartCoroutine(Around());
         _monster.MyAnimator.SetTrigger("Idle");
-        //_navMeshAgent.isStopped = true;
     }
     private void SpawnAction()
     {
@@ -425,6 +437,7 @@ public class DragonAction : MonsterAction
 
     private void StirrStart()
     {
+        _navMeshAgent.isStopped = true;
         _monster.MyAnimator.SetTrigger("Stirr");
     }
 
@@ -451,5 +464,17 @@ public class DragonAction : MonsterAction
                 ChangeState(STATE.STATE_IDLE);
             }
         }
+    }
+
+    private void KillPlayer()
+    {
+        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            _monster.MyAnimator.ResetTrigger("Laugh");
+            _monster.MyAnimator.SetTrigger("Laugh");
+        }
+
+        transform.RotateAround(_target.transform.position, Vector3.up, 5 * Time.deltaTime);
+        transform.LookAt(_target.transform.position);
     }
 }
