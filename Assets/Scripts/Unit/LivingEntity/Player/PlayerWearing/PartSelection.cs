@@ -84,6 +84,21 @@ public class PartSelection : MonoBehaviour
 
     public void Update()
     {
+        if(Player.Instance.weapon.GetWeaponName() == "SWORD")
+        {
+            if(rightWeaponIndex != Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade])
+            {
+                ChangeRightWeaponPart(Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade]);
+            }
+        }
+        else if(Player.Instance.weapon.GetWeaponName() == "WAND")
+        {
+            if (rightWeaponIndex != Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade])
+            {
+                ChangeRightWeaponPart(Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade]);
+            }
+        }
+
         if(Input.GetKeyDown(KeyCode.KeypadPlus))
         {
             ChangeHeadPart();
@@ -94,7 +109,6 @@ public class PartSelection : MonoBehaviour
             ChangeLowerSpinePart();
             ChangeArmParts();
             ChangeLegParts();
-            ChangeRightWeaponPart();
         }
     }
 
@@ -167,7 +181,16 @@ public class PartSelection : MonoBehaviour
         rightWeaponIndex = GetPartKeyIndex(rightWeaponIndex, weaponKeys);
         characterParts.ChangeRightWeapon(collections.GetWeapon(weaponKeys[rightWeaponIndex]));
     }
-
+    public void ChangeRightWeaponPart(int index)
+    {
+        if (weaponKeys.Count <= index)
+        {
+            Debug.Log("Out of Index Range");
+            return;
+        }
+        rightWeaponIndex = index;
+        characterParts.ChangeRightWeapon(collections.GetWeapon(weaponKeys[rightWeaponIndex]));
+    }
     public void ChangeChestPart()
     {
         chestIndex = GetPartKeyIndex( chestIndex, chestKeys);

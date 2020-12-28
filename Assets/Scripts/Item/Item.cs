@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType { Armor, Bottom, Helmet, Gloves, Boot }
+public enum ItemType { Armor, Bottom, Helmet, Gloves, Boot, Weapon }
 
 public class Item : MonoBehaviour
 {

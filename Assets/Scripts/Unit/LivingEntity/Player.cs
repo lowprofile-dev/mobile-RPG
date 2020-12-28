@@ -18,11 +18,11 @@ public class Player : LivingEntity
     private bool SkillB_ButtonClick = false;
     private bool SkillC_ButtonClick = false;
 
-    [SerializeField] public GameObject skillAEffect;
-    [SerializeField] public GameObject skillBEffect;
-    [SerializeField] public GameObject skillCEffect;
-    [SerializeField] public GameObject attackEffect;
-
+    //[SerializeField] public GameObject skillAEffect;
+    //[SerializeField] public GameObject skillBEffect;
+    //[SerializeField] public GameObject skillCEffect;
+    //[SerializeField] public GameObject attackEffect;
+    
     [SerializeField] public Transform firePoint;
 
     [SerializeField] private CharacterController characterController;
@@ -45,6 +45,8 @@ public class Player : LivingEntity
 
     GameObject nearObject;
 
+    public Weapon weapon;
+
     private void Awake()
     {
         Instance = this;
@@ -53,6 +55,7 @@ public class Player : LivingEntity
     protected override void Start()
     {
         base.Start();
+        weapon.SetWeapon("SWORD");
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         selection = GetComponent<PartSelection>();
         selection.Start();
@@ -68,6 +71,10 @@ public class Player : LivingEntity
 
         if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
+            if(Input.GetKeyDown(KeyCode.O))
+            {
+                weapon.SetWeapon("WAND");
+            }
 
             PlayerAvoidance();
 
@@ -112,14 +119,14 @@ public class Player : LivingEntity
     public void PlayerSkillA()
     {
         MyStateMachine.SetState("SKILL_A");
-        GameObject skill = Instantiate(skillAEffect);
+        GameObject skill = Instantiate(weapon.GetWeapon().SkillAEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation; 
     }
     public void PlayerSkillB()
     {
         MyStateMachine.SetState("SKILL_B");
-        GameObject skill = Instantiate(skillBEffect);
+        GameObject skill = Instantiate(weapon.GetWeapon().SkillBEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation;
 
@@ -127,7 +134,7 @@ public class Player : LivingEntity
     public void PlayerSkillC()
     {
         MyStateMachine.SetState("SKILL_C");
-        GameObject skill = Instantiate(skillCEffect);
+        GameObject skill = Instantiate(weapon.GetWeapon().SkillCEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation;
     }
@@ -142,7 +149,7 @@ public class Player : LivingEntity
         AttackButtonClick = attackbutton;
         if(AttackButtonClick == true)
         {
-            GameObject skill = Instantiate(attackEffect);
+            GameObject skill = Instantiate(weapon.GetWeapon().AttackEffect);
             skill.transform.position = firePoint.position;
             skill.transform.rotation = transform.rotation;
         }
@@ -190,6 +197,15 @@ public class Player : LivingEntity
         State SkillB = new StateSkillB_TestPlayer(this);
         State SkillC = new StateSkillC_TestPlayer(this);
 
+        weapon = new Weapon();
+
+        Weapon Sword = GameObject.Find("Sword").GetComponent<Sword>();
+        Weapon Dagger = new Dagger();
+        Weapon GreatSword = new GreatSword();
+        Weapon Blunt = new Blunt();
+        Weapon Staff = new Staff();
+        Weapon Wand = GameObject.Find("Wand").GetComponent<Wand>(); ;
+
         MyStateMachine.AddState("IDLE", Idle);
         MyStateMachine.AddState("MOVE", Move);
         MyStateMachine.AddState("ATTACK", Attack);
@@ -198,6 +214,13 @@ public class Player : LivingEntity
         MyStateMachine.AddState("SKILL_A", SkillA);
         MyStateMachine.AddState("SKILL_B", SkillB);
         MyStateMachine.AddState("SKILL_C", SkillC);
+
+        weapon.AddWeapon("SWORD", Sword);
+        weapon.AddWeapon("DAGGER", Dagger);
+        weapon.AddWeapon("GREATSWORD", GreatSword);
+        weapon.AddWeapon("BLUNT", Blunt);
+        weapon.AddWeapon("STAFF", Staff);
+        weapon.AddWeapon("WAND", Wand);
 
         MyStateMachine.SetState("IDLE");
     }
