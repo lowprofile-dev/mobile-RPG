@@ -42,6 +42,9 @@ public class Player : LivingEntity
     bool isdead = false;
     PartSelection selection;
     FaceCam faceCam;
+
+    GameObject nearObject;
+
     private void Awake()
     {
         Instance = this;
@@ -214,5 +217,12 @@ public class Player : LivingEntity
             }
         }
     }
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Item")
+        {
+            nearObject = other.gameObject;
+            Debug.Log("아이템!");
+        }
+    }
 }
