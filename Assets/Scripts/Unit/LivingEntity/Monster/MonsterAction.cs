@@ -49,10 +49,19 @@ public class MonsterAction : MonoBehaviour
 
     public virtual void Search()
     {
-        if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _findRange)
+
+        Vector3 targetDir = new Vector3(_target.transform.position.x - transform.position.x, 0f, _target.transform.position.z - transform.position.z);
+
+        Physics.Raycast(new Vector3(transform.position.x, 0.5f, transform.position.z), targetDir, out RaycastHit hit, 30f, layerMask);
+
+        _distance = Vector3.Distance(_target.transform.position, transform.position);
+
+        if (hit.transform.CompareTag("Player") && _distance <= _findRange)
         {
             ChangeState(STATE.STATE_FIND);
         }
+
+       
     }
 
     public virtual void Attack()
@@ -153,6 +162,10 @@ public class MonsterAction : MonoBehaviour
     }
 
     public virtual void DeathCheck()
+    {
+
+    }
+    public virtual void PlayerDeathCheck()
     {
 
     }
