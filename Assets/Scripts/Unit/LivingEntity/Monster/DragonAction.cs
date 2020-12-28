@@ -6,7 +6,7 @@ using System;
 
 public class DragonAction : MonsterAction
 {
-    NavMeshAgent _navMeshAgent;
+
     Coroutine _attackCoroutine;
     Coroutine _idleCoroutine;
     Coroutine _castCoroutine;
@@ -19,10 +19,8 @@ public class DragonAction : MonsterAction
     public override void InitObject()
     {
         base.InitObject();
-        _navMeshAgent = GetComponent<NavMeshAgent>();
         panic = true;
         spawnPostion = transform.position;
-        _navMeshAgent.stoppingDistance = _attackRange;
     }
 
     private void Update()
@@ -368,7 +366,6 @@ public class DragonAction : MonsterAction
         if (_currentState != STATE.STATE_DIE && NoHPCheck())
         {
             ChangeState(STATE.STATE_DIE);
-            _monster.MyAnimator.SetTrigger("doDie");
         }
     }
     public override void PlayerDeathCheck()
@@ -396,7 +393,7 @@ public class DragonAction : MonsterAction
         DestroyImmediate(this.gameObject);
     }
 
-    private void IdleStart()
+    protected override void IdleStart()
     {
         _monster.MyAnimator.SetTrigger("Idle");
 
@@ -405,6 +402,7 @@ public class DragonAction : MonsterAction
 
         _idleCoroutine = StartCoroutine(Around());
     }
+
     private void SpawnAction()
     {
 
