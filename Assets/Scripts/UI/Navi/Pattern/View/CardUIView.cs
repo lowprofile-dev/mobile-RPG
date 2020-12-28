@@ -38,6 +38,7 @@ public class CardUIView : View
 
     private bool _isRerolling; public bool isRerolling { get { return _isRerolling; } }
     [HideInInspector] public CardUIRoomArea cntPointerArea;
+    [HideInInspector] public bool isRerollingAnimationPlaying;
 
     string iconPath = "Image/Icons/150 Fantasy Skill Icons/";
 
@@ -48,6 +49,7 @@ public class CardUIView : View
         _playBtn.onClick.AddListener(delegate { FinishCardSelect(); });
 
         _isRerolling = false;
+        isRerollingAnimationPlaying = false;
 
         for (int i = 0; i < _roomAreaImg.Length; i++)
         {
@@ -95,15 +97,25 @@ public class CardUIView : View
     /// </summary>
     public void FinishCardSelect()
     {
-        for(int i=0; i<_roomAreaImg.Length; i++)
+        if(!isRerollingAnimationPlaying) // 리롤 애니메이션 재생 중이 아니면
         {
-            for (int j = 0; j < _roomAreaImg[i].cntCard.effectList.Count; j++)
-                Debug.Log(_roomAreaImg[i].cntCard.effectList[j].GetDescription(_roomAreaImg[i].cntCard));
+            for (int i = 0; i < _roomAreaImg.Length; i++)
+            {
+                for (int j = 0; j < _roomAreaImg[i].cntCard.effectList.Count; j++)
+                {
+                    Debug.Log(i + "의 " + j + "번째 " + _roomAreaImg[i].cntCard.effectList[j].GetDescription(_roomAreaImg[i].cntCard));
+                }
 
-            _roomAreaImg[i].cntCard.CardStart(); // 해당 카드의 효과들을 발동시킨다.
+               for (int j=0; j< _roomAreaImg[i].cntCard.addedSetEffectList.Count; j++)
+                {
+                    Debug.Log(i + "의 세트효과 " + j + "번째 " + _roomAreaImg[i].cntCard.addedSetEffectList[j].GetDescription(_roomAreaImg[i].cntCard));
+                }
+
+                _roomAreaImg[i].cntCard.CardStart(); // 해당 카드의 효과들을 발동시킨다.
+            }
+
+            UINavationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
         }
-
-        UINavationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
     }
 
 
@@ -165,39 +177,41 @@ public class CardUIView : View
     /// </summary>
     public void ToogleRerollBtn()
     {
-        if (_isRerolling) // 리롤 중이면
+        if(!isRerollingAnimationPlaying) // 리롤 애니메이션 재생중이 아니면
         {
-            if (StatusManager.Instance.needToCardRerollCoin <= StatusManager.Instance.cardRerollCoin) // 재화가 충분하면
+            if (_isRerolling) // 리롤 중이면
             {
-                // 리롤을 하고, 버튼을 원래대로 돌린다.
-                StatusManager.Instance.cardRerollCoin -= StatusManager.Instance.needToCardRerollCoin;
-                _rerollBtn.GetComponent<Image>().sprite = _rerollDark;
-                
-                for(int i=0; i<_roomAreaImg.Length; i++)
+                if (StatusManager.Instance.needToCardRerollCoin <= StatusManager.Instance.cardRerollCoin) // 재화가 충분하면
                 {
-                    _roomAreaImg[i].ClearCardData();
-                } // 각 카드의 중복 방지, 재배치를 위한 리롤 카드 배치 정보 초기화 
+                    // 리롤을 하고, 버튼을 원래대로 돌린다.
+                    StatusManager.Instance.cardRerollCoin -= StatusManager.Instance.needToCardRerollCoin;
+                    _rerollBtn.GetComponent<Image>().sprite = _rerollDark;
 
-                for (int i = 0; i < _roomAreaImg.Length; i++)
-                {
-                    _roomAreaImg[i].RerollCardData();
-                } // 카드 리롤
+                    for (int i = 0; i < _roomAreaImg.Length; i++)
+                    {
+                        _roomAreaImg[i].ClearCardData();
+                    } // 각 카드의 중복 방지, 재배치를 위한 리롤 카드 배치 정보 초기화 
 
-                CalculateRerollValue();
-                UpdateRerollCoin();
-                // 리롤 정보 갱신
+                    for (int i = 0; i < _roomAreaImg.Length; i++)
+                    {
+                        _roomAreaImg[i].RerollCardData();
+                    } // 카드 리롤
 
-                _isRerolling = !_isRerolling;
-                BingoCheck(); // 빙고 체크
+                    CalculateRerollValue();
+                    UpdateRerollCoin();
+                    // 리롤 정보 갱신
+
+                    _isRerolling = !_isRerolling;
+                }
             }
+
+            else // 리롤 중이 아니라면
+            {
+                _rerollBtn.GetComponent<Image>().sprite = _rerollGold;
+                _isRerolling = !_isRerolling;
+            } // 리롤 상태로 만듦
+
         }
-
-        else // 리롤 중이 아니라면
-        {
-            _rerollBtn.GetComponent<Image>().sprite = _rerollGold;
-            _isRerolling = !_isRerolling;
-        } // 리롤 상태로 만듦
-
     }
 
     /// <summary>
