@@ -80,7 +80,8 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
     {
         if(SceneManager.GetSceneByName(name).isLoaded == false)
         {
-            StartCoroutine(Loading(name, LoadSceneMode.Additive));
+            // StartCoroutine(Loading(name, LoadSceneMode.Additive));
+            SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
         }
         else
         {
