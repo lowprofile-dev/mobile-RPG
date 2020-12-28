@@ -103,7 +103,7 @@ public class MonsterAction : MonoBehaviour
 
     public virtual void Damaged(float dmg)
     {
-
+        _monster.Damaged(dmg);
     }
 
     public virtual void FindStart()
@@ -172,7 +172,7 @@ public class MonsterAction : MonoBehaviour
 
     public bool NoHPCheck()
     {
-        if(_monster.hp <= 0)
+        if(_monster.Hp <= 0)
         {
             return true;
         }

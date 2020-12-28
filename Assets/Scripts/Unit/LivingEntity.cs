@@ -4,14 +4,13 @@ using UnityEngine;
 
 public enum STATE
 {
-    STATE_IDLE, STATE_FIND, STATE_TRACE, STATE_ATTACK, STATE_CAST, STATE_DEBUFF, STATE_KILL, STATE_DIE , STATE_STIRR , STATE_SPAWN
+    STATE_IDLE, STATE_FIND, STATE_TRACE, STATE_ATTACK, STATE_CAST, STATE_DEBUFF, STATE_KILL, STATE_DIE , STATE_STIRR , STATE_SPAWN , STATE_HIT
 }
 
 public class LivingEntity : Unit
 {
     [SerializeField] protected float _initHp; public float initHp { get { return _initHp; } }
-    protected float _hp; public float hp { get { return _hp; } }
-
+    [SerializeField] protected float _hp; public float Hp { get { return _hp; } }
     public StateMachine MyStateMachine;
     public Animator MyAnimator;
 
@@ -22,11 +21,13 @@ public class LivingEntity : Unit
 
     protected virtual void Update()
     {
+
     }
     
     // 오브젝트에서 필요한 초기화들을 실시한다.
     protected virtual void InitObject()
     {
+        _hp = initHp;
     }
 
     public virtual void Damaged(float damage)
