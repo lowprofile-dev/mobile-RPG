@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!241 &24100000
+AudioMixerController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AudioMixer
+  m_OutputGroup: {fileID: 0}
+  m_MasterGroup: {fileID: 24300002}
+  m_Snapshots:
+  - {fileID: 24500006}
+  m_StartSnapshot: {fileID: 24500006}
+  m_SuspendThreshold: -80
+  m_EnableSuspend: 1
+  m_UpdateMode: 0
+  m_ExposedParameters: []
+  m_AudioMixerGroupViews:
+  - guids:
+    - 5fd98487ae2ba364aa71049760ebc3e7
+    name: View
+  m_CurrentViewIndex: 0
+  m_TargetSnapshot: {fileID: 24500006}
+--- !u!243 &24300002
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Master
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 5fd98487ae2ba364aa71049760ebc3e7
+  m_Children: []
+  m_Volume: 41b97358050db114da54fb8fe938cd7f
+  m_Pitch: 70ee8832fd967e1438b8f90b9ad0adb9
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 24400004}
+  m_UserColorIndex: 1
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &24400004
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 6a39967a95720d444ace153bed883a0a
+  m_EffectName: Attenuation
+  m_MixLevel: 6b281d61b3fddf24c980a603e4d87745
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!245 &24500006
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Snapshot
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: 417844c6747c23b4e81fad21544d4e54
+  m_FloatValues:
+    06641480850ca354cb4485c67e19dfc4: 2.8
+    1c72e811838c4554a8a08ea65c2248e4: 4.93
+    7b094f1142b789949b7274701194410b: 13.3
+    cf952e91b60c66049ad48c1c54106e4c: 1
+    0e5820e11d191324fb1953bc56452aa1: 0.054
+    b83464e13b6276f469e9d924cf8a376e: 5.518
+    70ee8832fd967e1438b8f90b9ad0adb9: 1
+    ae950082e15eae04ab352067fd620523: 0.69
+    152546f2e4f05e742abdd72b96a49c47: 0
+    b00c6c0348f4f40439e9638939f01749: 2.96
+    3ee364a40982cfa418f550c71ab0f4cc: 3750
+    bbb6b815290863a4dab60b5186bbdbd0: -1584
+    6a1bbff5b19ff8c4f8b61c1c1d3a99cf: -11.1
+    f0f1cb3628456824f9c0fcc34de18bfe: 5.25
+    957bbb76e1ae5074c8f89d918e8857c0: 0.572
+    1be67c173b582ab40b5347c09a0d20e7: 0.43
+    2518ad17cb399cc4687971292e328751: 0
+    a46639a7cd1e485498c5260df4de54f5: 0.092
+    cd0a71c789b896a4abfba89889e626fa: 62.8
+    41b97358050db114da54fb8fe938cd7f: 0
+    c80a57d89b3d5184d8ceaf6d7b7dd775: 0.461
+    f5871be8a4afeb9428f9ca750b6dc274: 0.53
+    09f52819ee360ce4d96887e01e7073d5: 1.67
+    7069c529d2fe7f94f97985d808c3d331: 0
+    d63a334a16fd9e04993791d95fac2ba8: -1.4
+    c5c6709a72d18954889f38e828b0cbce: 0.823
+    31cd85ba9dfc56245a0cc1f50800fdfc: 0
+    97e0abead425e2742894273a7313ad05: 9599
+    57abbd1b613bbb24086e82f1a97e164a: 2592
+    efc90d5b438678b449a030f7bf85031f: 0
+    6a5ea28bce6a2f04fb0507001674bb12: 1.446
+    700ec79b952f9b24094af6d28dbb4e4e: 0.161
+    2c1db0abdc0c08f45b38db0cbd780434: 0.0396
+    64a739bbd34d9234dbcbe9ad14ae3352: 0
+    c888bacb33cad684a9afc19c2f2452fe: 510
+    7d7abdfb4e1dcb94fb77bdebe9a90b43: 10
+    c9d6103c026bb9247ada7b87accc73ff: 192
+    0f5d6f5c58e52c441bf7d1033156d7d0: -3191
+    20e8826cc4392eb4fb464cd0778c8c6c: 455
+    8db9c77d83d9e2c4dae3a4d7b5f9a022: 402
+    6c4bdfcd708c8c2419a9f36dced5c78c: -23.6
+    1935b32e568b7ed4bb0260eccc27a80b: 0.055
+    c5f2d72e12bccba42bd300a9b317dbc6: 0.05
+    9029956e9027b9b48b545ca716a7708b: -0.3
+    a3da8cceab14d2245babe619ae35570a: 200
+    71ef5efea8c691c42a5f7c49c4776036: 3.57
+    7fe2b70f5ba5f42429d70b5af7f0f22e: 0
+    7bd2c78fab2a1084e8acf71f82fbf481: 4.33
+    9dce0dafe7491244ea2fca3c3e986f67: 9242
+    d1a577bf33dd62e4e9a472dc3c5227cb: 100
+  m_TransitionOverrides: {}
