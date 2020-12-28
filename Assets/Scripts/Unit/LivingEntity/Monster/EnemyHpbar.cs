@@ -19,7 +19,9 @@ public class EnemyHpbar : MonoBehaviour
 
     void Update()
     {
-        transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
+        Vector3 dir = cam.transform.position - transform.forward;
+        transform.rotation = Quaternion.LookRotation(dir);
+        //transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
 
         hpSlider.value = enemy.GetComponent<LivingEntity>().Hp / enemy.GetComponent<LivingEntity>().initHp;
     }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-
+using UnityEngine.AI;
 public class MonsterAction : MonoBehaviour
 {
     protected GameObject _target;
@@ -16,6 +16,7 @@ public class MonsterAction : MonoBehaviour
     [SerializeField] protected float _attackSpeed;
     [SerializeField] private LayerMask layerMask;
     protected float _traceTimer;
+    protected NavMeshAgent _navMeshAgent;
 
     public virtual void InitObject()
     {
@@ -23,6 +24,8 @@ public class MonsterAction : MonoBehaviour
         _target = GameObject.FindGameObjectWithTag("Player");
         _currentState = STATE.STATE_IDLE;
         _traceTimer = 0;
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _navMeshAgent.stoppingDistance = _attackRange;
     }
 
     public virtual void ChangeState(STATE targetState)
@@ -210,5 +213,10 @@ public class MonsterAction : MonoBehaviour
     public virtual IEnumerator DoDeathAction()
     {
         yield return null;
+    }
+
+    protected virtual void IdleStart()
+    {
+
     }
 }

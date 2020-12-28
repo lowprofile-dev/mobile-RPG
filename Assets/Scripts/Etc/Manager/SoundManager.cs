@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SoundManager : SingletonBase<SoundManager>
 {
@@ -63,11 +64,11 @@ public class SoundManager : SingletonBase<SoundManager>
     }
 
     // BGM을 재생시킨다. 기본적으로 FadeIn / Out이 적용된다.
-    public void PlayBGM(string soundPath, float vol = 1.0f, bool startImmediatly = false)
+    public AudioSource PlayBGM(string soundPath, float vol = 1.0f, bool startImmediatly = false)
     {
         AudioSource startSource;
         AudioSource endSource;
-
+        
         if (_bgmContainer1.GetComponent<AudioSource>().isPlaying)
         {
             startSource = _bgmContainer2.GetComponent<AudioSource>();
@@ -101,6 +102,15 @@ public class SoundManager : SingletonBase<SoundManager>
             StopCoroutine("FadeOutBGM");
             StartCoroutine(FadeOutBGM(endSource, 2, startSource, true));
         }
+
+        startSource.pitch = 1;
+        startSource.GetComponent<AudioReverbFilter>().enabled = false;
+        startSource.GetComponent<AudioLowPassFilter>().enabled = false;
+        startSource.GetComponent<AudioHighPassFilter>().enabled = false;
+        startSource.GetComponent<AudioChorusFilter>().enabled = false;
+        startSource.GetComponent<AudioEchoFilter>().enabled = false;
+
+        return startSource;
     }
 
     // BGM을 정지시킨다. 별도의 입력이 없으면 fadeOut으로 정지시킨다.
@@ -218,7 +228,7 @@ public class SoundManager : SingletonBase<SoundManager>
     }
 
     // Effect / UI 사운드를 재생하도록 한다.
-    public void PlayEffect(SoundType type, string soundPath, float volume = 1.0f, float distance = 0f, bool isLoop = false)
+    public AudioSource PlayEffect(SoundType type, string soundPath, float volume = 1.0f, float distance = 0f, bool isLoop = false)
     {
         int targetPos = FindEffectContainerPosition();
 
@@ -240,6 +250,91 @@ public class SoundManager : SingletonBase<SoundManager>
 
         targetSource.Play();
         targetSource.loop = isLoop;
+        targetSource.pitch = 1;
+        targetSource.GetComponent<AudioReverbFilter>().enabled = false;
+        targetSource.GetComponent<AudioLowPassFilter>().enabled = false;
+        targetSource.GetComponent<AudioHighPassFilter>().enabled = false;
+        targetSource.GetComponent<AudioChorusFilter>().enabled = false;
+        targetSource.GetComponent<AudioEchoFilter>().enabled = false;
+
+        return targetSource;
+    }
+
+    /// <summary>
+    /// 사운드의 pitch를 조절
+    /// </summary>
+    public void SetPitch(AudioSource source, float pitch)
+    {
+        pitch = source.pitch;
+    }
+
+    /// <summary>
+    /// 사운드에 에코를 추가
+    /// </summary>
+    /// <param name="delay">10~5000, default 500</param>
+    /// <param name="decayRatio">0~1, default 0.5</param>
+    public void SetEcho(AudioSource source, float delay = 500f, float decayRatio = 0.5f, float dryMix = 1f, float wetMix = 1f)
+    {
+        AudioEchoFilter echo = source.GetComponent<AudioEchoFilter>();
+        echo.enabled = true;
+        echo.delay = delay;
+        echo.decayRatio = decayRatio;
+        echo.dryMix = dryMix;
+        echo.wetMix = wetMix;
+    }
+
+    /// <summary>
+    /// 사운드에 리버브를 추가
+    /// </summary>
+    public void SetAudioReverbEffect(AudioSource source, AudioReverbPreset preset)
+    {
+        source.GetComponent<AudioReverbFilter>().enabled = true;
+        source.GetComponent<AudioReverbFilter>().reverbPreset = preset;
+    }
+
+    /// <summary>
+    /// 사운드에 Lowpass를 추가
+    /// </summary>
+    /// <param name="cutoffFrequency"> Default 5007 </param>
+    /// <param name="lowpassResonance"> Default 1, Range 1~10 </param>
+    public void SetLowpass(AudioSource source, float cutoffFrequency = 5007.7f, float lowpassResonance = 1f)
+    {
+        AudioLowPassFilter lowPass = source.GetComponent<AudioLowPassFilter>();
+        lowPass.enabled = true;
+        lowPass.cutoffFrequency = cutoffFrequency;
+        lowPass.lowpassResonanceQ = lowpassResonance;
+    }
+
+    /// <summary>
+    /// 사운드에 Highpass를 추가
+    /// </summary>
+    /// <param name="cutoffFrequency"> Default 5000 </param>
+    /// <param name="highpassResonance"> Default 1, Range 1~10 </param>
+    public void SetHighpass(AudioSource source, float cutoffFrequency = 5000f, float highpassResonance = 1f)
+    {
+        AudioHighPassFilter highPass = source.GetComponent<AudioHighPassFilter>();
+        highPass.enabled = true;
+        highPass.cutoffFrequency = cutoffFrequency;
+        highPass.highpassResonanceQ = highpassResonance;
+    }
+
+    /// <summary>
+    /// 사운드에 코러스 필터를 추가.
+    /// </summary>
+    /// <param name="delay">0~100, default 40</param>
+    /// <param name="rate">0~20, default 20</param>
+    /// <param name="depth">0~1, default 0.03</param>
+    public void SetChorusFilter(AudioSource source, float delay = 40f, float rate = 0.8f, float depth = 0.03f, float dryMix = 0.5f, float wetMix1 = 0.5f, float wetMix2 = 0.5f, float wetMix3 = 0.5f)
+    {
+        AudioChorusFilter chorus = source.GetComponent<AudioChorusFilter>();
+        chorus.enabled = true;
+        chorus.delay = delay;
+        chorus.rate = rate;
+        chorus.depth = depth;
+        chorus.dryMix = dryMix;
+        chorus.wetMix1 = wetMix1;
+        chorus.wetMix2 = wetMix2;
+        chorus.wetMix3 = wetMix3;
     }
 
     // BGM의 볼륨을 조절
