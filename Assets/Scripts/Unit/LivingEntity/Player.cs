@@ -21,6 +21,8 @@ public class Player : LivingEntity
     [SerializeField] public GameObject skillAEffect;
     [SerializeField] public GameObject skillBEffect;
     [SerializeField] public GameObject skillCEffect;
+    [SerializeField] public GameObject attackEffect;
+
     [SerializeField] public Transform firePoint;
 
     [SerializeField] private CharacterController characterController;
@@ -37,7 +39,7 @@ public class Player : LivingEntity
     
     float horizontal;
     float vertical;
-
+    bool isdead = false;
     PartSelection selection;
     FaceCam faceCam;
     private void Awake()
@@ -70,12 +72,11 @@ public class Player : LivingEntity
 
             selection.Update();
 
-            if (Input.GetKeyDown(KeyCode.P))
+            if (_hp <= 0 && !isdead)
             {
-                _hp = 0;
+                MyStateMachine.SetState("DIE");
+                isdead = true;
             }
-
-            if (_hp <= 0) MyStateMachine.SetState("DIE");
         }
 
         CheckInteractObject();
@@ -136,6 +137,12 @@ public class Player : LivingEntity
     public void SetAttackButton(bool attackbutton)
     {
         AttackButtonClick = attackbutton;
+        if(AttackButtonClick == true)
+        {
+            GameObject skill = Instantiate(attackEffect);
+            skill.transform.position = firePoint.position;
+            skill.transform.rotation = transform.rotation;
+        }
     }
 
     public void PlayerAvoidance()

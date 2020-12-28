@@ -132,6 +132,7 @@ public class StateDie_TestPlayer : State
 
     public override void EnterState()
     {
+        _myAnimator.SetTrigger("Die");
     }
 
     public override void UpdateState()
