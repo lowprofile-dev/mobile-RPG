@@ -56,6 +56,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         _roomAreaImg.GetComponent<UIShadow>().enabled = false;
         _roomAreaImg.GetComponent<Animator>().enabled = false;
         _cardBtn.GetComponent<UIDissolve>().Stop(true);
+        _cardBtn.GetComponent<UIDissolve>().effectFactor = 0;
 
         SetCurrentCardData(card);
     }
@@ -149,18 +150,24 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         }
     }
 
+    /// <summary>
+    /// 리롤 버튼 누를 시에 일어나는 애니메이션
+    /// </summary>
     public IEnumerator RerollAnimation()
     {
+        _parentView.isRerollingAnimationPlaying = true;
+
         UIDissolve dissolveEffect = _cardBtn.GetComponent<UIDissolve>();
         dissolveEffect.effectPlayer.duration = 1.5f;
         dissolveEffect.effectPlayer.loop = false;
         dissolveEffect.Reverse = false;
         dissolveEffect.Play();
         _cardNameText.gameObject.SetActive(false);
-        yield return new WaitForSeconds(1.49f);
+        yield return new WaitForSeconds(1.49f); // 사라지는 부분
 
         _cardBtn.gameObject.SetActive(false);
-        yield return new WaitForSeconds(1.0f);
+
+        yield return new WaitForSeconds(1.0f); // 대기
 
         _cardBtn.gameObject.SetActive(true);
 
@@ -172,11 +179,13 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         dissolveEffect.color = new Color(103, 127, 203);
         dissolveEffect.Play();
 
-        yield return new WaitForSeconds(1.49f);
+        yield return new WaitForSeconds(1.49f); // 드러나는 부분
 
         dissolveEffect.effectFactor = 0f;
         dissolveEffect.Stop(false);
         _cardNameText.gameObject.SetActive(true);
+        _parentView.BingoCheck(); // 빙고 체크
+        _parentView.isRerollingAnimationPlaying = false;
     }
 
     /// <summary>
@@ -190,8 +199,6 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
             _rerollICONImg.gameObject.SetActive(false);
 
             StartCoroutine(RerollAnimation());
-
-
         }
     }
 
@@ -204,6 +211,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     {
         _cardBtn.transform.position = eventData.position; // 마우스 포인터에 카드 데이터가 따라오도록 한다.
         _cardBtn.GetComponent<Image>().raycastTarget = false;
+        _cardBtn.targetGraphic.raycastTarget = false;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -239,5 +247,6 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
 
         _cardBtn.transform.position = _initCardPos; // 위치를 되돌린다.
         _cardBtn.GetComponent<Image>().raycastTarget = true;
+        _cardBtn.targetGraphic.raycastTarget = true;
     }
 }

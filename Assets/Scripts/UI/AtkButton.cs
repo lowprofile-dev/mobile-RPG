@@ -30,4 +30,6 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {       
         isBtnDown = false;
     }
+
+    
 }
