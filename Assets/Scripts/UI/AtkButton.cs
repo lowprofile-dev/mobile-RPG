@@ -17,7 +17,7 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (isBtnDown)
         {
-            if (Player.Instance != null) Player.Instance.SetAttackButton(isBtnDown);
+            if (Player.Instance != null && !Player.Instance.GetAttackButton()) Player.Instance.SetAttackButton(isBtnDown);
         }
     }
 

@@ -174,9 +174,8 @@ public class Player : LivingEntity
         //임의 값
         _initHp = 10;
         _hp = 10;
-        MyAnimator = new Animator();
-        MyAnimator = GameObject.Find("PlayerAvatar").GetComponent<Animator>();
-
+        //MyAnimator = GameObject.Find("PlayerAvatar").GetComponent<Animator>();
+        MyAnimator = GetComponent<Animator>();
         MyStateMachine = new StateMachine();
         State Idle = new StateIdle_TestPlayer(this);
         State Move = new StateMove_TestPlayer(this);

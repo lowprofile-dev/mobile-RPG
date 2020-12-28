@@ -76,7 +76,6 @@ public class StateAttack_TestPlayer : State
     {
        
         _myAnimator.SetTrigger("Attack");
-        Player.Instance.SetAttackButton(false);
     }
 
     public override void UpdateState()
@@ -88,7 +87,7 @@ public class StateAttack_TestPlayer : State
 
     public override void EndState()
     {
-
+        Player.Instance.SetAttackButton(false);
     }
 }
 
