@@ -7,7 +7,8 @@ using System;
 enum ATTACKSTATE {Attack1 , Attack2 , Attack3 };
 public class SkeletonAction : MonsterAction
 {
-
+    [SerializeField] GameObject[] AttackEffect;
+    [SerializeField] Transform FirePoint;
     Coroutine _attackCoroutine;
     Coroutine _castCoroutine;
     Coroutine _hitCoroutine;
@@ -251,7 +252,14 @@ public class SkeletonAction : MonsterAction
                 // 공격 행동 한다.
                 //StartCoroutine(DoAttackAction());
                 // 공격 애니메이션이 끝났을때 자동으로 Idle로 넘어가도록
+
+                GameObject effect = ObjectPoolManager.Instance.GetObject(AttackEffect[(int)currentAttack]);
+                effect.transform.position = FirePoint.position;
+                effect.transform.LookAt(_target.transform);
+
                 yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+
+
                 _monster.MyAnimator.ResetTrigger(AtkState); // off가 되어있으므로 바로 돌아오진 않음.
                 // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 

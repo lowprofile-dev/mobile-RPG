@@ -44,6 +44,22 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
             ReturnObject(obj, parent);
         }
     }
+    public GameObject GetObject(GameObject obj)
+    {
+        if (objectPool.TryGetValue(obj.name, out Queue<GameObject> objectList))
+        {
+            if (objectList.Count == 0)
+                return CreateNewObject(obj);
+            else
+            {
+                GameObject _object = objectList.Dequeue();
+                _object.SetActive(true);
+                return _object;
+            }
+        }
+        else
+            return CreateNewObject(obj);
+    }
 
     public GameObject GetObject(string name)  // 오브젝트풀에 적재되어있는 게임오브젝트 반환
     {
