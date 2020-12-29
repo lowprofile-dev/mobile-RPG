@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Animations;
 
 public class Sword : Weapon
 {
     // Start is called before the first frame update
     public Sword()
-    {
-        name = "Sword";
+    {        
         damage = 10f;
         speed = 1.5f;
         masteryLevel = 1;
@@ -16,6 +16,7 @@ public class Sword : Weapon
         SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill A");
         SkillBEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill B");
         SkillCEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill C");
+        WeaponAnimationController = Resources.Load<AnimatorController>("Animation/Animator/Player/Sword Animator");
     }
 
     // Update is called once per frame

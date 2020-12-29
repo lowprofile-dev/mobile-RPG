@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using SimpleInputNamespace;
 using UnityEngine.EventSystems;
+using UnityEditor.Animations;
+
 public class Player : LivingEntity
 {
     public static Player Instance;
@@ -12,6 +14,8 @@ public class Player : LivingEntity
     [SerializeField] private float avoid_power = 10f;
     private float count = 0f;
     private State saveState = null;
+
+    [SerializeField] private GameObject _playerAvatar;
 
     private bool AttackButtonClick = false;
     private bool SkillA_ButtonClick = false;
@@ -22,7 +26,9 @@ public class Player : LivingEntity
     //[SerializeField] public GameObject skillBEffect;
     //[SerializeField] public GameObject skillCEffect;
     //[SerializeField] public GameObject attackEffect;
+    [SerializeField] public List<AnimatorController> animatorList;
     
+
     [SerializeField] public Transform firePoint;
 
     [SerializeField] private CharacterController characterController;
@@ -55,27 +61,16 @@ public class Player : LivingEntity
     protected override void Start()
     {
         base.Start();
-        weaponManager.SetWeapon("SWORD");
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
-        selection = GetComponent<PartSelection>();
-        selection.Start();
-        selection.Init();
         faceCam.Init(transform.Find("PlayerAvatar").gameObject);
-        //joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
     }
 
     protected override void Update()
     {
-        // if(joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
         if (joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
 
         if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
-            if(Input.GetKeyDown(KeyCode.O))
-            {
-                weaponManager.SetWeapon("WAND");
-            }
-
             PlayerAvoidance();
 
             PlayerMove();
@@ -183,11 +178,16 @@ public class Player : LivingEntity
     }
     protected override void InitObject()
     {
+        
         //임의 값
         _initHp = 10;
         _hp = 10;
-        MyAnimator = new Animator();
-        MyAnimator = GetComponent<Animator>();
+
+        selection = GetComponent<PartSelection>();
+        selection.Start();
+        selection.Init();
+
+        MyAnimator = _playerAvatar.GetComponent<Animator>();
 
         MyStateMachine = new StateMachine();
         State Idle = new StateIdle_TestPlayer(this);
@@ -199,14 +199,7 @@ public class Player : LivingEntity
         State SkillB = new StateSkillB_TestPlayer(this);
         State SkillC = new StateSkillC_TestPlayer(this);
 
-        weaponManager = new WeaponManager();
-
-        Weapon Sword = new Sword();
-        Weapon Dagger = new Dagger();
-        Weapon GreatSword = new GreatSword();
-        Weapon Blunt = new Blunt();
-        Weapon Staff = new Staff();
-        Weapon Wand = new Wand();
+        weaponManager = WeaponManager.Instance;
 
         MyStateMachine.AddState("IDLE", Idle);
         MyStateMachine.AddState("MOVE", Move);
@@ -217,14 +210,10 @@ public class Player : LivingEntity
         MyStateMachine.AddState("SKILL_B", SkillB);
         MyStateMachine.AddState("SKILL_C", SkillC);
 
-        weaponManager.AddWeapon("SWORD", Sword);
-        weaponManager.AddWeapon("DAGGER", Dagger);
-        weaponManager.AddWeapon("GREATSWORD", GreatSword);
-        weaponManager.AddWeapon("BLUNT", Blunt);
-        weaponManager.AddWeapon("STAFF", Staff);
-        weaponManager.AddWeapon("WAND", Wand);
-
         MyStateMachine.SetState("IDLE");
+
+        weaponManager.SetWeapon("SWORD");
+
     }
 
     public void CheckInteractObject()

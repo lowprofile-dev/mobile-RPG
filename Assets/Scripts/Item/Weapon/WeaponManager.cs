@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class WeaponManager
+public class WeaponManager : SingletonBase<WeaponManager>
 {
     private Weapon _currentWeapon;
     private string _currentWeaponName;
@@ -15,11 +15,25 @@ public class WeaponManager
     public readonly int[] StaffNumber = { 47, 28, 35, 26 };
     public readonly int[] WandNumber = { 4, 14, 13, 11 };
 
-    public WeaponManager()
+    public void InitWeaponManager()
     {
         _currentWeapon = null;
         _currentWeaponName = null;
         _weaponDic = new Dictionary<string, Weapon>();
+
+        Weapon Sword = new Sword();
+        Weapon Dagger = new Dagger();
+        Weapon GreatSword = new GreatSword();
+        Weapon Blunt = new Blunt();
+        Weapon Staff = new Staff();
+        Weapon Wand = new Wand();
+
+        AddWeapon("SWORD", Sword as Sword);
+        AddWeapon("DAGGER", Dagger as Dagger);
+        AddWeapon("GREATSWORD", GreatSword as GreatSword);
+        AddWeapon("BLUNT", Blunt as Blunt);
+        AddWeapon("STAFF", Staff as Staff);
+        AddWeapon("WAND", Wand as Wand);
     }
 
     public void UpdateWeapon()
@@ -37,6 +51,7 @@ public class WeaponManager
         if (_currentWeapon == _weaponDic[weaponName]) return;
         _currentWeaponName = weaponName;
         _currentWeapon = _weaponDic[_currentWeaponName];
+        Player.Instance.MyAnimator.runtimeAnimatorController = _currentWeapon.WeaponAnimationController;
     }
 
     public string GetWeaponName()

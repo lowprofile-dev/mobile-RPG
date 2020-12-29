@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEditor.Animations;
 public class Wand : Weapon
 {
     // Start is called before the first frame update
     public Wand()
     {
-        name = "Wand";
         damage = 10f;
         speed = 1.5f;
         masteryLevel = 1;
@@ -16,7 +15,7 @@ public class Wand : Weapon
         SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Skill A");
         SkillBEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Skill B");
         SkillCEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Skill C");
-
+        WeaponAnimationController = Resources.Load<AnimatorController>("Animation/Animator/Player/Wand Animator");
     }
 
     // Update is called once per frame

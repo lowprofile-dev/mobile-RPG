@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Animations;
 
 public class Weapon
 {
     public float damage;
     public float speed;
-    public string name;
 
     public int masteryLevel ;
     public int outfitGrade ;
@@ -18,7 +18,7 @@ public class Weapon
     public Transform EffectPosition;
 
     public Animator WeaponAnimation;
-
+    public AnimatorController WeaponAnimationController;
     public virtual void Update()
     {
      
@@ -51,26 +51,5 @@ public class Weapon
             }
         }
     }
-
-    //public void AddWeapon(string weaponName, Weapon weapon)
-    //{
-    //    _weaponDic.Add(weaponName, weapon);
-    //}
-    //
-    //public void SetWeapon(string weaponName)
-    //{
-    //    if (_currentWeapon == _weaponDic[weaponName]) return;
-    //    itemName = weaponName;
-    //    _currentWeapon = _weaponDic[itemName];
-    //}
-    //
-    //public string GetWeaponName()
-    //{
-    //    return itemName;
-    //}
-    //public Weapon GetWeapon()
-    //{
-    //    return _currentWeapon;
-    //}
 
 }
