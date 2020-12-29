@@ -2638,9 +2638,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 3
+  m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1155545246525858002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2653,8 +2653,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c754885fe941ab84db26aa4f5475e8eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _findRange: 8
-  _attackRange: 3
+  _findRange: 10
+  _attackRange: 5
   _limitTraceRange: 15
   _speed: 5
   _distance: 0
@@ -2686,7 +2686,7 @@ MonoBehaviour:
   _attackType: 0
   _attackPattern: 0
   _description: 
-  _speed: 0
+  _speed: 5
   _castPercent: 20
   _attackTime: 1
   _attackDamage: 1
@@ -2700,16 +2700,16 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 2
+  m_StoppingDistance: 4
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 1
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!1 &1157217258998146638
