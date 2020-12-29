@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Animations;
 
 public class Staff : Weapon
 {
@@ -11,6 +12,7 @@ public class Staff : Weapon
         speed = 1.5f;
         masteryLevel = 1;
         outfitGrade = 0;
+        WeaponAnimationController = Resources.Load<AnimatorController>("Animation/Animator/Player/Staff Animator");
     }
 
     // Update is called once per frame
@@ -21,5 +23,21 @@ public class Staff : Weapon
         {
             masteryLevel++;
         }
+    }
+    public override void SkillA()
+    {
+
+    }
+    public override void SkillB()
+    {
+
+    }
+    public override void SkillC()
+    {
+
+    }
+    public override void Attack()
+    {
+
     }
 }

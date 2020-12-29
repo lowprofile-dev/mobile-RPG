@@ -15,6 +15,7 @@ public class StateIdle_TestPlayer : State
     public override void EnterState()
     {
         _myAnimator.SetTrigger("Idle");
+        if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
     }
 
     public override void UpdateState()
@@ -45,6 +46,8 @@ public class StateMove_TestPlayer : State
     public override void EnterState()
     {
         _myAnimator.SetTrigger("Move");
+        if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
+
     }
     public override void UpdateState()
     {
@@ -74,8 +77,8 @@ public class StateAttack_TestPlayer : State
 
     public override void EnterState()
     {
-       
         _myAnimator.SetTrigger("Attack");
+        if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
     }
 
     public override void UpdateState()
@@ -104,6 +107,7 @@ public class StateAvoid_TestPlayer : State
     public override void EnterState()
     {
         _myAnimator.SetTrigger("Avoid");
+        if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
 
     }
 
@@ -132,6 +136,7 @@ public class StateDie_TestPlayer : State
     public override void EnterState()
     {
         _myAnimator.SetTrigger("Die");
+        if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
     }
 
     public override void UpdateState()
@@ -158,6 +163,7 @@ public class StateSkillA_TestPlayer : State
     public override void EnterState()
     {
         _myAnimator.SetTrigger("SkillA");
+        if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
     }
 
     public override void UpdateState()
@@ -184,6 +190,8 @@ public class StateSkillB_TestPlayer : State
     public override void EnterState()
     {
         _myAnimator.SetTrigger("SkillB");
+        if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
+
     }
 
     public override void UpdateState()
@@ -210,7 +218,7 @@ public class StateSkillC_TestPlayer : State
     public override void EnterState()
     {
         _myAnimator.SetTrigger("SkillC");
-
+        if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
     }
 
     public override void UpdateState()

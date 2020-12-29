@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Animations;
 
 public class Dagger : Weapon
 {
@@ -11,6 +12,8 @@ public class Dagger : Weapon
         speed = 1.5f;
         masteryLevel = 1;
         outfitGrade = 0;
+        WeaponAnimationController = Resources.Load<AnimatorController>("Animation/Animator/Player/Dagger Animator");
+
     }
 
     // Update is called once per frame
@@ -21,5 +24,21 @@ public class Dagger : Weapon
         {
             masteryLevel++;
         }
+    }
+    public override void SkillA()
+    {
+
+    }
+    public override void SkillB()
+    {
+
+    }
+    public override void SkillC()
+    {
+
+    }
+    public override void Attack()
+    {
+
     }
 }

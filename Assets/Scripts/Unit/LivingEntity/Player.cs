@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using SimpleInputNamespace;
 using UnityEngine.EventSystems;
+using UnityEditor.Animations;
+
 public class Player : LivingEntity
 {
     public static Player Instance;
@@ -12,6 +14,8 @@ public class Player : LivingEntity
     [SerializeField] private float avoid_power = 10f;
     private float count = 0f;
     private State saveState = null;
+
+    [SerializeField] private GameObject _playerAvatar;
 
     private bool AttackButtonClick = false;
     private bool SkillA_ButtonClick = false;
@@ -22,7 +26,9 @@ public class Player : LivingEntity
     //[SerializeField] public GameObject skillBEffect;
     //[SerializeField] public GameObject skillCEffect;
     //[SerializeField] public GameObject attackEffect;
+    [SerializeField] public List<AnimatorController> animatorList;
     
+
     [SerializeField] public Transform firePoint;
 
     [SerializeField] private CharacterController characterController;
@@ -45,7 +51,7 @@ public class Player : LivingEntity
 
     Dictionary<string, int> playerItems = new Dictionary<string, int>();
 
-    public Weapon weapon;
+    public WeaponManager weaponManager;
 
     private void Awake()
     {
@@ -55,30 +61,21 @@ public class Player : LivingEntity
     protected override void Start()
     {
         base.Start();
-        weapon.SetWeapon("SWORD");
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
-        selection = GetComponent<PartSelection>();
-        selection.Start();
-        selection.Init();
         faceCam.Init(transform.Find("PlayerAvatar").gameObject);
-        //joystick = GameObject.Find("Joystick").GetComponent<Joystick>();
     }
 
     protected override void Update()
     {
-        // if(joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
         if (joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
 
         if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
-            if(Input.GetKeyDown(KeyCode.O))
-            {
-                weapon.SetWeapon("WAND");
-            }
-
             PlayerAvoidance();
 
             PlayerMove();
+
+            weaponManager.UpdateWeapon();
 
             selection.Update();
 
@@ -119,14 +116,14 @@ public class Player : LivingEntity
     public void PlayerSkillA()
     {
         MyStateMachine.SetState("SKILL_A");
-        GameObject skill = Instantiate(weapon.GetWeapon().SkillAEffect);
+        GameObject skill = Instantiate(weaponManager.GetWeapon().SkillAEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation; 
     }
     public void PlayerSkillB()
     {
         MyStateMachine.SetState("SKILL_B");
-        GameObject skill = Instantiate(weapon.GetWeapon().SkillBEffect);
+        GameObject skill = Instantiate(weaponManager.GetWeapon().SkillBEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation;
 
@@ -134,7 +131,7 @@ public class Player : LivingEntity
     public void PlayerSkillC()
     {
         MyStateMachine.SetState("SKILL_C");
-        GameObject skill = Instantiate(weapon.GetWeapon().SkillCEffect);
+        GameObject skill = Instantiate(weaponManager.GetWeapon().SkillCEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation;
     }
@@ -149,7 +146,7 @@ public class Player : LivingEntity
         AttackButtonClick = attackbutton;
         if(AttackButtonClick == true)
         {
-            GameObject skill = Instantiate(weapon.GetWeapon().AttackEffect);
+            GameObject skill = Instantiate(weaponManager.GetWeapon().AttackEffect);
             skill.transform.position = firePoint.position;
             skill.transform.rotation = transform.rotation;
         }
@@ -181,11 +178,16 @@ public class Player : LivingEntity
     }
     protected override void InitObject()
     {
+        
         //임의 값
         _initHp = 10;
         _hp = 10;
-        MyAnimator = new Animator();
-        MyAnimator = GetComponent<Animator>();
+
+        selection = GetComponent<PartSelection>();
+        selection.Start();
+        selection.Init();
+
+        MyAnimator = _playerAvatar.GetComponent<Animator>();
 
         MyStateMachine = new StateMachine();
         State Idle = new StateIdle_TestPlayer(this);
@@ -197,14 +199,7 @@ public class Player : LivingEntity
         State SkillB = new StateSkillB_TestPlayer(this);
         State SkillC = new StateSkillC_TestPlayer(this);
 
-        weapon = new Weapon();
-
-        Weapon Sword = GameObject.Find("Sword").GetComponent<Sword>();
-        Weapon Dagger = new Dagger();
-        Weapon GreatSword = new GreatSword();
-        Weapon Blunt = new Blunt();
-        Weapon Staff = new Staff();
-        Weapon Wand = GameObject.Find("Wand").GetComponent<Wand>(); ;
+        weaponManager = WeaponManager.Instance;
 
         MyStateMachine.AddState("IDLE", Idle);
         MyStateMachine.AddState("MOVE", Move);
@@ -215,14 +210,10 @@ public class Player : LivingEntity
         MyStateMachine.AddState("SKILL_B", SkillB);
         MyStateMachine.AddState("SKILL_C", SkillC);
 
-        weapon.AddWeapon("SWORD", Sword);
-        weapon.AddWeapon("DAGGER", Dagger);
-        weapon.AddWeapon("GREATSWORD", GreatSword);
-        weapon.AddWeapon("BLUNT", Blunt);
-        weapon.AddWeapon("STAFF", Staff);
-        weapon.AddWeapon("WAND", Wand);
-
         MyStateMachine.SetState("IDLE");
+
+        weaponManager.SetWeapon("SWORD");
+
     }
 
     public void CheckInteractObject()

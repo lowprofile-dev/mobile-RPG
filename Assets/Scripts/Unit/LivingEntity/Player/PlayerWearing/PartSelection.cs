@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class PartSelection : MonoBehaviour
 {
@@ -84,22 +85,9 @@ public class PartSelection : MonoBehaviour
 
     public void Update()
     {
-        if(Player.Instance.weapon.GetWeaponName() == "SWORD")
-        {
-            if(rightWeaponIndex != Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade])
-            {
-                ChangeRightWeaponPart(Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade]);
-            }
-        }
-        else if(Player.Instance.weapon.GetWeaponName() == "WAND")
-        {
-            if (rightWeaponIndex != Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade])
-            {
-                ChangeRightWeaponPart(Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade]);
-            }
-        }
-
-        if(Input.GetKeyDown(KeyCode.KeypadPlus))
+        PlayerWeaponChange();
+        
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
         {
             ChangeHeadPart();
             ChangeHairPart();
@@ -109,6 +97,52 @@ public class PartSelection : MonoBehaviour
             ChangeLowerSpinePart();
             ChangeArmParts();
             ChangeLegParts();
+        }
+    }
+
+    private void PlayerWeaponChange()
+    {
+        if (Player.Instance.weaponManager.GetWeaponName() == "SWORD")
+        {
+            if (rightWeaponIndex != Player.Instance.weaponManager.SwordNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade])
+            {
+                ChangeRightWeaponPart(Player.Instance.weaponManager.SwordNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade]);
+            }
+        }
+        else if (Player.Instance.weaponManager.GetWeaponName() == "WAND")
+        {
+            if (rightWeaponIndex != Player.Instance.weaponManager.WandNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade])
+            {
+                ChangeRightWeaponPart(Player.Instance.weaponManager.WandNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade]);
+            }
+        }
+        else if (Player.Instance.weaponManager.GetWeaponName() == "GREATSWORD")
+        {
+            if (rightWeaponIndex != Player.Instance.weaponManager.GreatSwordNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade])
+            {
+                ChangeRightWeaponPart(Player.Instance.weaponManager.GreatSwordNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade]);
+            }
+        }
+        else if (Player.Instance.weaponManager.GetWeaponName() == "DAGGER")
+        {
+            if (rightWeaponIndex != Player.Instance.weaponManager.DaggerNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade])
+            {
+                ChangeRightWeaponPart(Player.Instance.weaponManager.DaggerNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade]);
+            }
+        }
+        else if (Player.Instance.weaponManager.GetWeaponName() == "STAFF")
+        {
+            if (rightWeaponIndex != Player.Instance.weaponManager.StaffNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade])
+            {
+                ChangeRightWeaponPart(Player.Instance.weaponManager.StaffNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade]);
+            }
+        }
+        else if (Player.Instance.weaponManager.GetWeaponName() == "BLUNT")
+        {
+            if (rightWeaponIndex != Player.Instance.weaponManager.BluntNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade])
+            {
+                ChangeRightWeaponPart(Player.Instance.weaponManager.BluntNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade]);
+            }
         }
     }
 
@@ -185,7 +219,7 @@ public class PartSelection : MonoBehaviour
     {
         if (weaponKeys.Count <= index)
         {
-            Debug.Log("Out of Index Range");
+            Debug.Log("Out of Index Range " + weaponKeys.Count + " / " + index);
             return;
         }
         rightWeaponIndex = index;
