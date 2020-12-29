@@ -9,17 +9,22 @@ public class FaceCam : MonoBehaviour
     public GameObject followAvatar;
     public void Init(GameObject avatar)
     {
-        cinemachine = GetComponent<CinemachineFreeLook>();
-        followAvatar = Instantiate(avatar);
-        followAvatar.transform.position = new Vector3(1000, 1000, 0);
-        followAvatar.transform.rotation = Quaternion.Euler(0, 180, 0);
-        cinemachine.m_Follow = followAvatar.transform;
-        cinemachine.m_LookAt = followAvatar.transform;
+        SetTarget(avatar);
     }
+
     private void OnDisable()
     {
         if (followAvatar != null)
             Destroy(followAvatar);
     }
 
+    public void SetTarget(GameObject target)
+    {
+        cinemachine = GetComponent<CinemachineFreeLook>();
+        followAvatar = Instantiate(target);
+        followAvatar.transform.position = new Vector3(1000, 1000, 0);
+        followAvatar.transform.rotation = Quaternion.Euler(0, 180, 0);
+        cinemachine.m_Follow = followAvatar.transform;
+        cinemachine.m_LookAt = followAvatar.transform;
+    }
 }
