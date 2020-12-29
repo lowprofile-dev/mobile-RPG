@@ -7,6 +7,7 @@ public class Blunt : Weapon
     // Start is called before the first frame update
     public Blunt()
     {
+        name = "Blunt";
         damage = 10f;
         speed = 1.5f;
         masteryLevel = 1;
@@ -21,5 +22,22 @@ public class Blunt : Weapon
         {
             masteryLevel++;
         }
+    }
+
+    public override void SkillA()
+    {
+
+    }
+    public override void SkillB()
+    {
+
+    }
+    public override void SkillC()
+    {
+
+    }
+    public override void Attack()
+    {
+
     }
 }

@@ -45,7 +45,7 @@ public class Player : LivingEntity
 
     Dictionary<string, int> playerItems = new Dictionary<string, int>();
 
-    public Weapon weapon;
+    public WeaponManager weaponManager;
 
     private void Awake()
     {
@@ -55,7 +55,7 @@ public class Player : LivingEntity
     protected override void Start()
     {
         base.Start();
-        weapon.SetWeapon("SWORD");
+        weaponManager.SetWeapon("SWORD");
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         selection = GetComponent<PartSelection>();
         selection.Start();
@@ -73,12 +73,14 @@ public class Player : LivingEntity
         {
             if(Input.GetKeyDown(KeyCode.O))
             {
-                weapon.SetWeapon("WAND");
+                weaponManager.SetWeapon("WAND");
             }
 
             PlayerAvoidance();
 
             PlayerMove();
+
+            weaponManager.UpdateWeapon();
 
             selection.Update();
 
@@ -119,14 +121,14 @@ public class Player : LivingEntity
     public void PlayerSkillA()
     {
         MyStateMachine.SetState("SKILL_A");
-        GameObject skill = Instantiate(weapon.GetWeapon().SkillAEffect);
+        GameObject skill = Instantiate(weaponManager.GetWeapon().SkillAEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation; 
     }
     public void PlayerSkillB()
     {
         MyStateMachine.SetState("SKILL_B");
-        GameObject skill = Instantiate(weapon.GetWeapon().SkillBEffect);
+        GameObject skill = Instantiate(weaponManager.GetWeapon().SkillBEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation;
 
@@ -134,7 +136,7 @@ public class Player : LivingEntity
     public void PlayerSkillC()
     {
         MyStateMachine.SetState("SKILL_C");
-        GameObject skill = Instantiate(weapon.GetWeapon().SkillCEffect);
+        GameObject skill = Instantiate(weaponManager.GetWeapon().SkillCEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation;
     }
@@ -149,7 +151,7 @@ public class Player : LivingEntity
         AttackButtonClick = attackbutton;
         if(AttackButtonClick == true)
         {
-            GameObject skill = Instantiate(weapon.GetWeapon().AttackEffect);
+            GameObject skill = Instantiate(weaponManager.GetWeapon().AttackEffect);
             skill.transform.position = firePoint.position;
             skill.transform.rotation = transform.rotation;
         }
@@ -197,14 +199,14 @@ public class Player : LivingEntity
         State SkillB = new StateSkillB_TestPlayer(this);
         State SkillC = new StateSkillC_TestPlayer(this);
 
-        weapon = new Weapon();
+        weaponManager = new WeaponManager();
 
-        Weapon Sword = GameObject.Find("Sword").GetComponent<Sword>();
+        Weapon Sword = new Sword();
         Weapon Dagger = new Dagger();
         Weapon GreatSword = new GreatSword();
         Weapon Blunt = new Blunt();
         Weapon Staff = new Staff();
-        Weapon Wand = GameObject.Find("Wand").GetComponent<Wand>(); ;
+        Weapon Wand = new Wand();
 
         MyStateMachine.AddState("IDLE", Idle);
         MyStateMachine.AddState("MOVE", Move);
@@ -215,12 +217,12 @@ public class Player : LivingEntity
         MyStateMachine.AddState("SKILL_B", SkillB);
         MyStateMachine.AddState("SKILL_C", SkillC);
 
-        weapon.AddWeapon("SWORD", Sword);
-        weapon.AddWeapon("DAGGER", Dagger);
-        weapon.AddWeapon("GREATSWORD", GreatSword);
-        weapon.AddWeapon("BLUNT", Blunt);
-        weapon.AddWeapon("STAFF", Staff);
-        weapon.AddWeapon("WAND", Wand);
+        weaponManager.AddWeapon("SWORD", Sword);
+        weaponManager.AddWeapon("DAGGER", Dagger);
+        weaponManager.AddWeapon("GREATSWORD", GreatSword);
+        weaponManager.AddWeapon("BLUNT", Blunt);
+        weaponManager.AddWeapon("STAFF", Staff);
+        weaponManager.AddWeapon("WAND", Wand);
 
         MyStateMachine.SetState("IDLE");
     }

@@ -84,18 +84,18 @@ public class PartSelection : MonoBehaviour
 
     public void Update()
     {
-        if(Player.Instance.weapon.GetWeaponName() == "SWORD")
+        if(Player.Instance.weaponManager.GetWeaponName() == "SWORD")
         {
-            if(rightWeaponIndex != Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade])
+            if(rightWeaponIndex != Player.Instance.weaponManager.SwordNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade])
             {
-                ChangeRightWeaponPart(Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade]);
+                ChangeRightWeaponPart(Player.Instance.weaponManager.SwordNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade]);
             }
         }
-        else if(Player.Instance.weapon.GetWeaponName() == "WAND")
+        else if(Player.Instance.weaponManager.GetWeaponName() == "WAND")
         {
-            if (rightWeaponIndex != Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade])
+            if (rightWeaponIndex != Player.Instance.weaponManager.WandNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade])
             {
-                ChangeRightWeaponPart(Player.Instance.weapon.SwordNumber[Player.Instance.weapon.GetWeapon().outfitGrade]);
+                ChangeRightWeaponPart(Player.Instance.weaponManager.WandNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade]);
             }
         }
 
