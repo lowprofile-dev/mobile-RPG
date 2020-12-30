@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Animations;
-
-
 public class Blunt : Weapon
 {
     // Start is called before the first frame update
@@ -13,7 +11,8 @@ public class Blunt : Weapon
         speed = 1.5f;
         masteryLevel = 1;
         outfitGrade = 0;
-        WeaponAnimationController = Resources.Load<AnimatorController>("Animation/Animator/Player/Blunt Animator");
+
+        WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Blunt Animator");
 
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
+
 public class GreatSword : Weapon
 {
     // Start is called before the first frame update
@@ -11,7 +11,7 @@ public class GreatSword : Weapon
         speed = 1.5f;
         masteryLevel = 1;
         outfitGrade = 0;
-        WeaponAnimationController = Resources.Load<AnimatorController>("Animation/Animator/Player/GreatSword Animator");
+        WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/GreatSword Animator");
     }
 
     // Update is called once per frame

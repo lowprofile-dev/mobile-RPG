@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
 
 public class Dagger : Weapon
 {
@@ -12,8 +11,7 @@ public class Dagger : Weapon
         speed = 1.5f;
         masteryLevel = 1;
         outfitGrade = 0;
-        WeaponAnimationController = Resources.Load<AnimatorController>("Animation/Animator/Player/Dagger Animator");
-
+        WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Dagger Animator");
     }
 
     // Update is called once per frame

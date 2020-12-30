@@ -17,8 +17,9 @@ public class Weapon
     public GameObject AttackEffect;
     public Transform EffectPosition;
 
-    public Animator WeaponAnimation;
-    public AnimatorController WeaponAnimationController;
+    
+    public RuntimeAnimatorController WeaponAnimation;
+
     public virtual void Update()
     {
      

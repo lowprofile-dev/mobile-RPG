@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Animations;
 
 public class Sword : Weapon
 {
@@ -16,7 +15,9 @@ public class Sword : Weapon
         SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill A");
         SkillBEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill B");
         SkillCEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill C");
-        WeaponAnimationController = Resources.Load<AnimatorController>("Animation/Animator/Player/Sword Animator");
+
+        WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Sword Animator");
+
     }
 
     // Update is called once per frame

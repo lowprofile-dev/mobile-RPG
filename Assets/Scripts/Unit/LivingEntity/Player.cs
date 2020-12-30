@@ -67,6 +67,12 @@ public class Player : LivingEntity
 
     protected override void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            weaponManager.SetWeapon("WAND");
+        }
+
         if (joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
 
         if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
@@ -116,14 +122,20 @@ public class Player : LivingEntity
     public void PlayerSkillA()
     {
         MyStateMachine.SetState("SKILL_A");
-        GameObject skill = Instantiate(weaponManager.GetWeapon().SkillAEffect);
+
+
+        GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillAEffect);
+
+        //GameObject skill = Instantiate(weaponManager.GetWeapon().SkillAEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation; 
     }
     public void PlayerSkillB()
     {
         MyStateMachine.SetState("SKILL_B");
-        GameObject skill = Instantiate(weaponManager.GetWeapon().SkillBEffect);
+
+        //GameObject skill = Instantiate(weaponManager.GetWeapon().SkillBEffect);
+        GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillBEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation;
 
@@ -131,7 +143,8 @@ public class Player : LivingEntity
     public void PlayerSkillC()
     {
         MyStateMachine.SetState("SKILL_C");
-        GameObject skill = Instantiate(weaponManager.GetWeapon().SkillCEffect);
+        //GameObject skill = Instantiate(weaponManager.GetWeapon().SkillCEffect);
+        GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillCEffect);
         skill.transform.position = firePoint.position;
         skill.transform.rotation = transform.rotation;
     }
@@ -146,7 +159,7 @@ public class Player : LivingEntity
         AttackButtonClick = attackbutton;
         if(AttackButtonClick == true)
         {
-            GameObject skill = Instantiate(weaponManager.GetWeapon().AttackEffect);
+            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().AttackEffect);
             skill.transform.position = firePoint.position;
             skill.transform.rotation = transform.rotation;
         }
