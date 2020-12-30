@@ -15,7 +15,6 @@ public class Weapon
     public GameObject SkillCEffect;
     public GameObject AttackEffect;
     public Transform EffectPosition;
-
     
     public RuntimeAnimatorController WeaponAnimation;
 
