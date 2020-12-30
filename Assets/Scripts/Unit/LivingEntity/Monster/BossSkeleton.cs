@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class SkeletonAction : MonsterAction
+public class BossSkeleton : MonsterAction
 {
     enum ATTACKSTATE {Attack1 , Attack2 , Attack3 };
 
@@ -13,7 +13,6 @@ public class SkeletonAction : MonsterAction
     Coroutine _attackCoroutine;
     Coroutine _castCoroutine;
     Coroutine _hitCoroutine;
-    private float idleCnt = 0;
     private bool panic = false;
     Vector3 spawnPostion;
     Vector3 aroundPos;
@@ -21,6 +20,14 @@ public class SkeletonAction : MonsterAction
     string AtkState;
     private float castingTime = 0f;
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _findRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _attackRange);
+    }
+   
     public override void InitObject()
     {
         base.InitObject();
@@ -53,12 +60,6 @@ public class SkeletonAction : MonsterAction
             case STATE.STATE_IDLE:
                 Search();
                 break;
-            case STATE.STATE_STIRR:
-                GroundSearch();
-                break;
-            case STATE.STATE_FIND:
-                FindPlayer();
-                break;
             case STATE.STATE_TRACE:
                 Move();
                 CheckLimitPlayerDistance();
@@ -87,12 +88,6 @@ public class SkeletonAction : MonsterAction
                 break;
             case STATE.STATE_IDLE:
                 IdleStart();
-                break;
-            case STATE.STATE_STIRR:
-                StirrStart();
-                break;
-            case STATE.STATE_FIND:
-                FindStart();
                 break;
             case STATE.STATE_TRACE:
                 TraceStart();
@@ -130,12 +125,6 @@ public class SkeletonAction : MonsterAction
             case STATE.STATE_IDLE:
                 IdleExit();
                 break;
-            case STATE.STATE_STIRR:
-                StirrExit();
-                break;
-            case STATE.STATE_FIND:
-                FindExit();
-                break;
             case STATE.STATE_TRACE:
                 TraceExit();
                 break;
@@ -156,15 +145,6 @@ public class SkeletonAction : MonsterAction
         }
     }
 
-    private void FindExit()
-    {
-        
-    }
-
-    private void StirrExit()
-    {
-        _navMeshAgent.isStopped = false;
-    }
 
     private void IdleExit()
     {
@@ -183,15 +163,25 @@ public class SkeletonAction : MonsterAction
     {
         base.Move();
         //_navMeshAgent.isStopped = false;
-        
-        _navMeshAgent.SetDestination(_target.transform.position);
-        // Run StepSound 재생
-
-        // 사거리 내에 적 존재 시 발동
-        if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
+        if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+        {
+            _monster.MyAnimator.SetTrigger("Walk");
+        }
+        if (CanAttackState())
         {
             ChangeState(STATE.STATE_ATTACK);
         }
+        else if (Vector3.Distance(transform.position , _target.transform.position ) > _findRange)
+        {
+            ChangeState(STATE.STATE_IDLE);
+        }
+        else
+        {
+            _navMeshAgent.SetDestination(_target.transform.position);
+        }
+
+        _navMeshAgent.SetDestination(_target.transform.position);
+        // Run StepSound 재생
     }
 
     public override void CheckLimitPlayerDistance()
@@ -221,12 +211,14 @@ public class SkeletonAction : MonsterAction
 
     public override void AttackStart()
     {
+        if(_attackCoroutine == null)
         _attackCoroutine = StartCoroutine(AttackTarget());
     }
 
     public override void AttackExit()
     {
         StopCoroutine(_attackCoroutine);
+        _attackCoroutine = null;
     }
 
     public override IEnumerator AttackTarget()
@@ -234,18 +226,23 @@ public class SkeletonAction : MonsterAction
         
         while (true)
         {
-            yield return null;
+            yield return new WaitForSeconds(_attackSpeed);
+    
+            currentAttack = AttackPattern();
+            _navMeshAgent.stoppingDistance = 0;
+            _navMeshAgent.isStopped = true;
+            _navMeshAgent.SetDestination(_target.transform.position);
+            transform.LookAt(_target.transform);
 
-            if (CanAttackState())
+            yield return new WaitForSeconds(0.5f);
+            _navMeshAgent.isStopped = false;
+            _navMeshAgent.speed = 30f;
+
+
+            if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName(AtkState))
             {
-
-                currentAttack = AttackPattern();
-
-                yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-                
-                _navMeshAgent.SetDestination(_target.transform.position);
-                transform.LookAt(_target.transform);
                 _monster.MyAnimator.SetTrigger(AtkState);
+            }
                 // 사운드 재생
                 Debug.Log(_monster.monsterName + "의 공격!");
                 _target.GetComponent<LivingEntity>().Damaged(_monster.attackDamage);
@@ -258,14 +255,15 @@ public class SkeletonAction : MonsterAction
                 effect.transform.position = FirePoint.position;
                 effect.transform.LookAt(_target.transform);
 
-                yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+               _navMeshAgent.speed = _speed;
+            _navMeshAgent.stoppingDistance = _attackRange - 1;
+            // _monster.MyAnimator.ResetTrigger(AtkState); // off가 되어있으므로 바로 돌아오진 않음.
+            // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 
 
-                _monster.MyAnimator.ResetTrigger(AtkState); // off가 되어있으므로 바로 돌아오진 않음.
-                // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
+            yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-                
-                //ChangeState(STATE.STATE_IDLE);
+            ChangeState(STATE.STATE_IDLE);
                 
                 // 일정 확률로 캐스팅 상태로 바꾼다.
                 //int toCastRandomValue = UnityEngine.Random.Range(0, 100);
@@ -274,11 +272,7 @@ public class SkeletonAction : MonsterAction
                 //{
                 //    ChangeState(STATE.STATE_CAST);
                 //}
-            }
-            else
-            {
-                ChangeState(STATE.STATE_IDLE);
-            }
+            
         }
 
     }
@@ -346,14 +340,18 @@ public class SkeletonAction : MonsterAction
     {
         base.Search();
 
-        idleCnt += Time.deltaTime;
-
-        if (idleCnt > 3)
+        if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            panic = true;
-            idleCnt = 0;
-            if (UnityEngine.Random.Range(1, 100) <= 30)
-                ChangeState(STATE.STATE_STIRR);
+            _monster.MyAnimator.SetTrigger("Idle");
+        }
+
+        if (CanAttackState())
+        {
+            ChangeState(STATE.STATE_ATTACK);
+        }
+        else
+        {
+            ChangeState(STATE.STATE_TRACE);
         }
        
     }
@@ -429,25 +427,6 @@ public class SkeletonAction : MonsterAction
         }
     }
 
-    private void FindPlayer()
-    {
-
-        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-        {
-            _navMeshAgent.isStopped = false;
-            ChangeState(STATE.STATE_TRACE);
-        }
-
-    }
-
-    private void GroundSearch()
-    {
-        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-        {
-            ChangeState(STATE.STATE_IDLE);
-        }
-    }
-
     private void SpawnStart()
     {
         _monster.MyAnimator.SetTrigger("Spawn");
@@ -457,12 +436,6 @@ public class SkeletonAction : MonsterAction
     {
         _navMeshAgent.speed = _speed * 1.5f;
         _monster.MyAnimator.SetTrigger("Walk");
-    }
-
-    private void StirrStart()
-    {
-        _navMeshAgent.isStopped = true;
-        _monster.MyAnimator.SetTrigger("Stirr");
     }
 
     private void OnTriggerEnter(Collider other)

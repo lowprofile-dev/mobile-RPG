@@ -25,7 +25,6 @@ public class MonsterAction : MonoBehaviour
         _currentState = STATE.STATE_IDLE;
         _traceTimer = 0;
         _navMeshAgent = GetComponent<NavMeshAgent>();
-        //_navMeshAgent.stoppingDistance = _attackRange;
     }
 
     public virtual void ChangeState(STATE targetState)
