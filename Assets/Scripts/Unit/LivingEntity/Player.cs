@@ -46,8 +46,6 @@ public class Player : LivingEntity
     PartSelection selection;
     FaceCam faceCam;
 
-    Dictionary<string, int> playerItems = new Dictionary<string, int>();
-
     public WeaponManager weaponManager;
 
     private void Awake()
@@ -246,15 +244,7 @@ public class Player : LivingEntity
         if (other.tag == "Item")
         {
             Item itemInfo = other.gameObject.GetComponent<Item>();
-            Debug.Log(itemInfo.itemName + " 아이템 획득!");
-            if (playerItems.ContainsKey(itemInfo.name))
-            {
-                playerItems.Add(itemInfo.name, playerItems[itemInfo.itemName] + 1);
-            }
-            else
-            {
-                playerItems.Add(itemInfo.name, 1);
-            }
+            Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
             Destroy(other.gameObject);
         }
     }

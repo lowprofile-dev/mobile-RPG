@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8816478430486402227}
-  - component: {fileID: 8816478430486402226}
   - component: {fileID: 8816478430486402228}
+  - component: {fileID: 1603038005}
   m_Layer: 0
   m_Name: Helmet1
   m_TagString: Item
@@ -33,23 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8816478430486402226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8816478430486402231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92570084fa6a80143a89000c07955d68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 0
-  type: 2
-  itemName: Basic Helmet
-  itemDescription: 
-  magicResistance: 0
 --- !u!135 &8816478430486402228
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -63,6 +46,37 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1603038005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8816478430486402231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c5afaaff3bd01468cf7c7efcf0c8a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData:
+    id: 1
+    type: 2
+    itemName: "\uB69D\uBC30\uAE30"
+    itemDescription: "\uB2E8\uB2E8\uD558\uB2E4"
+    isUsing: 0
+    hp: 100
+    hpIncreaseRate: 0
+    hpRecovery: 0
+    stamina: 0
+    staminaRecovery: 0
+    attackDamage: 0
+    attackSpeed: 0
+    attackCooldown: 0
+    armor: 0
+    magicResistance: 0
+    moveSpeed: 0
+    dashCooldown: 0
+    dashStamina: 0
 --- !u!1001 &8816478431242384269
 PrefabInstance:
   m_ObjectHideFlags: 0
