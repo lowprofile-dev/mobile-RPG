@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using SimpleInputNamespace;
 using UnityEngine.EventSystems;
-using UnityEditor.Animations;
 
 public class Player : LivingEntity
 {
@@ -26,9 +25,7 @@ public class Player : LivingEntity
     //[SerializeField] public GameObject skillBEffect;
     //[SerializeField] public GameObject skillCEffect;
     //[SerializeField] public GameObject attackEffect;
-    [SerializeField] public List<AnimatorController> animatorList;
     
-
     [SerializeField] public Transform firePoint;
 
     [SerializeField] private CharacterController characterController;
