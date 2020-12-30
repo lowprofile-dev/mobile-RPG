@@ -23,7 +23,7 @@ public class FaceCam : MonoBehaviour
         cinemachine = GetComponent<CinemachineFreeLook>();
         followAvatar = Instantiate(target);
         followAvatar.transform.position = new Vector3(1000, 1000, 0);
-        followAvatar.transform.rotation = Quaternion.Euler(0, 180, 0);
+        followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         cinemachine.m_Follow = followAvatar.transform;
         cinemachine.m_LookAt = followAvatar.transform;
     }
