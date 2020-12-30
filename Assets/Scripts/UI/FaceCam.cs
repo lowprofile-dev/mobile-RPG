@@ -18,7 +18,7 @@ public class FaceCam : MonoBehaviour
             Destroy(followAvatar);
     }
 
-    public void SetTarget(GameObject target)
+    private void SetTarget(GameObject target)
     {
         cinemachine = GetComponent<CinemachineFreeLook>();
         followAvatar = Instantiate(target);
