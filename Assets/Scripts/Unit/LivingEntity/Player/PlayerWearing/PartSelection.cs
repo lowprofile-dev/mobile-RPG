@@ -174,6 +174,16 @@ public class PartSelection : MonoBehaviour
         characterParts.ChangeHeadAccesories(collections.GetHeadAccesories(headAccesoriesKeys[headAccesoriesIndex]));
     }
 
+    /// <summary>
+    /// 투구 교체
+    /// </summary>
+    /// <param name="index">headAccesoriesKeys에서 해당 아이템 모델 파일명에 있는 끝의 숫자 세자리가 위치한 인덱스</param>
+    public void ChangeHeadAccesoriesPart(int index)
+    {
+        headAccesoriesIndex = index;
+        characterParts.ChangeHeadAccesories(collections.GetHeadAccesories(headAccesoriesKeys[headAccesoriesIndex]));
+    }
+
     public void ChangeLeftShoulderPart()
     {
         leftShoulderIndex = GetPartKeyIndex(leftShoulderIndex, shoulderKeys);
@@ -183,6 +193,16 @@ public class PartSelection : MonoBehaviour
     public void ChangeLeftElbowPart()
     {
         leftElbowIndex = GetPartKeyIndex(leftElbowIndex, elbowKeys);
+        characterParts.ChangeLeftElbow(collections.GetElbow(elbowKeys[leftElbowIndex]));
+    }
+
+    /// <summary>
+    /// 왼손 장갑 교체
+    /// </summary>
+    /// <param name="index">leftElbowKeys에서 해당 아이템 모델 파일명에 있는 끝의 숫자 세자리가 위치한 인덱스</param>
+    public void ChangeLeftElbowPart(int index)
+    {
+        leftElbowIndex = index;
         characterParts.ChangeLeftElbow(collections.GetElbow(elbowKeys[leftElbowIndex]));
     }
 
@@ -210,6 +230,16 @@ public class PartSelection : MonoBehaviour
         characterParts.ChangeRightElbow(collections.GetElbow(elbowKeys[rightElbowIndex]));
     }
 
+    /// <summary>
+    /// 오른손 장갑 교체
+    /// </summary>
+    /// <param name="index">rightElbowKeys에서 해당 아이템 모델 파일명에 있는 끝의 숫자 세자리가 위치한 인덱스</param>
+    public void ChangeRightElbowPart(int index)
+    {
+        rightElbowIndex = index;
+        characterParts.ChangeRightElbow(collections.GetElbow(elbowKeys[rightElbowIndex]));
+    }
+
     public void ChangeRightWeaponPart()
     {
         rightWeaponIndex = GetPartKeyIndex(rightWeaponIndex, weaponKeys);
@@ -231,15 +261,33 @@ public class PartSelection : MonoBehaviour
         characterParts.ChangeChest(collections.GetChest(chestKeys[chestIndex]));
     }
 
+    public void ChangeChestPart(int index)
+    {
+        chestIndex = index;
+        characterParts.ChangeChest(collections.GetChest(chestKeys[chestIndex]));
+    }
+
     public void ChangeSpinePart()
     {
         spineIndex = GetPartKeyIndex(spineIndex, spineKeys);
         characterParts.ChangeSpine(collections.GetSpine(spineKeys[spineIndex]));
     }
 
+    public void ChangeSpinePart(int index)
+    {
+        spineIndex = index;
+        characterParts.ChangeSpine(collections.GetSpine(spineKeys[spineIndex]));
+    }
+
     public void ChangeLowerSpinePart()
     {
         lowerSpineIndex = GetPartKeyIndex(lowerSpineIndex, lowerSpineKeys);
+        characterParts.ChangeLowerSpine(collections.GetLowerSpine(lowerSpineKeys[lowerSpineIndex]));
+    }
+
+    public void ChangeLowerSpinePart(int index)
+    {
+        lowerSpineIndex = index;
         characterParts.ChangeLowerSpine(collections.GetLowerSpine(lowerSpineKeys[lowerSpineIndex]));
     }
 
@@ -255,6 +303,12 @@ public class PartSelection : MonoBehaviour
         characterParts.ChangeLeftKnee(collections.GetKnee(kneeKeys[leftKneeIndex]));
     }
 
+    public void ChangeLeftKneePart(int index)
+    {
+        leftKneeIndex = index;
+        characterParts.ChangeLeftKnee(collections.GetKnee(kneeKeys[leftKneeIndex]));
+    }
+
     public void ChangeRightHipPart()
     {
         rightHipIndex = GetPartKeyIndex(rightHipIndex, hipKeys);
@@ -264,6 +318,12 @@ public class PartSelection : MonoBehaviour
     public void ChangeRightKneePart()
     {
         rightKneeIndex = GetPartKeyIndex(rightKneeIndex, kneeKeys);
+        characterParts.ChangeRightKnee(collections.GetKnee(kneeKeys[rightKneeIndex]));
+    }
+
+    public void ChangeRightKneePart(int index)
+    {
+        rightKneeIndex = index;
         characterParts.ChangeRightKnee(collections.GetKnee(kneeKeys[rightKneeIndex]));
     }
 

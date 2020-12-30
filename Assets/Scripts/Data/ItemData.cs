@@ -12,7 +12,7 @@ public class ItemData
     public string itemType;
     public string itemName;
     public string itemDescription;
-    public bool isUsing;
+    public int itemIndex;
 
     [Header("체력 계수")]
     public float hp;                    //최대 체력 증가
