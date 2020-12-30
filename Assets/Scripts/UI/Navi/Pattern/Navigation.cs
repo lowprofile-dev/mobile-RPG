@@ -5,26 +5,37 @@ using UnityEngine;
 public class Navigation
 {
     Stack<View> viewStack;
-    View current;
+    private View _current; public View current { get { return _current; } }
 
     public Navigation()
     {
         viewStack = new Stack<View>();
-        current = null;
+        _current = null;
     }
+
+    public void UpdateNavigation()
+    {
+        if(_current != null) _current.UIUpdate();
+    }
+
+    public bool Find(string name)
+    {
+        return viewStack.Contains(UINavationManager.Instance.viewObj.transform.Find(name).GetComponent<View>());
+    }
+
     
     public View Push(string name)
     {
-        if(current != null)
+        if(_current != null)
         {
-            current.Hide();
+            _current.Hide();
         }
 
-        current = UINavationManager.Instance.viewObj.transform.Find(name).GetComponent<View>();
-        viewStack.Push(current);
-        current.Show();
+        _current = UINavationManager.Instance.viewObj.transform.Find(name).GetComponent<View>();
+        viewStack.Push(_current);
+        _current.Show();
         
-        return current;
+        return _current;
     }
 
     public View Pop()
@@ -36,7 +47,7 @@ public class Navigation
 
             if (viewStack.Count > 0) viewStack.Peek().Show();
         }
-        return viewStack.Count > 0 ? viewStack.Peek() : null;
+        return _current = viewStack.Count > 0 ? viewStack.Peek() : null;
     }
 
     public View Pop(string name)
@@ -54,7 +65,7 @@ public class Navigation
         }
 
         if (viewStack.Count > 0) viewStack.Peek().Show();
-        return viewStack.Count > 0 ? viewStack.Peek() : null;
+        return _current = viewStack.Count > 0 ? viewStack.Peek() : null;
     }
 
     public View PopAll()
@@ -64,6 +75,6 @@ public class Navigation
             viewStack.Pop();
         }
 
-        return null;
+        return _current = null;
     }
 }
