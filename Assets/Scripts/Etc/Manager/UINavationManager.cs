@@ -15,25 +15,44 @@ public class UINavationManager : SingletonBase<UINavationManager>
         navigationDic["PlayerUI"] = new Navigation();
         navigationDic["SubUI"] = new Navigation();
         PushToNav("PlayerUI_View");
-        //PushToNav("SubUI_CardUIView");
     }
 
     public void UpdateNavigationManager()
     {
-        ControlCardUIView();
+        navigationDic["PlayerUI"].UpdateNavigation();
+        navigationDic["SubUI"].UpdateNavigation();
     }
 
-    public void ControlCardUIView()
+    public void ToggleCardUIView()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            PushToNav("SubUI_CardUIView");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha9))
+        if(FindTargetIsInNav("SubUI_CardUIView"))
         {
             PopToNav("SubUI_CardUIView");
         }
+        else
+        {
+            PushToNav("SubUI_CardUIView");
+        }
+    }
+
+    public void ToggleTalkView()
+    {
+        if (FindTargetIsInNav("PlayerUI_TalkUIView"))
+        {
+            Debug.Log("HELLO");
+            PopToNav("PlayerUI_TalkUIView");
+        }
+        else
+        {
+            Debug.Log("NO HELLO");
+            PushToNav("PlayerUI_TalkUIView");
+        }
+    }
+
+    public bool FindTargetIsInNav(string viewName)
+    {
+        string[] key = viewName.Split('_');
+        return navigationDic[key[0]].Find(viewName);
     }
 
     public View PushToNav(string viewName)
