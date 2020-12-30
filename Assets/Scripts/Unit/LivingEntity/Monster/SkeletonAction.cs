@@ -240,7 +240,7 @@ public class SkeletonAction : MonsterAction
 
                 currentAttack = AttackPattern();
 
-                yield return new WaitForSeconds(_attackSpeed - _monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 
                 _navMeshAgent.SetDestination(_target.transform.position);
                 transform.LookAt(_target.transform);
