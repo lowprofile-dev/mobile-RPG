@@ -56,23 +56,23 @@ public class UIManager : SingletonBase<UIManager>
     }
     public void SkillAClick() //A버튼 스킬
     {
-        Player.Instance.PlayerSkillA();
+        if (!Player.Instance.isdead) Player.Instance.PlayerSkillA();
         Debug.Log("A스킬");
     }
     public void SkillBClick() //B버튼 스킬
     {
-        Player.Instance.PlayerSkillB();
+        if (!Player.Instance.isdead) Player.Instance.PlayerSkillB();
         Debug.Log("B스킬");
     }
     public void SkillCClick() //C버튼 스킬
     {
-        Player.Instance.PlayerSkillC();
+        if (!Player.Instance.isdead) Player.Instance.PlayerSkillC();
         Debug.Log("C스킬");
     }
     public void InvincibleClick() //회피
     {
         Debug.Log("회피");
-        Player.Instance.SetAvoidButton(true);
+        if (!Player.Instance.isdead) Player.Instance.SetAvoidButton(true);
     }
     public void PlayerInfoClick()
     {

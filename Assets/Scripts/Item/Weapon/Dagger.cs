@@ -23,20 +23,4 @@ public class Dagger : Weapon
             masteryLevel++;
         }
     }
-    public override void SkillA()
-    {
-
-    }
-    public override void SkillB()
-    {
-
-    }
-    public override void SkillC()
-    {
-
-    }
-    public override void Attack()
-    {
-
-    }
 }

@@ -14,7 +14,7 @@ public class Weapon
     public GameObject SkillBEffect;
     public GameObject SkillCEffect;
     public GameObject AttackEffect;
-    public Transform EffectPosition;
+    public Vector3 dir;
     
     public RuntimeAnimatorController WeaponAnimation;
 
@@ -23,26 +23,29 @@ public class Weapon
      
     }
 
-    public virtual void SkillA()
+    public virtual GameObject SkillA()
     {
+        return SkillAEffect;
+    }
+    public virtual GameObject SkillB()
+    {
+        return SkillBEffect;
 
     }
-    public virtual void SkillB()
+    public virtual GameObject SkillC()
     {
+        return SkillCEffect;
 
     }
-    public virtual void SkillC()
+    public virtual GameObject Attack()
     {
-
-    }
-    public virtual void Attack()
-    {
+        return AttackEffect;
 
     }
 
     public void OutfitGradeCheck()
     {
-        if (outfitGrade <= 3)
+        if (outfitGrade <= 2)
         {
             if (masteryLevel > Player.Instance.weaponManager.GradeCriteria[outfitGrade + 1])
             {

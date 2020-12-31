@@ -118,7 +118,7 @@ public class StateAvoid_TestPlayer : State
 
     public override void EndState()
     {
-
+        Player.Instance.SetAvoidButton(false);
     }
 }
 

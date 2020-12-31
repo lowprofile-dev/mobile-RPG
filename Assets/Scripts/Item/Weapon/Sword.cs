@@ -15,7 +15,7 @@ public class Sword : Weapon
         SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill A");
         SkillBEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill B");
         SkillCEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill C");
-
+ 
         WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Sword Animator");
 
     }
@@ -30,20 +30,35 @@ public class Sword : Weapon
         }
     }
 
-    public override void SkillA()
+    public override GameObject SkillA()
     {
+        Player.Instance.skillPoint.position = new Vector3(0f, -1f, 0f) + Player.Instance.gameObject.transform.position;
+        Player.Instance.skillPoint.rotation = Player.Instance.transform.rotation;
 
+        return SkillAEffect;
     }
-    public override void SkillB()
+    public override GameObject SkillB()
     {
+        dir = Player.Instance.firePoint.position - Player.Instance.transform.position;
+        dir = dir.normalized;
+        Player.Instance.skillPoint.position = dir * 3f + Player.Instance.transform.position + new Vector3(0f, -1f, 0f);
+        Player.Instance.skillPoint.rotation = Player.Instance.transform.rotation;
 
+        return SkillBEffect;
     }
-    public override void SkillC()
+    public override GameObject SkillC()
     {
-
+        dir = Player.Instance.firePoint.position - Player.Instance.transform.position;
+        dir = dir.normalized;
+        Player.Instance.skillPoint.position = dir * 8f + Player.Instance.transform.position + new Vector3(0f,-1f,0f);
+        Player.Instance.skillPoint.rotation = Player.Instance.transform.rotation;
+        return SkillCEffect;
     }
-    public override void Attack()
+    public override GameObject Attack()
     {
-
+        Player.Instance.skillPoint.position = Player.Instance.firePoint.position + new Vector3(-0.2f, -0.5f, 0f);
+        Player.Instance.skillPoint.rotation = Player.Instance.transform.rotation;
+        Player.Instance.skillPoint.Rotate(new Vector3(0f, 0f, -50f));
+        return AttackEffect;
     }
 }
