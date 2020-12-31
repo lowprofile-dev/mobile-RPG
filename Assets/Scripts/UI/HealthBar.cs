@@ -33,7 +33,7 @@ public class HealthBar : MonoBehaviour
                 maxHp = Player.Instance.initMp;
                 barSet = true;
             }
-            if (barSet) Bar.fillAmount = Player.Instance.Hp / maxHp;
+            if (barSet) Bar.fillAmount = Player.Instance.Mp / maxHp;
         }
 
     }

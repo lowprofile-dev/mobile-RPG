@@ -38,4 +38,9 @@ public class LivingEntity : Unit
         _hp -= damage;
         Debug.Log(name + "이 " + damage + "만큼 피해를 입었습니다.");
     }
+
+    public virtual void UseMp(float skillmp)
+    {
+        _mp -= skillmp;
+    }
 }

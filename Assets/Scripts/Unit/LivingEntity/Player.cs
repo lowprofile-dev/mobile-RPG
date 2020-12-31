@@ -24,7 +24,8 @@ public class Player : LivingEntity
     private float skillA_Counter= 0f;
     private float skillB_Counter= 0f;
     private float skillC_Counter= 0f;
-    
+    private float mpCounter = 0f;
+
     [SerializeField] public Transform firePoint;
     [SerializeField] public Transform skillPoint;
 
@@ -86,12 +87,12 @@ public class Player : LivingEntity
 
             if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
             {
-                PlayerAvoidance();
-
                 PlayerMove();
 
                 PlayerSkillCheck();
 
+                PlayerMpRecovery();
+                
                 weaponManager.UpdateWeapon();
 
                 selection.Update();
@@ -106,6 +107,16 @@ public class Player : LivingEntity
             CheckInteractObject();
         }
         
+    }
+
+    private void PlayerMpRecovery()
+    {
+        mpCounter += Time.deltaTime;
+        if(mpCounter >= 2f)
+        {
+            _mp++;
+            mpCounter = 0f;
+        }
     }
 
     private void PlayerSkillCheck()
@@ -221,7 +232,6 @@ public class Player : LivingEntity
     {
         if (avoidButtonClick)
         {
-            _mp -= 2;
             if (direction == Vector3.zero) characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
             else characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
         }
