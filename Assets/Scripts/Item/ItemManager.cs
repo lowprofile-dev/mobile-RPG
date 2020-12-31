@@ -28,9 +28,9 @@ public class ItemManager : SingletonBase<ItemManager>
 {
     //착용중인 아이템 인덱스
     public CurrentItems currentItems;
-    Dictionary<int, ItemData> itemDictionary;
     //Dictionary<ItemData, int> playerInventory;
-    Dictionary<int, int> playerInventory;
+    public Dictionary<int, int> playerInventory;
+    public Dictionary<int, ItemData> itemDictionary;
     Player player;
     PartSelection playerPartSelection;
 
