@@ -15,15 +15,15 @@ public class Player : LivingEntity
     private State saveState = null;
 
     [SerializeField] private GameObject _playerAvatar;
+
     private bool AttackButtonClick = false;
     private bool SkillA_ButtonClick = false;
     private bool SkillB_ButtonClick = false;
     private bool SkillC_ButtonClick = false;
 
-    //[SerializeField] public GameObject skillAEffect;
-    //[SerializeField] public GameObject skillBEffect;
-    //[SerializeField] public GameObject skillCEffect;
-    //[SerializeField] public GameObject attackEffect;
+    private float skillA_Counter= 0f;
+    private float skillB_Counter= 0f;
+    private float skillC_Counter= 0f;
     
     [SerializeField] public Transform firePoint;
     [SerializeField] public Transform skillPoint;
@@ -67,16 +67,19 @@ public class Player : LivingEntity
 
         if(isdead)
         {
-            if(Input.GetKeyDown(KeyCode.Return))
-            {
-                GameManager.Instance.InitGameManager();
-            }
+            //죽었을 때
         }
         else
         {
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 weaponManager.SetWeapon("WAND");
+            }
+
+            if(Input.GetKeyDown(KeyCode.L))
+            {
+                _hp--;
+             
             }
 
             if (joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
@@ -86,6 +89,8 @@ public class Player : LivingEntity
                 PlayerAvoidance();
 
                 PlayerMove();
+
+                PlayerSkillCheck();
 
                 weaponManager.UpdateWeapon();
 
@@ -101,6 +106,34 @@ public class Player : LivingEntity
             CheckInteractObject();
         }
         
+    }
+
+    private void PlayerSkillCheck()
+    {
+        if(SkillA_ButtonClick)
+        {
+            skillA_Counter += Time.deltaTime;
+            if(skillA_Counter >= weaponManager.GetWeapon().coolTimeA)
+            {
+                SkillA_ButtonClick = false;
+            }
+        }
+        if(SkillB_ButtonClick)
+        {
+            skillB_Counter += Time.deltaTime;
+            if (skillB_Counter >= weaponManager.GetWeapon().coolTimeB)
+            {
+                SkillB_ButtonClick = false;
+            }
+        }
+        if(SkillC_ButtonClick)
+        {
+            skillC_Counter += Time.deltaTime;
+            if (skillC_Counter >= weaponManager.GetWeapon().coolTimeC)
+            {
+                SkillC_ButtonClick = false;
+            }
+        }
     }
 
     public void PlayerMove()
@@ -133,28 +166,39 @@ public class Player : LivingEntity
 
     public void PlayerSkillA()
     {
-        MyStateMachine.SetState("SKILL_A");
-
-        GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillA());
-        skill.transform.position = skillPoint.position;
-        skill.transform.rotation = skillPoint.rotation; 
+        if(SkillA_ButtonClick== false)
+        {
+            MyStateMachine.SetState("SKILL_A");
+            SkillA_ButtonClick = true;
+            skillA_Counter = 0f;
+            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillA());
+            skill.transform.position = skillPoint.position;
+            skill.transform.rotation = skillPoint.rotation;
+        }
     }
     public void PlayerSkillB()
     {
-        MyStateMachine.SetState("SKILL_B");
-
-        GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillB());
-        skill.transform.position = skillPoint.position;
-        skill.transform.rotation = skillPoint.rotation;
-
+        if (SkillB_ButtonClick == false)
+        {
+            MyStateMachine.SetState("SKILL_B");
+            SkillB_ButtonClick = true;
+            skillB_Counter = 0f;
+            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillB());
+            skill.transform.position = skillPoint.position;
+            skill.transform.rotation = skillPoint.rotation;
+        }
     }
     public void PlayerSkillC()
     {
-        MyStateMachine.SetState("SKILL_C");
-        //GameObject skill = Instantiate(weaponManager.GetWeapon().SkillCEffect);
-        GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillC());
-        skill.transform.position = skillPoint.position;
-        skill.transform.rotation = skillPoint.rotation;
+        if (SkillC_ButtonClick == false)
+        {
+            MyStateMachine.SetState("SKILL_C");
+            SkillC_ButtonClick = true;
+            skillC_Counter = 0f;
+            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillC());
+            skill.transform.position = skillPoint.position;
+            skill.transform.rotation = skillPoint.rotation;
+        }
     }
 
     public bool GetAttackButton()
@@ -177,15 +221,8 @@ public class Player : LivingEntity
     {
         if (avoidButtonClick)
         {
-            count += 1f;
-
-            if (count > avoid_power)
-            {
-                avoidButtonClick = false;
-                count = 0f;
-            }
+            _mp -= 2;
             if (direction == Vector3.zero) characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
-
             else characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
         }
     }
@@ -199,9 +236,7 @@ public class Player : LivingEntity
     }
     protected override void InitObject()
     {
-
-        //임의 값
-        _hp = 1;
+        base.InitObject();
 
         selection = GetComponent<PartSelection>();
         selection.Start();

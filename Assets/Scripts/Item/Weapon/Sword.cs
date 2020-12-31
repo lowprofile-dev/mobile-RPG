@@ -11,6 +11,11 @@ public class Sword : Weapon
         speed = 1.5f;
         masteryLevel = 1;
         outfitGrade = 0;
+
+        coolTimeA = 4f;
+        coolTimeB = 6f;
+        coolTimeC = 7f;
+
         AttackEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Attack");
         SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill A");
         SkillBEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill B");

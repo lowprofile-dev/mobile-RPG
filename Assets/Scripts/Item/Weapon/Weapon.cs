@@ -14,6 +14,11 @@ public class Weapon
     public GameObject SkillBEffect;
     public GameObject SkillCEffect;
     public GameObject AttackEffect;
+
+    public float coolTimeA;
+    public float coolTimeB;
+    public float coolTimeC;
+
     public Vector3 dir;
     
     public RuntimeAnimatorController WeaponAnimation;

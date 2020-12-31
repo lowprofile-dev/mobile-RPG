@@ -4,19 +4,37 @@ using UnityEngine;
 using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
-    Image hpBar;
+    Image Bar;
     float maxHp = 100f;
-    public static float hp;
+    public bool barSet = false;
     // Start is called before the first frame update
     void Start()
     {
-        hpBar = GetComponent<Image>();
-        hp = maxHp;
+        Bar = GetComponent<Image>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        hpBar.fillAmount = hp / maxHp;
+        if (gameObject.name == "HP")
+        {
+            if (Player.Instance != null && barSet == false)
+            {
+                maxHp = Player.Instance.initHp;
+                barSet = true;
+            }
+            if (barSet) Bar.fillAmount = Player.Instance.Hp / maxHp;
+
+        }
+        else
+        {
+            if (Player.Instance != null && barSet == false)
+            {
+                maxHp = Player.Instance.initMp;
+                barSet = true;
+            }
+            if (barSet) Bar.fillAmount = Player.Instance.Hp / maxHp;
+        }
+
     }
 }
