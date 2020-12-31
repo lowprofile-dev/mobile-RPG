@@ -29,17 +29,28 @@ public class ItemManager : SingletonBase<ItemManager>
     //착용중인 아이템 인덱스
     public CurrentItems currentItems;
     Dictionary<int, ItemData> itemDictionary;
-    Dictionary<ItemData, int> playerInventory;
+    //Dictionary<ItemData, int> playerInventory;
+    Dictionary<int, int> playerInventory;
     public Player player;
     PartSelection playerPartSelection;
 
+    public int inventorySize;
+
     private void Start()
     {
-        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
+        itemDictionary = new Dictionary<int, ItemData>();
+        playerInventory = new Dictionary<int, int>();
+        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/itemDatabase");
         itemDictionary = itemTable.TableToDictionary<int, ItemData>();
         playerPartSelection = player.gameObject.GetComponent<PartSelection>();
+        SaveCurrentItems();
         LoadCurrentItems();
         LoadInventoryData();
+    }
+
+    private void Update()
+    {
+        inventorySize = playerInventory.Count;
     }
 
     /// <summary>
@@ -47,7 +58,7 @@ public class ItemManager : SingletonBase<ItemManager>
     /// </summary>
     private void SaveCurrentItems()
     {
-        string jsonData = JsonUtility.ToJson(currentItems);
+        string jsonData = JsonUtility.ToJson(currentItems, true);
         string path = Path.Combine(Application.dataPath, "playerCurrentItems.json");
         File.WriteAllText(path, jsonData);
     }
@@ -69,26 +80,39 @@ public class ItemManager : SingletonBase<ItemManager>
     /// <param name="item">아이템</param>
     public void AddItem(Item item)
     {
-        if (playerInventory.ContainsKey(item.itemData))
+        if (playerInventory.ContainsKey(item.itemData.id))
         {
-            playerInventory[item.itemData] += 1;
+            playerInventory[item.itemData.id] += 1;
         }
         else
         {
-            playerInventory.Add(item.itemData, 1);
+            playerInventory.Add(item.itemData.id, 1);
         }
         SaveInventoryData();
     }
 
     public void RemoveItem(Item item)
     {
-        playerInventory.Remove(item.itemData);
+        playerInventory.Remove(item.itemData.id);
         SaveInventoryData();
     }
 
     public void SetItemData(int id, out ItemData itemData)
     {
         itemData = itemDictionary[id];
+    }
+
+    [ContextMenu("Set Item to Player")]
+    public void SetItemToPlayer()
+    {
+        playerPartSelection.ChangeChestPart(currentItems.chestIndex);
+        playerPartSelection.ChangeSpinePart(currentItems.spineIndex);
+        playerPartSelection.ChangeLowerSpinePart(currentItems.lowerSpineIndex);
+        playerPartSelection.ChangeHeadAccesoriesPart(currentItems.headAccesoriesIndex);
+        playerPartSelection.ChangeLeftElbowPart(currentItems.leftElbowIndex);
+        playerPartSelection.ChangeRightElbowPart(currentItems.rightElbowIndex);
+        playerPartSelection.ChangeLeftKneePart(currentItems.leftKneeIndex);
+        playerPartSelection.ChangeRightKneePart(currentItems.rightKneeIndex);
     }
 
     /// <summary>
@@ -136,19 +160,47 @@ public class ItemManager : SingletonBase<ItemManager>
     public void SaveInventoryData()
     {
         string jsonData = JsonConvert.SerializeObject(playerInventory, Formatting.Indented);
-        string path = Path.Combine(Application.dataPath, "itemDatabase.json");
+        string path = Path.Combine(Application.dataPath, "inventoryDB.json");
         File.WriteAllText(path, jsonData);
     }
 
     /// <summary>
-    /// JSON형식의 인벤토리 데이터 로드 
+    /// JSON형식의 인벤토리 데이터 로드
     /// </summary>
     [ContextMenu("Load Inventory Data from Json")]
     public void LoadInventoryData()
     {
-        string path = Path.Combine(Application.dataPath, "itemDatabase.json");
+        List<KeyValuePair<ItemData, int>> temp = new List<KeyValuePair<ItemData, int>>();
+        string path = Path.Combine(Application.dataPath, "inventoryDB.json");
         string jsonData = File.ReadAllText(path);
         if (jsonData == null) return;
-        playerInventory = JsonConvert.DeserializeObject<Dictionary<ItemData, int>>(jsonData);
+        playerInventory = JsonConvert.DeserializeObject<Dictionary<int, int>>(jsonData);
     }
+
+    [ContextMenu("Save Item Data to Json")]
+    public void SaveItemData()
+    {
+        string jsonData = JsonConvert.SerializeObject(itemDictionary, Formatting.Indented);
+        string path = Path.Combine(Application.dataPath, "itemDB.json");
+        File.WriteAllText(path, jsonData);
+    }
+
+    //private List<KeyValuePair<ItemData, int>> DictToList(Dictionary<ItemData, int> dict)
+    //{
+    //    List<KeyValuePair<ItemData, int>> result = new List<KeyValuePair<ItemData, int>>();
+    //    foreach(var data in dict)
+    //    {
+    //        result.Add(data);
+    //    }
+    //    return result;
+    //}
+    //private Dictionary<ItemData, int> ListToDict(List<KeyValuePair<ItemData, int>> list)
+    //{
+    //    Dictionary<ItemData, int> result = new Dictionary<ItemData, int>();
+    //    foreach(var data in list)
+    //    {
+    //        result.Add(data.Key, data.Value);
+    //    }
+    //    return result;
+    //}
 }
