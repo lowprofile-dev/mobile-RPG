@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using System;
+using CSVReader;
 
 [System.Serializable]
 public class CurrentItems
@@ -23,17 +24,19 @@ public class CurrentItems
     public int rightKneeIndex = 0;
 }
 
-public class ItemManager : MonoBehaviour
+public class ItemManager : SingletonBase<ItemManager>
 {
     //착용중인 아이템 인덱스
     public CurrentItems currentItems;
-
+    Dictionary<int, ItemData> itemDictionary;
     Dictionary<ItemData, int> playerInventory;
     public Player player;
     PartSelection playerPartSelection;
 
     private void Start()
     {
+        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
+        itemDictionary = itemTable.TableToDictionary<int, ItemData>();
         playerPartSelection = player.gameObject.GetComponent<PartSelection>();
         LoadCurrentItems();
         LoadInventoryData();
@@ -61,7 +64,7 @@ public class ItemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 획득한 아이템 추가!
+    /// 획득한 아이템 인벤토리에 추가!
     /// </summary>
     /// <param name="item">아이템</param>
     public void AddItem(Item item)
@@ -83,11 +86,16 @@ public class ItemManager : MonoBehaviour
         SaveInventoryData();
     }
 
+    public void SetItemData(int id, out ItemData itemData)
+    {
+        itemData = itemDictionary[id];
+    }
+
     /// <summary>
     /// 아이템에 맞춰 플레이어에게 장착
     /// </summary>
     /// <param name="item">갈아낄 아이템 객체</param>
-    public void SetItem(Item item)
+    public void SetItemToPlayer(Item item)
     {
         switch (item.itemData.itemType)
         {

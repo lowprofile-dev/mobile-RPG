@@ -47,6 +47,7 @@ public class Player : LivingEntity
     FaceCam faceCam;
 
     public WeaponManager weaponManager;
+    public ItemManager itemManager;
 
     private void Awake()
     {
@@ -244,6 +245,7 @@ public class Player : LivingEntity
         if (other.tag == "Item")
         {
             Item itemInfo = other.gameObject.GetComponent<Item>();
+            itemManager.AddItem(itemInfo);
             Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
             Destroy(other.gameObject);
         }
