@@ -110,6 +110,10 @@ public class Player : LivingEntity
         MyStateMachine.UpdateState();
     }
 
+    public void CameraChange()
+    {
+        faceCam.Init(transform.Find("PlayerAvatar").gameObject);
+    }
     public bool GetMove()
     {
         return joystick.getHold();
