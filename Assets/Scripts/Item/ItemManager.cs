@@ -31,7 +31,7 @@ public class ItemManager : SingletonBase<ItemManager>
     Dictionary<int, ItemData> itemDictionary;
     //Dictionary<ItemData, int> playerInventory;
     Dictionary<int, int> playerInventory;
-    public Player player;
+    Player player;
     PartSelection playerPartSelection;
 
     public int inventorySize;
@@ -42,7 +42,6 @@ public class ItemManager : SingletonBase<ItemManager>
         playerInventory = new Dictionary<int, int>();
         Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/itemDatabase");
         itemDictionary = itemTable.TableToDictionary<int, ItemData>();
-        playerPartSelection = player.gameObject.GetComponent<PartSelection>();
         SaveCurrentItems();
         LoadCurrentItems();
         LoadInventoryData();
@@ -51,6 +50,11 @@ public class ItemManager : SingletonBase<ItemManager>
     private void Update()
     {
         inventorySize = playerInventory.Count;
+        if (player == null)
+        {
+            player = Player.Instance;
+            playerPartSelection = player.gameObject.GetComponent<PartSelection>();
+        }
     }
 
     /// <summary>
