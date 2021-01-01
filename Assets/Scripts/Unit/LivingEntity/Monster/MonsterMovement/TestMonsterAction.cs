@@ -182,7 +182,7 @@ public class TestMonsterAction : MonsterAction
 
             // 일정 확률로 캐스팅 상태로 바꾼다.
             int toCastRandomValue = UnityEngine.Random.Range(0, 100);
-            if (toCastRandomValue < _monster.castPercent)
+            if (toCastRandomValue < _monster.Mp)
             {
                 ChangeState(STATE.STATE_CAST);
             }
