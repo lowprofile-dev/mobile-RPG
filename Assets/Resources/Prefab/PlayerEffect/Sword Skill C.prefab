@@ -9654,9 +9654,11 @@ GameObject:
   - component: {fileID: 198274495757603134}
   - component: {fileID: 199017896374315618}
   - component: {fileID: -61488994135433881}
+  - component: {fileID: 5840267051493090762}
+  - component: {fileID: -1185964848008929262}
   m_Layer: 0
   m_Name: Sword Skill C
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14478,6 +14480,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5cf677000a6d1cb4d8fb192c730bccb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &5840267051493090762
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644958980890870}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-1185964848008929262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644958980890870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78af85c0608b28149970e78d3f985a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1727676261671216

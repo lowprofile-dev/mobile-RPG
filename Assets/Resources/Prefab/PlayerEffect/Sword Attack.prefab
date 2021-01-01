@@ -14451,9 +14451,11 @@ GameObject:
   - component: {fileID: 198797747840148992}
   - component: {fileID: 199483525837215608}
   - component: {fileID: 8024900059525713796}
+  - component: {fileID: 2539771721330510165}
+  - component: {fileID: 8323420196384316126}
   m_Layer: 0
   m_Name: Sword Attack
-  m_TagString: Untagged
+  m_TagString: PlayerAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19265,6 +19267,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf677000a6d1cb4d8fb192c730bccb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2539771721330510165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524545281820322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78af85c0608b28149970e78d3f985a59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &8323420196384316126
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524545281820322}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.42, y: 1.42, z: 1.42}
+  m_Center: {x: 0, y: 0, z: 2}
 --- !u!1 &1571652814776328
 GameObject:
   m_ObjectHideFlags: 0
