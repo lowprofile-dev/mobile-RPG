@@ -48,14 +48,13 @@ public class ItemManager : SingletonBase<ItemManager>
 
     public int inventorySize;
 
-    private void Awake()
+    private void Start()
     {
         currentItems = new CurrentItems();
         itemDictionary = new Dictionary<int, ItemData>();
         playerInventory = new Dictionary<int, int>();
         Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/itemDatabase");
         itemDictionary = itemTable.TableToDictionary<int, ItemData>();
-        SaveCurrentItems();
         LoadCurrentItems();
         LoadInventoryData();
     }
@@ -76,8 +75,9 @@ public class ItemManager : SingletonBase<ItemManager>
     private void SaveCurrentItems()
     {
         string jsonData = JsonUtility.ToJson(currentItems, true);
-        string path = Path.Combine(Application.dataPath, "playerCurrentItems.json");
+        string path = Path.Combine(Application.persistentDataPath, "playerCurrentItems.json");
         File.WriteAllText(path, jsonData);
+        Debug.Log(jsonData);
     }
 
     /// <summary>
@@ -85,7 +85,22 @@ public class ItemManager : SingletonBase<ItemManager>
     /// </summary>
     private void LoadCurrentItems()
     {
-        string path = Path.Combine(Application.dataPath, "playerCurrentItems.json");
+        PlayerPrefs.SetInt("LoadCurrentItemCount", PlayerPrefs.GetInt("LoadCurrentItemCount", 0));
+        TextAsset jsonRawData;
+        if (PlayerPrefs.GetInt("LoadCurrentItemCount") == 0)
+        {
+            Debug.Log("최초 실행입니다.");
+            PlayerPrefs.SetInt("LoadCurrentItemCount", 1);
+
+            jsonRawData = Resources.Load("Data/playerCurrentItems") as TextAsset;
+            string jsonFirstData = jsonRawData.ToString();
+            string pathFirst = Path.Combine(Application.persistentDataPath, "playerCurrentItems.json");
+            File.WriteAllText(pathFirst, jsonFirstData);
+
+            PlayerPrefs.Save();
+        }
+
+        string path = Path.Combine(Application.persistentDataPath, "playerCurrentItems.json");
         string jsonData = File.ReadAllText(path);
         if (jsonData == null) return;
         currentItems = JsonUtility.FromJson<CurrentItems>(jsonData);
@@ -177,7 +192,7 @@ public class ItemManager : SingletonBase<ItemManager>
     public void SaveInventoryData()
     {
         string jsonData = JsonConvert.SerializeObject(playerInventory, Formatting.Indented);
-        string path = Path.Combine(Application.dataPath, "inventoryDB.json");
+        string path = Path.Combine(Application.persistentDataPath, "inventoryDB.json");
         File.WriteAllText(path, jsonData);
     }
 
@@ -187,8 +202,21 @@ public class ItemManager : SingletonBase<ItemManager>
     [ContextMenu("Load Inventory Data from Json")]
     public void LoadInventoryData()
     {
-        List<KeyValuePair<ItemData, int>> temp = new List<KeyValuePair<ItemData, int>>();
-        string path = Path.Combine(Application.dataPath, "inventoryDB.json");
+        TextAsset jsonRawData;
+        if (PlayerPrefs.GetInt("LoadInventoryDataCount") == 0)
+        {
+            Debug.Log("최초 실행입니다.");
+            PlayerPrefs.SetInt("LoadInventoryDataCount", 1);
+
+            jsonRawData = Resources.Load("Data/inventoryDB") as TextAsset;
+            string jsonFirstData = jsonRawData.ToString();
+            string pathFirst = Path.Combine(Application.persistentDataPath, "inventoryDB.json");
+            File.WriteAllText(pathFirst, jsonFirstData);
+
+            PlayerPrefs.Save();
+        }
+        //List<KeyValuePair<ItemData, int>> temp = new List<KeyValuePair<ItemData, int>>();
+        string path = Path.Combine(Application.persistentDataPath, "inventoryDB.json");
         string jsonData = File.ReadAllText(path);
         if (jsonData == null) return;
         playerInventory = JsonConvert.DeserializeObject<Dictionary<int, int>>(jsonData);
@@ -198,7 +226,7 @@ public class ItemManager : SingletonBase<ItemManager>
     public void SaveItemData()
     {
         string jsonData = JsonConvert.SerializeObject(itemDictionary, Formatting.Indented);
-        string path = Path.Combine(Application.dataPath, "itemDB.json");
+        string path = Path.Combine(Application.persistentDataPath, "itemDB.json");
         File.WriteAllText(path, jsonData);
     }
 
