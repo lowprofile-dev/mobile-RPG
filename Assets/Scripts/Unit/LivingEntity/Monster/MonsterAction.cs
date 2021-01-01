@@ -99,7 +99,7 @@ public class MonsterAction : MonoBehaviour
 
     public virtual void Die()
     {
-
+       
     }
 
     public virtual void Damaged(float dmg)

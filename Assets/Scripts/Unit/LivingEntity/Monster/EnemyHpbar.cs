@@ -23,6 +23,7 @@ public class EnemyHpbar : PrograssBar
     protected override void BarUpdate()
     {
         hpSlider.value = obj.GetComponent<LivingEntity>().Hp / obj.GetComponent<LivingEntity>().initHp;
+        if(MpSlider != null)
         MpSlider.value = obj.GetComponent<LivingEntity>().Mp / obj.GetComponent<LivingEntity>().initMp;
 
         transform.rotation = Quaternion.LookRotation(cam.transform.position);

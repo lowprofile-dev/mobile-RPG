@@ -207,9 +207,25 @@ public class BossSkeletonAction : MonsterAction
             case STATE.STATE_DEBUFF:
                 break;
             case STATE.STATE_DIE:
+                Die();
                 break;
             default:
                 break;
+        }
+    }
+
+    public override void Die()
+    {
+        base.Die();
+
+        if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
+        {
+            _monster.MyAnimator.SetTrigger("Die");
+        }
+
+        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && _monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
+        {
+            ObjectPoolManager.Instance.ReturnObject(gameObject);
         }
     }
 
@@ -311,7 +327,7 @@ public class BossSkeletonAction : MonsterAction
     //        Debug.Log("하시레");
     //        _navMeshAgent.SetDestination(_target.transform.position);
     //    }
-        
+
 
     //    //_navMeshAgent.SetDestination(_target.transform.position);
     //    // Run StepSound 재생
@@ -522,8 +538,10 @@ public class BossSkeletonAction : MonsterAction
     {
         if (_currentState != STATE.STATE_DIE && NoHPCheck())
         {
-           // ChangeState(STATE.STATE_DIE);
+            StopAllCoroutines();
+            Debug.Log("사망");
             _currentState = STATE.STATE_DIE;
+
         }
     }
     public override void PlayerDeathCheck()
