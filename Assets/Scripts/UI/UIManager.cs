@@ -41,18 +41,18 @@ public class UIManager : SingletonBase<UIManager>
     void InventoryClick()
     {
         Debug.Log("인벤토리");
-        UINavationManager.Instance.PushToNav("SubUI_Inventory");
+        UINaviationManager.Instance.PushToNav("SubUI_Inventory");
     }
 
     void Start()
     {
-        UILoaderManager.Instance.AddScene("DungeonScene");
+        UILoaderManager.Instance.AddScene("VillageScene");
     }
 
     public void OptionClick()
     {
         Debug.Log("옵션");
-        UINavationManager.Instance.PushToNav("SubUI_Info");
+        UINaviationManager.Instance.PushToNav("SubUI_Info");
     }
     public void SkillAClick() //A버튼 스킬
     {
@@ -77,7 +77,7 @@ public class UIManager : SingletonBase<UIManager>
     public void PlayerInfoClick()
     {
         Debug.Log("플레이어 정보창");
-        UINavationManager.Instance.PushToNav("SubUI_Info");
+        UINaviationManager.Instance.PushToNav("SubUI_Info");
     }
 
 }

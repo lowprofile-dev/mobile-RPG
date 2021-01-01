@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Talk
 {
     private TalkData _talkData; public TalkData talkData { get { return _talkData; } }
 
-    private int _convIndex; public int convIndex { get { return _convIndex; } }// 현재 진행중인 대화의 인덱스
-    private List<string> _speaker; public List<string> speaker { get { return _speaker; } }// 발언자 리스트
+    private int _convIndex; public int convIndex { get { return _convIndex; } } // 현재 진행중인 대화의 인덱스
+    private List<string> _speaker; public List<string> speaker { get { return _speaker; } } // 발언자 리스트
     private List<string> _texts; public List<string> texts { get { return _texts; } } // 발언 리스트
 
     public Talk()
@@ -23,12 +24,27 @@ public class Talk
         // 끝까지 다 말했을 경우
         if (_convIndex == _speaker.Count)
         {
-            _convIndex = 0;
             return false;
         }
 
         // 끝까지 다 말하지 않았을 경우
         return true;
+    }
+
+    public bool IsFinished()
+    {
+        return _convIndex == speaker.Count;
+    }
+
+    // 다음 대화가 존재하는지 확인
+    public bool HasNext()
+    {
+        return _convIndex + 1 == _speaker.Count;
+    }
+
+    public void InitConvIndex()
+    {
+        _convIndex = 0;
     }
 
     // 대화 내용을 정제한다.
@@ -54,4 +70,5 @@ public class Talk
 
         return data;
     }
+
 }

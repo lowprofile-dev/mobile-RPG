@@ -20,7 +20,7 @@ public class Navigation
 
     public bool Find(string name)
     {
-        return viewStack.Contains(UINavationManager.Instance.viewObj.transform.Find(name).GetComponent<View>());
+        return viewStack.Contains(UINaviationManager.Instance.viewObj.transform.Find(name).GetComponent<View>());
     }
 
     
@@ -31,7 +31,7 @@ public class Navigation
             _current.Hide();
         }
 
-        _current = UINavationManager.Instance.viewObj.transform.Find(name).GetComponent<View>();
+        _current = UINaviationManager.Instance.viewObj.transform.Find(name).GetComponent<View>();
         viewStack.Push(_current);
         _current.Show();
         

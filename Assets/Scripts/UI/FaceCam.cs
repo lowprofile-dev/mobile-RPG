@@ -9,7 +9,7 @@ public class FaceCam : MonoBehaviour
     public GameObject followAvatar;
     public void Init(GameObject avatar)
     {
-        SetTarget(avatar);
+        SetTargetWithGenerate(avatar);
     }
 
     private void OnDisable()
@@ -18,7 +18,7 @@ public class FaceCam : MonoBehaviour
             Destroy(followAvatar);
     }
 
-    private void SetTarget(GameObject target)
+    public void SetTargetWithGenerate(GameObject target)
     {
         cinemachine = GetComponent<CinemachineFreeLook>();
         followAvatar = Instantiate(target);
@@ -26,5 +26,15 @@ public class FaceCam : MonoBehaviour
         followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         cinemachine.m_Follow = followAvatar.transform;
         cinemachine.m_LookAt = followAvatar.transform;
+    }
+
+    public void SetTarget(GameObject target)
+    {
+        cinemachine = GetComponent<CinemachineFreeLook>();
+        followAvatar = target;
+        followAvatar.transform.position = new Vector3(1050, 1050, 0);
+        followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
+        cinemachine.m_Follow = target.transform;
+        cinemachine.m_LookAt = target.transform;
     }
 }

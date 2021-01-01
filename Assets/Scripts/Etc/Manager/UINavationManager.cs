@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class UINavationManager : SingletonBase<UINavationManager>
+public class UINaviationManager : SingletonBase<UINaviationManager>
 {
     Dictionary<string, Navigation> navigationDic;
     public GameObject viewObj;

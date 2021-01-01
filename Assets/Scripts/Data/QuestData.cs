@@ -7,7 +7,7 @@ using UnityEngine;
 [CSVReader.Data("id")]
 public class QuestData 
 {
-    public int id; // 퀘스트 ID
+    public string id; // 퀘스트 ID
     public string questName; // 퀘스트 이름
     public string npcId; // NPC 순번
     public string convId; // 대화 순번

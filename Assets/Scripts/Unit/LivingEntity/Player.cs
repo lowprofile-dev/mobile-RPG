@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using SimpleInputNamespace;
 using UnityEngine;
-using SimpleInputNamespace;
-using UnityEngine.EventSystems;
 
 public class Player : LivingEntity
 {
     public static Player Instance;
-    
+
     private bool avoidButtonClick = false;
     [SerializeField] private float avoid_power = 10f;
     private float count = 0f;
@@ -25,7 +21,7 @@ public class Player : LivingEntity
     //[SerializeField] public GameObject skillBEffect;
     //[SerializeField] public GameObject skillCEffect;
     //[SerializeField] public GameObject attackEffect;
-    
+
     [SerializeField] public Transform firePoint;
 
     [SerializeField] private CharacterController characterController;
@@ -39,12 +35,14 @@ public class Player : LivingEntity
     [SerializeField] private Quaternion rotateAngle;
 
     public Joystick joystick = null;
-    
+
     float horizontal;
     float vertical;
     bool isdead = false;
     PartSelection selection;
     FaceCam faceCam;
+    public GameObject playerAvatar;
+
 
     public WeaponManager weaponManager;
 
@@ -56,8 +54,9 @@ public class Player : LivingEntity
     protected override void Start()
     {
         base.Start();
+        playerAvatar = transform.Find("PlayerAvatar").gameObject;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
-        faceCam.Init(transform.Find("PlayerAvatar").gameObject);
+        faceCam.Init(playerAvatar);
     }
 
     protected override void Update()
@@ -68,7 +67,10 @@ public class Player : LivingEntity
             weaponManager.SetWeapon("WAND");
         }
 
-        if (joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        if (joystick == null)
+        {
+            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        }
 
         if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
         {
@@ -87,7 +89,10 @@ public class Player : LivingEntity
             }
         }
 
-        CheckInteractObject();
+        else // 상호작용 중일때
+        {
+            ContinueTalkWhenPlayerInInteract();
+        }
     }
 
     public void PlayerMove()
@@ -123,7 +128,7 @@ public class Player : LivingEntity
 
         //GameObject skill = Instantiate(weaponManager.GetWeapon().SkillAEffect);
         skill.transform.position = firePoint.position;
-        skill.transform.rotation = transform.rotation; 
+        skill.transform.rotation = transform.rotation;
     }
     public void PlayerSkillB()
     {
@@ -152,14 +157,14 @@ public class Player : LivingEntity
     public void SetAttackButton(bool attackbutton)
     {
         AttackButtonClick = attackbutton;
-        if(AttackButtonClick == true)
+        if (AttackButtonClick == true)
         {
             GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().AttackEffect);
             skill.transform.position = firePoint.position;
             skill.transform.rotation = transform.rotation;
         }
     }
-
+    
     public void PlayerAvoidance()
     {
         if (avoidButtonClick)
@@ -171,22 +176,29 @@ public class Player : LivingEntity
                 avoidButtonClick = false;
                 count = 0f;
             }
-            if (direction == Vector3.zero) characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
-
-            else characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
+            if (direction == Vector3.zero)
+            {
+                characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
+            }
+            else
+            {
+                characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
+            }
         }
     }
     public bool GetAvoidance()
     {
         return avoidButtonClick;
     }
+
     public void SetAvoidButton(bool avoidbutton)
     {
         avoidButtonClick = avoidbutton;
     }
+
     protected override void InitObject()
     {
-        
+
         //임의 값
         _initHp = 10;
         _hp = 10;
@@ -226,19 +238,28 @@ public class Player : LivingEntity
 
     public void CheckInteractObject()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 1.9f);
+        for (int i = 0; i < colliders.Length; i++)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 1.9f);
-            for(int i=0; i<colliders.Length; i++)
+            if (colliders[i].GetComponent<NonLivingEntity>())
             {
-                if(colliders[i].GetComponent<NonLivingEntity>())
-                {
-                    colliders[i].GetComponent<NonLivingEntity>().Interaction();
-                    break;
-                }
+                colliders[i].GetComponent<NonLivingEntity>().Interaction();
+                break;
             }
         }
     }
+
+    /// <summary>
+    /// 상호작용에 들어가 있을 시, 다른 조작을 받지 않고 계속해서 상호작용 관련 입력만을 받음.
+    /// </summary>
+    public void ContinueTalkWhenPlayerInInteract()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            CheckInteractObject();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Item")

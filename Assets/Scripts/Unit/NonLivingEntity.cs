@@ -49,7 +49,6 @@ public class NonLivingEntity : Unit
     /// </summary>
     public void Interaction()
     {
-        GameManager.Instance.isInteracting = true; // 상호작용 중 설정
         _myTalkChecker.Talk();
     }
 }

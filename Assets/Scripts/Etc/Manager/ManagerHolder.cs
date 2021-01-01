@@ -14,7 +14,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     [HideInInspector] public ResourceManager resourceManager;
     [HideInInspector] public UILoaderManager uiLoaderManager;
     [HideInInspector] public ObjectPoolManager objectPoolManager;
-    [HideInInspector] public UINavationManager uiNavationManager;
+    [HideInInspector] public UINaviationManager uiNavationManager;
     [HideInInspector] public WeaponManager weaponManager;
 
     private void Start()
@@ -47,7 +47,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         cardManager = (CardManager)AddManager<CardManager>();
         cameraManager = (CameraManager)AddManager<CameraManager>();
         soundManager = (SoundManager)AddManager<SoundManager>();
-        uiNavationManager = (UINavationManager)AddManager<UINavationManager>();
+        uiNavationManager = (UINaviationManager)AddManager<UINaviationManager>();
         uiManager = (UIManager)AddManager<UIManager>();
         statusManager = (StatusManager)AddManager<StatusManager>();
     }

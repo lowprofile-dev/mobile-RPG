@@ -114,7 +114,11 @@ public class CardUIView : View
                 _roomAreaImg[i].cntCard.CardStart(); // 해당 카드의 효과들을 발동시킨다.
             }
 
-            UINavationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
+            UINaviationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
+
+            // 씬 이동
+            UILoaderManager.Instance.CloseScene("VillageScene");
+            UILoaderManager.Instance.AddScene("DungeonScene");
         }
     }
 

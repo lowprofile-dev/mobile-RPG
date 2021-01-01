@@ -19,18 +19,18 @@ public class Quest
 
     // 정제한 데이터
     private List<int> _npcList; public List<int> npcList { get { return _npcList; } }                           // 상호작용 NPC가 순서대로 되어있다.
-    private List<int> _convList; public List<int> convList { get { return _convList; } }                        // 대화 번호가 순서대로 되어있다.
-    private List<int> _afterQuestList; public List<int> afterQuestList { get { return _afterQuestList; } }      // 클리어시 새롭게 열리는 퀘스트 목록
-    private List<int> _neededQuestList; public List<int> neededQuestList { get { return _neededQuestList; } }   // 열리기 위해 필요한 선행 퀘스트 목록
+    private List<string> _convList; public List<string> convList { get { return _convList; } }                        // 대화 번호가 순서대로 되어있다.
+    private List<string> _afterQuestList; public List<string> afterQuestList { get { return _afterQuestList; } }      // 클리어시 새롭게 열리는 퀘스트 목록
+    private List<string> _neededQuestList; public List<string> neededQuestList { get { return _neededQuestList; } }   // 열리기 위해 필요한 선행 퀘스트 목록
 
     public Quest()
     {
         _talkManager = TalkManager.Instance;
 
         _npcList = new List<int>();
-        _convList = new List<int>();
-        _afterQuestList = new List<int>();
-        _neededQuestList = new List<int>();
+        _convList = new List<string>();
+        _afterQuestList = new List<string>();
+        _neededQuestList = new List<string>();
 
         _currentIndex = 0;
 
@@ -71,7 +71,7 @@ public class Quest
         isEnd = true;
 
         // -1 = 이어지는 퀘스트가 없다.
-        if(_afterQuestList[0] != -1)
+        if(_afterQuestList[0] != "-1")
         {
             // 이어지는 퀘스트 리스트의 추가 가능 여부를 보고 퀘스트의 추가를 결정한다.
             for (int i = 0; i < _afterQuestList.Count; i++)
@@ -115,21 +115,21 @@ public class Quest
         split = _questData.convId.Split(' ');
         for (int j = 0; j < split.Length; j++)
         {
-            _convList.Add(int.Parse(split[j]));
+            _convList.Add(split[j]);
         }
 
         // 다음 퀘스트 정보들을 리스트로 변환
         split = _questData.afterQuestsId.Split(' ');
         for (int j = 0; j < split.Length; j++)
         {
-            _afterQuestList.Add(int.Parse(split[j]));
+            _afterQuestList.Add(split[j]);
         }
 
         // 해금되기 위해 필요한 퀘스트 클리어 정보들을 리스트로 변환
         split = _questData.neededQuestsId.Split(' ');
         for (int j = 0; j < split.Length; j++)
         {
-            _neededQuestList.Add(int.Parse(split[j]));
+            _neededQuestList.Add(split[j]);
         }
     }
 

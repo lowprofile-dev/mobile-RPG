@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -33,10 +33,8 @@ public class TalkChecker
     private void AddRelevantTalks()
     {
         TalkManager manager = TalkManager.Instance;
-        for (int i = 0; i < manager.talkDatas.Count; i++)
+        foreach (Talk cntTalk in manager.talkDatas.Values)
         {
-            Talk cntTalk = manager.talkDatas[i];
-
             // 일반 대사이며 현 npc라면
             if (cntTalk.talkData.npcId == _objectId && cntTalk.talkData.convType.Equals("NORMAL"))
             {
@@ -50,9 +48,8 @@ public class TalkChecker
     /// </summary>
     private void AddRelevantQuests()
     {
-        for (int i = 0; i < TalkManager.Instance.questDatas.Count; i++)
+        foreach (Quest cntQuest in TalkManager.Instance.questDatas.Values)
         {
-            Quest cntQuest = TalkManager.Instance.questDatas[i];
             for (int j = 0; j < cntQuest.npcList.Count; j++)
             {
                 if (cntQuest.npcList[j] == _objectId)
@@ -100,23 +97,49 @@ public class TalkChecker
             {
                 if (_relevantQuests[i].canStart) // 퀘스트가 시작 가능함을 알림
                 {
-                    //Debug.Log(_relevantQuests[i].questData.questName + " CANQUEST");
                     _canStartQuest = true;
                 }
 
                 if (_relevantQuests[i].canEnd) // 퀘스트가 종료 가능함을 알림
                 {
-                    //Debug.Log(_relevantQuests[i].questData.questName + " CANEND");
                     _canFinishQuest = true;
                 }
 
                 if (_relevantQuests[i].isOn) // 퀘스트가 진행중임을 알림
                 {
-                    //Debug.Log(_relevantQuests[i].questData.questName + " CANPROGRESS");
                     _canProgressQuest = true;
                 }
             }
         }
+    }
+    
+    public void AcceptQuest()
+    {
+        Quest quest = GetTargetQuest();
+
+        GameManager.Instance.isInteracting = false;
+        quest.NextIndex(); // 다음 퀘스트 Index로 넘어간다.
+
+        if (quest.canStart)
+        {
+            quest.StartQuest();
+        }
+
+        TalkManager.Instance.CheckQuestIsOn(); // 퀘스트 진행도 Refresh
+        UINaviationManager.Instance.PopToNav("PlayerUI_TalkUIView");
+    }
+
+    public void DeclineQuest()
+    {
+        Quest quest = GetTargetQuest();
+
+        Talk talk = TalkManager.Instance.talkDatas[quest.convList[quest.currentIndex]];
+        talk.InitConvIndex();
+
+        GameManager.Instance.isInteracting = false;
+        TalkManager.Instance.CheckQuestIsOn(); // 퀘스트 진행도 Refresh
+
+        UINaviationManager.Instance.PopToNav("PlayerUI_TalkUIView");
     }
 
     /// <summary>
@@ -124,38 +147,71 @@ public class TalkChecker
     /// </summary>
     public void Talk()
     {
+        bool isQuest = false;
+        Talk talk = null;
+        Quest quest = null;
+
         // 퀘스트가 없다면
         if (!canStartQuest && !canFinishQuest && !canProcressQuest)
         {
-            Debug.Log(relevantTalks[_talkIndex].texts[relevantTalks[_talkIndex].convIndex]);
-
-            if (!relevantTalks[_talkIndex].ToNextConv())
-            {
-                GameManager.Instance.isInteracting = false;
-                SetTalkIndex(-1);
-            }
+            talk = relevantTalks[_talkIndex];
+            isQuest = false;
         }
 
         // 퀘스트가 있다면
         else
         {
-            Quest quest = GetTargetQuest();
-            Talk talk = TalkManager.Instance.talkDatas[quest.convList[quest.currentIndex]];
+            quest = GetTargetQuest();
+            talk = TalkManager.Instance.talkDatas[quest.convList[quest.currentIndex]];
+            isQuest = true;
+        }
 
-            Debug.Log(talk.texts[talk.convIndex]);
-
-            // 대화가 끝났다면
-            if (!talk.ToNextConv())
+        // 현재 진행중인게 일반 대화라면
+        if (!isQuest)
+        {
+            if (talk.IsFinished()) // 대화가 끝났으면
             {
+                talk.InitConvIndex();
                 GameManager.Instance.isInteracting = false;
-                quest.NextIndex(); // 다음 퀘스트 Index로 넘어간다.
+                UINaviationManager.Instance.PopToNav("PlayerUI_TalkUIView");
 
-                if (quest.canStart)
+                SetTalkIndex(-1); // 다음 대화로 넘어가도록 (임시)
+            }
+
+            else
+            {
+                if (talk.convIndex == 0)
                 {
-                    quest.StartQuest();
+                    GameManager.Instance.isInteracting = true; // 상호작용 중 설정
+                    UINaviationManager.Instance.PushToNav("PlayerUI_TalkUIView"); // 첫 대화창이면 대화창 생성
                 }
 
-                TalkManager.Instance.CheckQuestIsOn(); // 퀘스트 진행도 Refresh
+                TalkManager.Instance.talkUI.Talk(talk, this);
+                talk.ToNextConv();
+            }
+        }
+
+        // 현재 진행중인게 퀘스트 대화라면
+        else
+        {
+            if (talk.IsFinished())
+            {
+                if(!TalkManager.Instance.talkUI.isAcceptInput) // 퀘스트 수락 / 거절이 아닐 시에는 입력을 통해 자동으로 진행된다.
+                {
+                    AcceptQuest();
+                }
+            }
+
+            else
+            {
+                if (talk.convIndex == 0)
+                {
+                    GameManager.Instance.isInteracting = true; // 상호작용 중 설정
+                    UINaviationManager.Instance.PushToNav("PlayerUI_TalkUIView");
+                }
+
+                TalkManager.Instance.talkUI.Talk(talk, this);
+                talk.ToNextConv();
             }
         }
     }
