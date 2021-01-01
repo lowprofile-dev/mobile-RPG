@@ -16,6 +16,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     [HideInInspector] public ObjectPoolManager objectPoolManager;
     [HideInInspector] public UINavationManager uiNavationManager;
     [HideInInspector] public WeaponManager weaponManager;
+    [HideInInspector] public ItemManager itemManager;
 
     private void Start()
     {
@@ -50,6 +51,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         uiNavationManager = (UINavationManager)AddManager<UINavationManager>();
         uiManager = (UIManager)AddManager<UIManager>();
         statusManager = (StatusManager)AddManager<StatusManager>();
+        itemManager = (ItemManager)AddManager<ItemManager>();
     }
 
     private void InitManagers()

@@ -7,17 +7,33 @@ using UnityEngine.EventSystems;
 public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     private bool isBtnDown = false;
-
+    private float counter = 0f;
+    private float atkTime = 0.8f;
+    private bool atkcheck = true;
     void Update()
     {
-        AttackBtnClick();
+        if (!Player.Instance.isdead) AttackBtnClick();
+
     }
 
     private void AttackBtnClick()
     {
-        if (isBtnDown)
+        if (atkcheck)
         {
-            if (Player.Instance != null && !Player.Instance.GetAttackButton()) Player.Instance.SetAttackButton(isBtnDown);
+            if (Player.Instance != null && isBtnDown)
+            {
+                Player.Instance.SetAttackButton(isBtnDown);
+                atkcheck = false;
+            }
+        }
+        else
+        {
+            counter += Time.deltaTime;
+            if(counter >= atkTime)
+            {
+                counter = 0f;
+                atkcheck = true;
+            }
         }
     }
 
@@ -29,7 +45,7 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData) // 눌렀다 뗏을 때
     {       
         isBtnDown = false;
+        Player.Instance.SetAttackButton(isBtnDown);
     }
 
-    
 }

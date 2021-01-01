@@ -9,6 +9,8 @@ public class PartSelection : MonoBehaviour
     
     private PartsCollections collections;
 
+    private bool isChanged = false;
+
     int headIndex = -1;
     int hairIndex = -1;
     int headAccesoriesIndex = -1;
@@ -86,7 +88,13 @@ public class PartSelection : MonoBehaviour
     public void Update()
     {
         PlayerWeaponChange();
-        
+
+        if(isChanged)
+        {
+            Player.Instance.CameraChange();
+            isChanged = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.KeypadPlus))
         {
             ChangeHeadPart();
@@ -97,6 +105,7 @@ public class PartSelection : MonoBehaviour
             ChangeLowerSpinePart();
             ChangeArmParts();
             ChangeLegParts();
+            isChanged = true;
         }
     }
 
@@ -144,6 +153,11 @@ public class PartSelection : MonoBehaviour
                 ChangeRightWeaponPart(Player.Instance.weaponManager.BluntNumber[Player.Instance.weaponManager.GetWeapon().outfitGrade]);
             }
         }
+    }
+
+    public bool PartChanged()
+    {
+        return isChanged;
     }
 
     public int GetPartKeyIndex( int currentIndex, List<string> keys)

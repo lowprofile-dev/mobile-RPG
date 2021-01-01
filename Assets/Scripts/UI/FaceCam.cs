@@ -9,6 +9,7 @@ public class FaceCam : MonoBehaviour
     public GameObject followAvatar;
     public void Init(GameObject avatar)
     {
+        OnDisable();
         SetTarget(avatar);
     }
 
