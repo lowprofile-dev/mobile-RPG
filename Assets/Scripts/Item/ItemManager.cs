@@ -22,6 +22,18 @@ public class CurrentItems
     //신발
     public int leftKneeIndex = 0;
     public int rightKneeIndex = 0;
+
+    public CurrentItems()
+    {
+        headAccesoriesIndex = 0;
+        leftElbowIndex = 0;
+        rightElbowIndex = 0;
+        chestIndex = 0;
+        spineIndex = 0;
+        lowerSpineIndex = 0;
+        leftKneeIndex = 0;
+        rightKneeIndex = 0;
+    }
 }
 
 public class ItemManager : SingletonBase<ItemManager>
@@ -36,8 +48,9 @@ public class ItemManager : SingletonBase<ItemManager>
 
     public int inventorySize;
 
-    private void Start()
+    private void Awake()
     {
+        currentItems = new CurrentItems();
         itemDictionary = new Dictionary<int, ItemData>();
         playerInventory = new Dictionary<int, int>();
         Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/itemDatabase");
@@ -122,36 +135,36 @@ public class ItemManager : SingletonBase<ItemManager>
     /// <summary>
     /// 아이템에 맞춰 플레이어에게 장착
     /// </summary>
-    /// <param name="item">갈아낄 아이템 객체</param>
-    public void SetItemToPlayer(Item item)
+    /// <param name="itemData">갈아낄 아이템 데이터</param>
+    public void SetItemToPlayer(ItemData itemData)
     {
-        switch (item.itemData.itemType)
+        switch (itemData.itemType)
         {
             case "Armor":
-                playerPartSelection.ChangeChestPart(item.itemData.itemIndex);
-                playerPartSelection.ChangeSpinePart(item.itemData.itemIndex);
-                currentItems.chestIndex = item.itemData.itemIndex;
-                currentItems.spineIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeChestPart(itemData.itemIndex);
+                playerPartSelection.ChangeSpinePart(itemData.itemIndex);
+                currentItems.chestIndex = itemData.itemIndex;
+                currentItems.spineIndex = itemData.itemIndex;
                 break;
             case "Bottom":
-                playerPartSelection.ChangeLowerSpinePart(item.itemData.itemIndex);
-                currentItems.lowerSpineIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeLowerSpinePart(itemData.itemIndex);
+                currentItems.lowerSpineIndex = itemData.itemIndex;
                 break;
             case "Helmet":
-                playerPartSelection.ChangeHeadAccesoriesPart(item.itemData.itemIndex);
-                currentItems.headAccesoriesIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeHeadAccesoriesPart(itemData.itemIndex);
+                currentItems.headAccesoriesIndex = itemData.itemIndex;
                 break;
             case "Gloves":
-                playerPartSelection.ChangeLeftElbowPart(item.itemData.itemIndex);
-                playerPartSelection.ChangeRightElbowPart(item.itemData.itemIndex);
-                currentItems.leftElbowIndex = item.itemData.itemIndex;
-                currentItems.rightElbowIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeLeftElbowPart(itemData.itemIndex);
+                playerPartSelection.ChangeRightElbowPart(itemData.itemIndex);
+                currentItems.leftElbowIndex = itemData.itemIndex;
+                currentItems.rightElbowIndex = itemData.itemIndex;
                 break;
             case "Boot":
-                playerPartSelection.ChangeLeftKneePart(item.itemData.itemIndex);
-                playerPartSelection.ChangeRightKneePart(item.itemData.itemIndex);
-                currentItems.leftKneeIndex = item.itemData.itemIndex;
-                currentItems.rightKneeIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeLeftKneePart(itemData.itemIndex);
+                playerPartSelection.ChangeRightKneePart(itemData.itemIndex);
+                currentItems.leftKneeIndex = itemData.itemIndex;
+                currentItems.rightKneeIndex = itemData.itemIndex;
                 break;
         }
         SaveCurrentItems();
