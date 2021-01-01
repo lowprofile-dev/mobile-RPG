@@ -36,6 +36,7 @@ public class InventoryManager : MonoBehaviour
             GameObject slot = Instantiate(itemSlot, content);
             slot.GetComponent<ItemSlot>().SetIcon(iconList[item.Key-1]);
             slot.GetComponent<ItemSlot>().SetQuantity(item.Value);
+            slot.GetComponent<ItemSlot>().SetItemData(itemManager.itemDictionary[item.Key]);
             itemSlots.Add(slot);
         }
     }
