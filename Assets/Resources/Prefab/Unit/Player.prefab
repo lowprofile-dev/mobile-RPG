@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &362263808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 362263809}
+  m_Layer: 10
+  m_Name: SkillPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &362263809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362263808}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3921490016967684020}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1470817334
 GameObject:
   m_ObjectHideFlags: 0
@@ -24,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470817334}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.11, y: 0.36, z: 1.13}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3921490016967684020}
@@ -70,6 +100,7 @@ GameObject:
   - component: {fileID: 3921490016967684023}
   - component: {fileID: 2128474192}
   - component: {fileID: 2128474188}
+  - component: {fileID: 2412208278012460098}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -90,6 +121,7 @@ Transform:
   m_Children:
   - {fileID: 1470817335}
   - {fileID: 3919780504563388118}
+  - {fileID: 362263809}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -125,18 +157,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _initHp: 10
+  _initMp: 10
   _hp: 0
+  _mp: 0
   MyAnimator: {fileID: 3979612402344183014}
-  avoid_power: 10
+  avoid_power: 30
   _playerAvatar: {fileID: 3920493311905665660}
-  animatorList:
-  - {fileID: 9100000, guid: 79c0add674b34ac4cac33b5ab9977018, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   firePoint: {fileID: 1470817335}
+  skillPoint: {fileID: 362263809}
   characterController: {fileID: 3921490016967684025}
   speed: 6
   turnSmoothTime: 0.1
@@ -144,6 +172,7 @@ MonoBehaviour:
   rotateAngle: {x: 0, y: 0, z: 0, w: 0}
   joystick: {fileID: 0}
   weaponManager: {fileID: 0}
+  itemManager: {fileID: 0}
 --- !u!114 &3921490016967684023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +197,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 3921490016967684021}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 1
@@ -185,6 +214,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45fc230a92150e248967bb697e5794fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &2412208278012460098
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3921490016967684021}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3921490016017718292
 PrefabInstance:
   m_ObjectHideFlags: 0

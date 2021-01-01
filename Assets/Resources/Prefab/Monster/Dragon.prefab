@@ -114,8 +114,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpSlider: {fileID: 1067164997}
+  obj: {fileID: 3184240531697180167}
   cam: {fileID: 0}
-  enemy: {fileID: 3184240531697180167}
+  MpSlider: {fileID: 0}
 --- !u!1 &867667958
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,7 +453,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _initHp: 10
+  _initMp: 0
   _hp: 0
+  _mp: 0
   MyAnimator: {fileID: 0}
   _monsterName: DRAGON
   _grade: 0
@@ -463,7 +466,6 @@ MonoBehaviour:
   _attackPattern: 0
   _description: 
   _speed: 0
-  _castPercent: 20
   _attackTime: 1
   _attackDamage: 1
 --- !u!195 &3184240531697180171

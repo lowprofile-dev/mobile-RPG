@@ -18,7 +18,6 @@ public class BossSkeletonAction : MonsterAction
     Vector3 aroundPos;
     ATTACKSTATE currentAttack;
     string AtkState;
-    private float castingTime = 0f;
     private float attackCoolTime;
     private bool canAttack = false;
 
@@ -34,7 +33,7 @@ public class BossSkeletonAction : MonsterAction
     {
         base.InitObject();
         panic = true;
-        _navMeshAgent.stoppingDistance = _attackRange;
+        _navMeshAgent.stoppingDistance = _attackRange-1;
         spawnPostion = transform.position;
         attackCoolTime = _attackSpeed;
         StartCoroutine(AttackCoolCal());
@@ -45,6 +44,8 @@ public class BossSkeletonAction : MonsterAction
         yield return null;
         while (true)
         {
+            Debug.Log(_currentState.ToString());
+            Debug.Log(canAttack);
             yield return StartCoroutine(_currentState.ToString());
         }
     }
@@ -65,6 +66,26 @@ public class BossSkeletonAction : MonsterAction
             }
         }
     }
+    private IEnumerator STATE_HIT()
+    {
+        yield return null;
+        //데미지를 입는다.
+
+        while (true)
+        {
+            yield return null;
+
+            if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+            {
+                _currentState = STATE.STATE_IDLE;
+            }
+        }
+    }
+    private IEnumerator STATE_KILL()
+    {
+        yield return null;
+    }
+
     private IEnumerator STATE_IDLE()
     {
         yield return null;
@@ -77,15 +98,16 @@ public class BossSkeletonAction : MonsterAction
         {
             if (canAttack)
             {
+                //transform.LookAt(_target.transform.position);
                 _currentState = STATE.STATE_ATTACK;
             }
             else
             {
                 _currentState = STATE.STATE_IDLE;
-                //transform.LookAt(_target.transform.position);
+                
             }
         }
-        else if(Vector3.Distance(transform.position , _target.transform.position) < _findRange)
+        else if(_distance < _findRange)
         {
             _currentState = STATE.STATE_TRACE;
         }
@@ -98,7 +120,7 @@ public class BossSkeletonAction : MonsterAction
         currentAttack = AttackPattern();
         //_navMeshAgent.stoppingDistance = 2f;
         //_navMeshAgent.isStopped = true;
-        //_navMeshAgent.SetDestination(_target.transform.position);
+
         yield return new WaitForSeconds(0.5f);
 
         //_navMeshAgent.isStopped = false;
@@ -120,7 +142,7 @@ public class BossSkeletonAction : MonsterAction
         yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
         _navMeshAgent.speed = _speed;
-        _navMeshAgent.stoppingDistance = _attackRange;
+        //_navMeshAgent.stoppingDistance = _attackRange;
         _currentState = STATE.STATE_IDLE;
     }
 
@@ -137,9 +159,9 @@ public class BossSkeletonAction : MonsterAction
         {
             _currentState = STATE.STATE_ATTACK;
         }
-        else if (Vector3.Distance(transform.position , _target.transform.position) > _findRange)
+        else if (_distance >= _findRange)
         {
-            _navMeshAgent.SetDestination(spawnPostion);
+            //_navMeshAgent.SetDestination(spawnPostion);
             _currentState = STATE.STATE_IDLE;
         }
         else
@@ -163,32 +185,48 @@ public class BossSkeletonAction : MonsterAction
         // 반드시 실행되는 업데이트 내용
         UpdateMonster();
 
-        //// 스테이트별 업데이트 내용
-        //switch (_currentState)
-        //{
-        //    case STATE.STATE_SPAWN:
-        //        SpawnAction();
-        //        break;
-        //    case STATE.STATE_IDLE:
-        //        Search();
-        //        break;
-        //    case STATE.STATE_TRACE:
-        //        Move();
-        //        //CheckLimitPlayerDistance();
-        //        break;
-        //    case STATE.STATE_ATTACK:
-        //        Attack();
-        //        break;
-        //    case STATE.STATE_KILL:
-        //        KillPlayer();        
-        //        break;
-        //    case STATE.STATE_DEBUFF:
-        //        break;
-        //    case STATE.STATE_DIE:
-        //        break;
-        //    default:
-        //        break;
-        //}
+        // 스테이트별 업데이트 내용
+        switch (_currentState)
+        {
+            case STATE.STATE_SPAWN:
+                //SpawnAction();
+                break;
+            case STATE.STATE_IDLE:
+                //Search();
+                break;
+            case STATE.STATE_TRACE:
+                //Move();
+                //CheckLimitPlayerDistance();
+                break;
+            case STATE.STATE_ATTACK:
+                //Attack();
+                break;
+            case STATE.STATE_KILL:
+                KillPlayer();
+                break;
+            case STATE.STATE_DEBUFF:
+                break;
+            case STATE.STATE_DIE:
+                Die();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public override void Die()
+    {
+        base.Die();
+
+        if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
+        {
+            _monster.MyAnimator.SetTrigger("Die");
+        }
+
+        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && _monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
+        {
+            ObjectPoolManager.Instance.ReturnObject(gameObject);
+        }
     }
 
     //public override void EnterState(STATE targetState)
@@ -289,7 +327,7 @@ public class BossSkeletonAction : MonsterAction
     //        Debug.Log("하시레");
     //        _navMeshAgent.SetDestination(_target.transform.position);
     //    }
-        
+
 
     //    //_navMeshAgent.SetDestination(_target.transform.position);
     //    // Run StepSound 재생
@@ -387,8 +425,8 @@ public class BossSkeletonAction : MonsterAction
     private ATTACKSTATE AttackPattern()
     {
 
-        if (castingTime >= 5f) {
-            castingTime = 0f;
+        if (_monster.Mp >= _monster.initMp) {
+            _monster.Mp = 0f;
             AtkState = "Attack2";
             return ATTACKSTATE.Attack3;
         }
@@ -496,20 +534,24 @@ public class BossSkeletonAction : MonsterAction
     //    yield return null;
     //}
 
-    //public override void DeathCheck()
-    //{
-    //    if (_currentState != STATE.STATE_DIE && NoHPCheck())
-    //    {
-    //        ChangeState(STATE.STATE_DIE);
-    //    }
-    //}
-    //public override void PlayerDeathCheck()
-    //{
-    //    if (_currentState != STATE.STATE_KILL && _target.GetComponent<LivingEntity>().Hp <= 0)
-    //    {
-    //        ChangeState(STATE.STATE_KILL);
-    //    }
-    //}
+    public override void DeathCheck()
+    {
+        if (_currentState != STATE.STATE_DIE && NoHPCheck())
+        {
+            StopAllCoroutines();
+            Debug.Log("사망");
+            _currentState = STATE.STATE_DIE;
+
+        }
+    }
+    public override void PlayerDeathCheck()
+    {
+        if (_currentState != STATE.STATE_KILL && _target.GetComponent<LivingEntity>().Hp <= 0)
+        {
+            //ChangeState(STATE.STATE_KILL);
+            _currentState = STATE.STATE_KILL;
+        }
+    }
 
     //public override void DeathStart()
     //{
@@ -556,19 +598,16 @@ public class BossSkeletonAction : MonsterAction
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("PlayerAttack"))
         {
             Debug.Log("데미지입은 몬스터");
 
             if(!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             _monster.MyAnimator.SetTrigger("Hit");
 
-            _monster.Damaged(1);
-
-            if (_hitCoroutine == null)
-                _hitCoroutine = StartCoroutine(DoHitAction());
-            else
-                ChangeState(STATE.STATE_IDLE);
+            _monster.Damaged(WeaponManager.Instance.GetWeapon().damage);
+           
+                _currentState = STATE.STATE_IDLE;
         }
     }
    

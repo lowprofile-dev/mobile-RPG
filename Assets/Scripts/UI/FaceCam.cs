@@ -9,6 +9,7 @@ public class FaceCam : MonoBehaviour
     public GameObject followAvatar;
     public void Init(GameObject avatar)
     {
+        OnDisable();
         SetTargetWithGenerate(avatar);
     }
 
@@ -32,9 +33,7 @@ public class FaceCam : MonoBehaviour
     {
         cinemachine = GetComponent<CinemachineFreeLook>();
         followAvatar = target;
-        followAvatar.transform.position = new Vector3(1050, 1050, 0);
-        followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
-        cinemachine.m_Follow = target.transform;
-        cinemachine.m_LookAt = target.transform;
+        cinemachine.m_Follow = followAvatar.transform;
+        cinemachine.m_LookAt = followAvatar.transform;
     }
 }

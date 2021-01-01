@@ -5,6 +5,7 @@ using UnityEngine;
 //public enum ItemType { Armor = 0, Bottom, Helmet, Gloves, Boot, Weapon }
 
 [System.Serializable]
+[CSVReader.Data("id")]
 public class ItemData
 {
     [Header("아이템 기본 정보")]

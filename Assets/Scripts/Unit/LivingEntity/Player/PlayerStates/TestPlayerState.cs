@@ -106,9 +106,13 @@ public class StateAvoid_TestPlayer : State
 
     public override void EnterState()
     {
-        _myAnimator.SetTrigger("Avoid");
+        if(Player.Instance.Mp >= 2)
+        {
+            _myAnimator.SetTrigger("Avoid");
+            Player.Instance.PlayerAvoidance();
+            Player.Instance.UseMp(2);
+        }
         if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
-
     }
 
     public override void UpdateState()
@@ -118,7 +122,7 @@ public class StateAvoid_TestPlayer : State
 
     public override void EndState()
     {
-
+        Player.Instance.SetAvoidButton(false);
     }
 }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using System;
+using CSVReader;
 
 [System.Serializable]
 public class CurrentItems
@@ -21,22 +22,52 @@ public class CurrentItems
     //신발
     public int leftKneeIndex = 0;
     public int rightKneeIndex = 0;
+
+    public CurrentItems()
+    {
+        headAccesoriesIndex = 0;
+        leftElbowIndex = 0;
+        rightElbowIndex = 0;
+        chestIndex = 0;
+        spineIndex = 0;
+        lowerSpineIndex = 0;
+        leftKneeIndex = 0;
+        rightKneeIndex = 0;
+    }
 }
 
-public class ItemManager : MonoBehaviour
+public class ItemManager : SingletonBase<ItemManager>
 {
     //착용중인 아이템 인덱스
     public CurrentItems currentItems;
-
-    Dictionary<ItemData, int> playerInventory;
-    public Player player;
+    //Dictionary<ItemData, int> playerInventory;
+    public Dictionary<int, int> playerInventory;
+    public Dictionary<int, ItemData> itemDictionary;
+    Player player;
     PartSelection playerPartSelection;
 
-    private void Start()
+    public int inventorySize;
+
+    private void Awake()
     {
-        playerPartSelection = player.gameObject.GetComponent<PartSelection>();
+        currentItems = new CurrentItems();
+        itemDictionary = new Dictionary<int, ItemData>();
+        playerInventory = new Dictionary<int, int>();
+        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/itemDatabase");
+        itemDictionary = itemTable.TableToDictionary<int, ItemData>();
+        SaveCurrentItems();
         LoadCurrentItems();
         LoadInventoryData();
+    }
+
+    private void Update()
+    {
+        inventorySize = playerInventory.Count;
+        if (player == null)
+        {
+            player = Player.Instance;
+            playerPartSelection = player.gameObject.GetComponent<PartSelection>();
+        }
     }
 
     /// <summary>
@@ -44,7 +75,7 @@ public class ItemManager : MonoBehaviour
     /// </summary>
     private void SaveCurrentItems()
     {
-        string jsonData = JsonUtility.ToJson(currentItems);
+        string jsonData = JsonUtility.ToJson(currentItems, true);
         string path = Path.Combine(Application.dataPath, "playerCurrentItems.json");
         File.WriteAllText(path, jsonData);
     }
@@ -61,61 +92,79 @@ public class ItemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 획득한 아이템 추가!
+    /// 획득한 아이템 인벤토리에 추가!
     /// </summary>
     /// <param name="item">아이템</param>
     public void AddItem(Item item)
     {
-        if (playerInventory.ContainsKey(item.itemData))
+        if (playerInventory.ContainsKey(item.itemData.id))
         {
-            playerInventory[item.itemData] += 1;
+            playerInventory[item.itemData.id] += 1;
         }
         else
         {
-            playerInventory.Add(item.itemData, 1);
+            playerInventory.Add(item.itemData.id, 1);
         }
         SaveInventoryData();
     }
 
     public void RemoveItem(Item item)
     {
-        playerInventory.Remove(item.itemData);
+        playerInventory.Remove(item.itemData.id);
         SaveInventoryData();
+    }
+
+    public void SetItemData(int id, out ItemData itemData)
+    {
+        itemData = itemDictionary[id];
+    }
+
+    [ContextMenu("Set Item to Player")]
+    public void SetItemToPlayer()
+    {
+        playerPartSelection.ChangeChestPart(currentItems.chestIndex);
+        playerPartSelection.ChangeSpinePart(currentItems.spineIndex);
+        playerPartSelection.ChangeLowerSpinePart(currentItems.lowerSpineIndex);
+        playerPartSelection.ChangeHeadAccesoriesPart(currentItems.headAccesoriesIndex);
+        playerPartSelection.ChangeLeftElbowPart(currentItems.leftElbowIndex);
+        playerPartSelection.ChangeRightElbowPart(currentItems.rightElbowIndex);
+        playerPartSelection.ChangeLeftKneePart(currentItems.leftKneeIndex);
+        playerPartSelection.ChangeRightKneePart(currentItems.rightKneeIndex);
     }
 
     /// <summary>
     /// 아이템에 맞춰 플레이어에게 장착
     /// </summary>
-    /// <param name="item">갈아낄 아이템 객체</param>
-    public void SetItem(Item item)
+    /// <param name="itemData">갈아낄 아이템 데이터</param>
+    public void SetItemToPlayer(ItemData itemData)
     {
-        switch (item.itemData.itemType)
+        switch (itemData.itemType)
         {
             case "Armor":
-                playerPartSelection.ChangeChestPart(item.itemData.itemIndex);
-                playerPartSelection.ChangeSpinePart(item.itemData.itemIndex);
-                currentItems.chestIndex = item.itemData.itemIndex;
-                currentItems.spineIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeChestPart(itemData.itemIndex);
+                playerPartSelection.ChangeSpinePart(itemData.itemIndex);
+                currentItems.chestIndex = itemData.itemIndex;
+                currentItems.spineIndex = itemData.itemIndex;
                 break;
             case "Bottom":
-                playerPartSelection.ChangeLowerSpinePart(item.itemData.itemIndex);
-                currentItems.lowerSpineIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeLowerSpinePart(itemData.itemIndex);
+                currentItems.lowerSpineIndex = itemData.itemIndex;
                 break;
             case "Helmet":
-                playerPartSelection.ChangeHeadAccesoriesPart(item.itemData.itemIndex);
-                currentItems.headAccesoriesIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeHeadAccesoriesPart(itemData.itemIndex);
+                currentItems.headAccesoriesIndex = itemData.itemIndex;
                 break;
             case "Gloves":
-                playerPartSelection.ChangeLeftElbowPart(item.itemData.itemIndex);
-                playerPartSelection.ChangeRightElbowPart(item.itemData.itemIndex);
-                currentItems.leftElbowIndex = item.itemData.itemIndex;
-                currentItems.rightElbowIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeLeftElbowPart(itemData.itemIndex);
+                playerPartSelection.ChangeRightElbowPart(itemData.itemIndex);
+                currentItems.leftElbowIndex = itemData.itemIndex;
+                currentItems.rightElbowIndex = itemData.itemIndex;
                 break;
             case "Boot":
-                playerPartSelection.ChangeLeftKneePart(item.itemData.itemIndex);
-                playerPartSelection.ChangeRightKneePart(item.itemData.itemIndex);
-                currentItems.leftKneeIndex = item.itemData.itemIndex;
-                currentItems.rightKneeIndex = item.itemData.itemIndex;
+                playerPartSelection.ChangeLeftKneePart(itemData.itemIndex);
+                playerPartSelection.ChangeRightKneePart(itemData.itemIndex);
+                currentItems.leftKneeIndex = itemData.itemIndex;
+                currentItems.rightKneeIndex = itemData.itemIndex;
                 break;
         }
         SaveCurrentItems();
@@ -128,19 +177,47 @@ public class ItemManager : MonoBehaviour
     public void SaveInventoryData()
     {
         string jsonData = JsonConvert.SerializeObject(playerInventory, Formatting.Indented);
-        string path = Path.Combine(Application.dataPath, "itemDatabase.json");
+        string path = Path.Combine(Application.dataPath, "inventoryDB.json");
         File.WriteAllText(path, jsonData);
     }
 
     /// <summary>
-    /// JSON형식의 인벤토리 데이터 로드 
+    /// JSON형식의 인벤토리 데이터 로드
     /// </summary>
     [ContextMenu("Load Inventory Data from Json")]
     public void LoadInventoryData()
     {
-        string path = Path.Combine(Application.dataPath, "itemDatabase.json");
+        List<KeyValuePair<ItemData, int>> temp = new List<KeyValuePair<ItemData, int>>();
+        string path = Path.Combine(Application.dataPath, "inventoryDB.json");
         string jsonData = File.ReadAllText(path);
         if (jsonData == null) return;
-        playerInventory = JsonConvert.DeserializeObject<Dictionary<ItemData, int>>(jsonData);
+        playerInventory = JsonConvert.DeserializeObject<Dictionary<int, int>>(jsonData);
     }
+
+    [ContextMenu("Save Item Data to Json")]
+    public void SaveItemData()
+    {
+        string jsonData = JsonConvert.SerializeObject(itemDictionary, Formatting.Indented);
+        string path = Path.Combine(Application.dataPath, "itemDB.json");
+        File.WriteAllText(path, jsonData);
+    }
+
+    //private List<KeyValuePair<ItemData, int>> DictToList(Dictionary<ItemData, int> dict)
+    //{
+    //    List<KeyValuePair<ItemData, int>> result = new List<KeyValuePair<ItemData, int>>();
+    //    foreach(var data in dict)
+    //    {
+    //        result.Add(data);
+    //    }
+    //    return result;
+    //}
+    //private Dictionary<ItemData, int> ListToDict(List<KeyValuePair<ItemData, int>> list)
+    //{
+    //    Dictionary<ItemData, int> result = new Dictionary<ItemData, int>();
+    //    foreach(var data in list)
+    //    {
+    //        result.Add(data.Key, data.Value);
+    //    }
+    //    return result;
+    //}
 }
