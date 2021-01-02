@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 2128474192}
   - component: {fileID: 2128474188}
   - component: {fileID: 2412208278012460098}
+  - component: {fileID: 7165119786372829059}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -160,6 +161,7 @@ MonoBehaviour:
   _initMp: 10
   _hp: 0
   _mp: 0
+  _DamageText: {fileID: 0}
   MyAnimator: {fileID: 3979612402344183014}
   avoid_power: 30
   _playerAvatar: {fileID: 3920493311905665660}
@@ -172,7 +174,6 @@ MonoBehaviour:
   rotateAngle: {x: 0, y: 0, z: 0, w: 0}
   joystick: {fileID: 0}
   weaponManager: {fileID: 0}
-  itemManager: {fileID: 0}
 --- !u!114 &3921490016967684023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +229,23 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7165119786372829059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3921490016967684021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df16558f3b0259f47b4047ca4a8eb659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WallMaterial: {fileID: 2100000, guid: fc3fee486cec51f47bd37ac2105ed1b1, type: 2}
+  Camera: {fileID: 0}
+  Mask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &3921490016017718292
 PrefabInstance:
   m_ObjectHideFlags: 0
