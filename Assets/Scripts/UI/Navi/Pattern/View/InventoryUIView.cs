@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class InventoryUIView : View
 {
     [SerializeField] GameObject itemSlot;
     [SerializeField] Transform content;
     [SerializeField] GameObject itemDetail;
+    [SerializeField] Button quitBtn;
 
     ItemManager itemManager;
     List<GameObject> itemSlots;
@@ -32,6 +35,8 @@ public class InventoryUIView : View
     {
         itemSlots = new List<GameObject>();
         itemManager = ItemManager.Instance;
+
+        quitBtn.onClick.AddListener( delegate{ OnClickQuitButton(); });
     }
 
     private void OnEnable()
