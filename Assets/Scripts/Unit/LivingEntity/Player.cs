@@ -44,8 +44,9 @@ public class Player : LivingEntity
     PartSelection selection;
     FaceCam faceCam;
 
-    public WeaponManager weaponManager;
+    WeaponManager weaponManager;
     ItemManager itemManager;
+    StatusManager statusManager;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class Player : LivingEntity
     {
         base.Start();
         itemManager = ItemManager.Instance;
+        statusManager = StatusManager.Instance;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.Init(transform.Find("PlayerAvatar").gameObject);
     }

@@ -6,36 +6,6 @@ using Newtonsoft.Json;
 using System;
 using CSVReader;
 
-[System.Serializable]
-public class CurrentItems
-{
-    //투구
-    public int headAccesoriesIndex = 0;
-    //장갑
-    public int leftElbowIndex = 0;
-    public int rightElbowIndex = 0;
-    //갑옷
-    public int chestIndex = 0;
-    public int spineIndex = 0;
-    //하체
-    public int lowerSpineIndex = 0;
-    //신발
-    public int leftKneeIndex = 0;
-    public int rightKneeIndex = 0;
-
-    public CurrentItems()
-    {
-        headAccesoriesIndex = 0;
-        leftElbowIndex = 0;
-        rightElbowIndex = 0;
-        chestIndex = 0;
-        spineIndex = 0;
-        lowerSpineIndex = 0;
-        leftKneeIndex = 0;
-        rightKneeIndex = 0;
-    }
-}
-
 public class ItemManager : SingletonBase<ItemManager>
 {
     //착용중인 아이템 인덱스
@@ -53,7 +23,7 @@ public class ItemManager : SingletonBase<ItemManager>
         currentItems = new CurrentItems();
         itemDictionary = new Dictionary<int, ItemData>();
         playerInventory = new Dictionary<int, int>();
-        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/itemDatabase");
+        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
         itemDictionary = itemTable.TableToDictionary<int, ItemData>();
         LoadCurrentItems();
         LoadInventoryData();
@@ -77,7 +47,6 @@ public class ItemManager : SingletonBase<ItemManager>
         string jsonData = JsonUtility.ToJson(currentItems, true);
         string path = Path.Combine(Application.persistentDataPath, "playerCurrentItems.json");
         File.WriteAllText(path, jsonData);
-        Debug.Log(jsonData);
     }
 
     /// <summary>
@@ -89,7 +58,7 @@ public class ItemManager : SingletonBase<ItemManager>
         TextAsset jsonRawData;
         if (PlayerPrefs.GetInt("LoadCurrentItemCount") == 0)
         {
-            Debug.Log("최초 실행입니다.");
+            Debug.Log("최초 아이템 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadCurrentItemCount", 1);
 
             jsonRawData = Resources.Load("Data/playerCurrentItems") as TextAsset;
@@ -205,7 +174,7 @@ public class ItemManager : SingletonBase<ItemManager>
         TextAsset jsonRawData;
         if (PlayerPrefs.GetInt("LoadInventoryDataCount") == 0)
         {
-            Debug.Log("최초 실행입니다.");
+            Debug.Log("최초 인벤토리 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadInventoryDataCount", 1);
 
             jsonRawData = Resources.Load("Data/inventoryDB") as TextAsset;

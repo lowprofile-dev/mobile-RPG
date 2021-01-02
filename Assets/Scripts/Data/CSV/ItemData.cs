@@ -35,4 +35,5 @@ public class ItemData
     public float moveSpeed;             //이동 속도 % 증가
     public float dashCooldown;          //대쉬 스킬 쿨타임 % 감소
     public float dashStamina;           //대쉬 스킬 스태미너 % 감소
+    public float tenacity;              //cc 저항력
 }
