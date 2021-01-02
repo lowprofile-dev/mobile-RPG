@@ -9,8 +9,14 @@ public class ItemStatus : MonoBehaviour
     {
         transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(statusType);
     }
-    public void SetValue(float value)
+    public void SetValue(string value)
     {
-        transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(value.ToString());
+        transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(value);
+    }
+
+    public void SetData(string dataType, string value)
+    {
+        SetPanel(dataType);
+        SetValue(value);
     }
 }

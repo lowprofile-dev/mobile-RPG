@@ -24,11 +24,17 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         itemManager = ItemManager.Instance;
     }
 
+
     public void SetIcon(Transform model)
     {
         Texture2D texture = RuntimePreviewGenerator.GenerateModelPreview(model);
         Rect rect = new Rect(0, 0, texture.width, texture.height);
         itemIcon.GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+    }
+
+    public void SetItemDetail(GameObject obj)
+    {
+        itemDetail = obj;
     }
 
     public void SetQuantity(int quantity)
@@ -41,21 +47,6 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         itemData = id;
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (eventData.clickCount == 2)
-        {
-            EquipItem();
-        }
-
-        if (!isShowingItemInfo)
-        {
-            itemDetail = Instantiate(itemDetailPrefab, transform.parent.parent);
-            itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
-        }
-        isShowingItemInfo = true;
-    }
-
     private void EquipItem()
     {
         itemManager.SetItemToPlayer(itemData);
@@ -65,6 +56,23 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         isShowingItemInfo = false;
-        Destroy(itemDetail);
+        itemDetail.SetActive(false);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.clickCount == 2)
+        {
+            EquipItem();
+        }
+
+        if (!isShowingItemInfo)
+        {
+            itemDetail.SetActive(true);
+            itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
+            itemDetail.transform.position = eventData.position;
+        }
+
+        isShowingItemInfo = true;
     }
 }
