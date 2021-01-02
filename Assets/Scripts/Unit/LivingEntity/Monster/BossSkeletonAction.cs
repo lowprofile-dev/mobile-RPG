@@ -44,8 +44,6 @@ public class BossSkeletonAction : MonsterAction
         yield return null;
         while (true)
         {
-            Debug.Log(_currentState.ToString());
-            Debug.Log(canAttack);
             yield return StartCoroutine(_currentState.ToString());
         }
     }
@@ -605,9 +603,9 @@ public class BossSkeletonAction : MonsterAction
             if(!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             _monster.MyAnimator.SetTrigger("Hit");
 
-            _monster.Damaged(WeaponManager.Instance.GetWeapon().damage);
-           
-                _currentState = STATE.STATE_IDLE;
+            Damaged(WeaponManager.Instance.GetWeapon().damage);
+
+            _currentState = STATE.STATE_IDLE;
         }
     }
    

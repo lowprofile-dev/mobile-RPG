@@ -52,7 +52,17 @@ public class UIManager : SingletonBase<UIManager>
     public void OptionClick()
     {
         Debug.Log("옵션");
-        UINaviationManager.Instance.PushToNav("SubUI_Info");
+
+        if (Time.timeScale != 0)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+        //옵션 구현
+        //UINaviationManager.Instance.PushToNav("SubUI_Info");
     }
     public void SkillAClick() //A버튼 스킬
     {

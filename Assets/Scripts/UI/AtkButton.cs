@@ -13,7 +13,6 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     void Update()
     {
         if (!Player.Instance.isdead) AttackBtnClick();
-
     }
 
     private void AttackBtnClick()

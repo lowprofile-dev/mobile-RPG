@@ -7,7 +7,7 @@ using Cinemachine;
 
 public class EnemyHpbar : PrograssBar
 {
-    [SerializeField] CinemachineFreeLook cam;
+    CinemachineFreeLook cam;
     [SerializeField] protected Slider MpSlider;
 
     private void Start()

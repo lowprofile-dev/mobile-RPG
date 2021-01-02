@@ -8,7 +8,11 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 
     public void InitObjectPoolManager()
     {
+        
+    }
 
+    private void Start()
+    {
     }
 
     public void ClearObjectPool() // 오브젝트풀에 적재되어있는 모든 것 없애기
@@ -23,12 +27,12 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
             objectList.Clear();
         }
     }
-    public void InitObject(string name, int cnt) //오브젝트풀에 카운트만큼 미리 만들어두는 함수
+    public void InitObject(string path, string name, int cnt) //오브젝트풀에 카운트만큼 미리 만들어두는 함수
     {
 
         for (int i = 0; i < cnt; i++)
         {
-            GameObject obj = Instantiate(Resources.Load("Prefabs/" + name) as GameObject);
+            GameObject obj = Instantiate(Resources.Load("Prefab/" + path) as GameObject);
             obj.name = name;
             ReturnObject(obj);
         }
@@ -39,7 +43,7 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 
         for (int i = 0; i < cnt; i++)
         {
-            GameObject obj = Instantiate(Resources.Load("Prefabs/" + name) as GameObject);
+            GameObject obj = Instantiate(Resources.Load("Prefab/" + name) as GameObject);
             obj.name = name;
             ReturnObject(obj, parent);
         }
@@ -61,29 +65,12 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
             return CreateNewObject(obj);
     }
 
-    public GameObject GetObject(string name)  // 오브젝트풀에 적재되어있는 게임오브젝트 반환
+    public GameObject GetObject(GameObject obj, Vector3 pos, Quaternion rot)  // 오브젝트풀에 적재되어있는 게임오브젝트 반환
     {
-        if (objectPool.TryGetValue(name, out Queue<GameObject> objectList))
+        if (objectPool.TryGetValue(obj.name, out Queue<GameObject> objectList))
         {
             if (objectList.Count == 0)
-                return CreateNewObject(Resources.Load("Prefabs/" + name) as GameObject);
-            else
-            {
-                GameObject _object = objectList.Dequeue();
-                _object.SetActive(true);
-                return _object;
-            }
-        }
-        else
-            return CreateNewObject(Resources.Load("Prefabs/" + name) as GameObject);
-    }
-
-    public GameObject GetObject(string name , Vector3 pos , Quaternion rot)  // 오브젝트풀에 적재되어있는 게임오브젝트 반환
-    {
-        if (objectPool.TryGetValue(name, out Queue<GameObject> objectList))
-        {
-            if (objectList.Count == 0)
-                return CreateNewObject(Resources.Load("Prefabs/" + name) as GameObject, pos, rot);
+                return CreateNewObject(obj, pos, rot);
             else
             {
                 GameObject _object = objectList.Dequeue();
@@ -94,7 +81,44 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
             }
         }
         else
-            return CreateNewObject(Resources.Load("Prefabs/" + name) as GameObject);
+            return CreateNewObject(obj, pos, rot);
+    }
+
+
+    public GameObject GetObject(string name)  // 오브젝트풀에 적재되어있는 게임오브젝트 반환
+    {
+        if (objectPool.TryGetValue(name, out Queue<GameObject> objectList))
+        {
+            if (objectList.Count == 0)
+                return CreateNewObject(Resources.Load("Prefab/" + name) as GameObject);
+            else
+            {
+                GameObject _object = objectList.Dequeue();
+                _object.SetActive(true);
+                return _object;
+            }
+        }
+        else
+            return CreateNewObject(Resources.Load("Prefab/" + name) as GameObject);
+    }
+
+    public GameObject GetObject(string name , Vector3 pos , Quaternion rot)  // 오브젝트풀에 적재되어있는 게임오브젝트 반환
+    {
+        if (objectPool.TryGetValue(name, out Queue<GameObject> objectList))
+        {
+            if (objectList.Count == 0)
+                return CreateNewObject(Resources.Load("Prefab/" + name) as GameObject, pos, rot);
+            else
+            {
+                GameObject _object = objectList.Dequeue();
+                _object.transform.position = pos;
+                _object.transform.rotation = rot;
+                _object.SetActive(true);
+                return _object;
+            }
+        }
+        else
+            return CreateNewObject(Resources.Load("Prefab/" + name) as GameObject);
     }
 
     private GameObject CreateNewObject(GameObject gameObject) // 게임오브젝트 새로만드는 함수

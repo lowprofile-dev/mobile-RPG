@@ -456,8 +456,8 @@ public class DragonAction : MonsterAction
             if(!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             _monster.MyAnimator.SetTrigger("Hit");
 
-            _monster.Damaged(WeaponManager.Instance.GetWeapon().damage);
-
+            Damaged(WeaponManager.Instance.GetWeapon().damage);
+        
             if (_hitCoroutine == null)
                 _hitCoroutine = StartCoroutine(DoHitAction());
             else

@@ -41,7 +41,7 @@ public class Monster : LivingEntity
     [SerializeField] protected string _description; public string description { get { return _description; } }
     [SerializeField] protected float _speed;
     [SerializeField] protected float _attackTime; public float attackTime { get { return _attackTime; } }
-    [SerializeField] protected float _attackDamage; public float attackDamage { get { return _attackDamage; } }
+    [SerializeField] protected int _attackDamage; public int attackDamage { get { return _attackDamage; } }
 
     protected MonsterAction _monsterAction;
 
