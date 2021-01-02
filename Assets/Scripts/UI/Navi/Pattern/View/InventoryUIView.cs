@@ -2,24 +2,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryUIView : View
 {
     [SerializeField] GameObject itemSlot;
     [SerializeField] Transform content;
+    [SerializeField] GameObject itemDetail;
+    [SerializeField] Button quitBtn;
+
     ItemManager itemManager;
     List<GameObject> itemSlots;
     public Transform[] iconList;
 
-    public void OnClickQuitButton()
+    public override void UIStart()
     {
-        gameObject.SetActive(false);
+        base.UIStart();
+    }
+
+    public override void UIUpdate()
+    {
+        base.UIUpdate();
+    }
+
+    public override void UIExit()
+    {
+        base.UIExit();
     }
 
     private void Awake()
     {
         itemSlots = new List<GameObject>();
         itemManager = ItemManager.Instance;
+
+        quitBtn.onClick.AddListener( delegate{ OnClickQuitButton(); });
     }
 
     private void OnEnable()
@@ -37,6 +54,7 @@ public class InventoryManager : MonoBehaviour
             slot.GetComponent<ItemSlot>().SetIcon(iconList[item.Key-1]);
             slot.GetComponent<ItemSlot>().SetQuantity(item.Value);
             slot.GetComponent<ItemSlot>().SetItemData(itemManager.itemDictionary[item.Key]);
+            slot.GetComponent<ItemSlot>().SetItemDetail(itemDetail);
             itemSlots.Add(slot);
         }
     }
@@ -48,5 +66,10 @@ public class InventoryManager : MonoBehaviour
             Destroy(itemSlots[i]);
         }
         itemSlots.Clear();
+    }
+
+    public void OnClickQuitButton()
+    {
+        UINaviationManager.Instance.PopToNav("SubUI_Inventory");
     }
 }
