@@ -45,7 +45,7 @@ public class Player : LivingEntity
     FaceCam faceCam;
 
     public WeaponManager weaponManager;
-    public ItemManager itemManager;
+    ItemManager itemManager;
 
     private void Awake()
     {
@@ -55,6 +55,7 @@ public class Player : LivingEntity
     protected override void Start()
     {
         base.Start();
+        itemManager = ItemManager.Instance;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.Init(transform.Find("PlayerAvatar").gameObject);
     }
