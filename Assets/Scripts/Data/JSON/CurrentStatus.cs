@@ -1,15 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class CurrentStatus
+public class CurrentStatus : ICloneable
 {
     [Header("플레이어 기본 정보")]
     //향후 서버 or 멀티플레이 구축시 필요한 데이터
     //public int id;
     //public string name;
-    public int level;              //숙련도의 평균
+    public int level;                   //숙련도의 총합
     public int exp;                     //경험치
 
     [Header("체력 스텟")]
@@ -67,5 +68,48 @@ public class CurrentStatus
         bluntLevel = 1;
         staffLevel = 1;
         wandLevel = 1;
+    }
+
+    /// <summary>
+    /// 얕은 복사
+    /// </summary>
+    /// <returns></returns>
+    public CurrentStatus ShallowCopy()
+    {
+        CurrentStatus copy = new CurrentStatus();
+        copy.level = this.level;
+        copy.exp = this.exp;
+        copy.hp = this.hp;
+        copy.maxHp = this.maxHp;
+        copy.hpRecovery = this.hpRecovery;
+        copy.maxStamina = this.maxStamina;
+        copy.staminaRecovery = this.staminaRecovery;
+        copy.attackDamage = this.attackDamage;
+        copy.attackSpeed = this.attackSpeed;
+        copy.attackCooldown = this.attackCooldown;
+        copy.armor = this.armor;
+        copy.magicResistance = this.magicResistance;
+        copy.tenacity = this.tenacity;
+        copy.moveSpeed = this.moveSpeed;
+        copy.dashCooldown = this.dashCooldown;
+        copy.dashStamina = this.dashStamina;
+        copy.swordLevel = this.swordLevel;
+        copy.daggerLevel = this.daggerLevel;
+        copy.greatSwordLevel = this.greatSwordLevel;
+        copy.bluntLevel = this.bluntLevel;
+        copy.staffLevel = this.staffLevel;
+        copy.wandLevel = this.wandLevel;
+
+        return copy;
+    }
+
+    /// <summary>
+    /// 깊은 복사
+    /// </summary>
+    /// <returns></returns>
+    public object Clone()
+    {
+        CurrentStatus copy = this.MemberwiseClone() as CurrentStatus;
+        return copy;
     }
 }

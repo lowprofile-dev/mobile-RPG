@@ -14,6 +14,7 @@ public class StatusManager : SingletonBase<StatusManager>
     [SerializeField] Player player;
     [SerializeField] Dictionary<int, StatusData> statusDictionary;
     public CurrentStatus playerStatus;
+    public CurrentStatus finalStatus;
 
     // 카드 리롤
     public int cardRerollCoin;
@@ -34,6 +35,7 @@ public class StatusManager : SingletonBase<StatusManager>
     {
         player = Player.Instance;
         playerStatus = new CurrentStatus();
+        finalStatus = new CurrentStatus();
         Table statusTable = CSVReader.Reader.ReadCSVToTable("CSVData/StatusDatabase");
         statusDictionary = statusTable.TableToDictionary<int, StatusData>();
         LoadCurrentStatus();
@@ -51,6 +53,14 @@ public class StatusManager : SingletonBase<StatusManager>
 
     private void LoadCurrentStatus()
     {
+        PlayerPrefs.SetInt("LoadCurrentStatusCount", PlayerPrefs.GetInt("LoadCurrentStatusCount", 0));
+        if (PlayerPrefs.GetInt("LoadCurrentStatusCount") == 0)
+        {
+            Debug.Log("최초 스테이터스 데이터 로드 실행입니다.");
+            PlayerPrefs.SetInt("LoadCurrentStatusCount", 1);
+            SaveCurrentStatus();
+            PlayerPrefs.Save();
+        }
         string path = Path.Combine(Application.persistentDataPath, "playerCurrentStatus.json");
         string jsonData = File.ReadAllText(path);
         if (jsonData == null) return;

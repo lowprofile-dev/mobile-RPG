@@ -115,17 +115,17 @@ public class Player : LivingEntity
 
     private void PlayerHpRecovery()
     {
-        if (Hp <= statusManager.playerStatus.maxHp)
+        if (Hp <= statusManager.finalStatus.maxHp)
         {
-            _hp += statusManager.playerStatus.hpRecovery * Time.deltaTime;
+            _hp += statusManager.finalStatus.hpRecovery * Time.deltaTime;
         }
     }
 
     private void PlayerMpRecovery()
     {
-        if (Mp <= statusManager.playerStatus.maxStamina)
+        if (Mp <= statusManager.finalStatus.maxStamina)
         {
-            _mp += statusManager.playerStatus.staminaRecovery * Time.deltaTime;
+            _mp += statusManager.finalStatus.staminaRecovery * Time.deltaTime;
         }
     }
 
@@ -262,8 +262,8 @@ public class Player : LivingEntity
     }
     protected override void InitObject()
     {
-        initHp = statusManager.playerStatus.maxHp;
-        initMp = statusManager.playerStatus.maxStamina;
+        initHp = statusManager.finalStatus.maxHp;
+        initMp = statusManager.finalStatus.maxStamina;
         base.InitObject();
 
         selection = GetComponent<PartSelection>();

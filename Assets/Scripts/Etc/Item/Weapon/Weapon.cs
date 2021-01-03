@@ -7,17 +7,18 @@ public class Weapon
     public float damage;
     public float speed;
 
-    public int masteryLevel ;
-    public int outfitGrade ;
+    public int masteryLevel;
+    public int outfitGrade;
+
+    public float coolTimeA;
+    public float coolTimeB;
+    public float coolTimeC;
+    [SerializeField] WeaponData weaponData;
 
     public GameObject SkillAEffect;
     public GameObject SkillBEffect;
     public GameObject SkillCEffect;
     public GameObject AttackEffect;
-
-    public float coolTimeA;
-    public float coolTimeB;
-    public float coolTimeC;
 
     public Vector3 dir;
     
