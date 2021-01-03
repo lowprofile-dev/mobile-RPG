@@ -9,7 +9,7 @@ public class CurrentStatus
     //향후 서버 or 멀티플레이 구축시 필요한 데이터
     //public int id;
     //public string name;
-    public int level;              //숙련도의 평균
+    public int level;                   //숙련도의 총합
     public int exp;                     //경험치
 
     [Header("체력 스텟")]
