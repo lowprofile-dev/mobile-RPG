@@ -13,6 +13,7 @@ public class CurrentStatus
     public int exp;                     //경험치
 
     [Header("체력 스텟")]
+    public float hp;                    //현재 체력량
     public float maxHp;                 //최대 체력
     public float hpRecovery;            //체력 회복량
 
@@ -24,6 +25,7 @@ public class CurrentStatus
     public float attackDamage;          //공격력
     public float attackSpeed;           //공격속도 (= 공격속도 쿨타임)
     public float attackCooldown;        //공격스킬 쿨타임 % 감소
+    public float magicDamage;
 
     [Header("방어 및 이동 관련 스텟")]
     public float armor;                 //방어력
@@ -45,10 +47,11 @@ public class CurrentStatus
     {
         level = 1;
         exp = 0;
+        hp = 150;
         maxHp = 150;
-        hpRecovery = 0.8f;
+        hpRecovery = 1f;
         maxStamina = 100;
-        staminaRecovery = 2.5f;
+        staminaRecovery = 3f;
         attackDamage = 10;
         attackSpeed = 0.5f;
         attackCooldown = 0;

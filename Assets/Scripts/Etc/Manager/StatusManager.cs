@@ -45,6 +45,8 @@ public class StatusManager : SingletonBase<StatusManager>
         {
             player = Player.Instance;
         }
+
+        
     }
 
     private void LoadCurrentStatus()
@@ -76,5 +78,14 @@ public class StatusManager : SingletonBase<StatusManager>
     private void LevelUp()
     {
         playerStatus.level += 1;
+        playerStatus.maxHp = statusDictionary[playerStatus.level].maxHp;
+        playerStatus.attackDamage = statusDictionary[playerStatus.level].attackDamage;
+        playerStatus.magicDamage = statusDictionary[playerStatus.level].magicDamage;
+        playerStatus.armor = statusDictionary[playerStatus.level].armor;
+        playerStatus.magicResistance = statusDictionary[playerStatus.level].magicResistance;
+        playerStatus.maxHp = statusDictionary[playerStatus.level].maxHp;
+        playerStatus.moveSpeed = statusDictionary[playerStatus.level].moveSpeed;
+        playerStatus.attackSpeed = statusDictionary[playerStatus.level].attackSpeed;
+        playerStatus.tenacity = statusDictionary[playerStatus.level].tenacity;
     }
 }

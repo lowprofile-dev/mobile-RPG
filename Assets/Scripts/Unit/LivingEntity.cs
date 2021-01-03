@@ -9,9 +9,9 @@ public enum STATE
 
 public class LivingEntity : Unit
 {
-    [SerializeField] protected float _initHp; public float initHp { get { return _initHp; } }
-    [SerializeField] protected float _initMp; public float initMp { get { return _initMp; } }
-    [SerializeField] protected float _hp; public float Hp { get { return _hp; } }
+    [SerializeField] protected float _initHp; public float initHp { get { return _initHp; } set { _initHp = value; } }
+    [SerializeField] protected float _initMp; public float initMp { get { return _initMp; } set { _initMp = value; } }
+    [SerializeField] protected float _hp; public float Hp { get { return _hp; } set { _hp = value; } }
     [SerializeField] protected float _mp; public float Mp { get { return _mp; } set { _mp = value; } }
     [SerializeField] protected GameObject _DamageText; public GameObject DamageText { get { return _DamageText; } }
 

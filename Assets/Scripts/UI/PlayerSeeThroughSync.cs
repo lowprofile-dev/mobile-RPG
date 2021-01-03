@@ -11,10 +11,10 @@ public class PlayerSeeThroughSync : MonoBehaviour
     public Camera Camera;
     public LayerMask Mask;
 
-    //private void Start()
-    //{
-    //    Camera = Camera.main;
-    //}
+    private void Start()
+    {
+        Camera = Camera.main;
+    }
 
     void Update()
     {

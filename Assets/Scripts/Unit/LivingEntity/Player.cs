@@ -20,7 +20,6 @@ public class Player : LivingEntity
     private float skillA_Counter = 0f;
     private float skillB_Counter = 0f;
     private float skillC_Counter = 0f;
-    private float mpCounter = 0f;
 
     [SerializeField] public Transform firePoint;
     [SerializeField] public Transform skillPoint;
@@ -44,7 +43,7 @@ public class Player : LivingEntity
     PartSelection selection;
     FaceCam faceCam;
 
-    WeaponManager weaponManager;
+    public WeaponManager weaponManager;
     ItemManager itemManager;
     StatusManager statusManager;
 
@@ -55,11 +54,12 @@ public class Player : LivingEntity
 
     protected override void Start()
     {
-        base.Start();
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
+        base.Start();
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.Init(transform.Find("PlayerAvatar").gameObject);
+        
     }
 
     protected override void Update()
@@ -79,7 +79,6 @@ public class Player : LivingEntity
             if (Input.GetKeyDown(KeyCode.L))
             {
                 _hp--;
-
             }
 
             if (joystick == null)
@@ -93,6 +92,7 @@ public class Player : LivingEntity
 
                 PlayerSkillCheck();
 
+                PlayerHpRecovery();
                 PlayerMpRecovery();
 
                 weaponManager.UpdateWeapon();
@@ -113,17 +113,19 @@ public class Player : LivingEntity
         }
     }
 
+    private void PlayerHpRecovery()
+    {
+        if (Hp <= statusManager.playerStatus.maxHp)
+        {
+            _hp += statusManager.playerStatus.hpRecovery * Time.deltaTime;
+        }
+    }
+
     private void PlayerMpRecovery()
     {
-        mpCounter += Time.deltaTime;
-        if (mpCounter >= 2f)
+        if (Mp <= statusManager.playerStatus.maxStamina)
         {
-            if (Mp <= 10)
-            {
-                _mp++;
-            }
-
-            mpCounter = 0f;
+            _mp += statusManager.playerStatus.staminaRecovery * Time.deltaTime;
         }
     }
 
@@ -260,6 +262,8 @@ public class Player : LivingEntity
     }
     protected override void InitObject()
     {
+        initHp = statusManager.playerStatus.maxHp;
+        initMp = statusManager.playerStatus.maxStamina;
         base.InitObject();
 
         selection = GetComponent<PartSelection>();
