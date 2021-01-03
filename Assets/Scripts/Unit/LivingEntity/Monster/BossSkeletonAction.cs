@@ -603,7 +603,7 @@ public class BossSkeletonAction : MonsterAction
             if(!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             _monster.MyAnimator.SetTrigger("Hit");
 
-            Damaged(WeaponManager.Instance.GetWeapon().damage);
+            Damaged(WeaponManager.Instance.GetWeapon().attackDamage);
 
             _currentState = STATE.STATE_IDLE;
         }

@@ -40,7 +40,7 @@ public class LivingEntity : Unit
         _hp -= damage;
         Debug.Log(name + "이 " + damage + "만큼 피해를 입었습니다.");
 
-        ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayDamage(WeaponManager.Instance.GetWeapon().damage, true);
+        ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayDamage(WeaponManager.Instance.GetWeapon().attackDamage, true);
     }
 
     public virtual void UseMp(float skillmp)

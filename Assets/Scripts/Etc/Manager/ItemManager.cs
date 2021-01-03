@@ -259,6 +259,7 @@ public class ItemManager : SingletonBase<ItemManager>
         EquipHelmet(currentItemKeys.HelmetKey);
         EquipGloves(currentItemKeys.GlovesKey);
         EquipBoot(currentItemKeys.BootKey);
+        Debug.Log("curreunt status : " + statusManager.finalStatus);
     }
 
     private void EquipBoot(int bootKey)

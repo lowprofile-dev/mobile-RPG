@@ -2,19 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon
+public class Weapon : WeaponData
 {
-    public float damage;
-    public float speed;
-
-    public int masteryLevel;
     public int outfitGrade;
-
-    public float coolTimeA;
-    public float coolTimeB;
-    public float coolTimeC;
-    [SerializeField] WeaponData weaponData;
-
+    public int masteryLevel;
     public GameObject SkillAEffect;
     public GameObject SkillBEffect;
     public GameObject SkillCEffect;

@@ -7,8 +7,6 @@ public class Player : LivingEntity
 
     private bool avoidButtonClick = false;
     [SerializeField] private float avoid_power = 10f;
-    private float count = 0f;
-    private State saveState = null;
 
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
 
@@ -117,7 +115,11 @@ public class Player : LivingEntity
     {
         if (Hp <= statusManager.finalStatus.maxHp)
         {
-            _hp += statusManager.finalStatus.hpRecovery * Time.deltaTime;
+            if(Hp >= statusManager.finalStatus.maxHp)
+            {
+                _hp = statusManager.finalStatus.maxHp;
+            }
+            else _hp += statusManager.finalStatus.hpRecovery * Time.deltaTime;
         }
     }
 
@@ -125,7 +127,11 @@ public class Player : LivingEntity
     {
         if (Mp <= statusManager.finalStatus.maxStamina)
         {
-            _mp += statusManager.finalStatus.staminaRecovery * Time.deltaTime;
+            if(Mp >= statusManager.finalStatus.maxStamina)
+            {
+                _mp = statusManager.finalStatus.maxStamina;
+            }
+            else _mp += statusManager.finalStatus.staminaRecovery * Time.deltaTime;
         }
     }
 
@@ -134,7 +140,7 @@ public class Player : LivingEntity
         if (SkillA_ButtonClick)
         {
             skillA_Counter += Time.deltaTime;
-            if (skillA_Counter >= weaponManager.GetWeapon().coolTimeA)
+            if (skillA_Counter >= weaponManager.GetWeapon().skillACool)
             {
                 SkillA_ButtonClick = false;
             }
@@ -142,7 +148,7 @@ public class Player : LivingEntity
         if (SkillB_ButtonClick)
         {
             skillB_Counter += Time.deltaTime;
-            if (skillB_Counter >= weaponManager.GetWeapon().coolTimeB)
+            if (skillB_Counter >= weaponManager.GetWeapon().skillBCool)
             {
                 SkillB_ButtonClick = false;
             }
@@ -150,7 +156,7 @@ public class Player : LivingEntity
         if (SkillC_ButtonClick)
         {
             skillC_Counter += Time.deltaTime;
-            if (skillC_Counter >= weaponManager.GetWeapon().coolTimeC)
+            if (skillC_Counter >= weaponManager.GetWeapon().skillCCool)
             {
                 SkillC_ButtonClick = false;
             }

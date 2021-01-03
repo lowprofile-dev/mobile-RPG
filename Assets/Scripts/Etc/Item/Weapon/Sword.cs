@@ -1,20 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CSVReader;
 
 public class Sword : Weapon
 {
     // Start is called before the first frame update
-    public Sword()
-    {        
-        damage = 10f;
-        speed = 1.5f;
-        masteryLevel = 1;
-        outfitGrade = 0;
+    public Sword(WeaponData swordData)
+    {
+        id = swordData.id;
+        weaponModelIndex = swordData.weaponModelIndex;
+        weaponType = swordData.weaponType;
 
-        coolTimeA = 4f;
-        coolTimeB = 6f;
-        coolTimeC = 7f;
+        attackDamage = swordData.attackDamage;
+        attackSpeed = swordData.attackSpeed;
+        magicDamage = swordData.magicDamage;
+
+        skillACoef = swordData.skillACoef;
+        skillBCoef = swordData.skillBCoef;
+        skillCCoef = swordData.skillCCoef;
+
+        skillACool = swordData.skillACool;
+        skillBCool = swordData.skillBCool;
+        skillCCool = swordData.skillCCool;
+
+        masteryLevel = 1;
 
         AttackEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Attack");
         SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill A");
@@ -22,7 +32,6 @@ public class Sword : Weapon
         SkillCEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill C");
  
         WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Sword Animator");
-
     }
 
     // Update is called once per frame
