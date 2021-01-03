@@ -5,7 +5,8 @@ using UnityEngine.AI;
 public class MonsterAction : MonoBehaviour
 {
     protected GameObject _target;
-    protected Monster _monster;
+    protected Monster _monster; public Monster Monster { get { return _monster; } }
+
     protected STATE _currentState;
 
     [SerializeField] protected float _findRange;
@@ -17,6 +18,7 @@ public class MonsterAction : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     protected float _traceTimer;
     protected NavMeshAgent _navMeshAgent;
+
 
     public virtual void InitObject()
     {
@@ -175,6 +177,7 @@ public class MonsterAction : MonoBehaviour
     {
         if(_monster.Hp <= 0)
         {
+            _monster.DebuffManager.Release();
             return true;
         }
 

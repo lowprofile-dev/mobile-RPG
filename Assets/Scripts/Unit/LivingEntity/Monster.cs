@@ -39,21 +39,27 @@ public class Monster : LivingEntity
     [SerializeField] protected ATTACKTYPE _attackType; public ATTACKTYPE attackType { get { return _attackType; } }
     [SerializeField] protected int _attackPattern; public int attackPattern { get { return _attackPattern; } }
     [SerializeField] protected string _description; public string description { get { return _description; } }
-    [SerializeField] protected float _speed;
+    [SerializeField] protected float _speed; public float speed { get { return _speed; } set { _speed = value; } }
+    [SerializeField] protected float _MAXspeed; public float MAXspeed { get { return _MAXspeed; } set { _MAXspeed = value; } }
     [SerializeField] protected float _attackTime; public float attackTime { get { return _attackTime; } }
     [SerializeField] protected int _attackDamage; public int attackDamage { get { return _attackDamage; } }
 
+    protected DebuffManager _DebuffManager; public DebuffManager DebuffManager { get { return _DebuffManager; } }
     protected MonsterAction _monsterAction;
 
     protected override void Start()
     {
         base.Start();
         MyAnimator = GetComponent<Animator>();
+        _MAXspeed = speed;
+        _DebuffManager = new DebuffManager();
+
     }
 
     protected override void Update()
     {
         base.Update();
+        _DebuffManager.Update();
     }
     
     protected override void InitObject()
@@ -65,5 +71,5 @@ public class Monster : LivingEntity
         _monsterAction.InitObject();
     }
 
-
+   
 }

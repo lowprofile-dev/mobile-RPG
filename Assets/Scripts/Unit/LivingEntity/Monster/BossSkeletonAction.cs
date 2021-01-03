@@ -598,8 +598,6 @@ public class BossSkeletonAction : MonsterAction
     {
         if (other.CompareTag("PlayerAttack"))
         {
-            Debug.Log("데미지입은 몬스터");
-
             if(!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             _monster.MyAnimator.SetTrigger("Hit");
 

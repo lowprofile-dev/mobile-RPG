@@ -34,8 +34,7 @@ public class DamageText : MonoBehaviour
     }
 
     public void PlayDamage(float damage , bool IsCritical)
-    {
-        Debug.Log("데미지 입어버리기~ " + damage);
+    { 
 
         if (IsCritical)
         {

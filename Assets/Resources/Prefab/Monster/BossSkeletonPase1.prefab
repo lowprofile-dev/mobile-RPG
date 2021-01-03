@@ -403,7 +403,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpSlider: {fileID: 8499260352358684527}
   obj: {fileID: 4213053510919530694}
-  cam: {fileID: 0}
   MpSlider: {fileID: 7348223149549780147}
 --- !u!1 &4206363439273075022
 GameObject:
@@ -1299,7 +1298,7 @@ GameObject:
   - component: {fileID: 3056188026705863786}
   m_Layer: 0
   m_Name: BossSkeletonPase1
-  m_TagString: Boss
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1404,7 +1403,7 @@ MonoBehaviour:
   _initMp: 1.5
   _hp: 0
   _mp: 0
-  _DamageText: {fileID: 3060821752410861587, guid: 4de72f87bf4c8714ba70cc2eb8959f79,
+  _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
     type: 3}
   MyAnimator: {fileID: 0}
   _monsterName: Skeleton
@@ -1416,6 +1415,7 @@ MonoBehaviour:
   _attackPattern: 0
   _description: 
   _speed: 5
+  _MAXspeed: 0
   _attackTime: 1
   _attackDamage: 1
 --- !u!195 &3056188026705863786
