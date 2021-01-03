@@ -21,13 +21,32 @@ public class CurrentItems
 
     public CurrentItems()
     {
-        headAccesoriesIndex = 0;
-        leftElbowIndex = 0;
-        rightElbowIndex = 0;
-        chestIndex = 0;
-        spineIndex = 0;
-        lowerSpineIndex = 0;
-        leftKneeIndex = 0;
-        rightKneeIndex = 0;
+        this.headAccesoriesIndex = 0;
+        this.leftElbowIndex = 0;
+        this.rightElbowIndex = 0;
+        this.chestIndex = 0;
+        this.spineIndex = 0;
+        this.lowerSpineIndex = 0;
+        this.leftKneeIndex = 0;
+        this.rightKneeIndex = 0;
+    }
+}
+
+[System.Serializable]
+public class CurrentItemKeys
+{
+    public int ArmorKey;
+    public int BottomKey;
+    public int HelmetKey;
+    public int GlovesKey;
+    public int BootKey;
+
+    public CurrentItemKeys()
+    {
+        this.ArmorKey = 1;
+        this.BottomKey = 2;
+        this.HelmetKey = 3;
+        this.GlovesKey = 4;
+        this.BootKey = 5;
     }
 }

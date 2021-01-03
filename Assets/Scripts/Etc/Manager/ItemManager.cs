@@ -10,23 +10,28 @@ public class ItemManager : SingletonBase<ItemManager>
 {
     //착용중인 아이템 인덱스
     public CurrentItems currentItems;
+    public CurrentItemKeys currentItemKeys;
     //Dictionary<ItemData, int> playerInventory;
     public Dictionary<int, int> playerInventory;
     public Dictionary<int, ItemData> itemDictionary;
     Player player;
     PartSelection playerPartSelection;
+    StatusManager statusManager;
 
     public int inventorySize;
 
     private void Start()
     {
+        statusManager = StatusManager.Instance;
         currentItems = new CurrentItems();
+        currentItemKeys = new CurrentItemKeys();
         itemDictionary = new Dictionary<int, ItemData>();
         playerInventory = new Dictionary<int, int>();
         Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
         itemDictionary = itemTable.TableToDictionary<int, ItemData>();
         LoadCurrentItems();
         LoadInventoryData();
+        EquipItems();
     }
 
     private void Update()
@@ -65,7 +70,6 @@ public class ItemManager : SingletonBase<ItemManager>
             string jsonFirstData = jsonRawData.ToString();
             string pathFirst = Path.Combine(Application.persistentDataPath, "playerCurrentItems.json");
             File.WriteAllText(pathFirst, jsonFirstData);
-
             PlayerPrefs.Save();
         }
 
@@ -73,6 +77,29 @@ public class ItemManager : SingletonBase<ItemManager>
         string jsonData = File.ReadAllText(path);
         if (jsonData == null) return;
         currentItems = JsonUtility.FromJson<CurrentItems>(jsonData);
+    }
+
+    private void SaveCurrentItemKeys()
+    {
+        string jsonData = JsonUtility.ToJson(currentItemKeys, true);
+        string path = Path.Combine(Application.persistentDataPath, "playerCurrentItemKeys.json");
+        File.WriteAllText(path, jsonData);
+    }
+
+    private void LoadCurrentItemKeys()
+    {
+        PlayerPrefs.SetInt("LoadCurrentItemKeys", PlayerPrefs.GetInt("LoadCurrentItemKeys", 0));
+        if (PlayerPrefs.GetInt("LoadCurrentItemKeys") == 0)
+        {
+            Debug.Log("최초 스테이터스 데이터 로드 실행입니다.");
+            PlayerPrefs.SetInt("LoadCurrentItemKeys", 1);
+            SaveCurrentItemKeys();
+            PlayerPrefs.Save();
+        }
+        string path = Path.Combine(Application.persistentDataPath, "playerCurrentItemKeys.json");
+        string jsonData = File.ReadAllText(path);
+        if (jsonData == null) return;
+        currentItemKeys = JsonUtility.FromJson<CurrentItemKeys>(jsonData);
     }
 
     /// <summary>
@@ -129,29 +156,36 @@ public class ItemManager : SingletonBase<ItemManager>
                 playerPartSelection.ChangeSpinePart(itemData.itemIndex);
                 currentItems.chestIndex = itemData.itemIndex;
                 currentItems.spineIndex = itemData.itemIndex;
+                currentItemKeys.ArmorKey = itemData.id;
                 break;
             case "Bottom":
                 playerPartSelection.ChangeLowerSpinePart(itemData.itemIndex);
                 currentItems.lowerSpineIndex = itemData.itemIndex;
+                currentItemKeys.BottomKey = itemData.id;
                 break;
             case "Helmet":
                 playerPartSelection.ChangeHeadAccesoriesPart(itemData.itemIndex);
                 currentItems.headAccesoriesIndex = itemData.itemIndex;
+                currentItemKeys.HelmetKey = itemData.id;
                 break;
             case "Gloves":
                 playerPartSelection.ChangeLeftElbowPart(itemData.itemIndex);
                 playerPartSelection.ChangeRightElbowPart(itemData.itemIndex);
                 currentItems.leftElbowIndex = itemData.itemIndex;
                 currentItems.rightElbowIndex = itemData.itemIndex;
+                currentItemKeys.GlovesKey = itemData.id;
                 break;
             case "Boot":
                 playerPartSelection.ChangeLeftKneePart(itemData.itemIndex);
                 playerPartSelection.ChangeRightKneePart(itemData.itemIndex);
                 currentItems.leftKneeIndex = itemData.itemIndex;
                 currentItems.rightKneeIndex = itemData.itemIndex;
+                currentItemKeys.BootKey = itemData.id;
                 break;
         }
         SaveCurrentItems();
+        SaveCurrentItemKeys();
+        EquipItems();
     }
 
     /// <summary>
@@ -217,4 +251,47 @@ public class ItemManager : SingletonBase<ItemManager>
     //    }
     //    return result;
     //}
+    private void EquipItems()
+    {
+        statusManager.finalStatus = (CurrentStatus) statusManager.playerStatus.Clone();
+        EquipArmor(currentItemKeys.ArmorKey);
+        EquipBottom(currentItemKeys.BottomKey);
+        EquipHelmet(currentItemKeys.HelmetKey);
+        EquipGloves(currentItemKeys.GlovesKey);
+        EquipBoot(currentItemKeys.BootKey);
+    }
+
+    private void EquipBoot(int bootKey)
+    {
+        statusManager.finalStatus.moveSpeed *= (1 + itemDictionary[bootKey].moveSpeed);
+        statusManager.finalStatus.dashCooldown *= (1 + itemDictionary[bootKey].dashCooldown);
+        statusManager.finalStatus.dashStamina -= itemDictionary[bootKey].dashStamina;
+    }
+
+    private void EquipGloves(int glovesKey)
+    {
+        statusManager.finalStatus.attackDamage *= (1 + itemDictionary[glovesKey].attackDamage);
+        statusManager.finalStatus.attackSpeed *= (1 + itemDictionary[glovesKey].attackSpeed);
+        statusManager.finalStatus.attackCooldown += itemDictionary[glovesKey].attackCooldown;
+    }
+
+    private void EquipHelmet(int helmetKey)
+    {
+        statusManager.finalStatus.tenacity += itemDictionary[helmetKey].tenacity;
+    }
+
+    private void EquipBottom(int bottomKey)
+    {
+        statusManager.finalStatus.maxStamina += itemDictionary[bottomKey].stamina;
+        statusManager.finalStatus.staminaRecovery += (1 + itemDictionary[bottomKey].staminaRecovery);
+        statusManager.finalStatus.maxHp += (1 + itemDictionary[bottomKey].hp);
+        statusManager.finalStatus.hpRecovery += (1 + itemDictionary[bottomKey].hpRecovery);
+    }
+
+    private void EquipArmor(int armorKey)
+    {
+        statusManager.finalStatus.maxHp *= (1 + itemDictionary[armorKey].hpIncreaseRate);
+        statusManager.finalStatus.maxHp *= (1 + itemDictionary[armorKey].armor);
+        statusManager.finalStatus.maxHp *= (1 + itemDictionary[armorKey].magicResistance);
+    }
 }
