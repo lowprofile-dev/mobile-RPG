@@ -76,7 +76,8 @@ public class Player : LivingEntity
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                _hp--;
+                weaponManager.GetWeapon().masteryLevel++;
+                weaponManager.GetWeapon().SkillRelease();
             }
 
             if (joystick == null)
@@ -145,7 +146,7 @@ public class Player : LivingEntity
                 SkillA_ButtonClick = false;
             }
         }
-        if (SkillB_ButtonClick)
+        if (SkillB_ButtonClick )
         {
             skillB_Counter += Time.deltaTime;
             if (skillB_Counter >= weaponManager.GetWeapon().skillBCool)
@@ -153,7 +154,7 @@ public class Player : LivingEntity
                 SkillB_ButtonClick = false;
             }
         }
-        if (SkillC_ButtonClick)
+        if (SkillC_ButtonClick )
         {
             skillC_Counter += Time.deltaTime;
             if (skillC_Counter >= weaponManager.GetWeapon().skillCCool)
@@ -193,7 +194,7 @@ public class Player : LivingEntity
 
     public void PlayerSkillA()
     {
-        if (SkillA_ButtonClick == false)
+        if (SkillA_ButtonClick == false )
         {
             MyStateMachine.SetState("SKILL_A");
             SkillA_ButtonClick = true;
@@ -205,7 +206,7 @@ public class Player : LivingEntity
     }
     public void PlayerSkillB()
     {
-        if (SkillB_ButtonClick == false)
+        if (SkillB_ButtonClick == false && weaponManager.GetWeapon().CheckSkillB())
         {
             MyStateMachine.SetState("SKILL_B");
             SkillB_ButtonClick = true;
@@ -217,7 +218,7 @@ public class Player : LivingEntity
     }
     public void PlayerSkillC()
     {
-        if (SkillC_ButtonClick == false)
+        if (SkillC_ButtonClick == false && weaponManager.GetWeapon().CheckSkillC())
         {
             MyStateMachine.SetState("SKILL_C");
             SkillC_ButtonClick = true;

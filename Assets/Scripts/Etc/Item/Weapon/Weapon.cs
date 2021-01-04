@@ -6,6 +6,8 @@ public class Weapon : WeaponData
 {
     public int outfitGrade;
     public int masteryLevel;
+    public bool skillBRelease = false;
+    public bool skillCRelease = false;
     public GameObject SkillAEffect;
     public GameObject SkillBEffect;
     public GameObject SkillCEffect;
@@ -51,4 +53,19 @@ public class Weapon : WeaponData
         }
     }
 
+    public void SkillRelease()
+    {
+        if (masteryLevel >= 19 && skillCRelease == false) skillCRelease = true;
+        else if (masteryLevel >= 10 && skillBRelease == false) skillBRelease = true;
+    }
+
+    public bool CheckSkillB()
+    {
+        return skillBRelease;
+    }
+
+    public bool CheckSkillC()
+    {
+        return skillCRelease;
+    }
 }

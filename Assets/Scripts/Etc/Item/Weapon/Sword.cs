@@ -25,6 +25,8 @@ public class Sword : Weapon
         skillCCool = swordData.skillCCool;
 
         masteryLevel = 1;
+        skillBRelease = false;
+        skillCRelease = false;
 
         AttackEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Attack");
         SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Sword Skill A");
