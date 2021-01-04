@@ -27,12 +27,9 @@ public class BleedingDebuff : Debuff
             if (timeSinceTick >= tickTime) //지속시간이 지속간격보다 크면
             {
                 timeSinceTick = 0f;
-
-                Debug.Log("몬스터 출혈 데미지 : " + tickDamage);
-                target.Damaged(tickDamage);
+                target.Damaged(tickDamage, false);
             }
         }
-        
 
         base.Update();
     }

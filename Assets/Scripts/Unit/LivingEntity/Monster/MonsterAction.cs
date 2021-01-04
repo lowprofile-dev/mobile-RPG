@@ -519,7 +519,6 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void AttackUpdate()
     {
-
         // 타겟과의 거리가 공격 범위보다 커지면
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
         {
@@ -655,11 +654,27 @@ public class MonsterAction : MonoBehaviour
     /// <summary>
     /// dmg를 받아 피해를 입는다.
     /// </summary>
-    public virtual void Damaged(float dmg)
+    public virtual void Damaged(float dmg, bool SetAnimation = true)
     {
-        _monster.Damaged(dmg);
-        if (!CheckDeathAndChange()) _monster.MyAnimator.SetTrigger("Hit");
-        else _monster.MyAnimator.ResetTrigger("Hit");
+        if (_currentState == STATE.STATE_DIE)
+        {
+            return;
+        }
+
+        else
+        {
+            _monster.Damaged(dmg);
+
+            bool isDeath = DeathCheck();
+
+            if (SetAnimation)
+            {
+                if (isDeath) _monster.MyAnimator.ResetTrigger("Hit");
+                else _monster.MyAnimator.SetTrigger("Hit");
+            }
+
+            if (isDeath) CheckDeathAndChange();
+        }
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -681,7 +696,7 @@ public class MonsterAction : MonoBehaviour
     {
         return !_isImmune && !DeathCheck();
     }
-    
+
 
 
 
@@ -736,7 +751,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual bool DeathCheck()
     {
-        return _monster.Hp <= 0 || _currentState == STATE.STATE_DIE;
+        return _monster.Hp <= 0;
     }
 
     protected virtual void DeathUpdate()
