@@ -34,7 +34,7 @@ public class DamageText : MonoBehaviour
     }
 
     public void PlayDamage(float damage , bool IsCritical)
-    {
+    { 
         if (IsCritical)
         {
             txt.text = "<color=#ff0000>" + "-" + damage + "</color>";

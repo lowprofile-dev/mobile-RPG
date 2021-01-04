@@ -7,8 +7,6 @@ public class Player : LivingEntity
 
     private bool avoidButtonClick = false;
     [SerializeField] private float avoid_power = 10f;
-    private float count = 0f;
-    private State saveState = null;
 
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
 
@@ -20,7 +18,6 @@ public class Player : LivingEntity
     private float skillA_Counter = 0f;
     private float skillB_Counter = 0f;
     private float skillC_Counter = 0f;
-    private float mpCounter = 0f;
 
     [SerializeField] public Transform firePoint;
     [SerializeField] public Transform skillPoint;
@@ -45,7 +42,8 @@ public class Player : LivingEntity
     FaceCam faceCam;
 
     public WeaponManager weaponManager;
-    public ItemManager itemManager;
+    ItemManager itemManager;
+    StatusManager statusManager;
 
     private void Awake()
     {
@@ -54,9 +52,12 @@ public class Player : LivingEntity
 
     protected override void Start()
     {
+        itemManager = ItemManager.Instance;
+        statusManager = StatusManager.Instance;
         base.Start();
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.Init(transform.Find("PlayerAvatar").gameObject);
+        
     }
 
     protected override void Update()
@@ -76,7 +77,6 @@ public class Player : LivingEntity
             if (Input.GetKeyDown(KeyCode.L))
             {
                 _hp--;
-
             }
 
             if (joystick == null)
@@ -90,6 +90,7 @@ public class Player : LivingEntity
 
                 PlayerSkillCheck();
 
+                PlayerHpRecovery();
                 PlayerMpRecovery();
 
                 weaponManager.UpdateWeapon();
@@ -110,17 +111,27 @@ public class Player : LivingEntity
         }
     }
 
+    private void PlayerHpRecovery()
+    {
+        if (Hp <= statusManager.finalStatus.maxHp)
+        {
+            if(Hp >= statusManager.finalStatus.maxHp)
+            {
+                _hp = statusManager.finalStatus.maxHp;
+            }
+            else _hp += statusManager.finalStatus.hpRecovery * Time.deltaTime;
+        }
+    }
+
     private void PlayerMpRecovery()
     {
-        mpCounter += Time.deltaTime;
-        if (mpCounter >= 2f)
+        if (Mp <= statusManager.finalStatus.maxStamina)
         {
-            if (Mp <= 10)
+            if(Mp >= statusManager.finalStatus.maxStamina)
             {
-                _mp++;
+                _mp = statusManager.finalStatus.maxStamina;
             }
-
-            mpCounter = 0f;
+            else _mp += statusManager.finalStatus.staminaRecovery * Time.deltaTime;
         }
     }
 
@@ -129,7 +140,7 @@ public class Player : LivingEntity
         if (SkillA_ButtonClick)
         {
             skillA_Counter += Time.deltaTime;
-            if (skillA_Counter >= weaponManager.GetWeapon().coolTimeA)
+            if (skillA_Counter >= weaponManager.GetWeapon().skillACool)
             {
                 SkillA_ButtonClick = false;
             }
@@ -137,7 +148,7 @@ public class Player : LivingEntity
         if (SkillB_ButtonClick)
         {
             skillB_Counter += Time.deltaTime;
-            if (skillB_Counter >= weaponManager.GetWeapon().coolTimeB)
+            if (skillB_Counter >= weaponManager.GetWeapon().skillBCool)
             {
                 SkillB_ButtonClick = false;
             }
@@ -145,7 +156,7 @@ public class Player : LivingEntity
         if (SkillC_ButtonClick)
         {
             skillC_Counter += Time.deltaTime;
-            if (skillC_Counter >= weaponManager.GetWeapon().coolTimeC)
+            if (skillC_Counter >= weaponManager.GetWeapon().skillCCool)
             {
                 SkillC_ButtonClick = false;
             }
@@ -257,6 +268,8 @@ public class Player : LivingEntity
     }
     protected override void InitObject()
     {
+        initHp = statusManager.finalStatus.maxHp;
+        initMp = statusManager.finalStatus.maxStamina;
         base.InitObject();
 
         selection = GetComponent<PartSelection>();

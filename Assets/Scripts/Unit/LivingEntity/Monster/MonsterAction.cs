@@ -15,7 +15,7 @@ public class MonsterAction : MonoBehaviour
     protected Coroutine _hitCoroutine;      // HitCoroutine 제어
 
     // 캐싱 대상
-    protected Monster _monster;
+    protected Monster _monster; public Monster monster { get { return _monster; } }
     protected NavMeshAgent _navMeshAgent;
 
     // 오브젝트
@@ -655,7 +655,7 @@ public class MonsterAction : MonoBehaviour
     /// <summary>
     /// dmg를 받아 피해를 입는다.
     /// </summary>
-    protected virtual void Damaged(float dmg)
+    public virtual void Damaged(float dmg)
     {
         _monster.Damaged(dmg);
         if (!CheckDeathAndChange()) _monster.MyAnimator.SetTrigger("Hit");
@@ -668,7 +668,7 @@ public class MonsterAction : MonoBehaviour
         {
             if (GetCanDamageCheck())
             {
-                Damaged(WeaponManager.Instance.GetWeapon().damage);
+                Damaged(WeaponManager.Instance.GetWeapon().attackDamage);
             }
         }
     }

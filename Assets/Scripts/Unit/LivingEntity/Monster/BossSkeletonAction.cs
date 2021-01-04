@@ -340,7 +340,7 @@ public class BossSkeletonAction : MonsterAction
     //    base.CheckLimitPlayerDistance();
     //}
 
-    protected override void Damaged(float dmg)
+    public override void Damaged(float dmg)
     {
         base.Damaged(dmg);
         //ChangeState(STATE.STATE_FIND);
@@ -592,12 +592,10 @@ public class BossSkeletonAction : MonsterAction
     {
         if (other.CompareTag("PlayerAttack"))
         {
-            Debug.Log("데미지입은 몬스터");
-
             if(!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             _monster.MyAnimator.SetTrigger("Hit");
 
-            Damaged(WeaponManager.Instance.GetWeapon().damage);
+            Damaged(WeaponManager.Instance.GetWeapon().attackDamage);
 
             _currentState = STATE.STATE_IDLE;
         }

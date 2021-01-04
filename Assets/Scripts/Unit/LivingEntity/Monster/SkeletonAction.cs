@@ -199,7 +199,7 @@ public class SkeletonAction : MonsterAction
         base.CheckLimitPlayerDistance();
     }
 
-    protected override void Damaged(float dmg)
+    public override void Damaged(float dmg)
     {
         base.Damaged(dmg);
         //ChangeState(STATE.STATE_FIND);
