@@ -28,7 +28,6 @@ public class BleedingDebuff : Debuff
             {
                 timeSinceTick = 0f;
 
-                Debug.Log("몬스터 출혈 데미지 : " + tickDamage);
                 target.Damaged(tickDamage);
             }
         }
