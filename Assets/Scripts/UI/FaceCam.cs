@@ -16,13 +16,13 @@ public class FaceCam : MonoBehaviour
     private void OnDisable()
     {
         if (followAvatar != null)
-            Destroy(followAvatar);
+            ObjectPoolManager.Instance.ReturnObject(followAvatar);
     }
 
     public void SetTargetWithGenerate(GameObject target)
     {
         cinemachine = GetComponent<CinemachineFreeLook>();
-        followAvatar = Instantiate(target);
+        followAvatar = ObjectPoolManager.Instance.GetObject(target);
         followAvatar.transform.position = new Vector3(1000, 1000, 0);
         followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         cinemachine.m_Follow = followAvatar.transform;
