@@ -730,6 +730,7 @@ public class MonsterAction : MonoBehaviour
     {
         transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => { DestroyImmediate(gameObject); });
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
+        _monster.hpbarObject.gameObject.SetActive(false);
     }
 
     /// <summary>

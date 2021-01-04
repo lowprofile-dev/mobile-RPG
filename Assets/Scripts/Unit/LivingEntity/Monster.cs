@@ -47,7 +47,8 @@ public class Monster : LivingEntity
     [SerializeField] protected Material _dissolveMaterial; public Material dissolveMaterial { get { return _dissolveMaterial; } }
     [SerializeField] protected Material _nonDissolveMaterial; public Material nonDissolveMaterial { get { return _nonDissolveMaterial; } }
     [SerializeField] protected GameObject _avatarObject; public GameObject avatarObject { get { return _avatarObject; } }
-
+    [SerializeField] protected EnemyHpbar _hpbarObject; public EnemyHpbar hpbarObject { get { return _hpbarObject; } }
+    
     protected DebuffManager _DebuffManager; public DebuffManager DebuffManager { get { return _DebuffManager; } }
     protected MonsterAction _monsterAction;
 

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -158,6 +158,7 @@ MonoBehaviour:
   - m_Transitions
   - m_Follow
   - m_StandbyUpdate
+  - m_Lens
   m_LockStageInInspector: 00000000
   m_StreamingVersion: 20170927
   m_Priority: 10
@@ -1082,7 +1083,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326440162}
-  m_LocalRotation: {x: -0.4087649, y: -0.11322133, z: 0.24173228, w: 0.8727301}
+  m_LocalRotation: {x: -0.4087649, y: -0.11322134, z: 0.24173227, w: 0.8727301}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2358,6 +2359,7 @@ MonoBehaviour:
   - m_Transitions
   - m_Follow
   - m_StandbyUpdate
+  - m_Lens
   m_LockStageInInspector: 00000000
   m_StreamingVersion: 20170927
   m_Priority: 10
@@ -2365,8 +2367,8 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 20
-    OrthographicSize: 7
+    FieldOfView: 100
+    OrthographicSize: 10
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -2622,9 +2624,9 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 20
+  field of view: 100
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2647,7 +2649,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479575216}
-  m_LocalRotation: {x: 0.38268346, y: 0.000000008385076, z: -0.0000000034732126, w: 0.9238795}
+  m_LocalRotation: {x: 0.38268346, y: 0.0000000083819325, z: -0.0000000034719103,
+    w: 0.9238795}
   m_LocalPosition: {x: -11, y: 41, z: -35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -2851,6 +2854,7 @@ MonoBehaviour:
   - m_Transitions
   - m_Follow
   - m_StandbyUpdate
+  - m_Lens
   m_LockStageInInspector: 00000000
   m_StreamingVersion: 20170927
   m_Priority: 10
@@ -2879,7 +2883,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612281565}
-  m_LocalRotation: {x: -0.02628851, y: -0.00000001050137, z: 0.000000011068606, w: 0.9996544}
+  m_LocalRotation: {x: -0.02628851, y: -0.000000010503712, z: 0.000000011071075, w: 0.9996544}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2957,7 +2961,7 @@ MonoBehaviour:
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 1475385557}
   m_Follow: {fileID: 1475385557}
-  m_CommonLens: 0
+  m_CommonLens: 1
   m_Lens:
     FieldOfView: 100
     OrthographicSize: 10
@@ -3198,7 +3202,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1699888914}
-  m_LocalRotation: {x: -0.6019883, y: -0.16674112, z: 0.20844892, w: 0.75256664}
+  m_LocalRotation: {x: -0.60198826, y: -0.16674113, z: 0.20844895, w: 0.75256675}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
