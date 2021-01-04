@@ -15,13 +15,11 @@ public abstract class Debuff { //디버프 추상클래스
     }
     public virtual void Update() //디버프 업데이트
     {
-      
         elapsed += Time.deltaTime;
         if (elapsed >= duration)
         {
             Remove();
         }
-
     }
     public virtual void Remove() //디버프 삭제
     {
