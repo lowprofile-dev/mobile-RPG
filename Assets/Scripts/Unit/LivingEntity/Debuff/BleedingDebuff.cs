@@ -27,11 +27,9 @@ public class BleedingDebuff : Debuff
             if (timeSinceTick >= tickTime) //지속시간이 지속간격보다 크면
             {
                 timeSinceTick = 0f;
-
-                target.Damaged(tickDamage);
+                target.Damaged(tickDamage, false);
             }
         }
-        
 
         base.Update();
     }

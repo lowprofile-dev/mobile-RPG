@@ -339,13 +339,7 @@ public class BossSkeletonAction : MonsterAction
     //{
     //    base.CheckLimitPlayerDistance();
     //}
-
-    public override void Damaged(float dmg)
-    {
-        base.Damaged(dmg);
-        //ChangeState(STATE.STATE_FIND);
-    }
-
+    
     //public override void Attack()
     //{
     //    base.Attack();
@@ -588,7 +582,7 @@ public class BossSkeletonAction : MonsterAction
     //    _navMeshAgent.isStopped = false;
     //}
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PlayerAttack"))
         {
