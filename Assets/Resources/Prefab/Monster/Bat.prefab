@@ -350,7 +350,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpSlider: {fileID: 99872698}
   obj: {fileID: 5711455880128171128}
-  cam: {fileID: 0}
   MpSlider: {fileID: 0}
 --- !u!1 &1736780016
 GameObject:
@@ -398,10 +397,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5711455880128171128}
   - component: {fileID: 5711455880128171129}
-  - component: {fileID: 5711455880128171130}
   - component: {fileID: 5711455880128171131}
   - component: {fileID: 5711455880128171076}
   - component: {fileID: 693003673205578593}
+  - component: {fileID: 2360505954336103637}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Untagged
@@ -439,37 +438,6 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5711455880128171130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5711455880128171077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 835c599e15e4d374cb5dfd020a2e7fdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _id: 0
-  _initHp: 30
-  _initMp: 0
-  _hp: 0
-  _mp: 0
-  _DamageText: {fileID: 3060821752410861587, guid: 4de72f87bf4c8714ba70cc2eb8959f79,
-    type: 3}
-  MyAnimator: {fileID: 0}
-  _monsterName: Bat
-  _grade: 0
-  _race: 2
-  _size: 0
-  _spawnArea: 0
-  _attackType: 1
-  _attackPattern: 0
-  _description: 
-  _speed: 0
-  _attackTime: 1
-  _attackDamage: 1
 --- !u!195 &5711455880128171131
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -526,12 +494,46 @@ MonoBehaviour:
   _findRange: 5
   _attackRange: 2
   _limitTraceRange: 8
-  _speed: 3
-  _distance: 0
+  _moveSpeed: 3
   _attackSpeed: 2
-  layerMask:
+  _checkLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2360505954336103637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5711455880128171077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc4d77968ce08aa4aab5cc9c461f5e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 1
+  _initHp: 100
+  _initMp: 0
+  _hp: 0
+  _mp: 0
+  _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
+    type: 3}
+  MyAnimator: {fileID: 0}
+  _monsterName: 
+  _grade: 0
+  _race: 0
+  _size: 0
+  _spawnArea: 0
+  _attackType: 0
+  _attackPattern: 0
+  _description: 
+  _speed: 0
+  _attackTime: 0
+  _attackDamage: 0
+  _dissolveMaterial: {fileID: 2100000, guid: a84536e1e888d10429796579a2126d46, type: 2}
+  _nonDissolveMaterial: {fileID: 2100000, guid: 052201055f6bd9d4fa0de7db3bb66c02,
+    type: 2}
+  _avatarObject: {fileID: 5710748349090778698}
 --- !u!1001 &5711455880719414302
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -592,6 +594,12 @@ PrefabInstance:
 --- !u!4 &5714257731432042524 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000012389442562, guid: 397387cfc96faaf46bf7d5c0a7bd5cd8,
+    type: 3}
+  m_PrefabInstance: {fileID: 5711455880719414302}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5710748349090778698 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000011020958292, guid: 397387cfc96faaf46bf7d5c0a7bd5cd8,
     type: 3}
   m_PrefabInstance: {fileID: 5711455880719414302}
   m_PrefabAsset: {fileID: 0}

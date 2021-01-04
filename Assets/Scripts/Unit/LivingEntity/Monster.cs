@@ -43,12 +43,16 @@ public class Monster : LivingEntity
     [SerializeField] protected float _attackTime; public float attackTime { get { return _attackTime; } }
     [SerializeField] protected int _attackDamage; public int attackDamage { get { return _attackDamage; } }
 
+    // 머테리얼 관련
+    [SerializeField] protected Material _dissolveMaterial; public Material dissolveMaterial { get { return _dissolveMaterial; } }
+    [SerializeField] protected Material _nonDissolveMaterial; public Material nonDissolveMaterial { get { return _nonDissolveMaterial; } }
+    [SerializeField] protected GameObject _avatarObject; public GameObject avatarObject { get { return _avatarObject; } }
+
     protected MonsterAction _monsterAction;
 
     protected override void Start()
     {
         base.Start();
-        MyAnimator = GetComponent<Animator>();
     }
 
     protected override void Update()
@@ -59,11 +63,10 @@ public class Monster : LivingEntity
     protected override void InitObject()
     {
         base.InitObject();
+        MyAnimator = GetComponent<Animator>();
 
         _hp = _initHp;
         _monsterAction = GetComponent<MonsterAction>();
         _monsterAction.InitObject();
     }
-
-
 }

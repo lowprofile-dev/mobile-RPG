@@ -36,7 +36,7 @@ public class SkeletonAction : MonsterAction
     protected override void UpdateMonster()
     {
         DeathCheck();
-        PlayerDeathCheck();
+        TargetDeathCheck();
     }
 
     public override void UpdateState()
@@ -51,7 +51,7 @@ public class SkeletonAction : MonsterAction
                 SpawnAction();
                 break;
             case STATE.STATE_IDLE:
-                Search();
+                IdleUpdate();
                 break;
             case STATE.STATE_STIRR:
                 GroundSearch();
@@ -60,11 +60,11 @@ public class SkeletonAction : MonsterAction
                 FindPlayer();
                 break;
             case STATE.STATE_TRACE:
-                Move();
+                MoveToTarget();
                 CheckLimitPlayerDistance();
                 break;
             case STATE.STATE_ATTACK:
-                Attack();
+                AttackUpdate();
                 break;
             case STATE.STATE_KILL:
                 KillPlayer();        
@@ -172,16 +172,16 @@ public class SkeletonAction : MonsterAction
 
     private void TraceExit()
     {
-        _navMeshAgent.speed = _speed;
+        _navMeshAgent.speed = _moveSpeed;
        // _monster.MyAnimator.ResetTrigger("Walk");
     }
 
     /// <summary>
     /// 추적 행동
     /// </summary>
-    public override void Move()
+    public override void MoveToTarget()
     {
-        base.Move();
+        base.MoveToTarget();
         //_navMeshAgent.isStopped = false;
         
         _navMeshAgent.SetDestination(_target.transform.position);
@@ -199,15 +199,15 @@ public class SkeletonAction : MonsterAction
         base.CheckLimitPlayerDistance();
     }
 
-    public override void Damaged(float dmg)
+    protected override void Damaged(float dmg)
     {
         base.Damaged(dmg);
         //ChangeState(STATE.STATE_FIND);
     }
 
-    public override void Attack()
+    protected override void AttackUpdate()
     {
-        base.Attack();
+        base.AttackUpdate();
 
         if(castingTime <= 6f)
         castingTime += Time.deltaTime;
@@ -219,17 +219,17 @@ public class SkeletonAction : MonsterAction
         }
     }
 
-    public override void AttackStart()
+    protected override void AttackStart()
     {
         _attackCoroutine = StartCoroutine(AttackTarget());
     }
 
-    public override void AttackExit()
+    protected override void AttackExit()
     {
         StopCoroutine(_attackCoroutine);
     }
 
-    public override IEnumerator AttackTarget()
+    protected override IEnumerator AttackTarget()
     {
         
         while (true)
@@ -306,14 +306,14 @@ public class SkeletonAction : MonsterAction
 
     }
 
-    public override void CastStart()
+    protected override void CastStart()
     {
         _castCoroutine = StartCoroutine(DoCastingAction());
     }
 
-    public override void Cast()
+    protected override void CastUpdate()
     {
-        base.Cast();
+        base.CastUpdate();
 
         // 타겟과의 거리가 공격 범위보다 커지면
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
@@ -322,7 +322,7 @@ public class SkeletonAction : MonsterAction
         }
     }
 
-    public override IEnumerator DoCastingAction()
+    protected override IEnumerator DoCastingAction()
     {
         Debug.Log("캐스팅 중입니다...");
         // 사운드 재생
@@ -330,7 +330,7 @@ public class SkeletonAction : MonsterAction
         ChangeState(STATE.STATE_ATTACK);
     }
 
-    public override void CastExit()
+    protected override void CastExit()
     {
         StopCoroutine(_castCoroutine);
     }
@@ -342,9 +342,9 @@ public class SkeletonAction : MonsterAction
         yield return null;
     }
 
-    public override void Search()
+    protected override void IdleUpdate()
     {
-        base.Search();
+        base.IdleUpdate();
 
         idleCnt += Time.deltaTime;
 
@@ -372,24 +372,9 @@ public class SkeletonAction : MonsterAction
         transform.LookAt(_target.transform.position);
         // 위에 느낌표가 뜬다.
         // 소리를 낸다.
-
-        // 인식 행동 진행
-        StartCoroutine(DoFindAction());
     }
-
-    public override IEnumerator DoFindAction()
-    {
-        yield return null;
-    }
-
-    public override void DeathCheck()
-    {
-        if (_currentState != STATE.STATE_DIE && NoHPCheck())
-        {
-            ChangeState(STATE.STATE_DIE);
-        }
-    }
-    public override void PlayerDeathCheck()
+    
+    public override void TargetDeathCheck()
     {
         if (_currentState != STATE.STATE_KILL && _target.GetComponent<LivingEntity>().Hp <= 0)
         {
@@ -397,18 +382,17 @@ public class SkeletonAction : MonsterAction
         }
     }
 
-    public override void DeathStart()
+    protected override void DeathStart()
     {
         StartCoroutine(DoDeathAction());
     }
 
-    public override IEnumerator DoDeathAction()
+    protected override IEnumerator DoDeathAction()
     {
         // DeadSound를 재생한다.
         // 뭔가 사망 행동을 함
         _monster.MyAnimator.SetTrigger("Die");
 
-        Debug.Log("사망했다! 사망행동으로 폭탄 떨구고 가기~");
         yield return new WaitForSeconds(2);
 
         DestroyImmediate(this.gameObject);
@@ -455,7 +439,7 @@ public class SkeletonAction : MonsterAction
 
     private void TraceStart()
     {
-        _navMeshAgent.speed = _speed * 1.5f;
+        _navMeshAgent.speed = _moveSpeed * 1.5f;
         _monster.MyAnimator.SetTrigger("Walk");
     }
 

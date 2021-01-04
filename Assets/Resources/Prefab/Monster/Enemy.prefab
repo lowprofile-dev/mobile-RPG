@@ -113,6 +113,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _initHp: 10
+  _initMp: 0
+  _hp: 0
+  _mp: 0
+  _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
+    type: 3}
   MyAnimator: {fileID: 0}
   _monsterName: MONSTER
   _grade: 0
@@ -123,7 +128,6 @@ MonoBehaviour:
   _attackPattern: 0
   _description: 
   _speed: 0
-  _castPercent: 30
   _attackTime: 3
   _attackDamage: 1
 --- !u!114 &3104990319420157842
@@ -142,6 +146,11 @@ MonoBehaviour:
   _attackRange: 3
   _limitTraceRange: 8
   _speed: 0
+  _distance: 0
+  _attackSpeed: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!195 &3104990319420157843
 NavMeshAgent:
   m_ObjectHideFlags: 0

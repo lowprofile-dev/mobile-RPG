@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum STATE
 {
-    STATE_IDLE, STATE_FIND, STATE_TRACE, STATE_ATTACK, STATE_CAST, STATE_DEBUFF, STATE_KILL, STATE_DIE , STATE_STIRR , STATE_SPAWN , STATE_HIT
+    STATE_NULL, STATE_IDLE, STATE_FIND, STATE_TRACE, STATE_ATTACK, STATE_CAST, STATE_DEBUFF, STATE_KILL, STATE_DIE , STATE_STIRR , STATE_SPAWN , STATE_HIT 
 }
 
 public class LivingEntity : Unit
@@ -38,7 +38,6 @@ public class LivingEntity : Unit
     public virtual void Damaged(float damage)
     {
         _hp -= damage;
-        Debug.Log(name + "이 " + damage + "만큼 피해를 입었습니다.");
 
         ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayDamage(WeaponManager.Instance.GetWeapon().damage, true);
     }

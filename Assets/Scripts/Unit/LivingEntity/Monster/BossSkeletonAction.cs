@@ -139,9 +139,15 @@ public class BossSkeletonAction : MonsterAction
 
         yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-        _navMeshAgent.speed = _speed;
+        _navMeshAgent.speed = _moveSpeed;
         //_navMeshAgent.stoppingDistance = _attackRange;
         _currentState = STATE.STATE_IDLE;
+    }
+
+    private IEnumerator STATE_SPAWN()
+    {
+        ChangeState(STATE.STATE_IDLE);
+        yield return null;
     }
 
     private IEnumerator STATE_TRACE()
@@ -175,7 +181,7 @@ public class BossSkeletonAction : MonsterAction
     protected override void UpdateMonster()
     {
         DeathCheck();
-        PlayerDeathCheck();
+        TargetDeathCheck();
     }
 
     public override void UpdateState()
@@ -212,10 +218,8 @@ public class BossSkeletonAction : MonsterAction
         }
     }
 
-    public override void Die()
+    protected void Die()
     {
-        base.Die();
-
         if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
         {
             _monster.MyAnimator.SetTrigger("Die");
@@ -336,7 +340,7 @@ public class BossSkeletonAction : MonsterAction
     //    base.CheckLimitPlayerDistance();
     //}
 
-    public override void Damaged(float dmg)
+    protected override void Damaged(float dmg)
     {
         base.Damaged(dmg);
         //ChangeState(STATE.STATE_FIND);
@@ -531,18 +535,8 @@ public class BossSkeletonAction : MonsterAction
     //{
     //    yield return null;
     //}
-
-    public override void DeathCheck()
-    {
-        if (_currentState != STATE.STATE_DIE && NoHPCheck())
-        {
-            StopAllCoroutines();
-            Debug.Log("사망");
-            _currentState = STATE.STATE_DIE;
-
-        }
-    }
-    public override void PlayerDeathCheck()
+    
+    public override void TargetDeathCheck()
     {
         if (_currentState != STATE.STATE_KILL && _target.GetComponent<LivingEntity>().Hp <= 0)
         {

@@ -115,7 +115,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpSlider: {fileID: 1067164997}
   obj: {fileID: 3184240531697180167}
-  cam: {fileID: 0}
   MpSlider: {fileID: 0}
 --- !u!1 &867667958
 GameObject:
@@ -398,10 +397,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3184240531697180167}
   - component: {fileID: 3184240531697180166}
-  - component: {fileID: 3184240531697180165}
   - component: {fileID: 3184240531697180171}
   - component: {fileID: 3184240531697180160}
   - component: {fileID: 589858683}
+  - component: {fileID: 91662331}
   m_Layer: 0
   m_Name: Dragon
   m_TagString: Untagged
@@ -439,37 +438,6 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3184240531697180165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3184240531697180170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 835c599e15e4d374cb5dfd020a2e7fdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _id: 0
-  _initHp: 30
-  _initMp: 0
-  _hp: 0
-  _mp: 0
-  _DamageText: {fileID: 3060821752410861587, guid: 4de72f87bf4c8714ba70cc2eb8959f79,
-    type: 3}
-  MyAnimator: {fileID: 0}
-  _monsterName: DRAGON
-  _grade: 0
-  _race: 3
-  _size: 1
-  _spawnArea: 0
-  _attackType: 0
-  _attackPattern: 0
-  _description: 
-  _speed: 0
-  _attackTime: 1
-  _attackDamage: 1
 --- !u!195 &3184240531697180171
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -526,12 +494,46 @@ MonoBehaviour:
   _findRange: 5
   _attackRange: 2
   _limitTraceRange: 8
-  _speed: 3
-  _distance: 0
+  _moveSpeed: 3
   _attackSpeed: 2
-  layerMask:
+  _checkLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &91662331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3184240531697180170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc4d77968ce08aa4aab5cc9c461f5e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 0
+  _initHp: 100
+  _initMp: 0
+  _hp: 0
+  _mp: 0
+  _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
+    type: 3}
+  MyAnimator: {fileID: 0}
+  _monsterName: 
+  _grade: 0
+  _race: 0
+  _size: 0
+  _spawnArea: 0
+  _attackType: 0
+  _attackPattern: 0
+  _description: 
+  _speed: 2
+  _attackTime: 1
+  _attackDamage: 10
+  _dissolveMaterial: {fileID: 2100000, guid: 619dfddba20f4e84da177cdb2ad04d32, type: 2}
+  _nonDissolveMaterial: {fileID: 2100000, guid: bb9f4b6b8116aca4ebf555d6d4f55822,
+    type: 2}
+  _avatarObject: {fileID: 3185637675305738940}
 --- !u!1001 &3184240532954496862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -597,6 +599,12 @@ PrefabInstance:
 --- !u!4 &3188251797225066650 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4015393953738692, guid: 23d8a5a9305a2254487a6e2888e2f604,
+    type: 3}
+  m_PrefabInstance: {fileID: 3184240532954496862}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3185637675305738940 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1435355346902498, guid: 23d8a5a9305a2254487a6e2888e2f604,
     type: 3}
   m_PrefabInstance: {fileID: 3184240532954496862}
   m_PrefabAsset: {fileID: 0}

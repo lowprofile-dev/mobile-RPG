@@ -403,7 +403,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpSlider: {fileID: 8499260352358684527}
   obj: {fileID: 4213053510919530694}
-  cam: {fileID: 0}
   MpSlider: {fileID: 7348223149549780147}
 --- !u!1 &4206363439273075022
 GameObject:
@@ -1295,8 +1294,8 @@ GameObject:
   - component: {fileID: 4266993463586583500}
   - component: {fileID: 4208329576001080059}
   - component: {fileID: 3057855311038208339}
-  - component: {fileID: 4208329576001080058}
   - component: {fileID: 3056188026705863786}
+  - component: {fileID: 7758197093301192774}
   m_Layer: 0
   m_Name: BossSkeletonPase1
   m_TagString: Boss
@@ -1376,10 +1375,9 @@ MonoBehaviour:
   _findRange: 8
   _attackRange: 4
   _limitTraceRange: 15
-  _speed: 3
-  _distance: 0
+  _moveSpeed: 3
   _attackSpeed: 2
-  layerMask:
+  _checkLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
   AttackEffect:
@@ -1387,37 +1385,6 @@ MonoBehaviour:
   - {fileID: 1130446560849736, guid: c4d564b5d4682ad46b8621f0fa6f40d9, type: 3}
   - {fileID: 1645009922904612, guid: 5e3170c6ef0f014409bd7423e3bb805a, type: 3}
   FirePoint: {fileID: 3057855310101173699}
---- !u!114 &4208329576001080058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4206521029260089746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 835c599e15e4d374cb5dfd020a2e7fdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _id: 0
-  _initHp: 100
-  _initMp: 1.5
-  _hp: 0
-  _mp: 0
-  _DamageText: {fileID: 3060821752410861587, guid: 4de72f87bf4c8714ba70cc2eb8959f79,
-    type: 3}
-  MyAnimator: {fileID: 0}
-  _monsterName: Skeleton
-  _grade: 2
-  _race: 1
-  _size: 0
-  _spawnArea: 0
-  _attackType: 0
-  _attackPattern: 0
-  _description: 
-  _speed: 5
-  _attackTime: 1
-  _attackDamage: 1
 --- !u!195 &3056188026705863786
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1440,6 +1407,41 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7758197093301192774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4206521029260089746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc4d77968ce08aa4aab5cc9c461f5e5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 0
+  _initHp: 1000
+  _initMp: 0
+  _hp: 0
+  _mp: 0
+  _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
+    type: 3}
+  MyAnimator: {fileID: 0}
+  _monsterName: 
+  _grade: 0
+  _race: 0
+  _size: 0
+  _spawnArea: 0
+  _attackType: 0
+  _attackPattern: 0
+  _description: 
+  _speed: 0
+  _attackTime: 0
+  _attackDamage: 0
+  _dissolveMaterial: {fileID: 2100000, guid: 619dfddba20f4e84da177cdb2ad04d32, type: 2}
+  _nonDissolveMaterial: {fileID: 2100000, guid: 85c9036657772d04fbe356f55127a3d8,
+    type: 2}
+  _avatarObject: {fileID: 0}
 --- !u!1 &4206529560206996388
 GameObject:
   m_ObjectHideFlags: 0

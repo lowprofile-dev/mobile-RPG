@@ -9,7 +9,6 @@ using UnityEngine;
 
 public class ParticleAutoDelete : MonoBehaviour
 {
-
     private void OnEnable()
     {
         StartCoroutine(CheckAilve());
@@ -17,11 +16,7 @@ public class ParticleAutoDelete : MonoBehaviour
 
     private IEnumerator CheckAilve()
     {
-       
         yield return new WaitForSeconds(gameObject.GetComponent<ParticleSystem>().main.duration);
-
         ObjectPoolManager.Instance.ReturnObject(gameObject);
- 
     }
-
 }

@@ -2,7 +2,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 /// <summary>
 /// 카드 UI
@@ -77,7 +76,7 @@ public class CardUIView : View
         CalculateRerollValue(); // 리롤 비용 초기화
         BingoCheck(); // 빙고 체크
     }
-    
+
     public override void UIUpdate()
     {
         base.UIUpdate();
@@ -97,18 +96,18 @@ public class CardUIView : View
     /// </summary>
     public void FinishCardSelect()
     {
-        if(!isRerollingAnimationPlaying) // 리롤 애니메이션 재생 중이 아니면
+        if (!isRerollingAnimationPlaying) // 리롤 애니메이션 재생 중이 아니면
         {
             for (int i = 0; i < _roomAreaImg.Length; i++)
             {
                 for (int j = 0; j < _roomAreaImg[i].cntCard.effectList.Count; j++)
                 {
-                    Debug.Log(i + "의 " + j + "번째 " + _roomAreaImg[i].cntCard.effectList[j].GetDescription(_roomAreaImg[i].cntCard));
+                    //Debug.Log(i + "의 " + j + "번째 " + _roomAreaImg[i].cntCard.effectList[j].GetDescription(_roomAreaImg[i].cntCard));
                 }
 
-               for (int j=0; j< _roomAreaImg[i].cntCard.addedSetEffectList.Count; j++)
+                for (int j = 0; j < _roomAreaImg[i].cntCard.addedSetEffectList.Count; j++)
                 {
-                    Debug.Log(i + "의 세트효과 " + j + "번째 " + _roomAreaImg[i].cntCard.addedSetEffectList[j].GetDescription(_roomAreaImg[i].cntCard));
+                    //Debug.Log(i + "의 세트효과 " + j + "번째 " + _roomAreaImg[i].cntCard.addedSetEffectList[j].GetDescription(_roomAreaImg[i].cntCard));
                 }
 
                 _roomAreaImg[i].cntCard.CardStart(); // 해당 카드의 효과들을 발동시킨다.
@@ -152,7 +151,7 @@ public class CardUIView : View
             case 2: _tooltipImageFrameImg.sprite = _level2Sprite; break;
             case 3: _tooltipImageFrameImg.sprite = _level3Sprite; break;
         }
-        
+
         _tooltipCardImg.sprite = Resources.Load<Sprite>(iconPath + card.cardData.iconImg); // 카드 이미지
         _tooltipCardNameText.text = card.cardData.cardName; // 이름 갱신
 
@@ -181,7 +180,7 @@ public class CardUIView : View
     /// </summary>
     public void ToogleRerollBtn()
     {
-        if(!isRerollingAnimationPlaying) // 리롤 애니메이션 재생중이 아니면
+        if (!isRerollingAnimationPlaying) // 리롤 애니메이션 재생중이 아니면
         {
             if (_isRerolling) // 리롤 중이면
             {
@@ -252,7 +251,7 @@ public class CardUIView : View
         }
 
         // 세트 바 비활성화
-        for(int i=0; i<_setBar.Length; i++)
+        for (int i = 0; i < _setBar.Length; i++)
         {
             _setBar[i].SetActive(false);
         }

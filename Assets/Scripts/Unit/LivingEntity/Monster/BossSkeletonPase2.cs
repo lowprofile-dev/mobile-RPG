@@ -120,7 +120,7 @@ public class BossSkeletonPase2 : MonsterAction
 
         yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-        _navMeshAgent.speed = _speed;
+        _navMeshAgent.speed = _moveSpeed;
         //_navMeshAgent.stoppingDistance = _attackRange;
 
         _currentState = STATE.STATE_IDLE;
@@ -157,7 +157,7 @@ public class BossSkeletonPase2 : MonsterAction
     protected override void UpdateMonster()
     {
         DeathCheck();
-        PlayerDeathCheck();
+        TargetDeathCheck();
     }
 
     public override void UpdateState()
@@ -191,12 +191,7 @@ public class BossSkeletonPase2 : MonsterAction
                 break;
         }
     }
-
-    public override void Damaged(float dmg)
-    {
-        base.Damaged(dmg);
-        //ChangeState(STATE.STATE_FIND);
-    }
+    
 
     private ATTACKSTATE AttackPattern()
     {
@@ -233,16 +228,8 @@ public class BossSkeletonPase2 : MonsterAction
 
     }
 
-
-    public override void DeathCheck()
-    {
-        if (_currentState != STATE.STATE_DIE && NoHPCheck())
-        {
-            _currentState = STATE.STATE_DIE;
-        }
-    }
-
-    public override void PlayerDeathCheck()
+    
+    public override void TargetDeathCheck()
     {
         if (_currentState != STATE.STATE_KILL && _target.GetComponent<LivingEntity>().Hp <= 0)
         {
