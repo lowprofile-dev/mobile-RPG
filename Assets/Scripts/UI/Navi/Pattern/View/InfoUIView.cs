@@ -60,12 +60,6 @@ public class InfoUIView : View
     {
         //Hat_Slot.GetComponent<EquipSlot>().SetIcon(ItemManager.Instance.currentItemKeys.HelmetKey)
 
-        Debug.Log(itemManager.currentItemKeys.HelmetKey);
-        Debug.Log(itemManager.currentItemKeys.ArmorKey);
-        Debug.Log(itemManager.currentItemKeys.GlovesKey);
-        Debug.Log(itemManager.currentItemKeys.BottomKey);
-        Debug.Log(itemManager.currentItemKeys.BootKey);
-
         Hat_Slot.GetComponent<EquipSlot>().SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.HelmetKey]);
         Hat_Slot.GetComponent<EquipSlot>().SetItemDetail(itemDetail);
 
