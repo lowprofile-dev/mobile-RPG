@@ -28,6 +28,8 @@ public class Player : LivingEntity
     float turnSmoothVelocity;
     [SerializeField] private Transform cam;
 
+    public bool weaponChanged = false;
+
     private Vector3 direction;
     private Vector3 moveDir; public Vector3 getMoveDir { get { return moveDir; } }
     [SerializeField] private Quaternion rotateAngle;
@@ -72,7 +74,9 @@ public class Player : LivingEntity
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 weaponManager.SetWeapon("WAND");
+                weaponChanged = true;
             }
+            else weaponChanged = false;
 
             if (Input.GetKeyDown(KeyCode.L))
             {

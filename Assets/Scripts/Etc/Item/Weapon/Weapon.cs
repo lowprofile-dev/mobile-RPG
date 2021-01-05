@@ -6,8 +6,14 @@ public class Weapon : WeaponData
 {
     public int outfitGrade;
     public int masteryLevel;
+
     public bool skillBRelease = false;
     public bool skillCRelease = false;
+
+    public float hitStun;
+    public float hitRigid;
+    public float hitFail;
+
     public GameObject SkillAEffect;
     public GameObject SkillBEffect;
     public GameObject SkillCEffect;

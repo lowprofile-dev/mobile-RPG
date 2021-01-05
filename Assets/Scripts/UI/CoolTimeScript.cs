@@ -15,22 +15,34 @@ public class CoolTimeScript : MonoBehaviour
 
     private void Start()
     {
-        if (gameObject.name == "SkillA") isLock = false;
+        if (gameObject.name == "SkillA")
+        {
+            isLock = false;
+            if(WeaponManager.Instance != null) coolTime = WeaponManager.Instance.GetWeapon().skillACool;
+        }
         else if (gameObject.name == "SkillB")
         {
             isLock = true;
             button.enabled = false;
+            if (WeaponManager.Instance != null) coolTime = WeaponManager.Instance.GetWeapon().skillBCool;
+            lockImage.enabled = true;
+
         }
         else if (gameObject.name == "SkillC")
         {
             isLock = true;
             button.enabled = false;
+            if (WeaponManager.Instance != null) coolTime = WeaponManager.Instance.GetWeapon().skillCCool;
+            lockImage.enabled = true;
         }
     }
 
     void Update()
     {
+        if (Player.Instance != null && Player.Instance.weaponChanged) Start();
+
         SkillRelease();
+
         if (isClicked)
             if (leftTime >= 0)
             {
