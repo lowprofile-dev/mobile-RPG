@@ -7,7 +7,7 @@ public class Player : LivingEntity
 
     private bool avoidButtonClick = false;
     [SerializeField] private float avoid_power = 10f;
-
+    private float avoidCounter = 0f;
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
 
     private bool AttackButtonClick = false;
@@ -27,6 +27,8 @@ public class Player : LivingEntity
     [SerializeField] private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     [SerializeField] private Transform cam;
+
+    public bool weaponChanged = false;
 
     private Vector3 direction;
     private Vector3 moveDir; public Vector3 getMoveDir { get { return moveDir; } }
@@ -55,8 +57,9 @@ public class Player : LivingEntity
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
         base.Start();
+        avoidCounter = avoid_power;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
-        faceCam.Init(transform.Find("PlayerAvatar").gameObject);
+        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
         
     }
 
@@ -72,11 +75,14 @@ public class Player : LivingEntity
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 weaponManager.SetWeapon("WAND");
+                weaponChanged = true;
             }
+            else weaponChanged = false;
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                _hp--;
+                weaponManager.GetWeapon().masteryLevel++;
+                weaponManager.GetWeapon().SkillRelease();
             }
 
             if (joystick == null)
@@ -145,7 +151,7 @@ public class Player : LivingEntity
                 SkillA_ButtonClick = false;
             }
         }
-        if (SkillB_ButtonClick)
+        if (SkillB_ButtonClick )
         {
             skillB_Counter += Time.deltaTime;
             if (skillB_Counter >= weaponManager.GetWeapon().skillBCool)
@@ -153,7 +159,7 @@ public class Player : LivingEntity
                 SkillB_ButtonClick = false;
             }
         }
-        if (SkillC_ButtonClick)
+        if (SkillC_ButtonClick )
         {
             skillC_Counter += Time.deltaTime;
             if (skillC_Counter >= weaponManager.GetWeapon().skillCCool)
@@ -184,7 +190,7 @@ public class Player : LivingEntity
 
     public void CameraChange()
     {
-        faceCam.Init(transform.Find("PlayerAvatar").gameObject);
+        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
     }
     public bool GetMove()
     {
@@ -193,7 +199,7 @@ public class Player : LivingEntity
 
     public void PlayerSkillA()
     {
-        if (SkillA_ButtonClick == false)
+        if (SkillA_ButtonClick == false )
         {
             MyStateMachine.SetState("SKILL_A");
             SkillA_ButtonClick = true;
@@ -205,7 +211,7 @@ public class Player : LivingEntity
     }
     public void PlayerSkillB()
     {
-        if (SkillB_ButtonClick == false)
+        if (SkillB_ButtonClick == false && weaponManager.GetWeapon().CheckSkillB())
         {
             MyStateMachine.SetState("SKILL_B");
             SkillB_ButtonClick = true;
@@ -217,7 +223,7 @@ public class Player : LivingEntity
     }
     public void PlayerSkillC()
     {
-        if (SkillC_ButtonClick == false)
+        if (SkillC_ButtonClick == false && weaponManager.GetWeapon().CheckSkillC())
         {
             MyStateMachine.SetState("SKILL_C");
             SkillC_ButtonClick = true;
@@ -248,15 +254,26 @@ public class Player : LivingEntity
     {
         if (avoidButtonClick)
         {
+            avoidCounter -= avoid_power*Time.deltaTime;
+            if (avoidCounter <= 0f)
+            {
+                avoidButtonClick = false;
+                avoidCounter = avoid_power;
+            }
             if (direction == Vector3.zero)
             {
-                characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
+                characterController.Move(moveDir * speed * Time.deltaTime * avoidCounter);
             }
             else
             {
-                characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
+                characterController.Move(moveDir * speed * Time.deltaTime * avoidCounter);
             }
         }
+        else
+        {
+            avoidCounter = avoid_power;
+        }
+        
     }
     public bool GetAvoidance()
     {

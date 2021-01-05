@@ -66,8 +66,6 @@ public class StateMove_TestPlayer : State
 
 public class StateAttack_TestPlayer : State
 {
-    private float timer = 3.0f;
-    private float counter = 0.0f;
     public StateAttack_TestPlayer(LivingEntity parent)
     {
         _parentEntity = parent;
@@ -109,7 +107,6 @@ public class StateAvoid_TestPlayer : State
         if(Player.Instance.Mp >= 2)
         {
             _myAnimator.SetTrigger("Avoid");
-            Player.Instance.PlayerAvoidance();
             Player.Instance.UseMp(2);
         }
         if (_myAnimator != Player.Instance.MyAnimator) _myAnimator = Player.Instance.MyAnimator;
@@ -117,12 +114,18 @@ public class StateAvoid_TestPlayer : State
 
     public override void UpdateState()
     {
-        _myStateMachine.SetState("IDLE");
+        Player.Instance.PlayerAvoidance();
+
+        if(Player.Instance.GetAvoidance()== false) _myStateMachine.SetState("IDLE");
+
+        if (Player.Instance.GetMove())
+        {
+            Player.Instance.SetAvoidButton(false);
+        }
     }
 
     public override void EndState()
     {
-        Player.Instance.SetAvoidButton(false);
     }
 }
 

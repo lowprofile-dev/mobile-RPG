@@ -13,7 +13,6 @@ public class InfoUIView : View
     [SerializeField] GameObject Glove_Slot;
     [SerializeField] GameObject Pant_Slot;
     [SerializeField] GameObject Shoes_Slot;
-    [SerializeField] GameObject Weapon_Slot;
 
     [SerializeField] GameObject itemDetail;
     public Transform[] iconList;
@@ -81,9 +80,6 @@ public class InfoUIView : View
 
         Shoes_Slot.GetComponent<EquipSlot>().SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.BootKey]);
         Shoes_Slot.GetComponent<EquipSlot>().SetItemDetail(itemDetail);
-
-        Weapon_Slot.GetComponent<EquipSlot>().setWeaponData(WeaponManager.Instance._weaponDic[WeaponManager.Instance.GetWeaponName()]);
-        Weapon_Slot.GetComponent<EquipSlot>().SetItemDetail(itemDetail);
 
     }
 }

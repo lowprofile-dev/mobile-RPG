@@ -23,6 +23,9 @@ public class Wand : Weapon
         skillCCool = wandData.skillCCool;
 
         masteryLevel = 1;
+        skillBRelease = false;
+        skillCRelease = false;
+
         AttackEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Attack");
         SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Skill A");
         SkillBEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Skill B");

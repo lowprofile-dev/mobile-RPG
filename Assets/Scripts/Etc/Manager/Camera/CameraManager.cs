@@ -5,34 +5,43 @@ using Cinemachine;
 using System;
 using UnityEngine.EventSystems;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager : SingletonBase<CameraManager>
 {
 
+    [SerializeField] private float TouchSensitivity_x = 10f;
     [SerializeField] CinemachineFreeLook CinemachineCamera;
     SimpleInputNamespace.Joystick joystick;
+    float m_fOldToucDis = 0f;       // 터치 이전 거리를 저장
+    float m_fFieldOfView = 7;     // 카메라의 FieldOfView의 기본값
+    private float shakeTimer;
 
-    private void Start()
+    public void InitCameraManager(GameObject obj)
     {
+        CinemachineCamera = obj.GetComponent<CinemachineFreeLook>();
         CinemachineCore.GetInputAxis = this.HandleAxisInputDelegate;
         CinemachineCamera.m_CommonLens = true;
-    }
-
-    public void InitCameraManager()
-    {
-      
+        
     }
 
     private void Update()
     {
         if(joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<SimpleInputNamespace.Joystick>();
         ZoomInOut();
+        CameraShake();
     }
 
-    [SerializeField]private float TouchSensitivity_x = 5f;
-    //public float TouchSensitivity_y = 10f;
-
-    float m_fOldToucDis = 0f;       // 터치 이전 거리를 저장
-    float m_fFieldOfView = 7;     // 카메라의 FieldOfView의 기본값
+    private void CameraShake()
+    {
+        if(shakeTimer > 0)
+        {
+            shakeTimer -= Time.deltaTime;
+            if (shakeTimer <= 0f)
+            {
+                CinemachineCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
+                CinemachineCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0f;
+            }
+        }
+    }
 
     private float HandleAxisInputDelegate(string axisName)
     {
@@ -122,6 +131,15 @@ public class CameraManager : MonoBehaviour
             }
         }
 
+    }
+
+    //강도 , 빈도 , 시간
+    public void ShakeCamera(float intensity , float frequency, float time)
+    {     
+        CinemachineCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = frequency;
+        CinemachineCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = intensity;
+
+        shakeTimer = time;
     }
 
 }

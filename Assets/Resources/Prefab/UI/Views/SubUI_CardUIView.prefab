@@ -1218,7 +1218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1799623980296434722
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1357,6 +1357,7 @@ MonoBehaviour:
   - {fileID: 8985640182197695940}
   - {fileID: 8985640182509140326}
   cntPointerArea: {fileID: 0}
+  isRerollingAnimationPlaying: 0
 --- !u!1 &1799623980335338794
 GameObject:
   m_ObjectHideFlags: 0
@@ -4043,7 +4044,7 @@ PrefabInstance:
     - target: {fileID: 4963162450455689052, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
       propertyPath: m_RaycastTarget
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4963162450780484141, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}
@@ -4296,6 +4297,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456982823411089143, guid: 24dff2bdef4a8b54fb07555a357851b9,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456982823411089143, guid: 24dff2bdef4a8b54fb07555a357851b9,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.5900398
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456982823411089143, guid: 24dff2bdef4a8b54fb07555a357851b9,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.8117647
       objectReference: {fileID: 0}
     - target: {fileID: 8338398237407575982, guid: 24dff2bdef4a8b54fb07555a357851b9,
         type: 3}

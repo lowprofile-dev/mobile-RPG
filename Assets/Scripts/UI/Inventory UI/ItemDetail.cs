@@ -11,47 +11,6 @@ public class ItemDetail : MonoBehaviour
     {
     }
 
-    private string AddFontData(string text, string colorName, float fontSize = 20)
-    {
-        string rtnText = "";
-
-        rtnText += "<color=";
-        switch (colorName)
-        {
-            case "aqua": rtnText += "#00ffffff"; break;
-            case "black": rtnText += "#000000ff"; break;
-            case "blue": rtnText += "#0000ffff"; break;
-            case "brown": rtnText += "#a52a2aff"; break;
-            case "cyan": rtnText += "#00ffffff"; break;
-            case "darkblue": rtnText += "#0000a0ff"; break;
-            case "fuchsia": rtnText += "#ff00ffff"; break;
-            case "green": rtnText += "#008000ff"; break;
-            case "grey": rtnText += "#808080ff"; break;
-            case "lightblue": rtnText += "#add8e6ff"; break;
-            case "lime": rtnText += "#00ff00ff"; break;
-            case "magenta": rtnText += "#ff00ffff"; break;
-            case "maroon": rtnText += "#800000ff"; break;
-            case "navy": rtnText += "#000080ff"; break;
-            case "olive": rtnText += "#808000ff"; break;
-            case "purple": rtnText += "#800080ff"; break;
-            case "red": rtnText += "#ff0000ff"; break;
-            case "silver": rtnText += "#c0c0c0ff"; break;
-            case "teal": rtnText += "#008080ff"; break;
-            case "white": rtnText += "#ffffffff"; break;
-            case "yellow": rtnText += "#ffff00ff"; break;
-            default: rtnText += colorName; break;
-        }
-        rtnText += ">";
-
-        rtnText += "<size=" + fontSize + ">";
-        rtnText += text;
-
-        rtnText += "</size>";
-        rtnText += "</color>";
-
-        return rtnText;
-    }
-
     public void LoadItemDetail(ItemData itemData)
     {
         string allData = "";
@@ -59,23 +18,23 @@ public class ItemDetail : MonoBehaviour
         itemText.richText = true;
         itemText.verticalAlignment = VerticalAlignmentOptions.Top;
 
-        allData += AddFontData(itemData.itemName, "white", 24) + "\n";
-        allData += AddFontData(itemData.itemType, "white", 16) + "\n";
-        allData += AddFontData("\n", "white", 8);
+        allData += UIManager.Instance.AddFontData(itemData.itemName, "white", 24) + "\n";
+        allData += UIManager.Instance.AddFontData(itemData.itemType, "white", 16) + "\n";
+        allData += UIManager.Instance.AddFontData("\n", "white", 8);
 
-        if (itemData.hpIncreaseRate != 0) allData += AddFontData("최대 HP \t\t +" + itemData.hpIncreaseRate + "%", "white", 18) + "\n";
-        if (itemData.hp != 0) allData += AddFontData("최대 HP \t\t +" + itemData.hp, "white", 18) + "\n";
-        if (itemData.hpRecovery != 0) allData += AddFontData("HP 회복 \t\t +" + itemData.hpRecovery, "white", 18) + "\n";
-        if (itemData.stamina != 0) allData += AddFontData("스태미너 \t\t +" + itemData.stamina, "white", 18) + "\n";
-        if (itemData.staminaRecovery != 0) allData += AddFontData("스태미너 회복 \t +" + itemData.staminaRecovery, "white", 18) + "\n";
-        if (itemData.attackDamage != 0) allData += AddFontData("공격력 \t\t +" + itemData.attackDamage + "%", "white", 18) + "\n";
-        if (itemData.attackSpeed != 0) allData += AddFontData("공격 속도 \t\t +" + itemData.attackSpeed + "%", "white", 18) + "\n";
-        if (itemData.attackCooldown != 0) allData += AddFontData("공격 쿨타임 \t\t -" + itemData.attackCooldown + "%", "white", 18) + "\n";
-        if (itemData.armor != 0) allData += AddFontData("물리 방어력 \t\t +" + itemData.armor + "%", "white", 18) + "\n";
-        if (itemData.magicResistance != 0) allData += AddFontData("마법 방어력 \t\t +" + itemData.magicResistance + "%", "white", 18) + "\n";
-        if (itemData.moveSpeed != 0) allData += AddFontData("이동 속도 \t\t +" + itemData.moveSpeed + "%", "white", 18) + "\n";
-        if (itemData.dashCooldown != 0) allData += AddFontData("대쉬 쿨타임 \t\t -" + itemData.dashCooldown + "%", "white", 18) + "\n";
-        if (itemData.dashStamina != 0) allData += AddFontData("대쉬 스태미너 \t -" + itemData.dashStamina + "%", "white", 18) + "\n";
+        if (itemData.hpIncreaseRate != 0) allData += UIManager.Instance.AddFontData("최대 HP \t\t +" + itemData.hpIncreaseRate + "%", "white", 18) + "\n";
+        if (itemData.hp != 0) allData += UIManager.Instance.AddFontData("최대 HP \t\t +" + itemData.hp, "white", 18) + "\n";
+        if (itemData.hpRecovery != 0) allData += UIManager.Instance.AddFontData("HP 회복 \t\t +" + itemData.hpRecovery, "white", 18) + "\n";
+        if (itemData.stamina != 0) allData += UIManager.Instance.AddFontData("스태미너 \t\t +" + itemData.stamina, "white", 18) + "\n";
+        if (itemData.staminaRecovery != 0) allData += UIManager.Instance.AddFontData("스태미너 회복 \t +" + itemData.staminaRecovery, "white", 18) + "\n";
+        if (itemData.attackDamage != 0) allData += UIManager.Instance.AddFontData("공격력 \t\t +" + itemData.attackDamage + "%", "white", 18) + "\n";
+        if (itemData.attackSpeed != 0) allData += UIManager.Instance.AddFontData("공격 속도 \t\t +" + itemData.attackSpeed + "%", "white", 18) + "\n";
+        if (itemData.attackCooldown != 0) allData += UIManager.Instance.AddFontData("공격 쿨타임 \t\t -" + itemData.attackCooldown + "%", "white", 18) + "\n";
+        if (itemData.armor != 0) allData += UIManager.Instance.AddFontData("물리 방어력 \t\t +" + itemData.armor + "%", "white", 18) + "\n";
+        if (itemData.magicResistance != 0) allData += UIManager.Instance.AddFontData("마법 방어력 \t\t +" + itemData.magicResistance + "%", "white", 18) + "\n";
+        if (itemData.moveSpeed != 0) allData += UIManager.Instance.AddFontData("이동 속도 \t\t +" + itemData.moveSpeed + "%", "white", 18) + "\n";
+        if (itemData.dashCooldown != 0) allData += UIManager.Instance.AddFontData("대쉬 쿨타임 \t\t -" + itemData.dashCooldown + "%", "white", 18) + "\n";
+        if (itemData.dashStamina != 0) allData += UIManager.Instance.AddFontData("대쉬 스태미너 \t -" + itemData.dashStamina + "%", "white", 18) + "\n";
 
         allData = allData.Remove(allData.Length - 1, 1);
         itemText.text = allData;
