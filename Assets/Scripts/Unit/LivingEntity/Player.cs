@@ -183,7 +183,7 @@ public class Player : LivingEntity
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            characterController.Move(moveDir.normalized * speed * Time.deltaTime);
+            characterController.SimpleMove(moveDir.normalized * speed);
         }
         MyStateMachine.UpdateState();
     }
