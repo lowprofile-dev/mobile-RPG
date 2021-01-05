@@ -1,7 +1,10 @@
 ﻿using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using EPOOutline;
 
 /// <summary>
 /// MonsterAction만 있어도 Monster는 기본적인 행동을 할 수 있다. 최소한의 단위로 함수를 쪼개놓았기에, 변경할 함수에 한해서만 함수를 오버라이딩하여 행동을 변경해주면 된다.
@@ -18,6 +21,7 @@ public class MonsterAction : MonoBehaviour
     protected Monster _monster; public Monster monster { get { return _monster; } }
     protected NavMeshAgent _navMeshAgent;
     protected Rigidbody _rigidBody;
+    protected Outlinable _outlinable;
 
     // 오브젝트
     protected GameObject _target;           // 공격대상        
@@ -32,6 +36,8 @@ public class MonsterAction : MonoBehaviour
     protected float _idleTime;              // Idle에서 경과한 시간
     protected bool _isImmune;               // 무적 여부
 
+    // 트위닝
+    protected Tweener _fadeOutRedTween;     // 데미지 받았을때 트위닝
 
     [Header("범위")]
     [SerializeField] protected float _findRange;        // 타겟을 발견할 범위
@@ -70,6 +76,7 @@ public class MonsterAction : MonoBehaviour
         _monster = GetComponent<Monster>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _rigidBody = GetComponent<Rigidbody>();
+        _outlinable = GetComponent<Outlinable>();
         _target = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -577,14 +584,14 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void OnAttackCollide(GameObject attackCollide)
     {
-        attackCollide.GetComponent<Collider>().enabled = true;
-        Debug.Log("ON");
+       // attackCollide.GetComponent<Collider>().enabled = true;
+       // Debug.Log("ON");
     }
 
     protected virtual void OffAttackCollide(GameObject attackCollide)
     {
-        attackCollide.GetComponent<Collider>().enabled = false;
-        Debug.Log("OFF");
+       // attackCollide.GetComponent<Collider>().enabled = false;
+       // Debug.Log("OFF");
     }
 
     protected virtual void AttackExit()
@@ -691,6 +698,9 @@ public class MonsterAction : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 데미지를 받았을때의 연출 목록
+    /// </summary>
     protected virtual void ProductionDamaged()
     {
         if (_currentState == STATE.STATE_DIE)
@@ -700,8 +710,37 @@ public class MonsterAction : MonoBehaviour
 
         else
         {
-            _rigidBody.AddRelativeForce(_target.transform.forward * 10, ForceMode.Impulse);
+            Knockback();
+            FadeOutRedHitOutline();
+            ShakeHitCamera();
         }
+    }
+
+    /// <summary>
+    /// 연출 : 넉백
+    /// </summary>
+    protected virtual void Knockback()
+    {
+        _rigidBody.AddRelativeForce(_target.transform.forward * 10, ForceMode.Impulse);
+    }
+
+    /// <summary>
+    /// 연출 : 몬스터 테두리 빨갛게
+    /// </summary>
+    protected virtual void FadeOutRedHitOutline()
+    {
+        Color c = _outlinable.OutlineParameters.Color;
+        _outlinable.OutlineParameters.Color = new Color(c.r, c.g, c.b, 1f);
+        if (_fadeOutRedTween == null) _fadeOutRedTween = _outlinable.OutlineParameters.DOFade(0, 1).SetAutoKill(false);
+        else _fadeOutRedTween.ChangeStartValue(_outlinable.OutlineParameters.Color.a, 1).Restart();
+    }
+
+    /// <summary>
+    /// 연출 : 카메라 흔들기
+    /// </summary>
+    protected virtual void ShakeHitCamera()
+    {
+        CameraManager.Instance.ShakeCamera(1, 0.3f, 0.2f);
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -759,6 +798,8 @@ public class MonsterAction : MonoBehaviour
         transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => { DestroyImmediate(gameObject); });
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
         _monster.hpbarObject.gameObject.SetActive(false);
+
+        if(_fadeOutRedTween != null) _fadeOutRedTween.Kill();
     }
 
     /// <summary>
