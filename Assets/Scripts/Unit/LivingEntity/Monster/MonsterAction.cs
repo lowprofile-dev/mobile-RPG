@@ -17,6 +17,7 @@ public class MonsterAction : MonoBehaviour
     // 캐싱 대상
     protected Monster _monster; public Monster monster { get { return _monster; } }
     protected NavMeshAgent _navMeshAgent;
+    protected Rigidbody _rigidBody;
 
     // 오브젝트
     protected GameObject _target;           // 공격대상        
@@ -68,6 +69,7 @@ public class MonsterAction : MonoBehaviour
     {
         _monster = GetComponent<Monster>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _rigidBody = GetComponent<Rigidbody>();
         _target = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -573,6 +575,18 @@ public class MonsterAction : MonoBehaviour
         }
     }
 
+    protected virtual void OnAttackCollide(GameObject attackCollide)
+    {
+        attackCollide.GetComponent<Collider>().enabled = true;
+        Debug.Log("ON");
+    }
+
+    protected virtual void OffAttackCollide(GameObject attackCollide)
+    {
+        attackCollide.GetComponent<Collider>().enabled = false;
+        Debug.Log("OFF");
+    }
+
     protected virtual void AttackExit()
     {
         _monster.MyAnimator.ResetTrigger("Attack");
@@ -677,6 +691,19 @@ public class MonsterAction : MonoBehaviour
         }
     }
 
+    protected virtual void ProductionDamaged()
+    {
+        if (_currentState == STATE.STATE_DIE)
+        {
+            return;
+        }
+
+        else
+        {
+            _rigidBody.AddRelativeForce(_target.transform.forward * 10, ForceMode.Impulse);
+        }
+    }
+
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PlayerAttack"))
@@ -684,10 +711,11 @@ public class MonsterAction : MonoBehaviour
             if (GetCanDamageCheck())
             {
                 Damaged(WeaponManager.Instance.GetWeapon().attackDamage);
+                ProductionDamaged();
             }
         }
     }
-
+    
 
     /// <summary>
     /// 데미지를 받을 조건을 체크한다.
