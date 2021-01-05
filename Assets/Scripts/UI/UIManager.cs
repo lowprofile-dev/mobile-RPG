@@ -66,7 +66,6 @@ public class UIManager : SingletonBase<UIManager>
     }
     public void SkillAClick() //A버튼 스킬
     {
-        CameraManager.Instance.ShakeCamera(1, 1, 10);
         if (!Player.Instance.isdead) Player.Instance.PlayerSkillA();
         Debug.Log("A스킬");
     }

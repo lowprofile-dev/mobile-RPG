@@ -49,8 +49,11 @@ public class PartSelection : MonoBehaviour
 
     public void Start()
     {
-        collections = GameObject.Find("PlayerAvatar").GetComponent<PartsCollections>();
-        characterParts = GameObject.Find("PlayerAvatar").GetComponent<CharacterParts>();
+        GameObject playerAvatar = transform.GetChild(1).gameObject;
+        collections = playerAvatar.GetComponent<PartsCollections>();
+        characterParts = playerAvatar.GetComponent<CharacterParts>();
+        //collections = GameObject.Find("PlayerAvatar").GetComponent<PartsCollections>();
+        //characterParts = GameObject.Find("PlayerAvatar").GetComponent<CharacterParts>();
     }
 
     public void Init()

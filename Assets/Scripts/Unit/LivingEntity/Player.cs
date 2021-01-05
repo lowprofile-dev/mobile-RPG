@@ -38,6 +38,7 @@ public class Player : LivingEntity
 
     float horizontal;
     float vertical;
+    float vSpeed;
     bool _isdead = false; public bool isdead { get { return _isdead; } }
 
     PartSelection selection;
@@ -171,6 +172,11 @@ public class Player : LivingEntity
 
     public void PlayerMove()
     {
+        if (joystick == null)
+        {
+            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        }
+
         horizontal = joystick.GetX_axis().value;
         vertical = joystick.GetY_axis().value;
 
@@ -183,8 +189,15 @@ public class Player : LivingEntity
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            characterController.Move(moveDir.normalized * speed * Time.deltaTime);
+            characterController.SimpleMove(moveDir.normalized * speed);
         }
+
+        if (characterController.isGrounded)
+        {
+            vSpeed = 0;
+        }
+        vSpeed = vSpeed - Time.deltaTime * (9.8f);
+        characterController.SimpleMove(Vector3.up * vSpeed);
         MyStateMachine.UpdateState();
     }
 
