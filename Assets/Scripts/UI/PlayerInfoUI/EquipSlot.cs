@@ -47,6 +47,7 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
     {
         //itemDetail.SetActive(true);
         Debug.Log("장비템 로드");
-        itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
+        //itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
+        itemDetail.GetComponent<EquipDetail>().LoadData(itemData);
     }
 }

@@ -61,7 +61,6 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         objectPoolManager.InitObjectPoolManager();
         weaponManager.InitWeaponManager();
         statusManager.InitStatusManager();
-        cameraManager.InitCameraManager();
         uiLoaderManager.InitUILoaderManager();
         talkManager.InitTalkManager();
         cardManager.InitCardManager();

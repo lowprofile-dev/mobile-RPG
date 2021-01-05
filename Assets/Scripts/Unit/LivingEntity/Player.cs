@@ -58,7 +58,7 @@ public class Player : LivingEntity
         statusManager = StatusManager.Instance;
         base.Start();
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
-        faceCam.Init(transform.Find("PlayerAvatar").gameObject);
+        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
         
     }
 
@@ -189,7 +189,7 @@ public class Player : LivingEntity
 
     public void CameraChange()
     {
-        faceCam.Init(transform.Find("PlayerAvatar").gameObject);
+        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
     }
     public bool GetMove()
     {

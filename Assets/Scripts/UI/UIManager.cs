@@ -66,6 +66,7 @@ public class UIManager : SingletonBase<UIManager>
     }
     public void SkillAClick() //A버튼 스킬
     {
+        CameraManager.Instance.ShakeCamera(1, 1, 10);
         if (!Player.Instance.isdead) Player.Instance.PlayerSkillA();
         Debug.Log("A스킬");
     }
@@ -90,4 +91,44 @@ public class UIManager : SingletonBase<UIManager>
         UINaviationManager.Instance.PushToNav("SubUI_Info");
     }
 
+    public string AddFontData(string text, string colorName, float fontSize = 20)
+    {
+        string rtnText = "";
+
+        rtnText += "<color=";
+        switch (colorName)
+        {
+            case "aqua": rtnText += "#00ffffff"; break;
+            case "black": rtnText += "#000000ff"; break;
+            case "blue": rtnText += "#0000ffff"; break;
+            case "brown": rtnText += "#a52a2aff"; break;
+            case "cyan": rtnText += "#00ffffff"; break;
+            case "darkblue": rtnText += "#0000a0ff"; break;
+            case "fuchsia": rtnText += "#ff00ffff"; break;
+            case "green": rtnText += "#008000ff"; break;
+            case "grey": rtnText += "#808080ff"; break;
+            case "lightblue": rtnText += "#add8e6ff"; break;
+            case "lime": rtnText += "#00ff00ff"; break;
+            case "magenta": rtnText += "#ff00ffff"; break;
+            case "maroon": rtnText += "#800000ff"; break;
+            case "navy": rtnText += "#000080ff"; break;
+            case "olive": rtnText += "#808000ff"; break;
+            case "purple": rtnText += "#800080ff"; break;
+            case "red": rtnText += "#ff0000ff"; break;
+            case "silver": rtnText += "#c0c0c0ff"; break;
+            case "teal": rtnText += "#008080ff"; break;
+            case "white": rtnText += "#ffffffff"; break;
+            case "yellow": rtnText += "#ffff00ff"; break;
+            default: rtnText += colorName; break;
+        }
+        rtnText += ">";
+
+        rtnText += "<size=" + fontSize + ">";
+        rtnText += text;
+
+        rtnText += "</size>";
+        rtnText += "</color>";
+
+        return rtnText;
+    }
 }

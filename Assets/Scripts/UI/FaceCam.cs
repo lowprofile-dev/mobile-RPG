@@ -7,9 +7,9 @@ public class FaceCam : MonoBehaviour
     // Start is called before the first frame update
     CinemachineFreeLook cinemachine;
     public GameObject followAvatar;
-    public void Init(GameObject avatar)
+    public void InitFaceCam(GameObject avatar)
     {
-        OnDisable();
+        //OnDisable();
         SetTargetWithGenerate(avatar);
     }
 
@@ -23,7 +23,7 @@ public class FaceCam : MonoBehaviour
     {
         cinemachine = GetComponent<CinemachineFreeLook>();
         followAvatar = ObjectPoolManager.Instance.GetObject(target);
-        followAvatar.transform.position = new Vector3(1000, 1000, 0);
+        followAvatar.transform.position = new Vector3(950, 1000, -15);
         followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         cinemachine.m_Follow = followAvatar.transform;
         cinemachine.m_LookAt = followAvatar.transform;
