@@ -7,7 +7,7 @@ public class Player : LivingEntity
 
     private bool avoidButtonClick = false;
     [SerializeField] private float avoid_power = 10f;
-
+    private float avoidCounter = 0f;
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
 
     private bool AttackButtonClick = false;
@@ -57,6 +57,7 @@ public class Player : LivingEntity
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
         base.Start();
+        avoidCounter = avoid_power;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.Init(transform.Find("PlayerAvatar").gameObject);
         
@@ -253,15 +254,26 @@ public class Player : LivingEntity
     {
         if (avoidButtonClick)
         {
+            avoidCounter -= avoid_power*Time.deltaTime;
+            if (avoidCounter <= 0f)
+            {
+                avoidButtonClick = false;
+                avoidCounter = avoid_power;
+            }
             if (direction == Vector3.zero)
             {
-                characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
+                characterController.Move(moveDir * speed * Time.deltaTime * avoidCounter);
             }
             else
             {
-                characterController.Move(moveDir * speed * Time.deltaTime * avoid_power);
+                characterController.Move(moveDir * speed * Time.deltaTime * avoidCounter);
             }
         }
+        else
+        {
+            avoidCounter = avoid_power;
+        }
+        
     }
     public bool GetAvoidance()
     {
