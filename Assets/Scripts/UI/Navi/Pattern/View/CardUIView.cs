@@ -118,6 +118,7 @@ public class CardUIView : View
             // 씬 이동
             UILoaderManager.Instance.CloseScene("VillageScene");
             UILoaderManager.Instance.AddScene("DungeonScene");
+           
         }
     }
 

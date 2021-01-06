@@ -90,7 +90,7 @@ public class MonsterAction : MonoBehaviour
     /// <summary>
     /// 스테이트 초기화
     /// </summary>
-    public void InitState()
+    public virtual void InitState()
     {
         _currentState = STATE.STATE_NULL;
         ChangeState(STATE.STATE_SPAWN);

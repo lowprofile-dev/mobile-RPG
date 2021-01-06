@@ -12,6 +12,8 @@ public class BossSkeletonPase2 : MonsterAction
     [SerializeField] private GameObject _baseMeleeAttackPrefab;
 
     AttackType attackType;
+    [SerializeField] private GameObject SkillRange;
+    string currentAnimation;
 
     private void OnDrawGizmos()
     {
@@ -43,18 +45,30 @@ public class BossSkeletonPase2 : MonsterAction
     {
         transform.LookAt(_target.transform);
 
-        if (_attackType == 0)
+        switch (attackType)
         {
-            _monster.MyAnimator.SetTrigger("Attack0");
+            case AttackType.JUMP_ATTACK:
+                _monster.MyAnimator.SetTrigger("Attack0");
+                currentAnimation = "Attack0";
+                break;
+            case AttackType.SHOCK_WAVE:
+                _monster.MyAnimator.SetTrigger("Attack1");
+                currentAnimation = "Attack1";
+                break;
+            case AttackType.SHOCK_WAVE2:
+                _monster.MyAnimator.SetTrigger("Attack2");
+                currentAnimation = "Attack2";
+                break;
+            case AttackType.DASH_ATTACK:
+                _monster.MyAnimator.SetTrigger("Attack3");
+                currentAnimation = "Attack3";
+                break;
+            case AttackType.LEFT_ATTACK:
+                break;
+            default:
+                break;
         }
-        else if (_attackType == 1)
-        {
-            _monster.MyAnimator.SetTrigger("Attack1");
-        }
-        else
-        {
-            _monster.MyAnimator.SetTrigger("Attack2");
-        }
+       
     }
     protected override void SpawnStart()
     {
@@ -121,5 +135,60 @@ public class BossSkeletonPase2 : MonsterAction
         if (_readyCast) return;
     }
 
+    public override void InitState()
+    {
+        _currentState = STATE.STATE_NULL;
+        ChangeState(STATE.STATE_IDLE);
+        _navMeshAgent.enabled = true;
+    }
 
+    protected override void AttackExit()
+    {
+        _monster.MyAnimator.ResetTrigger(currentAnimation);
+        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
+    }
+
+    public override void MoveToTarget()
+    {
+        _navMeshAgent.SetDestination(_target.transform.position);
+
+        ChangeState(STATE.STATE_ATTACK);
+
+    }
+
+    protected override IEnumerator AttackTarget()
+    {
+        while (true)
+        {
+            yield return null;
+
+            
+                yield return new WaitForSeconds(_attackSpeed - _monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                SetAttackType();
+                SetAttackAnimation();
+
+                LookTarget();
+
+                // 사운드 재생
+
+                StartCoroutine(DoAttackAction());
+
+                yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+
+                _monster.MyAnimator.ResetTrigger(currentAnimation); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
+
+                _readyCast = false;
+                if (!_readyCast && ToCast()) break;
+           
+                ChangeState(STATE.STATE_TRACE);
+                break;
+            
+        }
+    }
+    public override IEnumerator DoAttackAction()
+    {
+        yield return null;
+
+
+    }
 }

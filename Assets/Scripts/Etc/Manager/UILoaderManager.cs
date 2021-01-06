@@ -80,8 +80,9 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
     {
         if(SceneManager.GetSceneByName(name).isLoaded == false)
         {
-            // StartCoroutine(Loading(name, LoadSceneMode.Additive));
-            SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+            StartCoroutine(Loading(name, LoadSceneMode.Additive));
+            //SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+        
         }
         else
         {
@@ -149,5 +150,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
             Debug.Log("Loading  : " + (asyncOperation.progress * 100) + "%");
         }
         PlayerUI.SetActive(true);
+
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(name));
     }
 }
