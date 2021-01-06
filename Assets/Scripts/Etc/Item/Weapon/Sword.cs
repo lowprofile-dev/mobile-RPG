@@ -6,7 +6,7 @@ using CSVReader;
 public class Sword : Weapon
 {
     // Start is called before the first frame update
-    public Sword(WeaponData swordData)
+    public Sword()
     {
         hitStun = 0.5f;
         hitRigid = 0.5f;

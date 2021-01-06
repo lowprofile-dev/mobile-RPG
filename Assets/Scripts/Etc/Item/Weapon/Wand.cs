@@ -4,7 +4,7 @@ using UnityEngine;
 public class Wand : Weapon
 {
     // Start is called before the first frame update
-    public Wand(WeaponData wandData)
+    public Wand()
     {
         hitStun = 0.5f;
         hitRigid = 0.5f;

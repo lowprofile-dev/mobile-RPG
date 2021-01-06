@@ -11,7 +11,6 @@ public class WeaponManager : SingletonBase<WeaponManager>
     private string _currentWeaponName;
     private StatusManager statusManager;
     public Dictionary<string, Weapon> _weaponDic;
-    public Dictionary<int, WeaponData> CSVweaponDictionary;
     public readonly int[] GradeCriteria = { 0, 9, 18, 25 };
     public readonly int[] SwordNumber = { 21, 37, 31, 34 };
     public readonly int[] DaggerNumber = { 1, 10, 23, 18 };
@@ -30,15 +29,12 @@ public class WeaponManager : SingletonBase<WeaponManager>
         _currentWeapon = null;
         _currentWeaponName = null;
         _weaponDic = new Dictionary<string, Weapon>();
-        CSVweaponDictionary = new Dictionary<int, WeaponData>();
-        Table weaponTable = CSVReader.Reader.ReadCSVToTable("CSVData/WeaponDatabase");
-        CSVweaponDictionary = weaponTable.TableToDictionary<int, WeaponData>();
         
-        Weapon Sword = new Sword(CSVweaponDictionary[1]);
+        Weapon Sword = new Sword();
         Weapon Dagger = new Dagger();
         Weapon Blunt = new Blunt();
         Weapon Staff = new Staff();
-        Weapon Wand = new Wand(CSVweaponDictionary[2]);
+        Weapon Wand = new Wand();
 
         AddWeapon("SWORD", Sword as Sword);
         AddWeapon("DAGGER", Dagger as Dagger);
