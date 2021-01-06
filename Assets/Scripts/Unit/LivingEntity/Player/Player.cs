@@ -206,7 +206,7 @@ public class Player : LivingEntity
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            characterController.SimpleMove(moveDir.normalized * speed);
+            characterController.Move(moveDir.normalized * speed * Time.deltaTime);
         }
 
         if (characterController.isGrounded)
@@ -214,7 +214,7 @@ public class Player : LivingEntity
             vSpeed = 0;
         }
         vSpeed = vSpeed - Time.deltaTime * (9.8f);
-        characterController.SimpleMove(Vector3.up * vSpeed);
+        characterController.Move(Vector3.up * vSpeed * Time.deltaTime);
         MyStateMachine.UpdateState();
     }
 

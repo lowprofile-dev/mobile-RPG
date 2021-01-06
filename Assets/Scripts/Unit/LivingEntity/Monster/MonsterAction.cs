@@ -554,6 +554,8 @@ public class MonsterAction : MonoBehaviour
     {
         while (true)
         {
+            yield return null;
+
             if (CanAttackState())
             {
                 yield return new WaitForSeconds(_attackSpeed - _monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
@@ -577,6 +579,7 @@ public class MonsterAction : MonoBehaviour
             else
             {
                 ChangeState(STATE.STATE_TRACE);
+                break;
             }
         }
     }
