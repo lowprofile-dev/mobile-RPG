@@ -12,6 +12,12 @@ public class Player : LivingEntity
     private float avoidCounter = 0f;
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
 
+    [Header("상태이상")]
+    private bool isStun = false;
+    private bool isFall = false;
+    private bool isRigid = false;
+
+    [Header("버튼 입력")]
     private bool AttackButtonClick = false;
     private bool SkillA_ButtonClick = false;
     private bool SkillB_ButtonClick = false;
@@ -234,9 +240,11 @@ public class Player : LivingEntity
             MyStateMachine.SetState("SKILL_A");
             SkillA_ButtonClick = true;
             skillA_Counter = 0f;
-            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillA());
-            skill.transform.position = skillPoint.position;
-            skill.transform.rotation = skillPoint.rotation;
+            //GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillA());
+            //skill.transform.position = skillPoint.position;
+            //skill.transform.rotation = skillPoint.rotation;
+            weaponManager.GetWeapon().SkillA();
+            
         }
     }
     public void PlayerSkillB()
@@ -274,9 +282,11 @@ public class Player : LivingEntity
         AttackButtonClick = attackbutton;
         if (AttackButtonClick == true)
         {
-            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().Attack());
-            skill.transform.position = skillPoint.position;
-            skill.transform.rotation = skillPoint.rotation;
+            //GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().Attack());
+            //skill.transform.position = skillPoint.position;
+            //skill.transform.rotation = skillPoint.rotation;
+            weaponManager.GetWeapon().Attack();
+
         }
     }
 

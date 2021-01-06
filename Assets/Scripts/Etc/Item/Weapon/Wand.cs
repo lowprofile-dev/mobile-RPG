@@ -4,27 +4,33 @@ using UnityEngine;
 public class Wand : Weapon
 {
     // Start is called before the first frame update
-    public Wand(WeaponData wandData)
+    public Wand()
     {
-        id = wandData.id;
-        weaponModelIndex = wandData.weaponModelIndex;
-        weaponType = wandData.weaponType;
-
-        attackDamage = wandData.attackDamage;
-        attackSpeed = wandData.attackSpeed;
-        magicDamage = wandData.magicDamage;
-
-        skillACoef = wandData.skillACoef;
-        skillBCoef = wandData.skillBCoef;
-        skillCCoef = wandData.skillCCoef;
-
-        skillACool = wandData.skillACool;
-        skillBCool = wandData.skillBCool;
-        skillCCool = wandData.skillCCool;
-
+        hitStun = 0.5f;
+        hitRigid = 0.5f;
+        hitFail = 0.5f;
+        outfitGrade = 0;
         masteryLevel = 1;
+
         skillBRelease = false;
         skillCRelease = false;
+
+        skillALevel = 0;
+        skillBLevel = 0;
+        skillCLevel = 0;
+        attackLevel = 1;
+
+        attackDamage = 0;
+        magicDamage = 1;
+        skillSpeed = 0;
+
+        skillACoef = 0;
+        skillBCoef = 0;
+        skillCCoef = 0;
+
+        skillACool = 0;
+        skillBCool = 0;
+        skillCCool = 0;
 
         AttackEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Attack");
         SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Skill A");

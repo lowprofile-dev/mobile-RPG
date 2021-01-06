@@ -319,7 +319,7 @@ public class SkeletonAction : MonsterAction
        
     }
 
-    public override void FindStart()
+    protected override void FindStart()
     {
         base.FindStart();
 

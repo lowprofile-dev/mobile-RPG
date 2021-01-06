@@ -12,7 +12,7 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
 
     bool isShowingItemInfo;
     ItemData itemData;
-    WeaponData weaponData;
+    //WeaponData weaponData;
     ItemManager itemManager;
 
     private void Awake()
@@ -38,10 +38,10 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
     {
         itemData = id;
     }
-    public void setWeaponData(WeaponData id)
-    {
-        weaponData = id;
-    }
+    //public void setWeaponData(WeaponData id)
+    //{
+    //    weaponData = id;
+    //}
 
     public void OnPointerClick(PointerEventData eventData)
     {

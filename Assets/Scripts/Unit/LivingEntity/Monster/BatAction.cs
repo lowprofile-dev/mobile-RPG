@@ -32,7 +32,7 @@ public class BatAction : MonsterAction
 
     /////////// 탐색 관련 /////////////
 
-    public override void FindStart()
+    protected override void FindStart()
     {
         base.FindStart();
 
