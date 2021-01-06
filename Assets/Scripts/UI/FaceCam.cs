@@ -7,9 +7,10 @@ public class FaceCam : MonoBehaviour
     // Start is called before the first frame update
     CinemachineFreeLook faceCam;
     [SerializeField] CinemachineFreeLook bodycam;
-    GameObject followAvatar;
+    GameObject followAvatar = null;
+    GameObject bodyAvatar = null;
 
-    GameObject bodyAvatar;
+
     public void InitFaceCam(GameObject avatar)
     {
         //OnDisable();
@@ -18,8 +19,10 @@ public class FaceCam : MonoBehaviour
 
     private void OnDisable()
     {
-        //if (followAvatar != null)
-        //    ObjectPoolManager.Instance.ReturnObject(followAvatar);
+        if (followAvatar != null)
+            ObjectPoolManager.Instance.ReturnObject(followAvatar);
+        if (bodyAvatar != null)
+            ObjectPoolManager.Instance.ReturnObject(bodyAvatar);
     }
 
     public void SetTargetWithGenerate(GameObject target)
@@ -28,6 +31,7 @@ public class FaceCam : MonoBehaviour
         followAvatar = ObjectPoolManager.Instance.GetObject(target);
         followAvatar.transform.position = new Vector3(950, 1000, -15);
         followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
+        followAvatar.tag = "FaceCamAvata";
         faceCam.m_Follow = followAvatar.transform;
         faceCam.m_LookAt = followAvatar.transform;
 
@@ -37,8 +41,7 @@ public class FaceCam : MonoBehaviour
         bodyAvatar.tag = "BodyCamAvata";
         bodycam.m_Follow = bodyAvatar.transform;
         bodycam.m_LookAt = bodyAvatar.transform;
-
-
+        
     }
 
     public void SetTarget(GameObject target)

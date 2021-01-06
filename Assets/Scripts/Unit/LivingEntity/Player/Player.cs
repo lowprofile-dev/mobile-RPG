@@ -31,6 +31,7 @@ public class Player : LivingEntity
     [SerializeField] private Transform cam;
     [SerializeField] private GameObject playerFollowCam;
     [SerializeField] private CinemachineFreeLook playerFreeLook;
+    [SerializeField] private CinemachineFreeLook minimapFreeLook;
 
     public bool weaponChanged = false;
 
@@ -75,6 +76,9 @@ public class Player : LivingEntity
         playerFreeLook = playerFollowCam.GetComponent<CinemachineFreeLook>();
         playerFreeLook.Follow = transform;
         playerFreeLook.LookAt = transform;
+        minimapFreeLook = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<CinemachineFreeLook>();
+        minimapFreeLook.Follow = transform;
+        minimapFreeLook.LookAt = transform;
     }
 
     protected override void Update()
