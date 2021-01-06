@@ -9,7 +9,7 @@ public class BossSkeletonAction : MonsterAction
     [SerializeField] private Transform _baseMeleeAttackPos;
     [SerializeField] private GameObject _baseMeleeAttackPrefab;
     [SerializeField] private GameObject _bossSkeletonPase2;
-
+    string currentAnimation;
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -41,14 +41,17 @@ public class BossSkeletonAction : MonsterAction
         if (_attackType == 0)
         {
             _monster.MyAnimator.SetTrigger("Attack0");
+            currentAnimation = "Attack0";
         }
         else if(_attackType == 1)
         {
             _monster.MyAnimator.SetTrigger("Attack1");
+            currentAnimation = "Attack1";
         }
         else
         {
             _monster.MyAnimator.SetTrigger("Attack2");
+            currentAnimation = "Attack2";
         }
     }
     protected override void SpawnStart()
@@ -111,5 +114,11 @@ public class BossSkeletonAction : MonsterAction
         pase2.transform.LookAt(_target.transform.position);
 
         ObjectPoolManager.Instance.ReturnObject(gameObject);
+    }
+
+    protected override void AttackExit()
+    {
+        _monster.MyAnimator.ResetTrigger(currentAnimation);
+        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
 }
