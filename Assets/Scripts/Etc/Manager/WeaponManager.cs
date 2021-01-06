@@ -36,14 +36,12 @@ public class WeaponManager : SingletonBase<WeaponManager>
         
         Weapon Sword = new Sword(CSVweaponDictionary[1]);
         Weapon Dagger = new Dagger();
-        Weapon GreatSword = new GreatSword();
         Weapon Blunt = new Blunt();
         Weapon Staff = new Staff();
         Weapon Wand = new Wand(CSVweaponDictionary[2]);
 
         AddWeapon("SWORD", Sword as Sword);
         AddWeapon("DAGGER", Dagger as Dagger);
-        AddWeapon("GREATSWORD", GreatSword as GreatSword);
         AddWeapon("BLUNT", Blunt as Blunt);
         AddWeapon("STAFF", Staff as Staff);
         AddWeapon("WAND", Wand as Wand);
@@ -67,7 +65,6 @@ public class WeaponManager : SingletonBase<WeaponManager>
         Player.Instance.MyAnimator.runtimeAnimatorController = _currentWeapon.WeaponAnimation;
         _weaponDic[weaponName].attackDamage += statusManager.finalStatus.attackDamage;
         _weaponDic[weaponName].magicDamage += statusManager.finalStatus.magicDamage; 
-        _weaponDic[weaponName].attackSpeed += statusManager.finalStatus.attackSpeed; 
     }
 
     public string GetWeaponName()
