@@ -100,6 +100,10 @@ public class MonsterAction : MonoBehaviour
     private void Update()
     {
         UpdateState();
+        if (_target == null)
+        {
+            _target = GameObject.FindGameObjectWithTag("Player");
+        }
     }
 
 
