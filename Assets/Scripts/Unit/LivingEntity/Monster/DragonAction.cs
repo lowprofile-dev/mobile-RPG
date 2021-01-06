@@ -5,6 +5,12 @@ public class DragonAction : MonsterAction
 {
     bool canPanic;
 
+    [SerializeField] private Transform _baseMeleeAttackPos;
+    [SerializeField] private GameObject _baseMeleeAttackPrefab;
+
+    Collider _baseAtkCollision;
+
+
     /////////// 기본 /////////////
 
     /// <summary>
@@ -64,6 +70,32 @@ public class DragonAction : MonsterAction
     }
 
     /////////// 공격 관련 /////////////
+
+    protected override void DoAttack()
+    {
+        if(_attackType == 0 || _attackType == 1)
+        {
+            GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+            obj.transform.SetParent(this.transform);
+            obj.transform.position = _baseMeleeAttackPos.position;
+
+            Attack atk = obj.GetComponent<Attack>();
+            atk.SetParent(gameObject);
+            atk.PlayAttackTimer(1);
+        }
+    }
+
+    protected override void SetAttackAnimation()
+    {
+        if(_attackType == 0) _monster.MyAnimator.SetTrigger("Attack");
+        else if(_attackType == 1) _monster.MyAnimator.SetTrigger("AttackSpecial");
+    }
+
+    protected override void ResetAttackAnimation()
+    {
+        if(_attackType == 0) _monster.MyAnimator.ResetTrigger("Attack");
+        else if(_attackType == 1) _monster.MyAnimator.ResetTrigger("AttackSpecial");
+    }
 
     /////////// 캐스팅 관련 /////////////
 }

@@ -8,6 +8,9 @@ public class BatAction : MonsterAction
 {
     bool canPanic;
 
+    [SerializeField] private Transform _baseMeleeAttackPos;
+    [SerializeField] private GameObject _baseMeleeAttackPrefab;
+
     /////////// 기본 /////////////
 
     /// <summary>
@@ -60,6 +63,17 @@ public class BatAction : MonsterAction
     }
 
     /////////// 공격 관련 /////////////
+
+    protected override void DoAttack()
+    {
+        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+        obj.transform.SetParent(this.transform);
+        obj.transform.position = _baseMeleeAttackPos.position;
+
+        Attack atk = obj.GetComponent<Attack>();
+        atk.SetParent(gameObject);
+        atk.PlayAttackTimer(1);
+    }
 
     /////////// 캐스팅 관련 /////////////
 }

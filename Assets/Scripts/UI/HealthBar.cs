@@ -7,13 +7,15 @@ public class HealthBar : MonoBehaviour
     Image Bar;
     float maxHp = 100f;
     public bool barSet = false;
-    // Start is called before the first frame update
+
+    public Slider hpSlider;
+    public Slider castSlider;
+
     void Start()
     {
         Bar = GetComponent<Image>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (gameObject.name == "HP")
@@ -24,8 +26,8 @@ public class HealthBar : MonoBehaviour
                 barSet = true;
             }
             if (barSet) Bar.fillAmount = Player.Instance.Hp / maxHp;
-
         }
+
         else
         {
             if (Player.Instance != null && barSet == false)
@@ -35,6 +37,5 @@ public class HealthBar : MonoBehaviour
             }
             if (barSet) Bar.fillAmount = Player.Instance.Mp / maxHp;
         }
-
     }
 }

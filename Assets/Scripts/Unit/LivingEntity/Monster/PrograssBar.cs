@@ -6,7 +6,6 @@ using Cinemachine;
 
 public class PrograssBar : MonoBehaviour
 {
-
     [SerializeField] protected Slider hpSlider;
     [SerializeField] protected Transform obj;
 

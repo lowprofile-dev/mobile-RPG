@@ -1,10 +1,8 @@
 ﻿using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
+using EPOOutline;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using EPOOutline;
 
 /// <summary>
 /// MonsterAction만 있어도 Monster는 기본적인 행동을 할 수 있다. 최소한의 단위로 함수를 쪼개놓았기에, 변경할 함수에 한해서만 함수를 오버라이딩하여 행동을 변경해주면 된다.
@@ -24,20 +22,24 @@ public class MonsterAction : MonoBehaviour
     protected Outlinable _outlinable;
 
     // 오브젝트
-    protected GameObject _target;           // 공격대상        
-    protected GameObject _spawnEffect;      // 스폰용으로 사용된 이펙트
+    protected GameObject _target;                   // 공격대상        
+    protected GameObject _spawnEffect;              // 스폰용으로 사용된 이펙트
 
     // 기타 변수
-    protected STATE _currentState;          // 현재 상태
-    protected float _distance;              // 타겟과의 거리
-    protected float _traceTimer;            // 추적 이후 경과한 시간
-    protected Vector3 _spawnPosition;       // 스폰된 위치
-    protected Vector3 _patrolPos;           // 정찰할 위치
-    protected float _idleTime;              // Idle에서 경과한 시간
-    protected bool _isImmune;               // 무적 여부
+    protected STATE _currentState;                  // 현재 상태
+    protected float _distance;                      // 타겟과의 거리
+    protected float _traceTimer;                    // 추적 이후 경과한 시간
+    protected Vector3 _spawnPosition;               // 스폰된 위치
+    protected Vector3 _patrolPos;                   // 정찰할 위치
+    protected float _idleTime;                      // Idle에서 경과한 시간
+    protected bool _isImmune;                       // 무적 여부
+    protected int _attackType;                      // 현재 공격의 타입
+    protected bool _readyCast;                      // 캐스트 준비가 되었는지
+    [HideInInspector] public float _cntCastTime;    // 현재 캐스트 시간
 
     // 트위닝
     protected Tweener _fadeOutRedTween;     // 데미지 받았을때 트위닝
+    protected Tweener _lookAtTween;         // 쳐다보는 트위닝
 
     [Header("범위")]
     [SerializeField] protected float _findRange;        // 타겟을 발견할 범위
@@ -51,8 +53,12 @@ public class MonsterAction : MonoBehaviour
     [Header("타겟 체크")]
     [SerializeField] private LayerMask _checkLayerMask; // 타겟 레이어 마스크 
 
+    [Header("캐스팅")]
+    [SerializeField] protected int _castChangePercnt;   // 캐스트 확률
+    public float _castTime;                             // 캐스트에 걸리는 시간
 
-
+    [Header("UI")]
+    [SerializeField] protected EnemySliderBar _bar;
 
     /////////// 기본 ////////////
 
@@ -350,11 +356,12 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void FindTargetInIdle()
     {
-        Vector3 targetDir = (_target.transform.position - transform.position).normalized; // y축의 영향 받지 않음
-        Physics.Raycast(transform.position, targetDir, out RaycastHit hit, 30f, _checkLayerMask);
+        //Vector3 targetDir = (_target.transform.position - transform.position).normalized; // y축의 영향 받지 않음
+        //Physics.Raycast(transform.position, targetDir, out RaycastHit hit, 30f, _checkLayerMask);
         _distance = Vector3.Distance(_target.transform.position, transform.position);
 
-        if (hit.transform.CompareTag("Player") && _distance <= _findRange) DoSomethingIdleSearchFind();
+        //if (hit.transform.CompareTag("Player") && _distance <= _findRange) DoSomethingIdleSearchFind();
+        if (_distance <= _findRange) DoSomethingIdleSearchFind();
     }
 
     /// <summary>
@@ -523,7 +530,8 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void AttackStart()
     {
-        _attackCoroutine = StartCoroutine(AttackTarget());
+        if(!_readyCast && ToCast()) return;
+        else _attackCoroutine = StartCoroutine(AttackTarget());
     }
 
     protected virtual void AttackUpdate()
@@ -542,37 +550,24 @@ public class MonsterAction : MonoBehaviour
     {
         while (true)
         {
-            yield return null;
-
             if (CanAttackState())
             {
                 yield return new WaitForSeconds(_attackSpeed - _monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-                _monster.MyAnimator.SetTrigger("Attack");
-                _navMeshAgent.SetDestination(_target.transform.position);
+                SetAttackAnimation();
                 transform.LookAt(_target.transform);
 
                 // 사운드 재생
 
-                // 데미지 계산
-                _target.GetComponent<LivingEntity>().Damaged(_monster.attackDamage);
-
-                // 공격 행동 한다.
                 StartCoroutine(DoAttackAction());
 
                 yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
+                ResetAttackAnimation();
                 _monster.MyAnimator.ResetTrigger("Attack"); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 
-                //ChangeState(STATE.STATE_IDLE);
-
-                // 일정 확률로 캐스팅 상태로 바꾼다.
-                //int toCastRandomValue = UnityEngine.Random.Range(0, 100);
-
-                //if (toCastRandomValue < _monster.castPercent)
-                //{
-                //    ChangeState(STATE.STATE_CAST);
-                //}
+                _readyCast = false;
+                if(!_readyCast && ToCast()) break;
             }
 
             else
@@ -582,22 +577,47 @@ public class MonsterAction : MonoBehaviour
         }
     }
 
-    protected virtual void OnAttackCollide(GameObject attackCollide)
+    protected virtual bool ToCast()
     {
-       // attackCollide.GetComponent<Collider>().enabled = true;
-       // Debug.Log("ON");
+        int toCastRandomValue = UnityEngine.Random.Range(0, 100);
+
+        if (toCastRandomValue < _castChangePercnt)
+        {
+            ChangeState(STATE.STATE_CAST);
+            return true;
+        }
+
+        return false;
     }
 
-    protected virtual void OffAttackCollide(GameObject attackCollide)
+    /// <summary>
+    /// 공격 타입에 따른 애니메이션 트리거 설정
+    /// </summary>
+    protected virtual void SetAttackAnimation()
     {
-       // attackCollide.GetComponent<Collider>().enabled = false;
-       // Debug.Log("OFF");
+        _monster.MyAnimator.SetTrigger("Attack");
+    }
+
+    /// <summary>
+    /// 공격 타입에 따른 애니메이션 트리거 원상복귀
+    /// </summary>
+    protected virtual void ResetAttackAnimation()
+    {
+        _monster.MyAnimator.ResetTrigger("Attack");
+    }
+
+    /// <summary>
+    /// 애니메이션을 통해 불러와진다.
+    /// </summary>
+    protected virtual void DoAttack()
+    {
+        // DO NOTHING
     }
 
     protected virtual void AttackExit()
     {
         _monster.MyAnimator.ResetTrigger("Attack");
-        StopCoroutine(_attackCoroutine);
+        if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
 
     /// <summary>
@@ -613,11 +633,13 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected bool CanAttackState()
     {
-        Vector3 targetDir = new Vector3(_target.transform.position.x - transform.position.x, 0f, _target.transform.position.z - transform.position.z);
-        Physics.Raycast(new Vector3(transform.position.x, 0.5f, transform.position.z), targetDir, out RaycastHit hit, 30f, _checkLayerMask);
+        // Vector3 targetDir = new Vector3(_target.transform.position.x - transform.position.x, 0f, _target.transform.position.z - transform.position.z);
+        // Physics.Raycast(new Vector3(transform.position.x, 0.5f, transform.position.z), targetDir, out RaycastHit hit, 30f, _checkLayerMask);
 
         _distance = Vector3.Distance(_target.transform.position, transform.position);
+        transform.LookAt(_target.transform);
 
+        /*
         if (hit.transform == null)
         {
             return false;
@@ -626,10 +648,9 @@ public class MonsterAction : MonoBehaviour
         {
             return true;
         }
-        else
-        {
-            return false;
-        }
+        */
+
+        return _distance <= _attackRange;
     }
 
 
@@ -638,32 +659,39 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void CastStart()
     {
-        _castCoroutine = StartCoroutine(DoCastingAction());
     }
 
     protected virtual void CastUpdate()
     {
         // 타겟과의 거리가 공격 범위보다 커지면
-        if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
-        {
-            ChangeState(STATE.STATE_TRACE);
-        }
+        //if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
+        //{
+        //    ChangeState(STATE.STATE_TRACE);
+        //}
+
+        DoCastingAction();
     }
 
+    
     /// <summary>
     /// 캐스팅를 진행시킨다.
     /// </summary>
-    protected virtual IEnumerator DoCastingAction()
+    protected virtual void DoCastingAction()
     {
-        Debug.Log("캐스팅 중입니다...");
-        // 사운드 재생
-        yield return new WaitForSeconds(2);
-        ChangeState(STATE.STATE_ATTACK);
+        _cntCastTime += Time.deltaTime;
+        _bar.CastUpdate();
+
+        if(_cntCastTime >= _castTime)
+        {
+            _cntCastTime = 0;
+            _readyCast = true;
+            _attackType = 1;
+            ChangeState(STATE.STATE_ATTACK);
+        }
     }
 
     protected virtual void CastExit()
     {
-        StopCoroutine(_castCoroutine);
     }
 
 
@@ -685,6 +713,7 @@ public class MonsterAction : MonoBehaviour
         else
         {
             _monster.Damaged(dmg);
+            _bar.HpUpdate();
 
             bool isDeath = DeathCheck();
 
@@ -754,7 +783,7 @@ public class MonsterAction : MonoBehaviour
             }
         }
     }
-    
+
 
     /// <summary>
     /// 데미지를 받을 조건을 체크한다.
@@ -799,7 +828,7 @@ public class MonsterAction : MonoBehaviour
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
         _monster.hpbarObject.gameObject.SetActive(false);
 
-        if(_fadeOutRedTween != null) _fadeOutRedTween.Kill();
+        if (_fadeOutRedTween != null) _fadeOutRedTween.Kill();
     }
 
     /// <summary>

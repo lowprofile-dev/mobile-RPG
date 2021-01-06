@@ -294,35 +294,6 @@ public class BossSkeleton : MonsterAction
 
     }
 
-    protected override void CastStart()
-    {
-        _castCoroutine = StartCoroutine(DoCastingAction());
-    }
-
-    protected override void CastUpdate()
-    {
-        base.CastUpdate();
-
-        // 타겟과의 거리가 공격 범위보다 커지면
-        if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
-        {
-            ChangeState(STATE.STATE_TRACE);
-        }
-    }
-
-    protected override IEnumerator DoCastingAction()
-    {
-        Debug.Log("캐스팅 중입니다...");
-        // 사운드 재생
-        yield return new WaitForSeconds(2);
-        ChangeState(STATE.STATE_ATTACK);
-    }
-
-    protected override void CastExit()
-    {
-        StopCoroutine(_castCoroutine);
-    }
-
     public override IEnumerator DoAttackAction()
     {
         // 아무튼 뭔가를 한다

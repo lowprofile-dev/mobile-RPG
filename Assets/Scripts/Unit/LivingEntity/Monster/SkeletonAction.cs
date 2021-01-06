@@ -21,6 +21,7 @@ public class SkeletonAction : MonsterAction
     string AtkState;
     private float castingTime = 0f;
 
+    
     public override void InitObject()
     {
         base.InitObject();
@@ -254,14 +255,9 @@ public class SkeletonAction : MonsterAction
 
                 yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-
                 _monster.MyAnimator.ResetTrigger(AtkState); // off가 되어있으므로 바로 돌아오진 않음.
-                // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
+                                                            // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 
-                
-                //ChangeState(STATE.STATE_IDLE);
-                
-                // 일정 확률로 캐스팅 상태로 바꾼다.
                 //int toCastRandomValue = UnityEngine.Random.Range(0, 100);
 
                 //if (toCastRandomValue < _monster.castPercent)
@@ -276,7 +272,7 @@ public class SkeletonAction : MonsterAction
         }
 
     }
-
+    
     private ATTACKSTATE AttackPattern()
     {
 
@@ -299,36 +295,7 @@ public class SkeletonAction : MonsterAction
         }
 
     }
-
-    protected override void CastStart()
-    {
-        _castCoroutine = StartCoroutine(DoCastingAction());
-    }
-
-    protected override void CastUpdate()
-    {
-        base.CastUpdate();
-
-        // 타겟과의 거리가 공격 범위보다 커지면
-        if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
-        {
-            ChangeState(STATE.STATE_TRACE);
-        }
-    }
-
-    protected override IEnumerator DoCastingAction()
-    {
-        Debug.Log("캐스팅 중입니다...");
-        // 사운드 재생
-        yield return new WaitForSeconds(2);
-        ChangeState(STATE.STATE_ATTACK);
-    }
-
-    protected override void CastExit()
-    {
-        StopCoroutine(_castCoroutine);
-    }
-
+    
     public override IEnumerator DoAttackAction()
     {
         // 아무튼 뭔가를 한다
