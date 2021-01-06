@@ -23,7 +23,6 @@ public class DungeonManager : MonoBehaviour
 
     private void Update()
     {
-
         if (dungeon == null)
         {
 

@@ -415,7 +415,7 @@ public class MonsterAction : MonoBehaviour
         _monster.MyAnimator.SetTrigger("Stirr");
     }
 
-    private void StirrUpdate()
+    protected virtual void StirrUpdate()
     {
         if (CheckAnimationOver("Stirr", 1.0f))
         {
@@ -730,19 +730,35 @@ public class MonsterAction : MonoBehaviour
 
         else
         {
-            _monster.Damaged(dmg);
-            _bar.HpUpdate();
-
-            bool isDeath = DeathCheck();
-
-            if (SetAnimation)
-            {
-                if (isDeath) _monster.MyAnimator.ResetTrigger("Hit");
-                else _monster.MyAnimator.SetTrigger("Hit");
-            }
-
-            if (isDeath) CheckDeathAndChange();
+            DamagedProcess(dmg, SetAnimation);
         }
+    }
+
+    /// <summary>
+    /// 데미지를 받았을때 진행할 알고리즘 목록
+    /// </summary>
+    protected virtual void DamagedProcess(float dmg, bool SetAnimation = true)
+    {
+        _monster.Damaged(dmg);
+        _bar.HpUpdate();
+
+        bool isDeath = DeathCheck();
+
+        if (SetAnimation)
+        {
+            SetHitAnimation(isDeath);
+        }
+
+        if (isDeath) CheckDeathAndChange();
+    }
+
+    /// <summary>
+    /// 죽음 여부에 따라 몬스터의 hit 애니메이션을 설정 / 해제한다.
+    /// </summary>
+    protected virtual void SetHitAnimation(bool isDeath)
+    {
+        if (isDeath) _monster.MyAnimator.ResetTrigger("Hit");
+        else _monster.MyAnimator.SetTrigger("Hit");
     }
 
     /// <summary>
