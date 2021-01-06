@@ -28,7 +28,6 @@ public enum ATTACKTYPE
     MELEE, MAGIC
 }
 
-
 public class Monster : LivingEntity
 {
     [SerializeField] protected string _monsterName; public string monsterName { get { return _monsterName; } }

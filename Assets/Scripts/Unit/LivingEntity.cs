@@ -33,6 +33,7 @@ public class LivingEntity : Unit
     {
         _hp = initHp;
         _mp = initMp;
+        gameObject.GetComponent<Collider>().enabled = true;
     }
 
     public virtual void Damaged(float damage)
