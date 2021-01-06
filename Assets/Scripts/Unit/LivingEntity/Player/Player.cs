@@ -1,5 +1,7 @@
 ﻿using SimpleInputNamespace;
 using UnityEngine;
+using Cinemachine;
+using System;
 
 public class Player : LivingEntity
 {
@@ -27,6 +29,8 @@ public class Player : LivingEntity
     [SerializeField] private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     [SerializeField] private Transform cam;
+    [SerializeField] private GameObject playerFollowCam;
+    [SerializeField] private CinemachineFreeLook playerFreeLook;
 
     public bool weaponChanged = false;
 
@@ -61,7 +65,16 @@ public class Player : LivingEntity
         avoidCounter = avoid_power;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
-        
+        SetUpPlayerCamera();
+    }
+
+    private void SetUpPlayerCamera()
+    {
+        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
+        playerFollowCam = GameObject.FindGameObjectWithTag("PlayerFollowCamera");
+        playerFreeLook = playerFollowCam.GetComponent<CinemachineFreeLook>();
+        playerFreeLook.Follow = transform;
+        playerFreeLook.LookAt = transform;
     }
 
     protected override void Update()

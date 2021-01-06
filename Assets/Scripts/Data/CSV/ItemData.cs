@@ -6,7 +6,7 @@ using UnityEngine;
 
 [System.Serializable]
 [CSVReader.Data("id")]
-public class ItemData
+public class ItemData : ScriptableObject
 {
     [Header("아이템 기본 정보")]
     public int id;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 [CSVReader.Data("level")]
-public class StatusData
+public class StatusData : ScriptableObject
 {
     [Header("플레이어 기본 정보")]
     public int level;

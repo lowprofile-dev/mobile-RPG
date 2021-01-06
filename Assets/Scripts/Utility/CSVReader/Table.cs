@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace CSVReader
 {
-    public class Table
+    public class Table : MonoBehaviour
     {
         //테이블 이름
         string mName;

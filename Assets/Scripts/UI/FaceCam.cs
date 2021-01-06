@@ -18,8 +18,8 @@ public class FaceCam : MonoBehaviour
 
     private void OnDisable()
     {
-        if (followAvatar != null)
-            ObjectPoolManager.Instance.ReturnObject(followAvatar);
+        //if (followAvatar != null)
+        //    ObjectPoolManager.Instance.ReturnObject(followAvatar);
     }
 
     public void SetTargetWithGenerate(GameObject target)
