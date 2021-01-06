@@ -70,7 +70,7 @@ public class Player : LivingEntity
 
     private void SetUpPlayerCamera()
     {
-        cam = Camera.main.transform;
+        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
         playerFollowCam = GameObject.FindGameObjectWithTag("PlayerFollowCamera");
         playerFreeLook = playerFollowCam.GetComponent<CinemachineFreeLook>();
         playerFreeLook.Follow = transform;
