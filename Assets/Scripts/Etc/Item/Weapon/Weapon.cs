@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : WeaponData
+public class Weapon
 {
     public int outfitGrade;
     public int masteryLevel;
@@ -13,6 +13,24 @@ public class Weapon : WeaponData
     public float hitStun;
     public float hitRigid;
     public float hitFail;
+
+    public int skillALevel;
+    public int skillBLevel;
+    public int skillCLevel;
+
+    public float skillACoef;
+    public float skillBCoef;
+    public float skillCCoef;
+
+    public float skillACool;
+    public float skillBCool;
+    public float skillCCool;
+
+    public int attackLevel = 1;
+
+    public float attackDamage;
+    public float magicDamage;
+    public float skillSpeed;
 
     public GameObject SkillAEffect;
     public GameObject SkillBEffect;
@@ -61,8 +79,16 @@ public class Weapon : WeaponData
 
     public void SkillRelease()
     {
-        if (masteryLevel >= 19 && skillCRelease == false) skillCRelease = true;
-        else if (masteryLevel >= 10 && skillBRelease == false) skillBRelease = true;
+        if (masteryLevel >= 19 && skillCRelease == false)
+        {
+            skillCRelease = true;
+            skillCLevel = 1;
+        }
+        else if (masteryLevel >= 10 && skillBRelease == false)
+        {
+            skillBRelease = true;
+            skillBLevel = 1;
+        }
     }
 
     public bool CheckSkillB()
