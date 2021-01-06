@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1353158643162032}
+  m_IsPrefabParent: 1
+--- !u!1 &1353158643162032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4619842049688246}
+  - component: {fileID: 114417411823249208}
+  - component: {fileID: 114341909208833824}
+  - component: {fileID: 114303000990689656}
+  m_Layer: 0
+  m_Name: (Opt)Effect_70_AnnihilationStrike(ForEffectScene)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4619842049688246
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1353158643162032}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 12.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114303000990689656
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1353158643162032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b34ff232254a54b963f6c878c0d9d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_makeObjs:
+  - {fileID: 1447296818783448, guid: 48a4d9857b99cc148b410e73028171d3, type: 2}
+  m_movePos: {fileID: 0}
+  m_startDelay: 0.5
+--- !u!114 &114341909208833824
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1353158643162032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d90f358e0f0235242a422a856b10775e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_makeObjs:
+  - {fileID: 1243140336122604, guid: e7bf3129d49de9542a0f2c38af866b04, type: 2}
+  - {fileID: 1462550979125878, guid: 12a5c5c3e68a7974c8c16d24fcdb8855, type: 2}
+  - {fileID: 1907346008363560, guid: 504bf6a34d81abb4684ed072a97a52ee, type: 2}
+  m_movePos: {fileID: 0}
+  m_randomRotationValue: {x: 0, y: 0, z: 0}
+--- !u!114 &114417411823249208
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1353158643162032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9780aff71e30824fa3ed7c172220fa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_makeObjs:
+  - {fileID: 1953381751705820, guid: a6f2a2907dbd1bb43a1dcf9aeb93d4cb, type: 2}
+  - {fileID: 1135709396800168, guid: dd6b0c425c87a514c8340077600e45b9, type: 2}
+  m_movePos: {fileID: 0}
+  m_startDelay: 0.5
+  m_makeCount: 20
+  m_makeDelay: 0.1
+  m_randomPos: {x: 10, y: 10, z: 0}
