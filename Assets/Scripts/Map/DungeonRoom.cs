@@ -45,10 +45,10 @@ public class DungeonRoom : MonoBehaviour
         {
             for (int j = 1; j <= 3; j++)
             {
-                if ((center.x >= dungeonManager.LT.x + (j - 1) * dungeonManager.dungeonLength / 3.0f) &&
-                    (center.x <= dungeonManager.LT.x + j * dungeonManager.dungeonLength / 3.0f) &&
-                    (center.y <= dungeonManager.LT.y - (i - 1) * dungeonManager.dungeonWidth / 3.0f) &&
-                    (center.y >= dungeonManager.LT.y - i * dungeonManager.dungeonWidth / 3.0f))
+                if ((center.x >= dungeonManager.LT.x + (j - 1) * dungeonManager.dungeonWidth / 3.0f) &&
+                    (center.x <= dungeonManager.LT.x + j * dungeonManager.dungeonWidth / 3.0f) &&
+                    (center.y <= dungeonManager.LT.y - (i - 1) * dungeonManager.dungeonLength / 3.0f) &&
+                    (center.y >= dungeonManager.LT.y - i * dungeonManager.dungeonLength / 3.0f))
                 {
                     iidx = i;
                     jidx = j;

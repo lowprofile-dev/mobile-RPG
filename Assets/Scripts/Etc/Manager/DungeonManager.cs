@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -29,9 +26,9 @@ public class DungeonManager : MonoBehaviour
 
         if (dungeon == null)
         {
-            
+
             dungeon = gameObject.GetComponent<DunGen.Dungeon>();
-            
+
         }
         else if (!hasPlane)
         {
@@ -81,12 +78,12 @@ public class DungeonManager : MonoBehaviour
         {
             for (int j = 1; j <= 3; j++)
             {
-                if ((roomCenter.x > LT.x + (j-1) * dungeonLength / 3) && 
-                    (roomCenter.x <= LT.x + j * dungeonLength / 3) && 
-                    (roomCenter.y < LT.y - (i -1) * dungeonWidth / 3) && 
-                    (roomCenter.y >= LT.y - i * dungeonWidth / 3))
+                if ((roomCenter.x > LT.x + (j - 1) * dungeonWidth / 3) &&
+                    (roomCenter.x <= LT.x + j * dungeonWidth / 3) &&
+                    (roomCenter.y < LT.y - (i - 1) * dungeonLength / 3) &&
+                    (roomCenter.y >= LT.y - i * dungeonLength / 3))
                 {
-                    areaCode = (i-1)*3 + j;
+                    areaCode = (i - 1) * 3 + j;
                     return;
                 }
             }
