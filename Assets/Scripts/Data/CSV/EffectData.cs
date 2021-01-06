@@ -2,7 +2,7 @@
 using System.Collections;
 
 [CSVReader.Data("id")]
-public class CardEffectData
+public class CardEffectData : ScriptableObject
 {
     public int id;
     public bool isSet;

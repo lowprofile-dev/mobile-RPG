@@ -1,5 +1,7 @@
 ﻿using SimpleInputNamespace;
 using UnityEngine;
+using Cinemachine;
+using System;
 
 public class Player : LivingEntity
 {
@@ -27,6 +29,8 @@ public class Player : LivingEntity
     [SerializeField] private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     [SerializeField] private Transform cam;
+    [SerializeField] private GameObject playerFollowCam;
+    [SerializeField] private CinemachineFreeLook playerFreeLook;
 
     public bool weaponChanged = false;
 
@@ -38,6 +42,7 @@ public class Player : LivingEntity
 
     float horizontal;
     float vertical;
+    float vSpeed;
     bool _isdead = false; public bool isdead { get { return _isdead; } }
 
     PartSelection selection;
@@ -60,7 +65,16 @@ public class Player : LivingEntity
         avoidCounter = avoid_power;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
-        
+        SetUpPlayerCamera();
+    }
+
+    private void SetUpPlayerCamera()
+    {
+        cam = Camera.main.transform;
+        playerFollowCam = GameObject.FindGameObjectWithTag("PlayerFollowCamera");
+        playerFreeLook = playerFollowCam.GetComponent<CinemachineFreeLook>();
+        playerFreeLook.Follow = transform;
+        playerFreeLook.LookAt = transform;
     }
 
     protected override void Update()
@@ -171,6 +185,11 @@ public class Player : LivingEntity
 
     public void PlayerMove()
     {
+        if (joystick == null)
+        {
+            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        }
+
         horizontal = joystick.GetX_axis().value;
         vertical = joystick.GetY_axis().value;
 
@@ -185,6 +204,13 @@ public class Player : LivingEntity
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             characterController.SimpleMove(moveDir.normalized * speed);
         }
+
+        if (characterController.isGrounded)
+        {
+            vSpeed = 0;
+        }
+        vSpeed = vSpeed - Time.deltaTime * (9.8f);
+        characterController.SimpleMove(Vector3.up * vSpeed);
         MyStateMachine.UpdateState();
     }
 

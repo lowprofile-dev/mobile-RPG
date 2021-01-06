@@ -25,7 +25,6 @@ namespace DunGen
         private readonly List<GameObject> doors = new List<GameObject>();
         private readonly List<DoorwayConnection> connections = new List<DoorwayConnection>();
 
-
         public Dungeon()
         {
             AllTiles = new ReadOnlyCollection<Tile>(allTiles);
