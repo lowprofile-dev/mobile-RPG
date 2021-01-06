@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using EPOOutline;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -432,10 +433,10 @@ public class MonsterAction : MonoBehaviour
 
     /////////// 탐색 관련////////////
 
-    public virtual void FindStart()
+    protected virtual void FindStart()
     {
         _navMeshAgent.isStopped = true;
-        transform.LookAt(_target.transform.position);
+        LookTarget();
     }
 
     /// <summary>
@@ -558,10 +559,12 @@ public class MonsterAction : MonoBehaviour
 
             if (CanAttackState())
             {
-                yield return new WaitForSeconds(_attackSpeed - _monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
+                yield return new WaitForSeconds(_attackSpeed - _monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                SetAttackType();
                 SetAttackAnimation();
-                transform.LookAt(_target.transform);
+                
+                LookTarget();
 
                 // 사운드 재생
 
@@ -582,6 +585,14 @@ public class MonsterAction : MonoBehaviour
                 break;
             }
         }
+    }
+
+    protected virtual void SetAttackType()
+    {
+
+        if (_readyCast) return;
+
+        _attackType = 0;
     }
 
     protected virtual bool ToCast()
@@ -644,7 +655,8 @@ public class MonsterAction : MonoBehaviour
         // Physics.Raycast(new Vector3(transform.position.x, 0.5f, transform.position.z), targetDir, out RaycastHit hit, 30f, _checkLayerMask);
 
         _distance = Vector3.Distance(_target.transform.position, transform.position);
-        transform.LookAt(_target.transform);
+        
+        LookTarget();
 
         /*
         if (hit.transform == null)
@@ -660,7 +672,10 @@ public class MonsterAction : MonoBehaviour
         return _distance <= _attackRange;
     }
 
-
+    protected virtual void LookTarget()
+    {
+        transform.LookAt(_target.transform);
+    }
 
     /////////// 캐스트 관련////////////
 
@@ -700,10 +715,6 @@ public class MonsterAction : MonoBehaviour
     protected virtual void CastExit()
     {
     }
-
-
-
-
 
     /////////// 피해 입음 관련////////////
 
@@ -816,6 +827,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual IEnumerator DoDeathAction()
     {
         _monster.MyAnimator.SetTrigger("Die");
+        gameObject.GetComponent<Collider>().enabled = false;
 
         while (true)
         {
@@ -833,7 +845,8 @@ public class MonsterAction : MonoBehaviour
     {
         transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => { DestroyImmediate(gameObject); });
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
-        _monster.hpbarObject.gameObject.SetActive(false);
+
+        _bar.gameObject.SetActive(false);
 
         if (_fadeOutRedTween != null) _fadeOutRedTween.Kill();
     }
@@ -888,7 +901,7 @@ public class MonsterAction : MonoBehaviour
         }
 
         transform.RotateAround(_target.transform.position, Vector3.up, 5 * Time.deltaTime);
-        transform.LookAt(_target.transform.position);
+        LookTarget();
     }
 
     protected virtual void KillExit()

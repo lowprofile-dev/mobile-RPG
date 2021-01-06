@@ -15,7 +15,11 @@ public class EnemySliderBar : MonoBehaviour
     {
         cam = GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineFreeLook>();
     }
-    
+    private void Update()
+    {
+        transform.rotation = Quaternion.LookRotation(cam.transform.position);
+    }
+
     public void HpUpdate()
     {
         HPSlider.value = parent.Hp / parent.initHp;
@@ -24,5 +28,6 @@ public class EnemySliderBar : MonoBehaviour
     public void CastUpdate()
     {
         CastSlider.value = parent.GetComponent<MonsterAction>()._cntCastTime / parent.GetComponent<MonsterAction>()._castTime;
+
     }
 }
