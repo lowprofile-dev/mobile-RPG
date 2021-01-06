@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CSVReader.Data("id")]
-public class CardData
+public class CardData : ScriptableObject
 {
     public int id;
     public string cardName;

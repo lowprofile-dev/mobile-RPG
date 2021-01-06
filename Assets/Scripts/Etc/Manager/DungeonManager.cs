@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class DungeonManager : MonoBehaviour
 {
-    public float dungeonWidth;
-    public float dungeonLength;
-    public Bounds bounds;
-    public GameObject plane;
-    bool hasPlane;
-    public float x, y, z;
-    public DunGen.Dungeon dungeon;
+    [SerializeField] Bounds bounds;
+    [SerializeField] GameObject plane;
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameObject playerSpawnPoint;
+    [SerializeField] bool hasPlane;
+    [SerializeField] float dungeonWidth, dungeonLength, dungeonSize, planeCoef;
+    [SerializeField] DunGen.Dungeon dungeon;
 
     private void Start()
     {
@@ -31,17 +32,20 @@ public class DungeonManager : MonoBehaviour
             //FindBoundary();
             bounds = dungeon.Bounds;
             CreateBoundaryPlane();
+            SpawnPlayer();
         }
     }
 
     private void CreateBoundaryPlane()
     {
         //plane.GetComponent<Plane>().Set3Points(bounds.center, bounds.ClosestPoint(bounds.center), bounds.ClosestPoint(bounds.center));
+        planeCoef = 1 / 9.5f;
+        dungeonWidth = bounds.size.x * planeCoef;
+        dungeonLength = bounds.size.z * planeCoef;
+        dungeonSize = dungeonLength > dungeonWidth ? dungeonLength : dungeonWidth;
+
         plane.transform.position += bounds.center;
-        plane.transform.localScale += new Vector3(bounds.size.x/9.5f, 0, bounds.size.z / 9.5f);
-        x = bounds.size.x;
-        y = bounds.size.y;
-        z = bounds.size.z;
+        plane.transform.localScale += new Vector3(dungeonSize, 0, dungeonSize);
         hasPlane = true;
     }
 
@@ -52,5 +56,13 @@ public class DungeonManager : MonoBehaviour
         {
             bounds.Encapsulate(child.gameObject.GetComponent<Collider>().bounds);
         }
+    }
+
+    private void SpawnPlayer()
+    {
+        playerSpawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawnPoint");
+        player = Instantiate<GameObject>(playerPrefab, transform);
+        player.transform.position = playerSpawnPoint.transform.TransformPoint(0, 1, 0);
+        player.transform.SetParent(null);
     }
 }

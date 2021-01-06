@@ -40,7 +40,8 @@ public class ItemManager : SingletonBase<ItemManager>
         if (player == null)
         {
             player = Player.Instance;
-            playerPartSelection = player.gameObject.GetComponent<PartSelection>();
+            if (player != null)
+                playerPartSelection = player.gameObject.GetComponent<PartSelection>();
         }
     }
 
