@@ -346,20 +346,19 @@ MonoBehaviour:
   drawingMode: 1
   outlineLayer: 0
   outlineTargets:
-  - edgeDilateAmount: 5
-    frontEdgeDilateAmount: 5
-    backEdgeDilateAmount: 5
-    Renderer: {fileID: 3303218804016732030, guid: 59a6e3d3c78516e41b1101e20d3e0e25,
-      type: 3}
+  - edgeDilateAmount: 0
+    frontEdgeDilateAmount: 0
+    backEdgeDilateAmount: 0
+    Renderer: {fileID: 137312537272165234}
     SubmeshIndex: 0
     ForceRecalculateBounds: 0
     CutoutDescriptionType: 0
     CutoutThreshold: 0.5
-    CullMode: 2
+    CullMode: 0
     cutoutTextureName: 
     DilateRenderingMode: 0
     cutoutTextureIndex: 0
-  renderStyle: 1
+  renderStyle: 2
   outlineParameters:
     enabled: 1
     color: {r: 1, g: 0.034962937, b: 0.015686274, a: 0}
@@ -370,7 +369,7 @@ MonoBehaviour:
       serializedProperties: []
   backParameters:
     enabled: 1
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    color: {r: 1, g: 0.8455281, b: 0, a: 1}
     dilateShift: 1
     blurShift: 1
     fillPass:
@@ -378,7 +377,7 @@ MonoBehaviour:
       serializedProperties: []
   frontParameters:
     enabled: 1
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    color: {r: 1, g: 0.043188505, b: 0.015686274, a: 0}
     dilateShift: 1
     blurShift: 1
     fillPass:
