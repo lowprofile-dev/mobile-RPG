@@ -16,8 +16,8 @@ public class Player : LivingEntity
     public static Player Instance;
 
     private bool avoidButtonClick = false;
-    [SerializeField] private float _evadePower = 10f;
-    private float _evadeCounter = 0f;
+    [SerializeField] private float _initEvadeTime;
+    private float _evadeTime;
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
     private PLAYERSTATE _cntState;
 
@@ -65,6 +65,7 @@ public class Player : LivingEntity
     float vSpeed;
     bool _isdead = false; public bool isdead { get { return _isdead; } }
 
+    public float dashSpeed; // 대쉬 스피드
     public int currentCombo; // 현재 콤보 수
     private bool _canConnectCombo; public bool canconnectCombo { get { return _canConnectCombo; } } // 콤보를 더 이을 수 있는지
 
@@ -87,7 +88,7 @@ public class Player : LivingEntity
 
         base.Start();
 
-        _evadeCounter = _evadePower;
+        _evadeTime = _initEvadeTime;
         SetUpPlayerCamera();
         moveDir = Vector3.forward;
     }
@@ -432,6 +433,7 @@ public class Player : LivingEntity
     private void EvadeEnter()
     {
         UseStemina(2);
+        myAnimator.SetTrigger("Avoid");
     }
 
     public void EvadeUpdate()
@@ -445,10 +447,10 @@ public class Player : LivingEntity
     /// </summary>
     private void PlayerAvoidance()
     {
-        _evadeCounter -= _evadePower * Time.deltaTime;
+        _evadeTime -= Time.deltaTime;
 
-        if (direction == Vector3.zero) characterController.Move(moveDir * speed * Time.deltaTime * _evadeCounter);
-        else characterController.Move(moveDir * speed * Time.deltaTime * _evadeCounter);
+        if (direction == Vector3.zero) characterController.Move(moveDir * dashSpeed * Time.deltaTime * (_evadeTime / _initEvadeTime));
+        else characterController.Move(moveDir * dashSpeed * Time.deltaTime * (_evadeTime / _initEvadeTime));
     }
 
     /// <summary>
@@ -456,12 +458,13 @@ public class Player : LivingEntity
     /// </summary>
     private void CheckEvadeOver()
     {
-        if (_evadeCounter <= 0f) ChangeState(PLAYERSTATE.PS_IDLE);
+        if (_evadeTime <= 0f) ChangeState(PLAYERSTATE.PS_IDLE);
     }
 
     public void EvadeExit()
     {
-        _evadeCounter = _evadePower;
+        _evadeTime = _initEvadeTime;
+        myAnimator.ResetTrigger("Avoid");
     }
 
 
