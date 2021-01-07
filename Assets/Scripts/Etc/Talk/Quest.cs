@@ -50,7 +50,9 @@ public class Quest
         canStart = false;
         isOn = true;
 
+        _talkManager.currentQuests.Add(this);
         TalkManager.Instance.CheckQuestIsOn();
+        QuestDropdown.Instance.ViewDropdown();
     }
 
     /// <summary>
@@ -81,6 +83,7 @@ public class Quest
         }
 
         TalkManager.Instance.CheckQuestIsOn();
+        QuestDropdown.Instance.ViewDropdown();
     }
 
     /// <summary>
