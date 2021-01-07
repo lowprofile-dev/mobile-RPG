@@ -45,7 +45,7 @@ public class DragonAction : MonsterAction
 
         if (canPanic)
         {
-            _monster.MyAnimator.SetTrigger("Panic");
+            _monster.myAnimator.SetTrigger("Panic");
         }
     }
 
@@ -87,14 +87,14 @@ public class DragonAction : MonsterAction
 
     protected override void SetAttackAnimation()
     {
-        if(_attackType == 0) _monster.MyAnimator.SetTrigger("Attack");
-        else if(_attackType == 1) _monster.MyAnimator.SetTrigger("AttackSpecial");
+        if(_attackType == 0) _monster.myAnimator.SetTrigger("Attack");
+        else if(_attackType == 1) _monster.myAnimator.SetTrigger("AttackSpecial");
     }
 
     protected override void ResetAttackAnimation()
     {
-        if(_attackType == 0) _monster.MyAnimator.ResetTrigger("Attack");
-        else if(_attackType == 1) _monster.MyAnimator.ResetTrigger("AttackSpecial");
+        if(_attackType == 0) _monster.myAnimator.ResetTrigger("Attack");
+        else if(_attackType == 1) _monster.myAnimator.ResetTrigger("AttackSpecial");
     }
 
     /////////// 캐스팅 관련 /////////////

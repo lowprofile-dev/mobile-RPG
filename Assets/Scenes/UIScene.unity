@@ -414,6 +414,10 @@ MonoBehaviour:
   _cardTestBtn: {fileID: 1022220044}
   _talkTestBtn: {fileID: 582039028}
   _atkBtn: {fileID: 1965028239}
+  _invincibleBtn: {fileID: 476324305}
+  _skillAButton: {fileID: 1195413662}
+  _skillBButton: {fileID: 887834982}
+  _skillCButton: {fileID: 1660525766}
 --- !u!224 &88239065 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1402086289727141978, guid: 608ae051d8479bd4a8bf8b3ea11d156c,
@@ -1969,18 +1973,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 420843313}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 887834983}
-        m_MethodName: StartCoolTime
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &887834983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2382,7 +2375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2561,18 +2554,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2126438070}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1195413663}
-        m_MethodName: StartCoolTime
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1195413663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5260,18 +5242,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 242227491}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1660525767}
-        m_MethodName: StartCoolTime
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1660525767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6532,7 +6503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

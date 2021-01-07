@@ -41,7 +41,7 @@ public class GoblinAction : MonsterAction
     protected override void StirrStart()
     {
         _navMeshAgent.isStopped = true;
-        _monster.MyAnimator.SetTrigger("Sleep");
+        _monster.myAnimator.SetTrigger("Sleep");
     }
 
     protected override void StirrUpdate()
@@ -55,7 +55,7 @@ public class GoblinAction : MonsterAction
     protected override void StirrExit()
     {
         _navMeshAgent.isStopped = false;
-        _monster.MyAnimator.ResetTrigger("Sleep");
+        _monster.myAnimator.ResetTrigger("Sleep");
     }
 
     /////////// 탐색 관련 /////////////
@@ -97,14 +97,14 @@ public class GoblinAction : MonsterAction
 
     protected override void SetAttackAnimation()
     {
-        if (_attackType == 0) _monster.MyAnimator.SetTrigger("Attack");
-        else if (_attackType == 1) _monster.MyAnimator.SetTrigger("AttackSpecial");
+        if (_attackType == 0) _monster.myAnimator.SetTrigger("Attack");
+        else if (_attackType == 1) _monster.myAnimator.SetTrigger("AttackSpecial");
     }
 
     protected override void ResetAttackAnimation()
     {
-        if (_attackType == 0) _monster.MyAnimator.ResetTrigger("Attack");
-        else if (_attackType == 1) _monster.MyAnimator.ResetTrigger("AttackSpecial");
+        if (_attackType == 0) _monster.myAnimator.ResetTrigger("Attack");
+        else if (_attackType == 1) _monster.myAnimator.ResetTrigger("AttackSpecial");
     }
 
     /////////// 캐스팅 관련 /////////////
@@ -113,11 +113,11 @@ public class GoblinAction : MonsterAction
 
     protected override void SetHitAnimation(bool isDeath)
     {
-        if (isDeath) _monster.MyAnimator.ResetTrigger("Hit");
+        if (isDeath) _monster.myAnimator.ResetTrigger("Hit");
         else
         {
             _isDamaged = true;
-            _monster.MyAnimator.SetTrigger("Hit");
+            _monster.myAnimator.SetTrigger("Hit");
             if (_currentState == STATE.STATE_IDLE || _currentState == STATE.STATE_STIRR) ChangeState(STATE.STATE_TRACE);
         }
     }

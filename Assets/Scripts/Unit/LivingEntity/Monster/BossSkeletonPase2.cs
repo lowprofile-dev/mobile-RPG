@@ -51,7 +51,7 @@ public class BossSkeletonPase2 : MonsterAction
     protected void ComboAttack()
     {
         //애니메이터 호출용
-        _monster.MyAnimator.SetTrigger("Combo1");
+        _monster.myAnimator.SetTrigger("Combo1");
         currentAnimation = "Combo1";
 
     }
@@ -61,19 +61,19 @@ public class BossSkeletonPase2 : MonsterAction
         switch (attackType)
         {
             case AttackType.JUMP_ATTACK:
-                _monster.MyAnimator.SetTrigger("Attack0");
+                _monster.myAnimator.SetTrigger("Attack0");
                 currentAnimation = "Attack0";
                 break;
             case AttackType.SHOCK_WAVE:
-                _monster.MyAnimator.SetTrigger("Attack1");
+                _monster.myAnimator.SetTrigger("Attack1");
                 currentAnimation = "Attack1";
                 break;
             case AttackType.SHOCK_WAVE2:
-                _monster.MyAnimator.SetTrigger("Attack2");
+                _monster.myAnimator.SetTrigger("Attack2");
                 currentAnimation = "Attack2";
                 break;
             case AttackType.DASH_ATTACK:
-                _monster.MyAnimator.SetTrigger("Combo1");
+                _monster.myAnimator.SetTrigger("Combo1");
                 currentAnimation = "Combo1";
                 break;
             case AttackType.LEFT_ATTACK:
@@ -167,7 +167,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void AttackExit()
     {
-        _monster.MyAnimator.ResetTrigger(currentAnimation);
+        _monster.myAnimator.ResetTrigger(currentAnimation);
         //if (_attackCoroutine != null)
         //{
         //    StopCoroutine(_attackCoroutine);
@@ -198,7 +198,7 @@ public class BossSkeletonPase2 : MonsterAction
             yield return null;
 
             AttackAction();
-            _monster.MyAnimator.SetTrigger("Walk");
+            _monster.myAnimator.SetTrigger("Walk");
             //StartCoroutine(DoAttackAction());
 
             yield return new WaitForSeconds(_attackSpeed);
@@ -208,7 +208,7 @@ public class BossSkeletonPase2 : MonsterAction
 
             // 사운드 재생
 
-            yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
             //_monster.MyAnimator.ResetTrigger(currentAnimation); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 
@@ -252,7 +252,7 @@ public class BossSkeletonPase2 : MonsterAction
         _navMeshAgent.acceleration = 300f;
         transform.LookAt(_target.transform.position);
 
-        _monster.MyAnimator.SetTrigger("Attack3");
+        _monster.myAnimator.SetTrigger("Attack3");
         currentAnimation = "Attack3";
 
         GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
@@ -300,7 +300,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void TraceStart()
     {
-        _monster.MyAnimator.SetTrigger("Walk");
+        _monster.myAnimator.SetTrigger("Walk");
         _navMeshAgent.speed = _moveSpeed * 1.5f;
         _navMeshAgent.isStopped = false;
     }

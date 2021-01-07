@@ -54,7 +54,7 @@ public class Monster : LivingEntity
     protected override void Start()
     {
         base.Start();
-        MyAnimator = GetComponent<Animator>();
+        myAnimator = GetComponent<Animator>();
         _MAXspeed = speed;
         _DebuffManager = new DebuffManager();
     }
@@ -68,7 +68,7 @@ public class Monster : LivingEntity
     protected override void InitObject()
     {
         base.InitObject();
-        MyAnimator = GetComponent<Animator>();
+        myAnimator = GetComponent<Animator>();
 
         _hp = _initHp;
         _monsterAction = GetComponent<MonsterAction>();
