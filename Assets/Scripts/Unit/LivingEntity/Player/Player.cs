@@ -1,8 +1,10 @@
-﻿using SimpleInputNamespace;
+﻿using Cinemachine;
+using SimpleInputNamespace;
 using UnityEngine;
-using Cinemachine;
-using System;
 
+/// <summary>
+/// 플레이어를 관리하는 클래스
+/// </summary>
 public class Player : LivingEntity
 {
     public static Player Instance;
@@ -52,6 +54,9 @@ public class Player : LivingEntity
     float vSpeed;
     bool _isdead = false; public bool isdead { get { return _isdead; } }
 
+    public int currentCombo; // 현재 콤보 수
+    private bool _canConnectCombo; public bool canconnectCombo { get { return _canConnectCombo; } } // 콤보를 더 이을 수 있는지
+
     PartSelection selection;
     FaceCam faceCam;
 
@@ -68,58 +73,32 @@ public class Player : LivingEntity
     {
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
-        base.Start();
-        avoidCounter = avoid_power;
-        faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
-        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
-        SetUpPlayerCamera();
-    }
 
-    private void SetUpPlayerCamera()
-    {
-        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
-        playerFollowCam = GameObject.FindGameObjectWithTag("PlayerFollowCamera");
-        playerFreeLook = playerFollowCam.GetComponent<CinemachineFreeLook>();
-        playerFreeLook.Follow = transform;
-        playerFreeLook.LookAt = transform;
-        minimapFreeLook = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<CinemachineFreeLook>();
-        minimapFreeLook.Follow = transform;
-        minimapFreeLook.LookAt = transform;
+        base.Start();
+
+        avoidCounter = avoid_power;
+        SetUpPlayerCamera();
     }
 
     protected override void Update()
     {
-
+        Debug.Log(_canConnectCombo);
         if (isdead)
         {
-            //죽었을 때
+            // 죽었을 때
         }
+
         else
         {
-            if (Input.GetKeyDown(KeyCode.Y))
-            {
-                weaponManager.SetWeapon("WAND");
-                weaponChanged = true;
-            }
-            else weaponChanged = false;
+            ChangeWeaponTest();
+            ChangeMasteryLevelTest();
 
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                weaponManager.GetWeapon().masteryLevel++;
-                weaponManager.GetWeapon().SkillRelease();
-            }
-
-            if (joystick == null)
-            {
-                joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
-            }
+            if (joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
 
             if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
             {
                 PlayerMove();
-
                 PlayerSkillCheck();
-
                 PlayerHpRecovery();
                 PlayerMpRecovery();
 
@@ -141,29 +120,110 @@ public class Player : LivingEntity
         }
     }
 
-    private void PlayerHpRecovery()
+
+    ///////////////// 입력 관련 //////////////////
+
+    /// <summary>
+    /// 조이스틱의 입력을 받아 변환한다.
+    /// </summary>
+    private void GetJoystickInput()
     {
-        if (Hp <= statusManager.finalStatus.maxHp)
+        horizontal = joystick.GetX_axis().value;
+        vertical = joystick.GetY_axis().value;
+
+        direction = new Vector3(horizontal, 0, vertical).normalized;
+    }
+
+    public bool GetMove()
+    {
+        return joystick.getHold();
+    }
+
+
+
+    ///////////////// 테스트 관련 //////////////////
+
+    /// <summary>
+    /// 마스터리 레벨을 올리는 테스트
+    /// </summary>
+    private void ChangeMasteryLevelTest()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            if(Hp >= statusManager.finalStatus.maxHp)
-            {
-                _hp = statusManager.finalStatus.maxHp;
-            }
-            else _hp += statusManager.finalStatus.hpRecovery * Time.deltaTime;
+            weaponManager.GetWeapon().masteryLevel++;
+            weaponManager.GetWeapon().SkillRelease();
         }
     }
 
-    private void PlayerMpRecovery()
+    /// <summary>
+    /// 무기 테스트를 위한 변경 함수
+    /// </summary>
+    private void ChangeWeaponTest()
     {
-        if (Mp <= statusManager.finalStatus.maxStamina)
+        if (Input.GetKeyDown(KeyCode.Y))
         {
-            if(Mp >= statusManager.finalStatus.maxStamina)
-            {
-                _mp = statusManager.finalStatus.maxStamina;
-            }
-            else _mp += statusManager.finalStatus.staminaRecovery * Time.deltaTime;
+            weaponManager.SetWeapon("WAND");
+            weaponChanged = true;
         }
+        else weaponChanged = false;
     }
+
+
+
+    ///////////////// 카메라 관련 //////////////////
+
+    /// <summary>
+    /// 플레이어와 관련된 카메라들을 세팅한다.
+    /// </summary>
+    private void SetUpPlayerCamera()
+    {
+        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
+        SetPlayerFaceCam();
+        SetPlayerFollowCam();
+        SetMinimapFreeLook();
+    }
+
+    /// <summary>
+    /// 플레이어 얼굴을 비추는 카메라를 세팅한다.
+    /// </summary>
+    private void SetPlayerFaceCam()
+    {
+        faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
+        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
+    }
+
+    /// <summary>
+    /// 플레이어를 추적하는 카메라를 세팅한다.
+    /// </summary>
+    private void SetPlayerFollowCam()
+    {
+        playerFollowCam = GameObject.FindGameObjectWithTag("PlayerFollowCamera");
+        playerFreeLook = playerFollowCam.GetComponent<CinemachineFreeLook>();
+        playerFreeLook.Follow = transform;
+        playerFreeLook.LookAt = transform;
+    }
+
+    /// <summary>
+    /// 미니맵 카메라를 세팅한다.
+    /// </summary>
+    private void SetMinimapFreeLook()
+    {
+        minimapFreeLook = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<CinemachineFreeLook>();
+        minimapFreeLook.Follow = transform;
+        minimapFreeLook.LookAt = transform;
+    }
+
+    /// <summary>
+    /// FaceCam을 갱신한다.
+    /// </summary>
+    public void ChangeFaceCamera()
+    {
+        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
+    }
+
+
+
+    ///////////////// 공격 관련 //////////////////
 
     private void PlayerSkillCheck()
     {
@@ -175,7 +235,8 @@ public class Player : LivingEntity
                 SkillA_ButtonClick = false;
             }
         }
-        if (SkillB_ButtonClick )
+
+        if (SkillB_ButtonClick)
         {
             skillB_Counter += Time.deltaTime;
             if (skillB_Counter >= weaponManager.GetWeapon().skillBCool)
@@ -183,7 +244,8 @@ public class Player : LivingEntity
                 SkillB_ButtonClick = false;
             }
         }
-        if (SkillC_ButtonClick )
+
+        if (SkillC_ButtonClick)
         {
             skillC_Counter += Time.deltaTime;
             if (skillC_Counter >= weaponManager.GetWeapon().skillCCool)
@@ -193,49 +255,59 @@ public class Player : LivingEntity
         }
     }
 
-    public void PlayerMove()
+    public void DoAttack()
     {
-        if (joystick == null)
+        // 공격 생성
+
+        switch(currentCombo)
         {
-            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+            case 1:
+                weaponManager.GetWeapon().Attack();
+                break;
+            case 2:
+                weaponManager.GetWeapon().Attack();
+                break;
+            case 3:
+                weaponManager.GetWeapon().Attack();
+                break;
         }
 
-        horizontal = joystick.GetX_axis().value;
-        vertical = joystick.GetY_axis().value;
-
-        direction = new Vector3(horizontal, 0, vertical).normalized;
-
-        if (direction.magnitude >= 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-            moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            characterController.Move(moveDir.normalized * speed * Time.deltaTime);
-        }
-
-        if (characterController.isGrounded)
-        {
-            vSpeed = 0;
-        }
-        vSpeed = vSpeed - Time.deltaTime * (9.8f);
-        characterController.Move(Vector3.up * vSpeed * Time.deltaTime);
-        MyStateMachine.UpdateState();
     }
 
-    public void CameraChange()
+    /// <summary>
+    /// 콤보를 잇지 못하고 끝난 케이스
+    /// </summary>
+    public void EndAttack()
     {
-        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
+        /*
+        _canConnectCombo = false;
+        currentCombo = 0;
+
+        MyAnimator.ResetTrigger("Attack01");
+        MyAnimator.ResetTrigger("Attack02");
+        MyAnimator.ResetTrigger("Attack03");
+        */
     }
-    public bool GetMove()
+
+    /// <summary>
+    /// 다음 콤보를 이을 수 있도록 조건을 ON한다.
+    /// </summary>
+    public void UnlockNextCombo()
     {
-        return joystick.getHold();
+        _canConnectCombo = true;
+    }
+
+    /// <summary>
+    /// 다음 콤보를 이을 수 없는 상태. 애니메이션을 기다려야 한다.
+    /// </summary>
+    public void EndNextCombo()
+    {
+        _canConnectCombo = false;
     }
 
     public void PlayerSkillA()
     {
-        if (SkillA_ButtonClick == false )
+        if (SkillA_ButtonClick == false)
         {
             MyStateMachine.SetState("SKILL_A");
             SkillA_ButtonClick = true;
@@ -244,9 +316,10 @@ public class Player : LivingEntity
             //skill.transform.position = skillPoint.position;
             //skill.transform.rotation = skillPoint.rotation;
             weaponManager.GetWeapon().SkillA();
-            
+            EndAttack();
         }
     }
+
     public void PlayerSkillB()
     {
         if (SkillB_ButtonClick == false && weaponManager.GetWeapon().CheckSkillB())
@@ -257,8 +330,10 @@ public class Player : LivingEntity
             GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillB());
             skill.transform.position = skillPoint.position;
             skill.transform.rotation = skillPoint.rotation;
+            EndAttack();
         }
     }
+
     public void PlayerSkillC()
     {
         if (SkillC_ButtonClick == false && weaponManager.GetWeapon().CheckSkillC())
@@ -269,6 +344,7 @@ public class Player : LivingEntity
             GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillC());
             skill.transform.position = skillPoint.position;
             skill.transform.rotation = skillPoint.rotation;
+            EndAttack();
         }
     }
 
@@ -280,27 +356,54 @@ public class Player : LivingEntity
     public void SetAttackButton(bool attackbutton)
     {
         AttackButtonClick = attackbutton;
-        if (AttackButtonClick == true)
-        {
-            Debug.Log("Attack");
-            //GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().Attack());
-            //skill.transform.position = skillPoint.position;
-            //skill.transform.rotation = skillPoint.rotation;
-            weaponManager.GetWeapon().Attack();
+    }
 
+    public void ToNextCombo()
+    {
+        currentCombo++;
+        if (currentCombo >= 4) currentCombo = 1;
+    }
+
+
+    public bool CheckCanAttack()
+    {
+        return AttackButtonClick == true;
+    }
+
+    public void PlayerMove()
+    {
+        GetJoystickInput();
+
+        if (direction.magnitude >= 0.1f) // 충분한 변화가 이뤄졌다면 이동
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            characterController.Move(moveDir.normalized * speed * Time.deltaTime);
         }
+
+        if (characterController.isGrounded)
+        {
+            vSpeed = 0;
+        }
+
+        vSpeed = vSpeed - Time.deltaTime * 9.8f;
+        characterController.Move(Vector3.up * vSpeed * Time.deltaTime);
+        MyStateMachine.UpdateState();
     }
 
     public void PlayerAvoidance()
     {
         if (avoidButtonClick)
         {
-            avoidCounter -= avoid_power*Time.deltaTime;
+            avoidCounter -= avoid_power * Time.deltaTime;
             if (avoidCounter <= 0f)
             {
                 avoidButtonClick = false;
                 avoidCounter = avoid_power;
             }
+
             if (direction == Vector3.zero)
             {
                 characterController.Move(moveDir * speed * Time.deltaTime * avoidCounter);
@@ -314,12 +417,13 @@ public class Player : LivingEntity
         {
             avoidCounter = avoid_power;
         }
-        
     }
+
     public bool GetAvoidance()
     {
         return avoidButtonClick;
     }
+
     public void SetAvoidButton(bool avoidbutton)
     {
         avoidButtonClick = avoidbutton;
@@ -334,7 +438,7 @@ public class Player : LivingEntity
         selection.Start();
         selection.Init();
 
-        MyAnimator = _playerAvatar.GetComponent<Animator>();
+        MyAnimator = GetComponent<Animator>();
 
         MyStateMachine = new StateMachine();
         State Idle = new StateIdle_TestPlayer(this);
@@ -381,6 +485,36 @@ public class Player : LivingEntity
         if (Input.GetMouseButtonDown(0))
         {
             CheckInteractObject();
+        }
+    }
+
+    /// <summary>
+    /// 주기적으로 HP를 회복한다.
+    /// </summary>
+    private void PlayerHpRecovery()
+    {
+        if (Hp <= statusManager.finalStatus.maxHp)
+        {
+            if (Hp >= statusManager.finalStatus.maxHp)
+            {
+                _hp = statusManager.finalStatus.maxHp;
+            }
+            else _hp += statusManager.finalStatus.hpRecovery * Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// 주기적으로 MP를 회복한다.
+    /// </summary>
+    private void PlayerMpRecovery()
+    {
+        if (Mp <= statusManager.finalStatus.maxStamina)
+        {
+            if (Mp >= statusManager.finalStatus.maxStamina)
+            {
+                _mp = statusManager.finalStatus.maxStamina;
+            }
+            else _mp += statusManager.finalStatus.staminaRecovery * Time.deltaTime;
         }
     }
 

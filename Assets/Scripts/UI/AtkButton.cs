@@ -32,6 +32,7 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 atkcheck = false;
             }
         }
+
         else
         {
             counter += Time.deltaTime;
@@ -55,5 +56,4 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         isBtnDown = false;
         Player.Instance.SetAttackButton(isBtnDown);
     }
-
 }
