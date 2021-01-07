@@ -48,12 +48,6 @@ public class PlayerAttack: MonoBehaviour
             if (_attackedTarget.Count <= targetNumber)
             {
                 _attackedTarget.Add(other.gameObject);
-                if (_useFixedDmg) other.GetComponent<LivingEntity>().Damaged(_damage);
-                else
-                {
-                    if (_isParentPlayer) other.GetComponent<LivingEntity>().Damaged((_useMeleeDmg ? StatusManager.Instance.playerStatus.attackDamage : StatusManager.Instance.playerStatus.magicDamage) * _damage);
-                    else other.GetComponent<LivingEntity>().Damaged(_baseParent.GetComponent<Monster>().attackDamage * _damage);
-                }
             }
         }
     }
@@ -84,7 +78,6 @@ public class PlayerAttack: MonoBehaviour
         _collider.enabled = true;
         yield return new WaitForSeconds(time);
         _collider.enabled = false;
-
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }
