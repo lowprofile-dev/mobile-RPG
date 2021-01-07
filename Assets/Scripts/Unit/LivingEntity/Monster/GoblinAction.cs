@@ -23,7 +23,6 @@ public class GoblinAction : MonsterAction
     protected override void UpdateMonster()
     {
         base.UpdateMonster();
-        Debug.Log(_isDamaged);
     }
     protected override void IdleUpdate()
     {
