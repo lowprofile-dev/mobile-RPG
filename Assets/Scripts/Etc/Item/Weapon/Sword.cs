@@ -104,7 +104,7 @@ public class Sword : Weapon
 
         PlayerAttack atk = obj.GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.gameObject);
-        atk.PlayAttackTimer(1);
+        atk.PlayAttackTimer(0.02f);
 
         return null;
         

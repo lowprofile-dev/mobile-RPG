@@ -282,6 +282,7 @@ public class Player : LivingEntity
         AttackButtonClick = attackbutton;
         if (AttackButtonClick == true)
         {
+            Debug.Log("Attack");
             //GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().Attack());
             //skill.transform.position = skillPoint.position;
             //skill.transform.rotation = skillPoint.rotation;

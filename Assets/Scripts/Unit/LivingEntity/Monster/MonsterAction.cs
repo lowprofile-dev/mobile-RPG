@@ -61,6 +61,9 @@ public class MonsterAction : MonoBehaviour
     [Header("UI")]
     [SerializeField] protected EnemySliderBar _bar;
 
+    private float attackedTime = 0.1f;
+    private float counter = 0f;
+
     /////////// 기본 ////////////
 
     /// <summary>
@@ -102,6 +105,15 @@ public class MonsterAction : MonoBehaviour
     protected virtual void UpdateMonster()
     {
         TargetDeathCheck();
+        if(_currentState != STATE.STATE_SPAWN && _isImmune)
+        {
+            counter += Time.deltaTime;
+            if(counter >= attackedTime)
+            {
+                counter = 0f;
+                _isImmune = false;
+            }
+        }
     }
 
     private void Update()
@@ -792,10 +804,10 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void FadeOutRedHitOutline()
     {
-        Color c = _outlinable.OutlineParameters.Color;
-        _outlinable.OutlineParameters.Color = new Color(c.r, c.g, c.b, 1f);
-        if (_fadeOutRedTween == null) _fadeOutRedTween = _outlinable.OutlineParameters.DOFade(0, 1).SetAutoKill(false);
-        else _fadeOutRedTween.ChangeStartValue(_outlinable.OutlineParameters.Color.a, 1).Restart();
+        Color c = _outlinable.FrontParameters.Color;
+        _outlinable.FrontParameters.Color = new Color(c.r, c.g, c.b, 1f);
+        if (_fadeOutRedTween == null) _fadeOutRedTween = _outlinable.FrontParameters.DOFade(0, 1).SetAutoKill(false);
+        else _fadeOutRedTween.ChangeStartValue(_outlinable.FrontParameters.Color.a, 1).Restart();
     }
 
     /// <summary>
@@ -812,8 +824,10 @@ public class MonsterAction : MonoBehaviour
         {
             if (GetCanDamageCheck())
             {
+                Debug.Log("Player -> " + gameObject.name);
                 Damaged(WeaponManager.Instance.GetWeapon().attackDamage);
                 ProductionDamaged();
+                _isImmune = true;
             }
         }
     }
@@ -859,6 +873,8 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void SetDeathProduction()
     {
+        _outlinable.enabled = false;
+
         transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => { DestroyImmediate(gameObject); });
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
 
