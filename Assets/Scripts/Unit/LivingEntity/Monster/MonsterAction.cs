@@ -23,7 +23,7 @@ public class MonsterAction : MonoBehaviour
     protected Outlinable _outlinable;
 
     // 오브젝트
-    protected GameObject _target;                   // 공격대상        
+    protected GameObject _target; public GameObject Target { get { return _target; } }               // 공격대상        
     protected GameObject _spawnEffect;              // 스폰용으로 사용된 이펙트
 
     // 기타 변수
@@ -611,7 +611,7 @@ public class MonsterAction : MonoBehaviour
     {
         int toCastRandomValue = UnityEngine.Random.Range(0, 100);
 
-        if (toCastRandomValue < _castChangePercnt)
+        if (toCastRandomValue <= _castChangePercnt)
         {
             ChangeState(STATE.STATE_CAST);
             return true;

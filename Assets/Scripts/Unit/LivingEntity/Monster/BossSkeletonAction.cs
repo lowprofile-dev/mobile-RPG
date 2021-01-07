@@ -23,22 +23,20 @@ public class BossSkeletonAction : MonsterAction
     {
         //base.DoAttack();
         
-        if (_attackType == 0 || _attackType == 1)
-        {
-            GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-            obj.transform.SetParent(this.transform);
-            obj.transform.position = _baseMeleeAttackPos.position;
+        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+        obj.transform.SetParent(this.transform);
+        obj.transform.position = _baseMeleeAttackPos.position;
 
-            Attack atk = obj.GetComponent<Attack>();
-            atk.SetParent(gameObject);
-            atk.PlayAttackTimer(1);
-        }
-
+        Attack atk = obj.GetComponent<Attack>();
+        atk.SetParent(gameObject);
+        atk.PlayAttackTimer(1);
 
     }
     protected override void SetAttackAnimation()
     {
         transform.LookAt(_target.transform);
+        _navMeshAgent.isStopped = true;
+
         if (_attackType == 0)
         {
             _monster.MyAnimator.SetTrigger("Attack0");
@@ -114,12 +112,12 @@ public class BossSkeletonAction : MonsterAction
         pase2.transform.position = transform.localPosition;
         pase2.transform.LookAt(_target.transform.position);
 
-        Debug.Log(SceneManager.GetActiveScene().name);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 
     protected override void AttackExit()
     {
+        _navMeshAgent.isStopped = false;
         _monster.MyAnimator.ResetTrigger(currentAnimation);
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
