@@ -32,6 +32,7 @@ public class FaceCam : MonoBehaviour
         followAvatar.transform.position = new Vector3(950, 1000, -15);
         followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         followAvatar.tag = "FaceCamAvata";
+        followAvatar.GetComponent<Animator>().enabled = true;
         faceCam.m_Follow = followAvatar.transform;
         faceCam.m_LookAt = followAvatar.transform;
 
@@ -39,6 +40,7 @@ public class FaceCam : MonoBehaviour
         bodyAvatar.transform.position = new Vector3(2000, 2000, -15);
         bodyAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         bodyAvatar.tag = "BodyCamAvata";
+        bodyAvatar.GetComponent<Animator>().enabled = true;
         bodycam.m_Follow = bodyAvatar.transform;
         bodycam.m_LookAt = bodyAvatar.transform;
         

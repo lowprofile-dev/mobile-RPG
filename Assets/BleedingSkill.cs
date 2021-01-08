@@ -5,19 +5,19 @@ using UnityEngine;
 public class BleedingSkill : Debuffer
 {
    
-    public override void ApplyDebuff(GameObject monster)
+    public override void ApplyDebuff(GameObject unit)
     {
         float roll = Random.Range(0, 100);
         if (roll <= Proc)
         {
-            monster.GetComponent<MonsterAction>().monster.DebuffManager.AddDebuff(GetDebuff(monster.GetComponent<MonsterAction>()));      
+            unit.GetComponent<LivingEntity>().DebuffManager.AddDebuff(GetDebuff(unit.GetComponent<LivingEntity>()));      
         }
     }
 
-    public override Debuff GetDebuff(MonsterAction monster)
+    public override Debuff GetDebuff(LivingEntity unit)
     {
         //웨폰마스터리에서 디버프 능력치 구하기?
-        return new BleedingDebuff(3, 1, 3, monster);
+        return new BleedingDebuff(3, 1, 3, unit);
     }
 
     private void OnTriggerEnter(Collider other)

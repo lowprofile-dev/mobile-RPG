@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class PlayerAttack: MonoBehaviour
     [SerializeField] protected Collider _collider;
     [SerializeField] protected GameObject _particleEffectPrefab;
     [SerializeField] private int targetNumber;
+    [SerializeField] private GameObject _particlePosition;
     protected HashSet<GameObject> _attackedTarget;
     protected GameObject _baseParent;
 
@@ -22,23 +24,15 @@ public class PlayerAttack: MonoBehaviour
         _attackedTarget = new HashSet<GameObject>();
     }
 
-    protected virtual void OnEnable()
+    public virtual void OnLoad()
     {
         GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
-        Effect.transform.position = Player.Instance.skillPoint.position;
-        Effect.transform.rotation = Quaternion.LookRotation(Player.Instance.transform.forward);
-        if(Player.Instance.currentCombo == 1)
-        {
-            Effect.transform.Rotate(new Vector3(0f, 0f, 90f));
-        }
-        else if(Player.Instance.currentCombo == 2)
-        {
-            Effect.transform.Rotate(new Vector3(0f, 0f, 180));
-        }
-        else
-        {
-            Effect.transform.Rotate(new Vector3(0f, 0f, 270f));
-        }
+
+        Effect.transform.rotation = Quaternion.identity;
+        Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
+        Effect.transform.position = _particlePosition.transform.position;
+
+        SetLocalRotation(Effect);
 
         if (_attackedTarget != null)
         {
@@ -46,9 +40,16 @@ public class PlayerAttack: MonoBehaviour
         }
     }
 
+    protected virtual void SetLocalRotation(GameObject Effect)
+    {
+
+    }
+
     public void SetParent(GameObject parent)
     {
         _baseParent = parent;
+        transform.SetParent(parent.transform);
+        transform.localPosition = Vector3.zero;
         if (parent.GetComponent<Player>() != null) _isParentPlayer = true;
         else _isParentPlayer = false;
     }

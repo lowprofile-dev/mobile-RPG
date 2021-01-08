@@ -34,7 +34,9 @@ public class Sword : Weapon
         skillBCool = 0;
         skillCCool = 0;
 
-        AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Sword Attack");
+        AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 1");
+        AttackEffect2 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 2");
+        AttackEffect3 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 3");
         SkillAEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Sword Skill A");
         SkillBEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Sword Skill B");
         SkillCEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Sword Skill C");
@@ -88,6 +90,27 @@ public class Sword : Weapon
 
         return SkillCEffect;
     }
+
+    public override GameObject Attack3()
+    {
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect3).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
+
+        return null;
+    }
+
+    public override GameObject Attack2()
+    {
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect2).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
+
+        return null;
+    }
+
     public override GameObject Attack()
     {
         //Player.Instance.skillPoint.position = Player.Instance.firePoint.position + new Vector3(0f, 0f, 0f);
@@ -99,14 +122,11 @@ public class Sword : Weapon
         //hitRigid += (float)(masteryLevel * 0.02);
         //return AttackEffect;
 
-        GameObject obj = ObjectPoolManager.Instance.GetObject(AttackEffect);
-        obj.transform.SetParent(Player.Instance.transform);
-        obj.transform.position = Player.Instance.skillPoint.position;
-
-        PlayerAttack atk = obj.GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.gameObject);
-        atk.PlayAttackTimer(0.02f);
-
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
+        
         return null;
         
     }

@@ -139,7 +139,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 1
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -162,13 +162,14 @@ MonoBehaviour:
   _stemina: 0
   _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
     type: 3}
+  _speed: 6
+  _MAXspeed: 6
   myAnimator: {fileID: 0}
   _initEvadeTime: 0.3
   _playerAvatar: {fileID: 3920493311905665660}
   firePoint: {fileID: 1470817335}
   skillPoint: {fileID: 362263809}
   characterController: {fileID: 3921490016967684025}
-  speed: 6
   turnSmoothTime: 0.1
   cam: {fileID: 0}
   playerFollowCam: {fileID: 0}
@@ -179,6 +180,7 @@ MonoBehaviour:
   joystick: {fileID: 0}
   dashSpeed: 100
   currentCombo: 0
+  _trailRenderer: {fileID: 0}
   weaponManager: {fileID: 0}
 --- !u!114 &3921490016967684023
 MonoBehaviour:

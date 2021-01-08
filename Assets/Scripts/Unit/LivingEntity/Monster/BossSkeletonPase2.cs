@@ -17,7 +17,7 @@ public class BossSkeletonPase2 : MonsterAction
     private GameObject currentTarget;
 
     string currentAnimation;
-
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -38,16 +38,15 @@ public class BossSkeletonPase2 : MonsterAction
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(1);
 
-        
         StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
-
+        
         _navMeshAgent.acceleration = 8f;
         currentTarget = _target;
         CameraManager.Instance.ShakeCamera(3, 1, 0.5f);
         currentTarget = _target;
-        ChangeState(STATE.STATE_TRACE);
+        ChangeState(MONSTER_STATE.STATE_TRACE);
 
     }
     protected void ComboAttack()
@@ -87,7 +86,7 @@ public class BossSkeletonPase2 : MonsterAction
     }
     protected override void SpawnStart()
     {
-        ChangeState(STATE.STATE_IDLE);
+        ChangeState(MONSTER_STATE.STATE_IDLE);
     }
 
     protected override void SpawnExit()
@@ -97,7 +96,7 @@ public class BossSkeletonPase2 : MonsterAction
     private void AttackCorotineInit()
     {
         _attackCoroutine = null;
-        ChangeState(STATE.STATE_TRACE);
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     protected override void CastStart()
@@ -143,7 +142,7 @@ public class BossSkeletonPase2 : MonsterAction
         {
             _cntCastTime = 0;
             _readyCast = true;
-            ChangeState(STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
 
     }
@@ -160,8 +159,8 @@ public class BossSkeletonPase2 : MonsterAction
 
     public override void InitState()
     {
-        _currentState = STATE.STATE_NULL;
-        ChangeState(STATE.STATE_IDLE);
+        _currentState = MONSTER_STATE.STATE_NULL;
+        ChangeState(MONSTER_STATE.STATE_IDLE);
         _navMeshAgent.enabled = true;
         _navMeshAgent.speed = _moveSpeed;
         currentTarget = _target;
@@ -181,12 +180,16 @@ public class BossSkeletonPase2 : MonsterAction
 
     public override void MoveToTarget()
     {
-        
+
+        //if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        //{
+        //    _monster.myAnimator.SetTrigger("Walk");
+        //}
         _navMeshAgent.SetDestination(currentTarget.transform.position);
 
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
-            ChangeState(STATE.STATE_CAST);            
+            ChangeState(MONSTER_STATE.STATE_CAST);            
         }
 
     }
@@ -199,29 +202,27 @@ public class BossSkeletonPase2 : MonsterAction
             yield return null;
 
             AttackAction();
-            //StartCoroutine(DoAttackAction());
-
+            
             yield return new WaitForSeconds(_attackSpeed);
             SetAttackAnimation();
-            //_navMeshAgent.speed = _moveSpeed;
-            //_navMeshAgent.stoppingDistance = 2f;
-
+            
             // 사운드 재생
 
             yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-            //_monster.myAnimator.ResetTrigger(currentAnimation); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
-
             _readyCast = false;
             //if (!_readyCast && ToCast()) break;
-            ChangeState(STATE.STATE_TRACE);
+            ChangeState(MONSTER_STATE.STATE_TRACE);
 
             break;
             
         }
     }
+
     private void AttackAction()
     {
+        _monster.myAnimator.SetTrigger("Walk");
+
         switch (attackType)
         {
             case AttackType.JUMP_ATTACK:
@@ -245,8 +246,6 @@ public class BossSkeletonPase2 : MonsterAction
 
     private IEnumerator DashAction()
     {
-        _monster.myAnimator.SetTrigger("Walk");
-
         _navMeshAgent.stoppingDistance = 0f;
         currentTarget = _target;
         _navMeshAgent.SetDestination(_target.transform.position);
@@ -266,7 +265,7 @@ public class BossSkeletonPase2 : MonsterAction
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(1);
 
-        yield return new WaitForSeconds(_attackSpeed - 0.5f);
+        yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         _navMeshAgent.acceleration = 8f;
         _navMeshAgent.speed = _moveSpeed;
         _navMeshAgent.stoppingDistance = 3f;
@@ -274,7 +273,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     private IEnumerator JumpAction()
     {
-        _monster.myAnimator.SetTrigger("Walk");
+        //range 가 맵밖으로 나갔을경우를 생각해야함.
         _navMeshAgent.acceleration = 10f;
         GameObject range = ObjectPoolManager.Instance.GetObject(JumpSkillRange);
         range.transform.position = _target.transform.position;
@@ -288,8 +287,7 @@ public class BossSkeletonPase2 : MonsterAction
     }
 
     private IEnumerator ShokeAction()
-    {
-        _monster.myAnimator.SetTrigger("Walk");
+    {       
 
         _navMeshAgent.SetDestination(_target.transform.position);
 
@@ -305,6 +303,8 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void TraceStart()
     {
+        StopCoroutine(_attackCoroutine);
+        _monster.myAnimator.ResetTrigger("Walk");
         _monster.myAnimator.SetTrigger("Walk");
         _navMeshAgent.speed = _moveSpeed * 2f;
         _navMeshAgent.isStopped = false;
@@ -318,7 +318,7 @@ public class BossSkeletonPase2 : MonsterAction
             if (_attackCoroutine == null)
                 _attackCoroutine = StartCoroutine(AttackTarget());
             //else
-            //    ChangeState(STATE.STATE_IDLE);
+            //    ChangeState(MONSTER_STATE.STATE_IDLE);
         }
         
     }

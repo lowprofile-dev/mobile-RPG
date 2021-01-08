@@ -2,10 +2,11 @@
 using Cinemachine;
 using SimpleInputNamespace;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum PLAYERSTATE
 {
-    PS_IDLE, PS_MOVE, PS_ATTACK, PS_EVADE, PS_DIE, PS_SKILL, PS_INTERACTING
+    PS_IDLE, PS_MOVE, PS_ATTACK, PS_EVADE, PS_DIE, PS_SKILL, PS_INTERACTING , PS_STUN , PS_RIGID , PS_FALL
 }
 
 /// <summary>
@@ -21,11 +22,6 @@ public class Player : LivingEntity
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
     private PLAYERSTATE _cntState;
 
-    [Header("상태이상")]
-    private bool isStun = false;
-    private bool isFall = false;
-    private bool isRigid = false;
-
     [Header("버튼 입력")]
     private bool AttackButtonClick = false;
     private bool SkillA_ButtonClick = false;
@@ -35,15 +31,13 @@ public class Player : LivingEntity
 
     private float skillA_Counter = 0f;
     private float skillB_Counter = 0f;
-
-
     private float skillC_Counter = 0f;
 
     [SerializeField] public Transform firePoint;
     [SerializeField] public Transform skillPoint;
 
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private float speed = 6f;
+    //[SerializeField] private float speed = 6f;
     [SerializeField] private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     [SerializeField] private Transform cam;
@@ -68,6 +62,7 @@ public class Player : LivingEntity
     public float dashSpeed; // 대쉬 스피드
     public int currentCombo; // 현재 콤보 수
     private bool _canConnectCombo; public bool canconnectCombo { get { return _canConnectCombo; } } // 콤보를 더 이을 수 있는지
+    [SerializeField] private TrailRenderer _trailRenderer;
 
     PartSelection selection;
     FaceCam faceCam;
@@ -75,7 +70,6 @@ public class Player : LivingEntity
     public WeaponManager weaponManager;
     ItemManager itemManager;
     StatusManager statusManager;
-
     private void Awake()
     {
         Instance = this;
@@ -85,7 +79,8 @@ public class Player : LivingEntity
     {
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
-
+        var _player = this;
+        _CCManager = new CCManager(ref _player, "player");
         base.Start();
 
         _evadeTime = _initEvadeTime;
@@ -114,6 +109,8 @@ public class Player : LivingEntity
 
     protected override void Update()
     {
+        _CCManager.Update();
+        SetUpPlayerCamera();
         TestCode();
         UpdateAll();
         UpdateState();
@@ -173,31 +170,24 @@ public class Player : LivingEntity
         switch (_cntState)
         {
             case PLAYERSTATE.PS_IDLE:
-                //Debug.Log("IDLE");
                 IdleUpdate();
                 break;
             case PLAYERSTATE.PS_MOVE:
-                //Debug.Log("MOVE");
                 MoveUpdate();
                 break;
             case PLAYERSTATE.PS_ATTACK:
-                //Debug.Log("ATTACK");
                 AttackUpdate();
                 break;
             case PLAYERSTATE.PS_EVADE:
-                //Debug.Log("EVADE");
                 EvadeUpdate();
                 break;
             case PLAYERSTATE.PS_DIE:
-                //Debug.Log("DIE");
                 DieUpdate();
                 break;
             case PLAYERSTATE.PS_SKILL:
-                //Debug.Log("SKILL");
                 SkillUpdate();
                 break;
             case PLAYERSTATE.PS_INTERACTING:
-                //Debug.Log("INTERACTING");
                 InteractUpdate();
                 break;
         }
@@ -366,10 +356,6 @@ public class Player : LivingEntity
         myAnimator.ResetTrigger("Idle");
     }
 
-
-
-
-
     ///////////////// 이동 관련 //////////////////
 
     private void MoveEnter()
@@ -476,8 +462,8 @@ public class Player : LivingEntity
         switch (currentCombo)
         {
             case 1: weaponManager.GetWeapon().Attack(); break;
-            case 2: weaponManager.GetWeapon().Attack(); break;
-            case 3: weaponManager.GetWeapon().Attack(); break;
+            case 2: weaponManager.GetWeapon().Attack2(); break;
+            case 3: weaponManager.GetWeapon().Attack3(); break;
         }
     }
 
@@ -744,6 +730,8 @@ public class Player : LivingEntity
     {
         _isdead = true;
         myAnimator.SetTrigger("Die");
+        _CCManager.Release();
+        _DebuffManager.Release();
     }
 
     public void DieUpdate()
@@ -837,6 +825,8 @@ public class Player : LivingEntity
     /// </summary>
     private void GetJoystickInput()
     {
+        if (joystick == null)
+            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
         horizontal = joystick.GetX_axis().value;
         vertical = joystick.GetY_axis().value;
 
@@ -943,10 +933,12 @@ public class Player : LivingEntity
     /// </summary>
     private void SetUpPlayerCamera()
     {
-        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
         SetPlayerFaceCam();
         SetPlayerFollowCam();
         SetMinimapFreeLook();
+        if (cam != null)
+            return;
+        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
     }
 
     /// <summary>
@@ -954,6 +946,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetPlayerFaceCam()
     {
+        if (faceCam != null)
+            return;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
     }
@@ -963,6 +957,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetPlayerFollowCam()
     {
+        if (playerFollowCam != null)
+            return;
         playerFollowCam = GameObject.FindGameObjectWithTag("PlayerFollowCamera");
         playerFreeLook = playerFollowCam.GetComponent<CinemachineFreeLook>();
         playerFreeLook.Follow = transform;
@@ -974,6 +970,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetMinimapFreeLook()
     {
+        if (minimapFreeLook != null || SceneManager.GetActiveScene().name != "DungeonScene")
+            return;
         minimapFreeLook = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<CinemachineFreeLook>();
         minimapFreeLook.Follow = transform;
         minimapFreeLook.LookAt = transform;

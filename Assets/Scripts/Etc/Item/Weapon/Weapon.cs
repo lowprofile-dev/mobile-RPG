@@ -36,6 +36,8 @@ public class Weapon
     public GameObject SkillBEffect;
     public GameObject SkillCEffect;
     public GameObject AttackEffect;
+    public GameObject AttackEffect2;
+    public GameObject AttackEffect3;
 
     public Vector3 dir;
     
@@ -61,10 +63,20 @@ public class Weapon
         return SkillCEffect;
 
     }
+
+    public virtual GameObject Attack3()
+    {
+        return AttackEffect3;
+    }
+
+    public virtual GameObject Attack2()
+    {
+        return AttackEffect2;
+    }
+
     public virtual GameObject Attack()
     {
         return AttackEffect;
-
     }
 
     public void OutfitGradeCheck()
