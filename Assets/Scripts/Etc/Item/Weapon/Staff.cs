@@ -16,7 +16,7 @@ public class Staff : Weapon
         skillBRelease = false;
         skillCRelease = false;
 
-        skillALevel = 0;
+        skillALevel = 1;
         skillBLevel = 0;
         skillCLevel = 0;
         attackLevel = 1;
