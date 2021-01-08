@@ -498,6 +498,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 148464490}
   m_CullTransparentMesh: 0
+--- !u!114 &191540174 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7508163542562462670, guid: cea3a0e0ad8e1144b80f702a37a809a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2103415312826035529}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &242227489
 GameObject:
   m_ObjectHideFlags: 0
@@ -1619,6 +1631,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 673081912}
   m_CullTransparentMesh: 0
+--- !u!114 &684118017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1789491245534936085, guid: cea3a0e0ad8e1144b80f702a37a809a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2103415312826035529}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &718228692
 GameObject:
   m_ObjectHideFlags: 0
@@ -7148,6 +7172,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1997511847}
     m_Modifications:
+    - target: {fileID: 1789491245534936085, guid: cea3a0e0ad8e1144b80f702a37a809a4,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3130015463357819843, guid: cea3a0e0ad8e1144b80f702a37a809a4,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200852706350638691, guid: cea3a0e0ad8e1144b80f702a37a809a4,
+        type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 191540174}
     - target: {fileID: 7188074285598163777, guid: cea3a0e0ad8e1144b80f702a37a809a4,
         type: 3}
       propertyPath: _npcFaceCam
@@ -7273,7 +7312,19 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7508163542562462670, guid: cea3a0e0ad8e1144b80f702a37a809a4,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7546648227325042613, guid: cea3a0e0ad8e1144b80f702a37a809a4,
+        type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 684118017}
+    m_RemovedComponents:
+    - {fileID: 2851870377426943759, guid: cea3a0e0ad8e1144b80f702a37a809a4, type: 3}
+    - {fileID: 2811880943213490577, guid: cea3a0e0ad8e1144b80f702a37a809a4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cea3a0e0ad8e1144b80f702a37a809a4, type: 3}
 --- !u!224 &9147372073615502848 stripped
 RectTransform:
