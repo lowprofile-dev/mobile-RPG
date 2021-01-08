@@ -85,11 +85,10 @@ public class Sword : Weapon
 
     public override GameObject SkillC()
     {
-        dir = Player.Instance.firePoint.position - Player.Instance.transform.position;
-        dir = dir.normalized;
-        Player.Instance.skillPoint.position = dir * 8f + Player.Instance.transform.position + new Vector3(0f,-1f,0f);
-        Player.Instance.skillPoint.rotation = Player.Instance.transform.rotation;
-        attackDamage = 2*StatusManager.Instance.finalStatus.attackDamage + (StatusManager.Instance.finalStatus.attackDamage * (float)((masteryLevel / 10) * 0.5f)) + skillCCoef;
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillCEffect).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
 
         return SkillCEffect;
     }

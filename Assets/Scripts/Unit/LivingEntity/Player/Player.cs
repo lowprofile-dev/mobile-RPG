@@ -50,6 +50,9 @@ public class Player : LivingEntity
     [SerializeField] private CinemachineFreeLook playerFreeLook;
     [SerializeField] private CinemachineFreeLook minimapFreeLook;
 
+    [SerializeField] private ParticleSystem trailParticle1;
+    [SerializeField] private ParticleSystem trailParticle2;
+
     public bool weaponChanged = false;
 
     private Vector3 direction;
@@ -101,6 +104,7 @@ public class Player : LivingEntity
         _prevRushPos = Vector3.zero;
         SetUpPlayerCamera();
         moveDir = Vector3.forward;
+        OffTrailParticles();
     }
 
     protected override void InitObject()
@@ -523,6 +527,7 @@ public class Player : LivingEntity
 
     private void EvadeEnter()
     {
+        OnTrailparticles();
         UseStemina(2);
         myAnimator.SetTrigger("Avoid");
     }
@@ -554,6 +559,7 @@ public class Player : LivingEntity
 
     public void EvadeExit()
     {
+        OffTrailParticles();
         _evadeTime = _initEvadeTime;
         myAnimator.ResetTrigger("Avoid");
     }
@@ -679,6 +685,7 @@ public class Player : LivingEntity
     /// </summary>
     public void RushEnter()
     {
+        OnTrailparticles();
         _isRushing = true;
         _rushTime = 5;
     }
@@ -722,6 +729,7 @@ public class Player : LivingEntity
     /// </summary>
     public void RushExit()
     {
+        OffTrailParticles();
         _isRushing = false;
         _rushTime = 5;
 
@@ -976,7 +984,6 @@ public class Player : LivingEntity
     /// </summary>
     public void SkillCBtnClicked()
     {
-        Debug.Log("CBTN");
         if (_cntState != PLAYERSTATE.PS_DIE)
         {
             _cntSkillType = 2;
@@ -1013,7 +1020,23 @@ public class Player : LivingEntity
         return myAnimator.GetCurrentAnimatorStateInfo(animNum).normalizedTime;
     }
 
+    /// <summary>
+    /// [연출] 따라다니는 트레일 파티클을 끈다.
+    /// </summary>
+    public void OffTrailParticles()
+    {
+        trailParticle1.Stop();
+        trailParticle2.Stop();
+    }
 
+    /// <summary>
+    /// [연출] 따라다니는 트레일 파티클을 켠다.
+    /// </summary>
+    public void OnTrailparticles()
+    {
+        trailParticle1.Play();
+        trailParticle2.Play();
+    }
 
 
 

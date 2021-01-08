@@ -8,7 +8,7 @@ public class PlayerAttack: MonoBehaviour
     [SerializeField] protected Collider _collider;
     [SerializeField] protected GameObject _particleEffectPrefab;
     [SerializeField] private int targetNumber;
-    [SerializeField] private GameObject _particlePosition;
+    [SerializeField] private GameObject _particlePosition; public GameObject particlePosition { get { return _particlePosition; } }
     protected HashSet<GameObject> _attackedTarget;
     protected GameObject _baseParent;
 
