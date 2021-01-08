@@ -19,6 +19,8 @@ public class DungeonManager : MonoBehaviour
     public float nMonsterCoef;
     public bool isStageCleared = false;
 
+    private GameObject stageExit;
+
     //디버깅용
     GameObject plane;
 
@@ -37,6 +39,7 @@ public class DungeonManager : MonoBehaviour
         {
             dungeon = gameObject.GetComponent<DunGen.Dungeon>();
             nRoomCleared = 0;
+            stageExit = GameObject.FindGameObjectWithTag("DungeonExit");
         }
         else if (!hasPlane)
         {
@@ -79,13 +82,22 @@ public class DungeonManager : MonoBehaviour
     private void SpawnPlayer()
     {
         playerSpawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawnPoint");
-        player = ObjectPoolManager.Instance.GetObject(playerPrefab);
+        if (player == null)
+        {
+            player = Instantiate(playerPrefab);
+        }
         player.transform.position = playerSpawnPoint.transform.TransformPoint(0, 1, 0);
         player.transform.SetParent(null);
     }
 
     public void ClearStage()
     {
+        if (dungeonStage == 4)
+        {
+            UILoaderManager.Instance.AddScene("VillageScene");
+            UILoaderManager.Instance.CloseScene("DungeonScene");
+            return;
+        }
         var runtimeDungeon = FindObjectOfType<DunGen.RuntimeDungeon>();
         runtimeDungeon.Generate();
         SpawnPlayer();

@@ -2649,7 +2649,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 9.209518, y: 0, z: 32}
   m_LocalScale: {x: 4, y: 4, z: 4}
-  m_Children: []
+  m_Children:
+  - {fileID: 1070434091357786100}
   m_Father: {fileID: 330300766291176404}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4603,6 +4604,36 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 1a4826af8b9ed4275a1d634ca53898ff, type: 3}
+--- !u!1 &529620347741671862
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1070434091357786100}
+  m_Layer: 0
+  m_Name: MonsterSpawnPoint
+  m_TagString: MonsterSpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1070434091357786100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529620347741671862}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 325464397892012059}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &531522576596248637
 GameObject:
   m_ObjectHideFlags: 0
@@ -12266,6 +12297,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaCode: 0
+  isCleared: 0
+  isSetArea: 0
+  hasPlayer: 0
+  monsterSpawnPoints: []
+  monsterPrefabs:
+  - {fileID: 5711455880128171077, guid: b15fb212ab8e20b48978202886a9bfdc, type: 3}
+  - {fileID: 3184240531697180170, guid: 59a6e3d3c78516e41b1101e20d3e0e25, type: 3}
+  - {fileID: 1355095795314762, guid: 9f160afaef86a164ea4b662a1da64180, type: 3}
+  monsterSpawnInterval: 2
+  nMonsterPerSpawn: 1
+  nMonsterToSpawn: 7
+  nMonsterSpawned: 0
+  isSpawning: 0
+  doorPrefab: {fileID: 6061927268512707900, guid: 0c7d9c6485d038a4fb703792271787bb,
+    type: 3}
 --- !u!1 &5041007371698621429
 GameObject:
   m_ObjectHideFlags: 0

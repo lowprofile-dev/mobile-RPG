@@ -24,6 +24,10 @@ public class DungeonRoom : MonoBehaviour
     [SerializeField] int nMonsterToSpawn = 7;
     [SerializeField] int nMonsterSpawned = 0;
     [SerializeField] bool isSpawning = false;
+    [SerializeField] GameObject doorPrefab;
+    private List<GameObject> doorways = new List<GameObject>();
+    private List<GameObject> doors = new List<GameObject>();
+    private List<GameObject> monsters = new List<GameObject>();
     System.Random random = new System.Random();
 
     int spawnPointIndex;
@@ -34,6 +38,44 @@ public class DungeonRoom : MonoBehaviour
         dungeonManager = transform.parent.gameObject.GetComponent<DungeonManager>();
         //StartCoroutine(roomSetAreaCodeCoroutine());
         GetMonsterSpawnPoints(transform);
+    }
+
+    private void CloseDoors()
+    {
+        GetDoorways(transform);
+        for (int i = 0; i < doorways.Count; i++)
+        {
+            GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
+            door.transform.position = doorways[i].transform.TransformPoint(0, 0, 0);
+            door.transform.rotation = doorways[i].transform.rotation;
+            door.transform.SetParent(null);
+            doors.Add(door);
+        }
+    }
+
+    private void OpenDoors()
+    {
+        for (int i = 0; i < doors.Count; i++)
+        {
+            doors[i].SetActive(false);
+        }
+        doors.Clear();
+    }
+
+    private void GetDoorways(Transform parent)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.gameObject.GetComponent<DunGen.Doorway>() != null)
+            {
+                doorways.Add(child.gameObject);
+            }
+            if (child.childCount > 0)
+            {
+                GetDoorways(child);
+            }
+        }
     }
 
     private void GetMonsterSpawnPoints(Transform parent)
@@ -70,6 +112,7 @@ public class DungeonRoom : MonoBehaviour
             if (!isCleared && !isSpawning)
             {
                 isSpawning = true;
+                Invoke("CloseDoors", 2f);
                 StartCoroutine(SpawnMonsterCoroutine());
             }
         }
@@ -107,6 +150,23 @@ public class DungeonRoom : MonoBehaviour
     {
         isCleared = true;
         ++dungeonManager.nRoomCleared;
+        Invoke("OpenDoors", 2);
+    }
+
+    private bool KilledAllMonster()
+    {
+        for (int i = 0; i < monsters.Count; i++)
+        {
+            if (monsters[i].GetComponent<MonsterAction>().currentState != STATE.STATE_DIE)
+            {
+                return false;
+            }
+            if (monsters[i] == null)
+            {
+                continue;
+            }
+        }
+        return true;
     }
 
     /// <summary>
@@ -115,21 +175,26 @@ public class DungeonRoom : MonoBehaviour
     /// <param name="nMonsters">스폰할 몬스터 개수</param>
     void SpawnMonster(int nMonsters = 1)
     {
-        if (nMonsterSpawned >= nMonsterToSpawn)
+        if (nMonsterSpawned >= nMonsterToSpawn && KilledAllMonster())
         {
             ClearRoom();
+            return;
+        }
+        if (nMonsterSpawned >= nMonsterToSpawn)
+        {
             return;
         }
         for (int i = 0; i < nMonsters; i++)
         {
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
             monsterIndex = random.Next(monsterPrefabs.Count);
-            var monster = ObjectPoolManager.Instance.GetObject(monsterPrefabs[monsterIndex]);
+            var monster = Instantiate(monsterPrefabs[monsterIndex]);
             monster.GetComponent<NavMeshAgent>().enabled = false;
             monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
-            monster.transform.SetParent(null);
+            //monster.transform.SetParent(null);
             monster.GetComponent<NavMeshAgent>().enabled = true;
             nMonsterSpawned += nMonsters;
+            monsters.Add(monster);
         }
     }
 
