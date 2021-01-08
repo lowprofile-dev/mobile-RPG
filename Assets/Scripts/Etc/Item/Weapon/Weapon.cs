@@ -14,9 +14,7 @@ public class Weapon
     public float hitRigid;
     public float hitFail;
 
-    public int skillALevel;
-    public int skillBLevel;
-    public int skillCLevel;
+    public int[] skillLevel = new int[4];
 
     public float skillACoef;
     public float skillBCoef;
@@ -29,7 +27,6 @@ public class Weapon
     public float expMax= 100;
     public float exp =0;
 
-    public int attackLevel = 1;
 
     public float attackDamage;
     public float magicDamage;
@@ -96,12 +93,12 @@ public class Weapon
         if (masteryLevel >= 19 && skillCRelease == false)
         {
             skillCRelease = true;
-            skillCLevel = 1;
+            skillLevel[3] = 1;
         }
         else if (masteryLevel >= 10 && skillBRelease == false)
         {
             skillBRelease = true;
-            skillBLevel = 1;
+            skillLevel[2] = 1;
         }
     }
 

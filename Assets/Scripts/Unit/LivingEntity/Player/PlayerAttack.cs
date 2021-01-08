@@ -27,7 +27,19 @@ public class PlayerAttack: MonoBehaviour
         GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
         Effect.transform.position = Player.Instance.skillPoint.position;
         Effect.transform.rotation = Quaternion.LookRotation(Player.Instance.transform.forward);
-        Effect.transform.Rotate(new Vector3(0f, 0f, -60f));
+        if(Player.Instance.currentCombo == 1)
+        {
+            Effect.transform.Rotate(new Vector3(0f, 0f, 90f));
+        }
+        else if(Player.Instance.currentCombo == 2)
+        {
+            Effect.transform.Rotate(new Vector3(0f, 0f, 180));
+        }
+        else
+        {
+            Effect.transform.Rotate(new Vector3(0f, 0f, 270f));
+        }
+
         if (_attackedTarget != null)
         {
             _attackedTarget.Clear();
