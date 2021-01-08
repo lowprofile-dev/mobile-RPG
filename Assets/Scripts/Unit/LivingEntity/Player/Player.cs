@@ -105,8 +105,7 @@ public class Player : LivingEntity
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                weaponManager.GetWeapon().masteryLevel++;
-                weaponManager.GetWeapon().SkillRelease();
+                weaponManager.GetWeapon().exp += 10.0f;
             }
 
             if (joystick == null)

@@ -39,10 +39,11 @@ public class Staff : Weapon
     // Update is called once per frame
     public override void Update()
     {
-        OutfitGradeCheck();
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            masteryLevel++;
-        }
+        base.Update();
+
+        //if(Input.GetKeyDown(KeyCode.P))
+        //{
+        //    masteryLevel++;
+        //}
     }
 }

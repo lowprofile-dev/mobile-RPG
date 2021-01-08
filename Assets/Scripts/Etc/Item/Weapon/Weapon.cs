@@ -26,6 +26,9 @@ public class Weapon
     public float skillBCool;
     public float skillCCool;
 
+    public float expMax= 100;
+    public float exp =0;
+
     public int attackLevel = 1;
 
     public float attackDamage;
@@ -43,7 +46,8 @@ public class Weapon
 
     public virtual void Update()
     {
-     
+        OutfitGradeCheck();
+        MasteryLevelUp();
     }
 
     public virtual GameObject SkillA()
@@ -74,6 +78,16 @@ public class Weapon
             {
                 outfitGrade++;
             }
+        }
+    }
+
+    public void MasteryLevelUp()
+    {
+        if(exp >= expMax)
+        {
+            exp = exp - expMax;
+            masteryLevel++;
+            SkillRelease();
         }
     }
 
