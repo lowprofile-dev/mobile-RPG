@@ -241,6 +241,24 @@ public class Player : LivingEntity
     {
         ChangeWeaponTest();
         ChangeMasteryLevelTest();
+        PopWeaponMasteryUITest();
+    }
+
+    private void PopWeaponMasteryUITest()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            if (UINaviationManager.Instance.FindTargetIsInNav("SubUI_WeaponMasteryView"))
+            {
+                Debug.Log("HELLO");
+                UINaviationManager.Instance.PopToNav("SubUI_WeaponMasteryView");
+            }
+            else
+            {
+                Debug.Log("NO HELLO");
+                UINaviationManager.Instance.PushToNav("SubUI_WeaponMasteryView");
+            }
+        }
     }
 
     /// <summary>

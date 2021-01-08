@@ -43,6 +43,8 @@ public class BossSkeletonPase2 : MonsterAction
         _attackCoroutine = null;
         _readyCast = false;
 
+        _navMeshAgent.acceleration = 8f;
+        currentTarget = _target;
         CameraManager.Instance.ShakeCamera(3, 1, 0.5f);
         currentTarget = _target;
         ChangeState(STATE.STATE_TRACE);
@@ -104,8 +106,9 @@ public class BossSkeletonPase2 : MonsterAction
         // 플레이어가 기절상태나 넘어짐 상태면 우선 공격 모션 2개 있음.
         // if(_target.getState? == 기절) attackType = AttackType.~~~~
 
-        if (_attackCoroutine != null) Invoke("AttackCorotineInit", 1.5f);
+        //if (_attackCoroutine != null) Invoke("AttackCorotineInit", 1.5f);
 
+       
         int proc = UnityEngine.Random.Range(0, 100);
 
         if (proc <= 25)
@@ -128,7 +131,7 @@ public class BossSkeletonPase2 : MonsterAction
             _castTime = 1.5f;
             attackType = AttackType.DASH_ATTACK;
         }
-
+        Debug.Log("캐스팅" + attackType.ToString());
     }
 
     protected override void DoCastingAction()
@@ -167,7 +170,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void AttackExit()
     {
-        _monster.myAnimator.ResetTrigger(currentAnimation);
+        //_monster.myAnimator.ResetTrigger(currentAnimation);
         //if (_attackCoroutine != null)
         //{
         //    StopCoroutine(_attackCoroutine);
@@ -179,7 +182,7 @@ public class BossSkeletonPase2 : MonsterAction
     public override void MoveToTarget()
     {
         
-        //_navMeshAgent.SetDestination(currentTarget.transform.position);
+        _navMeshAgent.SetDestination(currentTarget.transform.position);
 
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
@@ -190,15 +193,12 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override IEnumerator AttackTarget()
     {
-        Debug.Log("AttackCorotine");
- 
 
         while (true)
         {
             yield return null;
 
             AttackAction();
-            _monster.myAnimator.SetTrigger("Walk");
             //StartCoroutine(DoAttackAction());
 
             yield return new WaitForSeconds(_attackSpeed);
@@ -210,7 +210,7 @@ public class BossSkeletonPase2 : MonsterAction
 
             yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-            //_monster.MyAnimator.ResetTrigger(currentAnimation); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
+            //_monster.myAnimator.ResetTrigger(currentAnimation); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 
             _readyCast = false;
             //if (!_readyCast && ToCast()) break;
@@ -244,12 +244,15 @@ public class BossSkeletonPase2 : MonsterAction
     }
 
     private IEnumerator DashAction()
-    {   
+    {
+        _monster.myAnimator.SetTrigger("Walk");
+
         _navMeshAgent.stoppingDistance = 0f;
         currentTarget = _target;
         _navMeshAgent.SetDestination(_target.transform.position);
         _navMeshAgent.isStopped = false;
-        _navMeshAgent.acceleration = 300f;
+        _navMeshAgent.speed = _moveSpeed * 1.5f;
+        _navMeshAgent.acceleration = 500f;
         transform.LookAt(_target.transform.position);
 
         _monster.myAnimator.SetTrigger("Attack3");
@@ -265,26 +268,29 @@ public class BossSkeletonPase2 : MonsterAction
 
         yield return new WaitForSeconds(_attackSpeed - 0.5f);
         _navMeshAgent.acceleration = 8f;
+        _navMeshAgent.speed = _moveSpeed;
         _navMeshAgent.stoppingDistance = 3f;
     }
 
     private IEnumerator JumpAction()
     {
+        _monster.myAnimator.SetTrigger("Walk");
         _navMeshAgent.acceleration = 10f;
         GameObject range = ObjectPoolManager.Instance.GetObject(JumpSkillRange);
         range.transform.position = _target.transform.position;
+        currentTarget = range;
         _navMeshAgent.SetDestination(range.transform.position);
-        //currentTarget = range;
+
         transform.LookAt(range.transform.position);
 
         yield return new WaitForSeconds(_attackSpeed);
-        _navMeshAgent.acceleration = 8f;
         ObjectPoolManager.Instance.ReturnObject(range);
-        _navMeshAgent.SetDestination(_target.transform.position);
     }
 
     private IEnumerator ShokeAction()
     {
+        _monster.myAnimator.SetTrigger("Walk");
+
         _navMeshAgent.SetDestination(_target.transform.position);
 
         GameObject range = ObjectPoolManager.Instance.GetObject(ShokeSkillRange);
@@ -293,7 +299,6 @@ public class BossSkeletonPase2 : MonsterAction
               
         yield return new WaitForSeconds(_attackSpeed);
           
-
         ObjectPoolManager.Instance.ReturnObject(range);
     }
 
@@ -301,7 +306,7 @@ public class BossSkeletonPase2 : MonsterAction
     protected override void TraceStart()
     {
         _monster.myAnimator.SetTrigger("Walk");
-        _navMeshAgent.speed = _moveSpeed * 1.5f;
+        _navMeshAgent.speed = _moveSpeed * 2f;
         _navMeshAgent.isStopped = false;
     }
 
@@ -312,8 +317,8 @@ public class BossSkeletonPase2 : MonsterAction
         {
             if (_attackCoroutine == null)
                 _attackCoroutine = StartCoroutine(AttackTarget());
-            else
-                ChangeState(STATE.STATE_IDLE);
+            //else
+            //    ChangeState(STATE.STATE_IDLE);
         }
         
     }
@@ -323,4 +328,8 @@ public class BossSkeletonPase2 : MonsterAction
         base.Damaged(dmg, false);
     }
 
+    protected override void AttackUpdate()
+    {
+        
+    }
 }
