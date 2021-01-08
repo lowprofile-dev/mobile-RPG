@@ -38,7 +38,6 @@ public class BossSkeletonPase2 : MonsterAction
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(1);
 
-        
         StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
@@ -181,7 +180,11 @@ public class BossSkeletonPase2 : MonsterAction
 
     public override void MoveToTarget()
     {
-        
+
+        //if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        //{
+        //    _monster.myAnimator.SetTrigger("Walk");
+        //}
         _navMeshAgent.SetDestination(currentTarget.transform.position);
 
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
@@ -199,18 +202,13 @@ public class BossSkeletonPase2 : MonsterAction
             yield return null;
 
             AttackAction();
-            //StartCoroutine(DoAttackAction());
-
+            
             yield return new WaitForSeconds(_attackSpeed);
             SetAttackAnimation();
-            //_navMeshAgent.speed = _moveSpeed;
-            //_navMeshAgent.stoppingDistance = 2f;
-
+            
             // 사운드 재생
 
             yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-
-            //_monster.myAnimator.ResetTrigger(currentAnimation); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 
             _readyCast = false;
             //if (!_readyCast && ToCast()) break;
@@ -220,8 +218,11 @@ public class BossSkeletonPase2 : MonsterAction
             
         }
     }
+
     private void AttackAction()
     {
+        _monster.myAnimator.SetTrigger("Walk");
+
         switch (attackType)
         {
             case AttackType.JUMP_ATTACK:
@@ -245,8 +246,6 @@ public class BossSkeletonPase2 : MonsterAction
 
     private IEnumerator DashAction()
     {
-        _monster.myAnimator.SetTrigger("Walk");
-
         _navMeshAgent.stoppingDistance = 0f;
         currentTarget = _target;
         _navMeshAgent.SetDestination(_target.transform.position);
@@ -266,7 +265,7 @@ public class BossSkeletonPase2 : MonsterAction
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(1);
 
-        yield return new WaitForSeconds(_attackSpeed - 0.5f);
+        yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         _navMeshAgent.acceleration = 8f;
         _navMeshAgent.speed = _moveSpeed;
         _navMeshAgent.stoppingDistance = 3f;
@@ -274,7 +273,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     private IEnumerator JumpAction()
     {
-        _monster.myAnimator.SetTrigger("Walk");
+        //range 가 맵밖으로 나갔을경우를 생각해야함.
         _navMeshAgent.acceleration = 10f;
         GameObject range = ObjectPoolManager.Instance.GetObject(JumpSkillRange);
         range.transform.position = _target.transform.position;
@@ -288,8 +287,7 @@ public class BossSkeletonPase2 : MonsterAction
     }
 
     private IEnumerator ShokeAction()
-    {
-        _monster.myAnimator.SetTrigger("Walk");
+    {       
 
         _navMeshAgent.SetDestination(_target.transform.position);
 
@@ -305,6 +303,8 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void TraceStart()
     {
+        StopCoroutine(_attackCoroutine);
+        _monster.myAnimator.ResetTrigger("Walk");
         _monster.myAnimator.SetTrigger("Walk");
         _navMeshAgent.speed = _moveSpeed * 2f;
         _navMeshAgent.isStopped = false;

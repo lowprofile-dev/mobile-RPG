@@ -60,7 +60,7 @@ public class MonsterAction : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] protected EnemySliderBar _bar;
-
+    
     private float attackedTime = 0.1f;
     private float counter = 0f;
 

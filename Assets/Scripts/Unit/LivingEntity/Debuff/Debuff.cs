@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class Debuff { //디버프 추상클래스
 
-    protected MonsterAction target; //몬스터
+    protected LivingEntity target; //타겟
     private float duration; //지속시간
     protected float elapsed; //시간
     
-    public Debuff(MonsterAction target, float duration) //디버프
+    public Debuff(LivingEntity target, float duration) //디버프
     {
         this.target = target;
         this.duration = duration;
@@ -25,8 +25,8 @@ public abstract class Debuff { //디버프 추상클래스
     {
         if (target != null)
         {
-            target.monster.speed = target.monster.MAXspeed;     
-            target.monster.DebuffManager.RemoveDebuff(this);
+            target.speed = target.MAXspeed;     
+            target.DebuffManager.RemoveDebuff(this);
         }
     }
         

@@ -12,7 +12,7 @@ public class BleedingDebuff : Debuff
 
     private float tickDamage; //지속데미지
 
-    public BleedingDebuff(float tickDamage, float tickTime, float duration, MonsterAction target) : base(target, duration)
+    public BleedingDebuff(float tickDamage, float tickTime, float duration, LivingEntity target) : base(target, duration)
     { //디버프
         this.tickDamage = tickDamage;
         this.tickTime = tickTime;
@@ -27,7 +27,7 @@ public class BleedingDebuff : Debuff
             if (timeSinceTick >= tickTime) //지속시간이 지속간격보다 크면
             {
                 timeSinceTick = 0f;
-                target.Damaged(tickDamage, false);
+                target.Damaged(tickDamage);
             }
         }
 

@@ -121,4 +121,8 @@ public class BossSkeletonAction : MonsterAction
         _monster.myAnimator.ResetTrigger(currentAnimation);
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
+    protected override void IdleStart()
+    {
+        ChangeState(STATE.STATE_TRACE);
+    }
 }
