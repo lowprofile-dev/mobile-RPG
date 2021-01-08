@@ -173,31 +173,31 @@ public class Player : LivingEntity
         switch (_cntState)
         {
             case PLAYERSTATE.PS_IDLE:
-                Debug.Log("IDLE");
+                //Debug.Log("IDLE");
                 IdleUpdate();
                 break;
             case PLAYERSTATE.PS_MOVE:
-                Debug.Log("MOVE");
+                //Debug.Log("MOVE");
                 MoveUpdate();
                 break;
             case PLAYERSTATE.PS_ATTACK:
-                Debug.Log("ATTACK");
+                //Debug.Log("ATTACK");
                 AttackUpdate();
                 break;
             case PLAYERSTATE.PS_EVADE:
-                Debug.Log("EVADE");
+                //Debug.Log("EVADE");
                 EvadeUpdate();
                 break;
             case PLAYERSTATE.PS_DIE:
-                Debug.Log("DIE");
+                //Debug.Log("DIE");
                 DieUpdate();
                 break;
             case PLAYERSTATE.PS_SKILL:
-                Debug.Log("SKILL");
+                //Debug.Log("SKILL");
                 SkillUpdate();
                 break;
             case PLAYERSTATE.PS_INTERACTING:
-                Debug.Log("INTERACTING");
+                //Debug.Log("INTERACTING");
                 InteractUpdate();
                 break;
         }
