@@ -21,11 +21,6 @@ public class Player : LivingEntity
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
     private PLAYERSTATE _cntState;
 
-    [Header("상태이상")]
-    private bool isStun = false;
-    private bool isFall = false;
-    private bool isRigid = false;
-
     [Header("버튼 입력")]
     private bool AttackButtonClick = false;
     private bool SkillA_ButtonClick = false;
@@ -35,15 +30,13 @@ public class Player : LivingEntity
 
     private float skillA_Counter = 0f;
     private float skillB_Counter = 0f;
-
-
     private float skillC_Counter = 0f;
 
     [SerializeField] public Transform firePoint;
     [SerializeField] public Transform skillPoint;
 
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private float speed = 6f;
+    //[SerializeField] private float speed = 6f;
     [SerializeField] private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     [SerializeField] private Transform cam;
@@ -365,10 +358,6 @@ public class Player : LivingEntity
     {
         myAnimator.ResetTrigger("Idle");
     }
-
-
-
-
 
     ///////////////// 이동 관련 //////////////////
 
@@ -744,6 +733,8 @@ public class Player : LivingEntity
     {
         _isdead = true;
         myAnimator.SetTrigger("Die");
+        _CCManager.Release();
+        _DebuffManager.Release();
     }
 
     public void DieUpdate()

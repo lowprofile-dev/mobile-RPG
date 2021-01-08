@@ -2544,20 +2544,27 @@ MonoBehaviour:
   _initHp: 10
   _initMp: 10
   _hp: 10
-  _mp: 11
-  MyAnimator: {fileID: 6894856245327852421}
-  avoid_power: 30
+  _stemina: 0
+  _DamageText: {fileID: 0}
+  _speed: 6
+  _MAXspeed: 6
+  myAnimator: {fileID: 0}
+  _initEvadeTime: 0
   _playerAvatar: {fileID: 6844764146462762271}
   firePoint: {fileID: 7535964035615445844}
   skillPoint: {fileID: 7535964034504786530}
   characterController: {fileID: 6845173706919631066}
-  speed: 6
   turnSmoothTime: 0.1
   cam: {fileID: 0}
+  playerFollowCam: {fileID: 0}
+  playerFreeLook: {fileID: 0}
+  minimapFreeLook: {fileID: 0}
+  weaponChanged: 0
   rotateAngle: {x: 0, y: 0, z: 0, w: 0}
   joystick: {fileID: 0}
+  dashSpeed: 0
+  currentCombo: 0
   weaponManager: {fileID: 0}
-  itemManager: {fileID: 0}
 --- !u!114 &6845173706919631060
 MonoBehaviour:
   m_ObjectHideFlags: 0
