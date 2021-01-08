@@ -33,47 +33,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
         {
             CloseScene("VillageScene");
         }
-        /*
-        if(Input.GetKeyDown(KeyCode.F4))
-        {
-            if (SceneManager.GetSceneByName("TEST1").isLoaded == false)
-                SceneManager.LoadSceneAsync("TEST1" , LoadSceneMode.Additive);
-            else
-                SceneManager.UnloadSceneAsync("TEST1");
-        }
-
-        if(Input.GetKeyDown(KeyCode.F5))
-        {
-            if (SceneManager.GetSceneByName("QuestCheckScene").isLoaded == false)
-                SceneManager.LoadSceneAsync("QuestCheckScene", LoadSceneMode.Additive);
-            else
-                SceneManager.UnloadSceneAsync("QuestCheckScene");
-        }
-        */
-
-        //if (Input.GetKeyDown(KeyCode.F3))
-        //{
-        //    if (SceneManager.GetSceneByName("Level2").isLoaded)
-        //        SceneManager.UnloadSceneAsync("Level2");
-
-        //    if (SceneManager.GetSceneByName("Level1").isLoaded == false)
-        //    {
-        //        SceneManager.LoadSceneAsync("Level1", LoadSceneMode.Additive).completed += operation =>
-        //            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Level1"));
-        //    }
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.F4))
-        //{
-        //    if (SceneManager.GetSceneByName("Level1").isLoaded)
-        //        SceneManager.UnloadSceneAsync("Level1");
-
-        //    if (SceneManager.GetSceneByName("Level2").isLoaded == false)
-        //    {
-        //        SceneManager.LoadSceneAsync("Level2", LoadSceneMode.Additive)
-        //            .completed += HandleLevel2LoadCompleted;
-        //    }
-        //}
+        
     }
 
     public void AddScene(string name) // 현재 씬에 다른 씬을 추가하는 함수 ADD 
@@ -149,6 +109,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
             yield return null;
             Debug.Log("Loading  : " + (asyncOperation.progress * 100) + "%");
         }
+
         PlayerUI.SetActive(true);
 
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(name));

@@ -48,7 +48,7 @@ public class GoblinAction : MonsterAction
     {
         if (CheckAnimationOver("Sleep", 1.0f))
         {
-            ChangeState(STATE.STATE_IDLE);
+            ChangeState(MONSTER_STATE.STATE_IDLE);
         }
     }
 
@@ -62,7 +62,7 @@ public class GoblinAction : MonsterAction
 
     protected override void FindStart()
     {
-        ChangeState(STATE.STATE_TRACE);
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     protected override void FindExit()
@@ -111,14 +111,14 @@ public class GoblinAction : MonsterAction
 
     /////////// 피격 관련 /////////////
 
-    protected override void SetHitAnimation(bool isDeath)
-    {
-        if (isDeath) _monster.myAnimator.ResetTrigger("Hit");
-        else
-        {
-            _isDamaged = true;
-            _monster.myAnimator.SetTrigger("Hit");
-            if (_currentState == STATE.STATE_IDLE || _currentState == STATE.STATE_STIRR) ChangeState(STATE.STATE_TRACE);
-        }
-    }
+    //protected override void SetHitAnimation(bool isDeath)
+    //{
+    //    if (isDeath) _monster.myAnimator.ResetTrigger("Hit");
+    //    else
+    //    {
+    //        _isDamaged = true;
+    //        _monster.myAnimator.SetTrigger("Hit");
+    //        if (_currentState == MONSTER_STATE.STATE_IDLE || _currentState == MONSTER_STATE.STATE_STIRR) ChangeState(MONSTER_STATE.STATE_TRACE);
+    //    }
+    //}
 }

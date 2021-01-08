@@ -13,5 +13,5 @@ public abstract class Debuffer : MonoBehaviour
     public float Proc { get { return proc; } set { proc = value; } }
 
     public abstract void ApplyDebuff(GameObject monster); // 디버프 적용시키는 코드
-    public abstract Debuff GetDebuff(MonsterAction monster); 
+    public abstract Debuff GetDebuff(LivingEntity unit); 
 }

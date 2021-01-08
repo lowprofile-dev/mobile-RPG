@@ -27,7 +27,9 @@ public class MonsterAction : MonoBehaviour
     protected GameObject _spawnEffect;              // 스폰용으로 사용된 이펙트
 
     // 기타 변수
-    protected STATE _currentState;                  // 현재 상태
+    protected MONSTER_STATE _currentState;                  // 현재 상태
+    public MONSTER_STATE currentState { get { return _currentState; } }
+
     protected float _distance;                      // 타겟과의 거리
     protected float _traceTimer;                    // 추적 이후 경과한 시간
     protected Vector3 _spawnPosition;               // 스폰된 위치
@@ -60,7 +62,7 @@ public class MonsterAction : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] protected EnemySliderBar _bar;
-
+    
     private float attackedTime = 0.1f;
     private float counter = 0f;
 
@@ -79,6 +81,8 @@ public class MonsterAction : MonoBehaviour
         _spawnPosition = transform.position;
 
         InitState();
+        var _mon = this;
+        _monster.CCManager = new CCManager(ref _mon , "monster");
     }
 
     protected virtual void CachingObject()
@@ -95,8 +99,8 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public virtual void InitState()
     {
-        _currentState = STATE.STATE_NULL;
-        ChangeState(STATE.STATE_SPAWN);
+        _currentState = MONSTER_STATE.STATE_NULL;
+        ChangeState(MONSTER_STATE.STATE_SPAWN);
     }
 
     /// <summary>
@@ -105,7 +109,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void UpdateMonster()
     {
         TargetDeathCheck();
-        if(_currentState != STATE.STATE_SPAWN && _isImmune)
+        if(_currentState != MONSTER_STATE.STATE_SPAWN && _isImmune)
         {
             counter += Time.deltaTime;
             if(counter >= attackedTime)
@@ -118,6 +122,7 @@ public class MonsterAction : MonoBehaviour
 
     private void Update()
     {
+        _monster.CCManager.Update();
         if (_target == null)
         {
             _target = GameObject.FindGameObjectWithTag("Player");
@@ -131,52 +136,62 @@ public class MonsterAction : MonoBehaviour
     /// <summary>
     /// 상태 변화 - Exit - current - Enter
     /// </summary>
-    public virtual void ChangeState(STATE targetState)
+    public virtual void ChangeState(MONSTER_STATE targetState)
     {
-        if (_currentState != STATE.STATE_NULL)
+        if (_currentState != MONSTER_STATE.STATE_NULL)
         {
             ExitState(_currentState);
         }
 
         _currentState = targetState;
+
         EnterState(_currentState);
     }
 
     /// <summary>
     /// 현재 스테이트에 들어설때 일어나는 작업
     /// </summary>
-    public virtual void EnterState(STATE targetState)
+    public virtual void EnterState(MONSTER_STATE targetState)
     {
         switch (targetState)
         {
-            case STATE.STATE_SPAWN:
+            case MONSTER_STATE.STATE_SPAWN:
                 SpawnStart();
                 break;
-            case STATE.STATE_IDLE:
+            case MONSTER_STATE.STATE_IDLE:
                 IdleStart();
                 break;
-            case STATE.STATE_STIRR:
+            case MONSTER_STATE.STATE_STIRR:
                 StirrStart();
                 break;
-            case STATE.STATE_FIND:
+            case MONSTER_STATE.STATE_FIND:
                 FindStart();
                 break;
-            case STATE.STATE_TRACE:
+            case MONSTER_STATE.STATE_TRACE:
                 TraceStart();
                 break;
-            case STATE.STATE_DEBUFF:
+            case MONSTER_STATE.STATE_DEBUFF:
                 break;
-            case STATE.STATE_ATTACK:
+            case MONSTER_STATE.STATE_ATTACK:
                 AttackStart();
                 break;
-            case STATE.STATE_KILL:
+            case MONSTER_STATE.STATE_KILL:
                 KillStart();
                 break;
-            case STATE.STATE_DIE:
+            case MONSTER_STATE.STATE_DIE:
                 DeathStart();
                 break;
-            case STATE.STATE_CAST:
+            case MONSTER_STATE.STATE_CAST:
                 CastStart();
+                break;
+            case MONSTER_STATE.STATE_FALL:
+                FallStart();
+                break;
+            case MONSTER_STATE.STATE_STUN:
+                StunStart();
+                break;
+            case MONSTER_STATE.STATE_RIGID:
+                RigidStart();
                 break;
             default:
                 break;
@@ -194,85 +209,97 @@ public class MonsterAction : MonoBehaviour
         // 스테이트별 업데이트 내용
         switch (_currentState)
         {
-            case STATE.STATE_SPAWN:
+            case MONSTER_STATE.STATE_SPAWN:
                 SpawnUpdate();
                 break;
-            case STATE.STATE_IDLE:
+            case MONSTER_STATE.STATE_IDLE:
                 IdleUpdate();
                 break;
-            case STATE.STATE_STIRR:
+            case MONSTER_STATE.STATE_STIRR:
                 StirrUpdate();
                 break;
-            case STATE.STATE_FIND:
+            case MONSTER_STATE.STATE_FIND:
                 FindPlayer();
                 break;
-            case STATE.STATE_TRACE:
+            case MONSTER_STATE.STATE_TRACE:
                 TraceUpdate();
                 break;
-            case STATE.STATE_ATTACK:
+            case MONSTER_STATE.STATE_ATTACK:
                 AttackUpdate();
                 break;
-            case STATE.STATE_CAST:
+            case MONSTER_STATE.STATE_CAST:
                 CastUpdate();
                 break;
-            case STATE.STATE_KILL:
+            case MONSTER_STATE.STATE_KILL:
                 KillUpdate();
                 break;
-            case STATE.STATE_DIE:
+            case MONSTER_STATE.STATE_DIE:
                 DeathUpdate();
                 break;
-            case STATE.STATE_DEBUFF:
+            case MONSTER_STATE.STATE_DEBUFF:
+                break;
+            case MONSTER_STATE.STATE_FALL:
+                FallUpdate();
+                break;
+            case MONSTER_STATE.STATE_STUN:
+                StunUpdate();
+                break;
+            case MONSTER_STATE.STATE_RIGID:
+                RigidUpdate();
                 break;
             default:
                 break;
         }
     }
-
-
-
     /// <summary>
     /// 현재 스테이트를 나갈때 일어나는 작업
     /// </summary>
-    public virtual void ExitState(STATE targetState)
+    public virtual void ExitState(MONSTER_STATE targetState)
     {
         switch (targetState)
         {
-            case STATE.STATE_SPAWN:
+            case MONSTER_STATE.STATE_SPAWN:
                 SpawnExit();
                 break;
-            case STATE.STATE_IDLE:
+            case MONSTER_STATE.STATE_IDLE:
                 IdleExit();
                 break;
-            case STATE.STATE_STIRR:
+            case MONSTER_STATE.STATE_STIRR:
                 StirrExit();
                 break;
-            case STATE.STATE_FIND:
+            case MONSTER_STATE.STATE_FIND:
                 FindExit();
                 break;
-            case STATE.STATE_TRACE:
+            case MONSTER_STATE.STATE_TRACE:
                 TraceExit();
                 break;
-            case STATE.STATE_ATTACK:
+            case MONSTER_STATE.STATE_ATTACK:
                 AttackExit();
                 break;
-            case STATE.STATE_CAST:
+            case MONSTER_STATE.STATE_CAST:
                 CastExit();
                 break;
-            case STATE.STATE_KILL:
+            case MONSTER_STATE.STATE_KILL:
                 KillExit();
                 break;
-            case STATE.STATE_DIE:
+            case MONSTER_STATE.STATE_DIE:
                 DeathExit();
                 break;
-            case STATE.STATE_DEBUFF:
+            case MONSTER_STATE.STATE_DEBUFF:
+                break;
+            case MONSTER_STATE.STATE_FALL:
+                FallExit();
+                break;
+            case MONSTER_STATE.STATE_STUN:
+                StunExit();
+                break;
+            case MONSTER_STATE.STATE_RIGID:
+                RigidExit();
                 break;
             default:
                 break;
         }
     }
-
-
-
 
     /////////// 스폰 관련////////////
 
@@ -320,7 +347,7 @@ public class MonsterAction : MonoBehaviour
         }
 
         _monster.avatarObject.GetComponent<Renderer>().material = _monster.nonDissolveMaterial; // 기본 Material로 변경
-        ChangeState(STATE.STATE_IDLE);
+        ChangeState(MONSTER_STATE.STATE_IDLE);
     }
 
     protected virtual void SpawnExit()
@@ -393,7 +420,7 @@ public class MonsterAction : MonoBehaviour
             _idleTime = 0;
             if (UnityEngine.Random.Range(1, 100) <= 30)
             {
-                ChangeState(STATE.STATE_STIRR);
+                ChangeState(MONSTER_STATE.STATE_STIRR);
             }
         }
     }
@@ -408,7 +435,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void DoSomethingIdleSearchFind()
     {
-        ChangeState(STATE.STATE_FIND);
+        ChangeState(MONSTER_STATE.STATE_FIND);
     }
 
     protected virtual void IdleExit()
@@ -431,7 +458,7 @@ public class MonsterAction : MonoBehaviour
     {
         if (CheckAnimationOver("Stirr", 1.0f))
         {
-            ChangeState(STATE.STATE_IDLE);
+            ChangeState(MONSTER_STATE.STATE_IDLE);
         }
     }
 
@@ -459,7 +486,7 @@ public class MonsterAction : MonoBehaviour
         if (CheckFindAnimationOver()) // 애니메이션이 끝나면 Trace로 넘어감
         {
             _navMeshAgent.isStopped = false;
-            ChangeState(STATE.STATE_TRACE);
+            ChangeState(MONSTER_STATE.STATE_TRACE);
         }
     }
 
@@ -502,7 +529,7 @@ public class MonsterAction : MonoBehaviour
         // 사거리 내에 적 존재 시 발동
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
-            ChangeState(STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
     }
 
@@ -533,7 +560,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void DoReturn()
     {
         // 상태를 바꾼다.
-        ChangeState(STATE.STATE_IDLE);
+        ChangeState(MONSTER_STATE.STATE_IDLE);
         _traceTimer = 0;
     }
 
@@ -556,7 +583,7 @@ public class MonsterAction : MonoBehaviour
         // 타겟과의 거리가 공격 범위보다 커지면
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
         {
-            ChangeState(STATE.STATE_IDLE);
+            ChangeState(MONSTER_STATE.STATE_IDLE);
         }
     }
 
@@ -593,7 +620,7 @@ public class MonsterAction : MonoBehaviour
 
             else
             {
-                ChangeState(STATE.STATE_TRACE);
+                ChangeState(MONSTER_STATE.STATE_TRACE);
                 break;
             }
         }
@@ -613,7 +640,7 @@ public class MonsterAction : MonoBehaviour
 
         if (toCastRandomValue <= _castChangePercnt)
         {
-            ChangeState(STATE.STATE_CAST);
+            ChangeState(MONSTER_STATE.STATE_CAST);
             return true;
         }
 
@@ -700,7 +727,7 @@ public class MonsterAction : MonoBehaviour
         // 타겟과의 거리가 공격 범위보다 커지면
         //if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
         //{
-        //    ChangeState(STATE.STATE_TRACE);
+        //    ChangeState(MONSTER_STATE.STATE_TRACE);
         //}
 
         DoCastingAction();
@@ -720,7 +747,7 @@ public class MonsterAction : MonoBehaviour
             _cntCastTime = 0;
             _readyCast = true;
             _attackType = 1;
-            ChangeState(STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
     }
 
@@ -735,7 +762,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public virtual void Damaged(float dmg, bool SetAnimation = true)
     {
-        if (_currentState == STATE.STATE_DIE)
+        if (_currentState == MONSTER_STATE.STATE_DIE)
         {
             return;
         }
@@ -756,10 +783,10 @@ public class MonsterAction : MonoBehaviour
 
         bool isDeath = DeathCheck();
 
-        if (SetAnimation)
-        {
-            SetHitAnimation(isDeath);
-        }
+        //if (SetAnimation)
+        //{
+        //    SetHitAnimation(isDeath);
+        //}
 
         if (isDeath) CheckDeathAndChange();
     }
@@ -767,18 +794,19 @@ public class MonsterAction : MonoBehaviour
     /// <summary>
     /// 죽음 여부에 따라 몬스터의 hit 애니메이션을 설정 / 해제한다.
     /// </summary>
-    protected virtual void SetHitAnimation(bool isDeath)
-    {
-        if (isDeath) _monster.myAnimator.ResetTrigger("Hit");
-        else _monster.myAnimator.SetTrigger("Hit");
-    }
+    /// 
+    //protected virtual void SetHitAnimation(bool isDeath)
+    //{
+    //    if (isDeath) _monster.myAnimator.ResetTrigger("Hit");
+    //    else _monster.myAnimator.SetTrigger("Hit");
+    //}
 
     /// <summary>
     /// 데미지를 받았을때의 연출 목록
     /// </summary>
     protected virtual void ProductionDamaged()
     {
-        if (_currentState == STATE.STATE_DIE)
+        if (_currentState == MONSTER_STATE.STATE_DIE)
         {
             return;
         }
@@ -911,7 +939,7 @@ public class MonsterAction : MonoBehaviour
     {
         if (DeathCheck())
         {
-            ChangeState(STATE.STATE_DIE);
+            ChangeState(MONSTER_STATE.STATE_DIE);
             return true;
         }
 
@@ -967,9 +995,9 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public virtual void TargetDeathCheck()
     {
-        if (_currentState != STATE.STATE_KILL && _target.GetComponent<LivingEntity>().Hp <= 0)
+        if (_currentState != MONSTER_STATE.STATE_KILL && _target.GetComponent<LivingEntity>().Hp <= 0)
         {
-            ChangeState(STATE.STATE_KILL);
+            ChangeState(MONSTER_STATE.STATE_KILL);
         }
     }
 
@@ -1000,4 +1028,67 @@ public class MonsterAction : MonoBehaviour
     {
         return _monster.myAnimator.GetCurrentAnimatorStateInfo(animNum).normalizedTime;
     }
+
+    protected virtual void RigidStart()
+    {
+        _navMeshAgent.isStopped = true;
+        Debug.Log("경직걸림");
+        _monster.myAnimator.SetTrigger("Rigid");
+    }
+
+    protected virtual void StunStart()
+    {
+        _navMeshAgent.isStopped = true;
+        Debug.Log("스턴걸림");
+        StopAllCoroutines();
+        _monster.myAnimator.SetTrigger("Stun");
+    }
+
+    protected virtual void FallStart()
+    {
+        _navMeshAgent.isStopped = true;
+        Debug.Log("넘어짐걸림");
+        StopAllCoroutines();
+        _monster.myAnimator.SetTrigger("Fall");
+    }
+
+    protected virtual void RigidUpdate()
+    {
+
+    }
+
+    protected virtual void StunUpdate()
+    {
+
+    }
+
+    protected virtual void FallUpdate()
+    {
+
+    }
+
+
+    protected virtual void RigidExit()
+    {
+        _monster.myAnimator.ResetTrigger("rigid");
+        _navMeshAgent.isStopped = false;
+        _monster.myAnimator.SetTrigger("idle");
+    }
+
+    protected virtual void StunExit()
+    {
+        _monster.myAnimator.ResetTrigger("stun");
+        _navMeshAgent.isStopped = false;
+        _monster.myAnimator.SetTrigger("idle");
+    }
+
+    protected virtual void FallExit()
+    {
+        _monster.myAnimator.ResetTrigger("fall");
+        _navMeshAgent.isStopped = false;
+        _monster.myAnimator.SetTrigger("idle");
+    }
+
+
+
 }

@@ -2,10 +2,11 @@
 using SimpleInputNamespace;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum PLAYERSTATE
 {
-    PS_IDLE, PS_MOVE, PS_ATTACK, PS_EVADE, PS_RUSH, PS_DIE, PS_SKILL, PS_INTERACTING
+    PS_IDLE, PS_MOVE, PS_ATTACK, PS_EVADE, PS_DIE, PS_SKILL, PS_INTERACTING , PS_STUN , PS_RIGID , PS_FALL
 }
 
 /// <summary>
@@ -21,7 +22,6 @@ public class Player : LivingEntity
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
     private PLAYERSTATE _cntState;
 
-
     [Header("상태이상")]
     private bool isStun = false;
     private bool isFall = false;
@@ -36,15 +36,13 @@ public class Player : LivingEntity
 
     private float skillA_Counter = 0f;
     private float skillB_Counter = 0f;
-
-
     private float skillC_Counter = 0f;
 
     [SerializeField] public Transform firePoint;
     [SerializeField] public Transform skillPoint;
 
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private float speed = 6f;
+    //[SerializeField] private float speed = 6f;
     [SerializeField] private float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     [SerializeField] private Transform cam;
@@ -84,7 +82,6 @@ public class Player : LivingEntity
     public WeaponManager weaponManager;
     ItemManager itemManager;
     StatusManager statusManager;
-
     private void Awake()
     {
         Instance = this;
@@ -94,7 +91,8 @@ public class Player : LivingEntity
     {
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
-
+        var _player = this;
+        _CCManager = new CCManager(ref _player, "player");
         base.Start();
 
         _evadeTime = _initEvadeTime;
@@ -126,6 +124,8 @@ public class Player : LivingEntity
 
     protected override void Update()
     {
+        _CCManager.Update();
+        SetUpPlayerCamera();
         TestCode();
         UpdateAll();
         UpdateState();
@@ -377,10 +377,6 @@ public class Player : LivingEntity
     {
         myAnimator.ResetTrigger("Idle");
     }
-
-
-
-
 
     ///////////////// 이동 관련 //////////////////
 
@@ -810,6 +806,8 @@ public class Player : LivingEntity
     {
         _isdead = true;
         myAnimator.SetTrigger("Die");
+        _CCManager.Release();
+        _DebuffManager.Release();
     }
 
     public void DieUpdate()
@@ -903,6 +901,8 @@ public class Player : LivingEntity
     /// </summary>
     private void GetJoystickInput()
     {
+        if (joystick == null)
+            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
         horizontal = joystick.GetX_axis().value;
         vertical = joystick.GetY_axis().value;
 
@@ -1027,6 +1027,8 @@ public class Player : LivingEntity
         SetPlayerFaceCam();
         SetPlayerFollowCam();
         SetMinimapFreeLook();
+        if (cam != null)
+            return;
         cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
     }
 
@@ -1035,6 +1037,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetPlayerFaceCam()
     {
+        if (faceCam != null)
+            return;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
     }
@@ -1044,6 +1048,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetPlayerFollowCam()
     {
+        if (playerFollowCam != null)
+            return;
         playerFollowCam = GameObject.FindGameObjectWithTag("PlayerFollowCamera");
         playerFreeLook = playerFollowCam.GetComponent<CinemachineFreeLook>();
         playerFreeLook.Follow = transform;
@@ -1055,6 +1061,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetMinimapFreeLook()
     {
+        if (minimapFreeLook != null || SceneManager.GetActiveScene().name != "DungeonScene")
+            return;
         minimapFreeLook = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<CinemachineFreeLook>();
         minimapFreeLook.Follow = transform;
         minimapFreeLook.LookAt = transform;

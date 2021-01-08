@@ -18,204 +18,59 @@ public class WeaponMasteryView : View
     Wand wand;
     Staff staff;
 
+    private int swordLevel;
+    private int daggerLevel;
+    private int bluntLevel;
+    private int wandLevel;
+    private int staffLevel;
+
+    [SerializeField] TextMeshProUGUI swordLevelText;
+    [SerializeField] TextMeshProUGUI daggerLevelText;
+    [SerializeField] TextMeshProUGUI bluntLevelText;
+    [SerializeField] TextMeshProUGUI wandLevelText;
+    [SerializeField] TextMeshProUGUI staffLevelText;
+
+    [SerializeField] GameObject[] swordSkill;
+    [SerializeField] GameObject[] daggerSkill;
+    [SerializeField] GameObject[] bluntSkill;
+    [SerializeField] GameObject[] wandSkill;
+    [SerializeField] GameObject[] staffSkill;
+
+    SkillScript[] _swordScript;
+    SkillScript[] _daggerScript;
+    SkillScript[] _bluntScript;
+    SkillScript[] _wandScript;
+    SkillScript[] _staffScript;
+
     private bool isInit = false;
-
-    private int _swordLevel;
-    private int _daggerLevel;
-    private int _bluntLevel;
-    private int _wandLevel;
-    private int _staffLevel;
-    [SerializeField] TextMeshProUGUI _swordLevelText;
-    [SerializeField] private Sprite _swordAttack;
-    [SerializeField] private Sprite _swordSkillA;
-    [SerializeField] private Sprite _swordSkillB;
-    [SerializeField] private Sprite _swordSkillC;
-    [SerializeField] private RawImage _swordSkillBLockImage;
-    [SerializeField] private RawImage _swordSkillCLockImage;
-
-    [SerializeField] TextMeshProUGUI _swordAttackLevelText;
-    [SerializeField] TextMeshProUGUI _swordSkillALevelText;
-    [SerializeField] TextMeshProUGUI _swordSkillBLevelText;
-    [SerializeField] TextMeshProUGUI _swordSkillCLevelText;
-    private int _swordAttackLevel;
-    private int _swordSkillALevel;
-    private int _swordSkillBLevel;
-    private int _swordSkillCLevel;
-    private bool _swordSkillBReleased = false;
-    private bool _swordSkillCReleased = false;
-
-    [SerializeField] TextMeshProUGUI _daggerLevelText;
-    [SerializeField] private Sprite _daggerAttack;
-    [SerializeField] private Sprite _daggerSkillA;
-    [SerializeField] private Sprite _daggerSkillB;
-    [SerializeField] private Sprite _daggerSkillC;
-    [SerializeField] private RawImage _daggerSkillBLockImage;
-    [SerializeField] private RawImage _daggerSkillCLockImage;
-
-    [SerializeField] TextMeshProUGUI _daggerAttackLevelText;
-    [SerializeField] TextMeshProUGUI _daggerSkillALevelText;
-    [SerializeField] TextMeshProUGUI _daggerSkillBLevelText;
-    [SerializeField] TextMeshProUGUI _daggerSkillCLevelText;
-
-    private int _daggerAttackLevel;
-    private int _daggerSkillALevel;
-    private int _daggerSkillBLevel;
-    private int _daggerSkillCLevel;
-    private bool _daggerSkillBReleased = false;
-    private bool _daggerSkillCReleased = false;
-
-    [SerializeField] TextMeshProUGUI _bluntLevelText;
-    [SerializeField] private Sprite _bluntAttack;
-    [SerializeField] private Sprite _bluntSkillA;
-    [SerializeField] private Sprite _bluntSkillB;
-    [SerializeField] private Sprite _bluntSkillC;
-    [SerializeField] private RawImage _bluntSkillBLockImage;
-    [SerializeField] private RawImage _bluntSkillCLockImage;
-
-    [SerializeField] TextMeshProUGUI _bluntAttackLevelText;
-    [SerializeField] TextMeshProUGUI _bluntSkillALevelText;
-    [SerializeField] TextMeshProUGUI _bluntSkillBLevelText;
-    [SerializeField] TextMeshProUGUI _bluntSkillCLevelText;
-
-    private int _bluntAttackLevel;
-    private int _bluntSkillALevel;
-    private int _bluntSkillBLevel;
-    private int _bluntSkillCLevel;
-    private bool _bluntSkillBReleased = false;
-    private bool _bluntSkillCReleased = false;
-
-    [SerializeField] TextMeshProUGUI _wandLevelText;
-    [SerializeField] private Sprite _wandAttack;
-    [SerializeField] private Sprite _wandSkillA;
-    [SerializeField] private Sprite _wandSkillB;
-    [SerializeField] private Sprite _wandSkillC;
-    [SerializeField] private RawImage _wandSkillBLockImage;
-    [SerializeField] private RawImage _wandSkillCLockImage;
-
-    [SerializeField] TextMeshProUGUI _wandAttackLevelText;
-    [SerializeField] TextMeshProUGUI _wandSkillALevelText;
-    [SerializeField] TextMeshProUGUI _wandSkillBLevelText;
-    [SerializeField] TextMeshProUGUI _wandSkillCLevelText;
-
-    private int _wandAttackLevel;
-    private int _wandSkillALevel;
-    private int _wandSkillBLevel;
-    private int _wandSkillCLevel;
-    private bool _wandSkillBReleased = false;
-    private bool _wandSkillCReleased = false;
-
-    [SerializeField] TextMeshProUGUI _staffLevelText;
-    [SerializeField] private Sprite _staffAttack;
-    [SerializeField] private Sprite _staffSkillA;
-    [SerializeField] private Sprite _staffSkillB;
-    [SerializeField] private Sprite _staffSkillC;
-    [SerializeField] private RawImage _staffSkillBLockImage;
-    [SerializeField] private RawImage _staffSkillCLockImage;
-    
-    [SerializeField] TextMeshProUGUI _staffAttackLevelText;
-    [SerializeField] TextMeshProUGUI _staffSkillALevelText;
-    [SerializeField] TextMeshProUGUI _staffSkillBLevelText;
-    [SerializeField] TextMeshProUGUI _staffSkillCLevelText;
-
-    private int _staffAttackLevel;
-    private int _staffSkillALevel;
-    private int _staffSkillBLevel;
-    private int _staffSkillCLevel;
-    private bool _staffSkillBReleased = false;
-    private bool _staffSkillCReleased = false;
 
     private void Start()
     {
-        Transform[] objList = gameObject.GetComponentsInChildren<Transform>();
+        _swordScript = new SkillScript[4];
+        _daggerScript = new SkillScript[4];
+        _bluntScript = new SkillScript[4];
+        _wandScript = new SkillScript[4];
+        _staffScript = new SkillScript[4];
 
-        foreach (Transform child in objList)
+        ScriptInit();
+    }
+
+    private void ScriptInit()
+    {
+        for(int i =0; i <4; i++)
         {
-            
-            if (child.name == "Sword")
-            {
-                Image attack;
-                Image skillA;
-                Image skillB;
-                Image skillC;
-
-               attack = child.Find("Skills").Find("Auto Attack").Find("Skill Image").GetComponent<Image>();
-               attack.sprite = _swordAttack;
-               skillA = child.Find("Skills").Find("Skill A").Find("Skill Image").GetComponent<Image>();
-               skillA.sprite = _swordSkillA;
-               skillB = child.Find("Skills").Find("Skill B").Find("Skill Image").GetComponent<Image>();
-               skillB.sprite = _swordSkillB;
-               skillC = child.Find("Skills").Find("Skill C").Find("Skill Image").GetComponent<Image>();
-               skillC.sprite = _swordSkillC;
-            }
-
-            if (child.name == "Dagger")
-            {
-                Image attack;
-                Image skillA;
-                Image skillB;
-                Image skillC;
-
-                attack = child.Find("Skills").Find("Auto Attack").Find("Skill Image").GetComponent<Image>();
-                attack.sprite = _daggerAttack;
-                skillA = child.Find("Skills").Find("Skill A").Find("Skill Image").GetComponent<Image>();
-                skillA.sprite = _daggerSkillA;
-                skillB = child.Find("Skills").Find("Skill B").Find("Skill Image").GetComponent<Image>();
-                skillB.sprite = _daggerSkillB;
-                skillC = child.Find("Skills").Find("Skill C").Find("Skill Image").GetComponent<Image>();
-                skillC.sprite = _daggerSkillC;
-            }
-            
-            if (child.name == "Blunt")
-            {
-                Image attack;
-                Image skillA;
-                Image skillB;
-                Image skillC;
-
-                attack = child.Find("Skills").Find("Auto Attack").Find("Skill Image").GetComponent<Image>();
-                attack.sprite = _bluntAttack;
-                skillA = child.Find("Skills").Find("Skill A").Find("Skill Image").GetComponent<Image>();
-                skillA.sprite = _bluntSkillA;
-                skillB = child.Find("Skills").Find("Skill B").Find("Skill Image").GetComponent<Image>();
-                skillB.sprite = _bluntSkillB;
-                skillC = child.Find("Skills").Find("Skill C").Find("Skill Image").GetComponent<Image>();
-                skillC.sprite = _bluntSkillC;
-            }
-            
-            if (child.name == "Wand")
-            {
-                Image attack;
-                Image skillA;
-                Image skillB;
-                Image skillC;
-
-                attack = child.Find("Skills").Find("Auto Attack").Find("Skill Image").GetComponent<Image>();
-                attack.sprite = _wandAttack;
-                skillA = child.Find("Skills").Find("Skill A").Find("Skill Image").GetComponent<Image>();
-                skillA.sprite = _wandSkillA;
-                skillB = child.Find("Skills").Find("Skill B").Find("Skill Image").GetComponent<Image>();
-                skillB.sprite = _wandSkillB;
-                skillC = child.Find("Skills").Find("Skill C").Find("Skill Image").GetComponent<Image>();
-                skillC.sprite = _wandSkillC;
-            }
-            
-            if (child.name == "Staff")
-            {
-                Image attack;
-                Image skillA;
-                Image skillB;
-                Image skillC;
-
-                attack = child.Find("Skills").Find("Auto Attack").Find("Skill Image").GetComponent<Image>();
-                attack.sprite = _staffAttack;
-                skillA = child.Find("Skills").Find("Skill A").Find("Skill Image").GetComponent<Image>();
-                skillA.sprite = _staffSkillA;
-                skillB = child.Find("Skills").Find("Skill B").Find("Skill Image").GetComponent<Image>();
-                skillB.sprite = _staffSkillB;
-                skillC = child.Find("Skills").Find("Skill C").Find("Skill Image").GetComponent<Image>();
-                skillC.sprite = _staffSkillC;
-            }
+            _swordScript[i] = swordSkill[i].GetComponent<SkillScript>();
+            _daggerScript[i] = daggerSkill[i].GetComponent<SkillScript>();
+            _bluntScript[i] = bluntSkill[i].GetComponent<SkillScript>();
+            _wandScript[i] = wandSkill[i].GetComponent<SkillScript>();
+            _staffScript[i] = staffSkill[i].GetComponent<SkillScript>();
         }
+    }
+
+    public void UpgradePop()
+    {
+
+        Debug.Log("HELLO");
 
     }
 
@@ -231,66 +86,19 @@ public class WeaponMasteryView : View
             wand = weaponManager._weaponDic["WAND"] as Wand;
             staff = weaponManager._weaponDic["STAFF"] as Staff;
 
-            _swordLevel = sword.masteryLevel;
-            _swordAttackLevel = sword.attackLevel;
-            _swordSkillALevel = sword.skillALevel;
-            _swordSkillBLevel = sword.skillBLevel;
-            _swordSkillCLevel = sword.skillCLevel;
+            swordLevel = sword.masteryLevel;
+            daggerLevel = dagger.masteryLevel;
+            bluntLevel = blunt.masteryLevel;
+            wandLevel = wand.masteryLevel;
+            staffLevel = staff.masteryLevel;
 
-            _daggerLevel = dagger.masteryLevel;
-            _daggerAttackLevel = dagger.attackLevel;
-            _daggerSkillALevel = dagger.skillALevel;
-            _daggerSkillBLevel = dagger.skillBLevel;
-            _daggerSkillCLevel = dagger.skillCLevel;
+            LevelPrint();
 
-            _bluntLevel = blunt.masteryLevel;
-            _bluntAttackLevel = blunt.attackLevel;
-            _bluntSkillALevel = blunt.skillALevel;
-            _bluntSkillBLevel = blunt.skillBLevel;
-            _bluntSkillCLevel = blunt.skillCLevel;
-
-            _wandLevel = wand.masteryLevel;
-            _wandAttackLevel = wand.attackLevel;
-            _wandSkillALevel = wand.skillALevel;
-            _wandSkillBLevel = wand.skillBLevel;
-            _wandSkillCLevel = wand.skillCLevel;
-
-            _staffLevel = staff.masteryLevel;
-            _staffAttackLevel = staff.attackLevel;
-            _staffSkillALevel = staff.skillALevel;
-            _staffSkillBLevel = staff.skillBLevel;
-            _staffSkillCLevel = staff.skillCLevel;
-
-            _swordLevelText.text = "Lv." + _swordLevel;
-            _daggerLevelText.text = "Lv." + _daggerLevel;
-            _bluntLevelText.text = "Lv." + _bluntLevel;
-            _wandLevelText.text = "Lv." + _wandLevel;
-            _staffLevelText.text = "Lv." + _staffLevel;
-
-            _swordAttackLevelText.text = "Lv." + _swordAttackLevel;
-            _swordSkillALevelText.text = "Lv." + _swordSkillALevel;
-            _swordSkillBLevelText.text = "Lv." + _swordSkillBLevel;
-            _swordSkillCLevelText.text = "Lv." + _swordSkillCLevel;
-
-            _daggerAttackLevelText.text = "Lv." + _daggerAttackLevel;
-            _daggerSkillALevelText.text = "Lv." + _daggerSkillALevel;
-            _daggerSkillBLevelText.text = "Lv." + _daggerSkillBLevel;
-            _daggerSkillCLevelText.text = "Lv." + _daggerSkillCLevel;
-
-            _bluntAttackLevelText.text = "Lv." + _bluntAttackLevel;
-            _bluntSkillALevelText.text = "Lv." + _bluntSkillALevel;
-            _bluntSkillBLevelText.text = "Lv." + _bluntSkillBLevel;
-            _bluntSkillCLevelText.text = "Lv." + _bluntSkillCLevel;
-
-            _wandAttackLevelText.text = "Lv." + _wandAttackLevel;
-            _wandSkillALevelText.text = "Lv." + _wandSkillALevel;
-            _wandSkillBLevelText.text = "Lv." + _wandSkillBLevel;
-            _wandSkillCLevelText.text = "Lv." + _wandSkillCLevel;
-
-            _staffAttackLevelText.text = "Lv." + _staffAttackLevel;
-            _staffSkillALevelText.text = "Lv." + _staffSkillALevel;
-            _staffSkillBLevelText.text = "Lv." + _staffSkillBLevel;
-            _staffSkillCLevelText.text = "Lv." + _staffSkillCLevel;
+            swordLevelText.text = "Lv." + swordLevel;
+            daggerLevelText.text = "Lv." + daggerLevel;
+            bluntLevelText.text = "Lv." + bluntLevel;
+            wandLevelText.text = "Lv." + wandLevel;
+            staffLevelText.text = "Lv." + staffLevel;
 
             isInit = true;
         }
@@ -303,228 +111,115 @@ public class WeaponMasteryView : View
     }
 
     private void SkillLevelPrint()
-    {
-        SwordSkillPrint();
-        DaggerSkillPrint();
-        BluntSkillPrint();
-        WandSkillPrint();
-        StaffSkillPrint();
-    }
-
-    private void StaffSkillPrint()
-    {
-        if (_staffAttackLevel != staff.attackLevel)
+    {   
+        for(int i =0; i <4; i++)
         {
-            _staffAttackLevel = staff.attackLevel;
-            _staffAttackLevelText.text = "Lv." + _staffAttackLevel;
-        }
-        if (_staffSkillALevel != staff.skillALevel)
-        {
-            _staffSkillALevel = staff.skillALevel;
-            _staffSkillALevelText.text = "Lv." + _staffSkillALevel;
-        }
-        if (_staffSkillBLevel != staff.skillBLevel)
-        {
-            _staffSkillBLevel = staff.skillBLevel;
-            _staffSkillBLevelText.text = "Lv." + _staffSkillBLevel;
-        }
-        if (_staffSkillCLevel != staff.skillCLevel)
-        {
-            _staffSkillCLevel = staff.skillCLevel;
-            _staffSkillCLevelText.text = "Lv." + _staffSkillCLevel;
-        }
-    }
-    private void WandSkillPrint()
-    {
-        if (_wandAttackLevel != wand.attackLevel)
-        {
-            _wandAttackLevel = wand.attackLevel;
-            _wandAttackLevelText.text = "Lv." + _wandAttackLevel;
-        }
-        if (_wandSkillALevel != wand.skillALevel)
-        {
-            _wandSkillALevel = wand.skillALevel;
-            _wandSkillALevelText.text = "Lv." + _wandSkillALevel;
-        }
-        if (_wandSkillBLevel != wand.skillBLevel)
-        {
-            _wandSkillBLevel = wand.skillBLevel;
-            _wandSkillBLevelText.text = "Lv." + _wandSkillBLevel;
-        }
-        if (_wandSkillCLevel != wand.skillCLevel)
-        {
-            _wandSkillCLevel = wand.skillCLevel;
-            _wandSkillCLevelText.text = "Lv." + _wandSkillCLevel;
-        }
-    }
-
-    private void BluntSkillPrint()
-    {
-        if (_bluntAttackLevel != blunt.attackLevel)
-        {
-            _bluntAttackLevel = blunt.attackLevel;
-            _bluntAttackLevelText.text = "Lv." + _bluntAttackLevel;
-        }
-        if (_bluntSkillALevel != blunt.skillALevel)
-        {
-            _bluntSkillALevel = blunt.skillALevel;
-            _bluntSkillALevelText.text = "Lv." + _bluntSkillALevel;
-        }
-        if (_bluntSkillBLevel != blunt.skillBLevel)
-        {
-            _bluntSkillBLevel = blunt.skillBLevel;
-            _bluntSkillBLevelText.text = "Lv." + _bluntSkillBLevel;
-        }
-        if (_bluntSkillCLevel != blunt.skillCLevel)
-        {
-            _bluntSkillCLevel = blunt.skillCLevel;
-            _bluntSkillCLevelText.text = "Lv." + _bluntSkillCLevel;
-        }
-    }
-
-    private void DaggerSkillPrint()
-    {
-        if (_daggerAttackLevel != dagger.attackLevel)
-        {
-            _daggerAttackLevel = dagger.attackLevel;
-            _daggerAttackLevelText.text = "Lv." + _daggerAttackLevel;
-        }
-        if (_daggerSkillALevel != dagger.skillALevel)
-        {
-            _daggerSkillALevel = dagger.skillALevel;
-            _daggerSkillALevelText.text = "Lv." + _daggerSkillALevel;
-        }
-        if (_daggerSkillBLevel != dagger.skillBLevel)
-        {
-            _daggerSkillBLevel = dagger.skillBLevel;
-            _daggerSkillBLevelText.text = "Lv." + _daggerSkillBLevel;
-        }
-        if (_daggerSkillCLevel != dagger.skillCLevel)
-        {
-            _daggerSkillCLevel = dagger.skillCLevel;
-            _daggerSkillCLevelText.text = "Lv." + _daggerSkillCLevel;
-        }
-    }
-
-    private void SwordSkillPrint()
-    {
-        if (_swordAttackLevel != sword.attackLevel)
-        {
-            _swordAttackLevel = sword.attackLevel;
-            _swordAttackLevelText.text = "Lv." + _swordAttackLevel;
-        }
-        if (_swordSkillALevel != sword.skillALevel)
-        {
-            _swordSkillALevel = sword.skillALevel;
-            _swordSkillALevelText.text = "Lv." + _swordSkillALevel;
-        }
-        if (_swordSkillBLevel != sword.skillBLevel)
-        {
-            _swordSkillBLevel = sword.skillBLevel;
-            _swordSkillBLevelText.text = "Lv." + _swordSkillBLevel;
-        }
-        if (_swordSkillCLevel != sword.skillCLevel)
-        {
-            _swordSkillCLevel = sword.skillCLevel;
-            _swordSkillCLevelText.text = "Lv." + _swordSkillCLevel;
+            if(_swordScript[i].skillLevel != sword.skillLevel[i])
+            {
+                if (_swordScript[i].skillLevel > sword.skillLevel[i]) sword.skillLevel[i] = _swordScript[i].skillLevel;
+                else  _swordScript[i].skillLevel = sword.skillLevel[i];
+                _swordScript[i].SkillLevelPrint();
+            }
+            if (_daggerScript[i].skillLevel != dagger.skillLevel[i])
+            {
+                if (_daggerScript[i].skillLevel > dagger.skillLevel[i]) dagger.skillLevel[i] = _daggerScript[i].skillLevel;
+                else _daggerScript[i].skillLevel = dagger.skillLevel[i];
+                _daggerScript[i].SkillLevelPrint();
+            }
+            if (_bluntScript[i].skillLevel != blunt.skillLevel[i])
+            {
+                if (_bluntScript[i].skillLevel > blunt.skillLevel[i]) blunt.skillLevel[i] = _bluntScript[i].skillLevel;
+                else _bluntScript[i].skillLevel = blunt.skillLevel[i];
+                _bluntScript[i].SkillLevelPrint();
+            }
+            if (_wandScript[i].skillLevel != wand.skillLevel[i])
+            {
+                if (_wandScript[i].skillLevel > wand.skillLevel[i]) wand.skillLevel[i] = _wandScript[i].skillLevel;
+                else _wandScript[i].skillLevel = wand.skillLevel[i];
+                _wandScript[i].SkillLevelPrint();
+            }
+            if (_staffScript[i].skillLevel != staff.skillLevel[i])
+            {
+                if (_staffScript[i].skillLevel > staff.skillLevel[i]) staff.skillLevel[i] = _staffScript[i].skillLevel;
+                else _staffScript[i].skillLevel = staff.skillLevel[i];
+                _staffScript[i].SkillLevelPrint();
+            }
         }
     }
 
     private void SkillUnLock()
     {
-        if(sword.skillBRelease && _swordSkillBReleased == false)
+        if(sword.skillBRelease && _swordScript[2].skillReleased == false)
         {
-            _swordSkillBLockImage.gameObject.SetActive(false);
-            _swordSkillBLevelText.gameObject.SetActive(true);
-            _swordSkillBReleased = true;
+            _swordScript[2].SkillUnLock();
         }
-        if (sword.skillCRelease && _swordSkillCReleased == false)
+        if (sword.skillCRelease && _swordScript[3].skillReleased == false)
         {
-            _swordSkillCLockImage.gameObject.SetActive(false);
-            _swordSkillCLevelText.gameObject.SetActive(true);
-            _swordSkillCReleased = true;
+            _swordScript[3].SkillUnLock();
         }
-
-        if (dagger.skillBRelease && _daggerSkillBReleased == false)
+        if (dagger.skillBRelease && _daggerScript[2].skillReleased == false)
         {
-            _daggerSkillBLockImage.gameObject.SetActive(false);
-            _daggerSkillBLevelText.gameObject.SetActive(true);
-            _daggerSkillBReleased = true;
+            _daggerScript[2].SkillUnLock();
         }
-        if (dagger.skillCRelease && _daggerSkillCReleased == false)
+        if (dagger.skillCRelease && _daggerScript[3].skillReleased == false)
         {
-            _daggerSkillCLockImage.gameObject.SetActive(false);
-            _daggerSkillCLevelText.gameObject.SetActive(true);
-            _daggerSkillCReleased = true;
+            _daggerScript[3].SkillUnLock();
         }
-
-        if (blunt.skillBRelease && _bluntSkillBReleased == false)
+        if (blunt.skillBRelease && _bluntScript[2].skillReleased == false)
         {
-            _bluntSkillBLockImage.gameObject.SetActive(false);
-            _bluntSkillBLevelText.gameObject.SetActive(true);
-            _bluntSkillBReleased = true;
+            _bluntScript[2].SkillUnLock();
         }
-        if (blunt.skillCRelease && _bluntSkillCReleased == false)
+        if (blunt.skillCRelease && _bluntScript[3].skillReleased == false)
         {
-            _bluntSkillCLockImage.gameObject.SetActive(false);
-            _bluntSkillCLevelText.gameObject.SetActive(true);
-            _bluntSkillCReleased = true;
+            _bluntScript[3].SkillUnLock();
         }
-
-        if (wand.skillBRelease && _wandSkillBReleased == false)
+        if (wand.skillBRelease && _wandScript[2].skillReleased == false)
         {
-            _wandSkillBLockImage.gameObject.SetActive(false);
-            _wandSkillBLevelText.gameObject.SetActive(true);
-            _wandSkillBReleased = true;
+            _wandScript[2].SkillUnLock();
         }
-        if (wand.skillCRelease && _wandSkillCReleased == false)
+        if (wand.skillCRelease && _wandScript[3].skillReleased == false)
         {
-            _wandSkillCLockImage.gameObject.SetActive(false);
-            _wandSkillCLevelText.gameObject.SetActive(true);
-            _wandSkillCReleased = true;
+            _wandScript[3].SkillUnLock();
         }
-
-        if (staff.skillBRelease && _staffSkillBReleased == false)
+        if (staff.skillBRelease && _staffScript[2].skillReleased == false)
         {
-            _staffSkillBLockImage.gameObject.SetActive(false);
-            _staffSkillBLevelText.gameObject.SetActive(true);
-            _staffSkillBReleased = true;
+            _staffScript[2].SkillUnLock();
         }
-        if (staff.skillCRelease && _staffSkillCReleased == false)
+        if (staff.skillCRelease && _staffScript[3].skillReleased == false)
         {
-            _staffSkillCLockImage.gameObject.SetActive(false);
-            _staffSkillCLevelText.gameObject.SetActive(true);
-            _staffSkillCReleased = true;
+            _staffScript[3].SkillUnLock();
         }
     }
 
     public void LevelPrint()
     {
-        if (_swordLevel != sword.masteryLevel)
+        
+        if (swordLevel != sword.masteryLevel)
         {
-            _swordLevel = sword.masteryLevel;
-            _swordLevelText.text = "Lv." + _swordLevel;
+            swordLevel = sword.masteryLevel;
+            swordLevelText.text = "Lv." + swordLevel;
         }
-        if (_daggerLevel != dagger.masteryLevel)
+        if (daggerLevel != dagger.masteryLevel)
         {
-            _daggerLevel = dagger.masteryLevel;
-            _daggerLevelText.text = "Lv." + _daggerLevel;
+            daggerLevel = dagger.masteryLevel;
+            daggerLevelText.text = "Lv." + daggerLevel;
         }
-        if (_bluntLevel != blunt.masteryLevel)
+        if (bluntLevel != blunt.masteryLevel)
         {
-            _bluntLevel = blunt.masteryLevel;
-            _bluntLevelText.text = "Lv." + _bluntLevel;
+            bluntLevel = blunt.masteryLevel;
+            bluntLevelText.text = "Lv." + bluntLevel;
         }
-        if (_wandLevel != wand.masteryLevel)
+        if (wandLevel != wand.masteryLevel)
         {
-            _wandLevel = wand.masteryLevel;
-            _wandLevelText.text = "Lv." + _wandLevel;
+            wandLevel = wand.masteryLevel;
+            wandLevelText.text = "Lv." + wandLevel;
         }
-        if (_staffLevel != staff.masteryLevel)
+        if (staffLevel != staff.masteryLevel)
         {
-            _staffLevel = staff.masteryLevel;
-            _staffLevelText.text = "Lv." + _staffLevel;
+            staffLevel = staff.masteryLevel;
+            staffLevelText.text = "Lv." + staffLevel;
         }
+        
     }
 
 }
