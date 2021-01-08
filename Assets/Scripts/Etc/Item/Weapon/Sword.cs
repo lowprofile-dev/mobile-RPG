@@ -16,11 +16,11 @@ public class Sword : Weapon
 
         skillBRelease = false;
         skillCRelease = false;
-        
-        skillALevel = 0;
+
+        attackLevel = 1;
+        skillALevel = 1;
         skillBLevel = 0;
         skillCLevel = 0;
-        attackLevel = 1;
 
         attackDamage= 1;
         magicDamage = 0;
