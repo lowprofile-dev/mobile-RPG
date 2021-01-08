@@ -17,7 +17,7 @@ public class BossSkeletonPase2 : MonsterAction
     private GameObject currentTarget;
 
     string currentAnimation;
-
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -41,12 +41,12 @@ public class BossSkeletonPase2 : MonsterAction
         StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
-
+        
         _navMeshAgent.acceleration = 8f;
         currentTarget = _target;
         CameraManager.Instance.ShakeCamera(3, 1, 0.5f);
         currentTarget = _target;
-        ChangeState(STATE.STATE_TRACE);
+        ChangeState(MONSTER_STATE.STATE_TRACE);
 
     }
     protected void ComboAttack()
@@ -86,7 +86,7 @@ public class BossSkeletonPase2 : MonsterAction
     }
     protected override void SpawnStart()
     {
-        ChangeState(STATE.STATE_IDLE);
+        ChangeState(MONSTER_STATE.STATE_IDLE);
     }
 
     protected override void SpawnExit()
@@ -96,7 +96,7 @@ public class BossSkeletonPase2 : MonsterAction
     private void AttackCorotineInit()
     {
         _attackCoroutine = null;
-        ChangeState(STATE.STATE_TRACE);
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     protected override void CastStart()
@@ -142,7 +142,7 @@ public class BossSkeletonPase2 : MonsterAction
         {
             _cntCastTime = 0;
             _readyCast = true;
-            ChangeState(STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
 
     }
@@ -159,8 +159,8 @@ public class BossSkeletonPase2 : MonsterAction
 
     public override void InitState()
     {
-        _currentState = STATE.STATE_NULL;
-        ChangeState(STATE.STATE_IDLE);
+        _currentState = MONSTER_STATE.STATE_NULL;
+        ChangeState(MONSTER_STATE.STATE_IDLE);
         _navMeshAgent.enabled = true;
         _navMeshAgent.speed = _moveSpeed;
         currentTarget = _target;
@@ -189,7 +189,7 @@ public class BossSkeletonPase2 : MonsterAction
 
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
-            ChangeState(STATE.STATE_CAST);            
+            ChangeState(MONSTER_STATE.STATE_CAST);            
         }
 
     }
@@ -212,7 +212,7 @@ public class BossSkeletonPase2 : MonsterAction
 
             _readyCast = false;
             //if (!_readyCast && ToCast()) break;
-            ChangeState(STATE.STATE_TRACE);
+            ChangeState(MONSTER_STATE.STATE_TRACE);
 
             break;
             
@@ -318,7 +318,7 @@ public class BossSkeletonPase2 : MonsterAction
             if (_attackCoroutine == null)
                 _attackCoroutine = StartCoroutine(AttackTarget());
             //else
-            //    ChangeState(STATE.STATE_IDLE);
+            //    ChangeState(MONSTER_STATE.STATE_IDLE);
         }
         
     }

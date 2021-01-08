@@ -27,7 +27,6 @@ public class PlayerAttack: MonoBehaviour
     public virtual void OnLoad()
     {
         GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
-        Effect.transform.SetParent(_particleEffectPrefab.transform);
 
         Effect.transform.rotation = Quaternion.identity;
         Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
