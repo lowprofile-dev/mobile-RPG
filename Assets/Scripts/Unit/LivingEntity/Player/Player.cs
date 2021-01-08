@@ -61,6 +61,7 @@ public class Player : LivingEntity
     public float dashSpeed; // 대쉬 스피드
     public int currentCombo; // 현재 콤보 수
     private bool _canConnectCombo; public bool canconnectCombo { get { return _canConnectCombo; } } // 콤보를 더 이을 수 있는지
+    [SerializeField] private TrailRenderer _trailRenderer;
 
     PartSelection selection;
     FaceCam faceCam;
@@ -166,31 +167,24 @@ public class Player : LivingEntity
         switch (_cntState)
         {
             case PLAYERSTATE.PS_IDLE:
-                //Debug.Log("IDLE");
                 IdleUpdate();
                 break;
             case PLAYERSTATE.PS_MOVE:
-                //Debug.Log("MOVE");
                 MoveUpdate();
                 break;
             case PLAYERSTATE.PS_ATTACK:
-                //Debug.Log("ATTACK");
                 AttackUpdate();
                 break;
             case PLAYERSTATE.PS_EVADE:
-                //Debug.Log("EVADE");
                 EvadeUpdate();
                 break;
             case PLAYERSTATE.PS_DIE:
-                //Debug.Log("DIE");
                 DieUpdate();
                 break;
             case PLAYERSTATE.PS_SKILL:
-                //Debug.Log("SKILL");
                 SkillUpdate();
                 break;
             case PLAYERSTATE.PS_INTERACTING:
-                //Debug.Log("INTERACTING");
                 InteractUpdate();
                 break;
         }
@@ -465,8 +459,8 @@ public class Player : LivingEntity
         switch (currentCombo)
         {
             case 1: weaponManager.GetWeapon().Attack(); break;
-            case 2: weaponManager.GetWeapon().Attack(); break;
-            case 3: weaponManager.GetWeapon().Attack(); break;
+            case 2: weaponManager.GetWeapon().Attack2(); break;
+            case 3: weaponManager.GetWeapon().Attack3(); break;
         }
     }
 
@@ -934,10 +928,10 @@ public class Player : LivingEntity
     /// </summary>
     private void SetUpPlayerCamera()
     {
-        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
         SetPlayerFaceCam();
         SetPlayerFollowCam();
         SetMinimapFreeLook();
+        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
     }
 
     /// <summary>
