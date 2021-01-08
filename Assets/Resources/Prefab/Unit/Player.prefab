@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 3921490016967684023}
   - component: {fileID: 2128474192}
   - component: {fileID: 2128474188}
+  - component: {fileID: 3579303962046094622}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -158,11 +159,11 @@ MonoBehaviour:
   _initHp: 10
   _initMp: 10
   _hp: 0
-  _mp: 0
+  _stemina: 0
   _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
     type: 3}
-  MyAnimator: {fileID: 3979612402344183014}
-  avoid_power: 2
+  myAnimator: {fileID: 0}
+  _initEvadeTime: 0.3
   _playerAvatar: {fileID: 3920493311905665660}
   firePoint: {fileID: 1470817335}
   skillPoint: {fileID: 362263809}
@@ -176,6 +177,8 @@ MonoBehaviour:
   weaponChanged: 0
   rotateAngle: {x: 0, y: 0, z: 0, w: 0}
   joystick: {fileID: 0}
+  dashSpeed: 100
+  currentCombo: 0
   weaponManager: {fileID: 0}
 --- !u!114 &3921490016967684023
 MonoBehaviour:
@@ -218,6 +221,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45fc230a92150e248967bb697e5794fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &3579303962046094622
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3921490016967684021}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: cd58eced228a0df44ae3596b8fe2f44d, type: 3}
+  m_Controller: {fileID: 9100000, guid: f52bfba20764393449b1fc7cddcbfd4f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &3921490016017718292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -467,6 +489,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 95000010701986034, guid: 7d23da8c0b7615d439708fd91845e86b,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95000010701986034, guid: 7d23da8c0b7615d439708fd91845e86b,
+        type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 3a8a18303cfb0a34193a91710a08f262, type: 2}
@@ -481,12 +508,6 @@ GameObject:
 --- !u!4 &3919780504563388118 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000012010427074, guid: 7d23da8c0b7615d439708fd91845e86b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3921490016017718292}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &3979612402344183014 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 95000010701986034, guid: 7d23da8c0b7615d439708fd91845e86b,
     type: 3}
   m_PrefabInstance: {fileID: 3921490016017718292}
   m_PrefabAsset: {fileID: 0}

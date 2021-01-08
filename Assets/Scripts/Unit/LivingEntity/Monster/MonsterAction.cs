@@ -279,7 +279,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void SpawnStart()
     {
         _isImmune = true; // 스폰 중 무적
-        _monster.MyAnimator.SetTrigger("Spawn");
+        _monster.myAnimator.SetTrigger("Spawn");
         AddSpawnEffect();
     }
 
@@ -326,7 +326,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void SpawnExit()
     {
         _isImmune = false; // 스폰 끝날 시 무적 해제
-        _monster.MyAnimator.ResetTrigger("Spawn");
+        _monster.myAnimator.ResetTrigger("Spawn");
     }
 
 
@@ -345,7 +345,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void SetNewPatrolPos()
     {
         _navMeshAgent.isStopped = false;
-        _monster.MyAnimator.SetTrigger("Idle");
+        _monster.myAnimator.SetTrigger("Idle");
 
         _patrolPos = new Vector3(UnityEngine.Random.Range(_spawnPosition.x - 3f, _spawnPosition.x + 3f), _spawnPosition.y, UnityEngine.Random.Range(_spawnPosition.z - 3f, _spawnPosition.z + 3f)); // 주변을 둘러볼 수 있도록
         _navMeshAgent.SetDestination(_patrolPos);
@@ -414,7 +414,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void IdleExit()
     {
         if (_idleCoroutine != null) StopCoroutine(_idleCoroutine);
-        _monster.MyAnimator.ResetTrigger("Idle");
+        _monster.myAnimator.ResetTrigger("Idle");
     }
 
 
@@ -424,7 +424,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void StirrStart()
     {
         _navMeshAgent.isStopped = true;
-        _monster.MyAnimator.SetTrigger("Stirr");
+        _monster.myAnimator.SetTrigger("Stirr");
     }
 
     protected virtual void StirrUpdate()
@@ -438,7 +438,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void StirrExit()
     {
         _navMeshAgent.isStopped = false;
-        _monster.MyAnimator.ResetTrigger("Stirr");
+        _monster.myAnimator.ResetTrigger("Stirr");
     }
 
 
@@ -482,7 +482,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void TraceStart()
     {
-        _monster.MyAnimator.SetTrigger("Walk");
+        _monster.myAnimator.SetTrigger("Walk");
     }
 
     private void TraceUpdate()
@@ -539,7 +539,7 @@ public class MonsterAction : MonoBehaviour
 
     private void TraceExit()
     {
-        _monster.MyAnimator.ResetTrigger("Walk");
+        _monster.myAnimator.ResetTrigger("Walk");
     }
 
 
@@ -572,7 +572,7 @@ public class MonsterAction : MonoBehaviour
             if (CanAttackState())
             {
 
-                yield return new WaitForSeconds(_attackSpeed - _monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 SetAttackType();
                 SetAttackAnimation();
                 
@@ -582,10 +582,10 @@ public class MonsterAction : MonoBehaviour
 
                 StartCoroutine(DoAttackAction());
 
-                yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
                 ResetAttackAnimation();
-                _monster.MyAnimator.ResetTrigger("Attack"); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
+                _monster.myAnimator.ResetTrigger("Attack"); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 
                 _readyCast = false;
                 if(!_readyCast && ToCast()) break;
@@ -625,7 +625,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void SetAttackAnimation()
     {
-        _monster.MyAnimator.SetTrigger("Attack");
+        _monster.myAnimator.SetTrigger("Attack");
     }
 
     /// <summary>
@@ -633,7 +633,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void ResetAttackAnimation()
     {
-        _monster.MyAnimator.ResetTrigger("Attack");
+        _monster.myAnimator.ResetTrigger("Attack");
     }
 
     /// <summary>
@@ -646,7 +646,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void AttackExit()
     {
-        _monster.MyAnimator.ResetTrigger("Attack");
+        _monster.myAnimator.ResetTrigger("Attack");
         if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
 
@@ -769,8 +769,8 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void SetHitAnimation(bool isDeath)
     {
-        if (isDeath) _monster.MyAnimator.ResetTrigger("Hit");
-        else _monster.MyAnimator.SetTrigger("Hit");
+        if (isDeath) _monster.myAnimator.ResetTrigger("Hit");
+        else _monster.myAnimator.SetTrigger("Hit");
     }
 
     /// <summary>
@@ -804,10 +804,10 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void FadeOutRedHitOutline()
     {
-        Color c = _outlinable.OutlineParameters.Color;
-        _outlinable.OutlineParameters.Color = new Color(c.r, c.g, c.b, 1f);
-        if (_fadeOutRedTween == null) _fadeOutRedTween = _outlinable.OutlineParameters.DOFade(0, 1).SetAutoKill(false);
-        else _fadeOutRedTween.ChangeStartValue(_outlinable.OutlineParameters.Color.a, 1).Restart();
+        Color c = _outlinable.FrontParameters.Color;
+        _outlinable.FrontParameters.Color = new Color(c.r, c.g, c.b, 1f);
+        if (_fadeOutRedTween == null) _fadeOutRedTween = _outlinable.FrontParameters.DOFade(0, 1).SetAutoKill(false);
+        else _fadeOutRedTween.ChangeStartValue(_outlinable.FrontParameters.Color.a, 1).Restart();
     }
 
     /// <summary>
@@ -856,7 +856,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual IEnumerator DoDeathAction()
     {
-        _monster.MyAnimator.SetTrigger("Die");
+        _monster.myAnimator.SetTrigger("Die");
         gameObject.GetComponent<Collider>().enabled = false;
 
         while (true)
@@ -873,6 +873,8 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void SetDeathProduction()
     {
+        _outlinable.enabled = false;
+
         transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => { DestroyImmediate(gameObject); });
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
 
@@ -918,7 +920,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void KillStart()
     {
-        _monster.MyAnimator.SetTrigger("Laugh");
+        _monster.myAnimator.SetTrigger("Laugh");
         _navMeshAgent.enabled = false;
     }
 
@@ -926,8 +928,8 @@ public class MonsterAction : MonoBehaviour
     {
         if (CheckAnimationOver("Laugh", 1.0f))
         {
-            _monster.MyAnimator.ResetTrigger("Laugh");
-            _monster.MyAnimator.SetTrigger("Laugh");
+            _monster.myAnimator.ResetTrigger("Laugh");
+            _monster.myAnimator.SetTrigger("Laugh");
         }
 
         transform.RotateAround(_target.transform.position, Vector3.up, 5 * Time.deltaTime);
@@ -958,7 +960,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public bool CheckAnimationOver(int animNum, float time)
     {
-        return _monster.MyAnimator.GetCurrentAnimatorStateInfo(animNum).normalizedTime >= time;
+        return _monster.myAnimator.GetCurrentAnimatorStateInfo(animNum).normalizedTime >= time;
     }
 
     /// <summary>
@@ -966,7 +968,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public bool CheckAnimationOver(string name, float time)
     {
-        AnimatorStateInfo info = _monster.MyAnimator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo info = _monster.myAnimator.GetCurrentAnimatorStateInfo(0);
         return info.IsName(name) && info.normalizedTime >= time;
     }
 
@@ -975,6 +977,6 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public float GetAnimationPercentTime(int animNum)
     {
-        return _monster.MyAnimator.GetCurrentAnimatorStateInfo(animNum).normalizedTime;
+        return _monster.myAnimator.GetCurrentAnimatorStateInfo(animNum).normalizedTime;
     }
 }

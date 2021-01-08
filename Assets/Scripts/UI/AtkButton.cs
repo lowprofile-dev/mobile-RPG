@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class AtkButton : MonoBehaviour //, IPointerDownHandler, IPointerUpHandler
 {
     private bool isBtnDown = false;
     private float counter = 0f;
@@ -15,13 +15,15 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void Start()
     {
         //attackImg = attackobj.GetComponent<Image>();
+        GetComponent<Button>().onClick.AddListener(delegate { Player.Instance.AttackBtnClicked(); });
     }
 
     void Update()
     {
-        if (Player.Instance != null && !Player.Instance.isdead ) AttackBtnClick();
+        //if (Player.Instance != null && !Player.Instance.isdead ) AttackBtnClick();
     }
 
+    /*
     private void AttackBtnClick()
     {
         if (atkcheck)
@@ -32,6 +34,7 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 atkcheck = false;
             }
         }
+
         else
         {
             counter += Time.deltaTime;
@@ -55,5 +58,5 @@ public class AtkButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         isBtnDown = false;
         Player.Instance.SetAttackButton(isBtnDown);
     }
-
+    */
 }

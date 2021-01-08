@@ -114,7 +114,7 @@ public class BossSkeleton : MonsterAction
 
     private void KillStart()
     {
-        _monster.MyAnimator.SetTrigger("Laugh");
+        _monster.myAnimator.SetTrigger("Laugh");
         _navMeshAgent.enabled = false;
     }
 
@@ -163,9 +163,9 @@ public class BossSkeleton : MonsterAction
     {
         base.MoveToTarget();
         //_navMeshAgent.isStopped = false;
-        if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+        if (!_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
         {
-            _monster.MyAnimator.SetTrigger("Walk");
+            _monster.myAnimator.SetTrigger("Walk");
         }
         if (CanAttackState())
         {
@@ -233,9 +233,9 @@ public class BossSkeleton : MonsterAction
             _navMeshAgent.speed = 30f;
 
 
-            if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName(AtkState))
+            if (!_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName(AtkState))
             {
-                _monster.MyAnimator.SetTrigger(AtkState);
+                _monster.myAnimator.SetTrigger(AtkState);
             }
                 // 사운드 재생
                 Debug.Log(_monster.monsterName + "의 공격!");
@@ -255,7 +255,7 @@ public class BossSkeleton : MonsterAction
             // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 
 
-            yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
             ChangeState(STATE.STATE_IDLE);
                 
@@ -305,9 +305,9 @@ public class BossSkeleton : MonsterAction
     {
         base.IdleUpdate();
 
-        if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (!_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            _monster.MyAnimator.SetTrigger("Idle");
+            _monster.myAnimator.SetTrigger("Idle");
         }
 
         if (CanAttackState())
@@ -327,7 +327,7 @@ public class BossSkeleton : MonsterAction
 
         if (panic)
         {
-            _monster.MyAnimator.SetTrigger("Panic");
+            _monster.myAnimator.SetTrigger("Panic");
             panic = false;
         }
 
@@ -354,7 +354,7 @@ public class BossSkeleton : MonsterAction
     {
         // DeadSound를 재생한다.
         // 뭔가 사망 행동을 함
-        _monster.MyAnimator.SetTrigger("Die");
+        _monster.myAnimator.SetTrigger("Die");
 
         Debug.Log("사망했다! 사망행동으로 폭탄 떨구고 가기~");
         yield return new WaitForSeconds(2);
@@ -364,14 +364,14 @@ public class BossSkeleton : MonsterAction
 
     protected override void IdleStart()
     {
-        if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        _monster.MyAnimator.SetTrigger("Idle");
+        if (!_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        _monster.myAnimator.SetTrigger("Idle");
     }
 
     private void SpawnAction()
     {
 
-        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
             ChangeState(STATE.STATE_IDLE);
         }
@@ -379,13 +379,13 @@ public class BossSkeleton : MonsterAction
 
     private void SpawnStart()
     {
-        _monster.MyAnimator.SetTrigger("Spawn");
+        _monster.myAnimator.SetTrigger("Spawn");
     }
 
     private void TraceStart()
     {
         _navMeshAgent.speed = _moveSpeed * 1.5f;
-        _monster.MyAnimator.SetTrigger("Walk");
+        _monster.myAnimator.SetTrigger("Walk");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -394,8 +394,8 @@ public class BossSkeleton : MonsterAction
         {
             Debug.Log("데미지입은 몬스터");
 
-            if(!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
-            _monster.MyAnimator.SetTrigger("Hit");
+            if(!_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+            _monster.myAnimator.SetTrigger("Hit");
 
             _monster.Damaged(1);
 
@@ -416,7 +416,7 @@ public class BossSkeleton : MonsterAction
         {
             yield return null;
 
-            if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+            if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
             {
                 StopCoroutine(_hitCoroutine);
                 _hitCoroutine = null;
@@ -427,10 +427,10 @@ public class BossSkeleton : MonsterAction
 
     private void KillPlayer()
     {
-        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
-            _monster.MyAnimator.ResetTrigger("Laugh");
-            _monster.MyAnimator.SetTrigger("Laugh");
+            _monster.myAnimator.ResetTrigger("Laugh");
+            _monster.myAnimator.SetTrigger("Laugh");
         }
 
         transform.RotateAround(_target.transform.position, Vector3.up, 5 * Time.deltaTime);

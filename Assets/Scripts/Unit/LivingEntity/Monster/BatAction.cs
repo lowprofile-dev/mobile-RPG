@@ -38,7 +38,7 @@ public class BatAction : MonsterAction
 
         if (canPanic)
         {
-            _monster.MyAnimator.SetTrigger("Panic");
+            _monster.myAnimator.SetTrigger("Panic");
         }
     }
 

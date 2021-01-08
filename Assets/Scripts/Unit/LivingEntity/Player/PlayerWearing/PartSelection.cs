@@ -94,7 +94,7 @@ public class PartSelection : MonoBehaviour
 
         if(isChanged)
         {
-            Player.Instance.CameraChange();
+            Player.Instance.ChangeFaceCamera();
             isChanged = false;
         }
 

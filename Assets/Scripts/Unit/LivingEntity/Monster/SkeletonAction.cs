@@ -120,7 +120,7 @@ public class SkeletonAction : MonsterAction
 
     private void KillStart()
     {
-        _monster.MyAnimator.SetTrigger("Laugh");
+        _monster.myAnimator.SetTrigger("Laugh");
         _navMeshAgent.enabled = false;
     }
 
@@ -236,11 +236,11 @@ public class SkeletonAction : MonsterAction
 
                 currentAttack = AttackPattern();
 
-                yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 
                 _navMeshAgent.SetDestination(_target.transform.position);
                 transform.LookAt(_target.transform);
-                _monster.MyAnimator.SetTrigger(AtkState);
+                _monster.myAnimator.SetTrigger(AtkState);
                 // 사운드 재생
                 Debug.Log(_monster.monsterName + "의 공격!");
                 _target.GetComponent<LivingEntity>().Damaged(_monster.attackDamage);
@@ -253,9 +253,9 @@ public class SkeletonAction : MonsterAction
                 effect.transform.position = FirePoint.position;
                 effect.transform.LookAt(_target.transform);
 
-                yield return new WaitForSeconds(_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-                _monster.MyAnimator.ResetTrigger(AtkState); // off가 되어있으므로 바로 돌아오진 않음.
+                _monster.myAnimator.ResetTrigger(AtkState); // off가 되어있으므로 바로 돌아오진 않음.
                                                             // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
 
                 //int toCastRandomValue = UnityEngine.Random.Range(0, 100);
@@ -325,7 +325,7 @@ public class SkeletonAction : MonsterAction
 
         if (panic)
         {
-            _monster.MyAnimator.SetTrigger("Panic");
+            _monster.myAnimator.SetTrigger("Panic");
             panic = false;
         }
 
@@ -352,7 +352,7 @@ public class SkeletonAction : MonsterAction
     {
         // DeadSound를 재생한다.
         // 뭔가 사망 행동을 함
-        _monster.MyAnimator.SetTrigger("Die");
+        _monster.myAnimator.SetTrigger("Die");
 
         yield return new WaitForSeconds(2);
 
@@ -361,14 +361,14 @@ public class SkeletonAction : MonsterAction
 
     protected override void IdleStart()
     {
-        if (!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        _monster.MyAnimator.SetTrigger("Idle");
+        if (!_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        _monster.myAnimator.SetTrigger("Idle");
     }
 
     private void SpawnAction()
     {
 
-        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
             ChangeState(STATE.STATE_IDLE);
         }
@@ -377,7 +377,7 @@ public class SkeletonAction : MonsterAction
     private void FindPlayer()
     {
 
-        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
             _navMeshAgent.isStopped = false;
             ChangeState(STATE.STATE_TRACE);
@@ -387,7 +387,7 @@ public class SkeletonAction : MonsterAction
 
     private void GroundSearch()
     {
-        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
             ChangeState(STATE.STATE_IDLE);
         }
@@ -395,19 +395,19 @@ public class SkeletonAction : MonsterAction
 
     private void SpawnStart()
     {
-        _monster.MyAnimator.SetTrigger("Spawn");
+        _monster.myAnimator.SetTrigger("Spawn");
     }
 
     private void TraceStart()
     {
         _navMeshAgent.speed = _moveSpeed * 1.5f;
-        _monster.MyAnimator.SetTrigger("Walk");
+        _monster.myAnimator.SetTrigger("Walk");
     }
 
     private void StirrStart()
     {
         _navMeshAgent.isStopped = true;
-        _monster.MyAnimator.SetTrigger("Stirr");
+        _monster.myAnimator.SetTrigger("Stirr");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -416,8 +416,8 @@ public class SkeletonAction : MonsterAction
         {
             Debug.Log("데미지입은 몬스터");
 
-            if(!_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
-            _monster.MyAnimator.SetTrigger("Hit");
+            if(!_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+            _monster.myAnimator.SetTrigger("Hit");
 
             _monster.Damaged(1);
 
@@ -438,7 +438,7 @@ public class SkeletonAction : MonsterAction
         {
             yield return null;
 
-            if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+            if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
             {
                 StopCoroutine(_hitCoroutine);
                 _hitCoroutine = null;
@@ -449,10 +449,10 @@ public class SkeletonAction : MonsterAction
 
     private void KillPlayer()
     {
-        if (_monster.MyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
-            _monster.MyAnimator.ResetTrigger("Laugh");
-            _monster.MyAnimator.SetTrigger("Laugh");
+            _monster.myAnimator.ResetTrigger("Laugh");
+            _monster.myAnimator.SetTrigger("Laugh");
         }
 
         transform.RotateAround(_target.transform.position, Vector3.up, 5 * Time.deltaTime);

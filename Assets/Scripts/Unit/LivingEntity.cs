@@ -12,11 +12,11 @@ public class LivingEntity : Unit
     [SerializeField] protected float _initHp; public float initHp { get { return _initHp; } set { _initHp = value; } }
     [SerializeField] protected float _initMp; public float initMp { get { return _initMp; } set { _initMp = value; } }
     [SerializeField] protected float _hp; public float Hp { get { return _hp; } set { _hp = value; } }
-    [SerializeField] protected float _mp; public float Mp { get { return _mp; } set { _mp = value; } }
+    [SerializeField] protected float _stemina; public float Stemina { get { return _stemina; } set { _stemina = value; } }
     [SerializeField] protected GameObject _DamageText; public GameObject DamageText { get { return _DamageText; } }
 
-    public StateMachine MyStateMachine;
-    public Animator MyAnimator;
+    private StateMachine _myStateMachine; public StateMachine MyStateMachine { get { return _myStateMachine; } }
+    public Animator myAnimator;
 
     protected virtual void Start()
     {
@@ -32,7 +32,7 @@ public class LivingEntity : Unit
     protected virtual void InitObject()
     {
         _hp = initHp;
-        _mp = initMp;
+        _stemina = initMp;
         gameObject.GetComponent<Collider>().enabled = true;
     }
 
@@ -42,8 +42,8 @@ public class LivingEntity : Unit
         ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayDamage(damage, true);
     }
 
-    public virtual void UseMp(float skillmp)
+    public virtual void UseStemina(float skillmp)
     {
-        _mp -= skillmp;
+        _stemina -= skillmp;
     }
 }

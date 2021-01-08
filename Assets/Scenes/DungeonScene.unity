@@ -1805,13 +1805,13 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
-  plane: {fileID: 0}
   playerPrefab: {fileID: 3921490016967684021, guid: 4e29920a31f3f9e4c9bfc90d06bb3bf6,
     type: 3}
   playerSpawnPoint: {fileID: 0}
   areaPrefab: {fileID: 3938133071526832119, guid: b3c2183bc016cf84798bfdafc3a3ae46,
     type: 3}
   dungeon: {fileID: 0}
+  dungeonStage: 1
   player: {fileID: 0}
   hasPlane: 0
   dungeonCenter: {x: 0, y: 0}
@@ -1821,6 +1821,7 @@ MonoBehaviour:
   dungeonSize: 0
   planeCoef: 0
   nMonsterCoef: 0
+  isStageCleared: 0
 --- !u!1 &1479575216
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,12 +2222,12 @@ PrefabInstance:
     - target: {fileID: 2852870295090241450, guid: 0753a3ce126970249b50f40fedf0390b,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2852870295090241450, guid: 0753a3ce126970249b50f40fedf0390b,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4206521029260089746, guid: 0753a3ce126970249b50f40fedf0390b,
         type: 3}
@@ -2236,7 +2237,7 @@ PrefabInstance:
     - target: {fileID: 4206521029260089746, guid: 0753a3ce126970249b50f40fedf0390b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4213053510919530694, guid: 0753a3ce126970249b50f40fedf0390b,
         type: 3}
@@ -2296,12 +2297,12 @@ PrefabInstance:
     - target: {fileID: 7348223150398602152, guid: 0753a3ce126970249b50f40fedf0390b,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7348223150398602152, guid: 0753a3ce126970249b50f40fedf0390b,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0753a3ce126970249b50f40fedf0390b, type: 3}

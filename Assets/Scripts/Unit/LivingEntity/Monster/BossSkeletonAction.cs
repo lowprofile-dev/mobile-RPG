@@ -39,17 +39,17 @@ public class BossSkeletonAction : MonsterAction
 
         if (_attackType == 0)
         {
-            _monster.MyAnimator.SetTrigger("Attack0");
+            _monster.myAnimator.SetTrigger("Attack0");
             currentAnimation = "Attack0";
         }
         else if(_attackType == 1)
         {
-            _monster.MyAnimator.SetTrigger("Attack1");
+            _monster.myAnimator.SetTrigger("Attack1");
             currentAnimation = "Attack1";
         }
         else
         {
-            _monster.MyAnimator.SetTrigger("Attack2");
+            _monster.myAnimator.SetTrigger("Attack2");
             currentAnimation = "Attack2";
         }
     }
@@ -118,7 +118,7 @@ public class BossSkeletonAction : MonsterAction
     protected override void AttackExit()
     {
         _navMeshAgent.isStopped = false;
-        _monster.MyAnimator.ResetTrigger(currentAnimation);
+        _monster.myAnimator.ResetTrigger(currentAnimation);
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
 }
