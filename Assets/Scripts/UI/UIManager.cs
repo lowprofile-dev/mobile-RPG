@@ -31,9 +31,6 @@ public class UIManager : SingletonBase<UIManager>
     public void AddListenerToUI()
     {
         InvincibleBtn.onClick.AddListener(InvincibleClick);
-        SkillAbtn.onClick.AddListener(SkillAClick);
-        SkillBbtn.onClick.AddListener(SkillBClick);
-        SkillCbtn.onClick.AddListener(SkillCClick);
         InventoryBtn.onClick.AddListener(InventoryClick);
         OptionBtn.onClick.AddListener(OptionClick);
     }
@@ -63,21 +60,6 @@ public class UIManager : SingletonBase<UIManager>
         }
         //옵션 구현
         //UINaviationManager.Instance.PushToNav("SubUI_Info");
-    }
-    public void SkillAClick() //A버튼 스킬
-    {
-        if (!Player.Instance.isdead) Player.Instance.PlayerSkillA();
-        Debug.Log("A스킬");
-    }
-    public void SkillBClick() //B버튼 스킬
-    {
-        if (!Player.Instance.isdead) Player.Instance.PlayerSkillB();
-        Debug.Log("B스킬");
-    }
-    public void SkillCClick() //C버튼 스킬
-    {
-        if (!Player.Instance.isdead) Player.Instance.PlayerSkillC();
-        Debug.Log("C스킬");
     }
     public void InvincibleClick() //회피
     {

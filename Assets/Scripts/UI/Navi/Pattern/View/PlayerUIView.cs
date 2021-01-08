@@ -22,11 +22,11 @@ public class PlayerUIView : View
         _invincibleBtn.onClick.AddListener(delegate { Player.Instance.EvadeBtnClicked(); });
 
         _skillAButton.onClick.AddListener(delegate { Player.Instance.SkillABtnClicked(); });
-        _skillAButton.onClick.AddListener(delegate { GetComponent<CoolTimeScript>().StartCoolTime(); });
+        _skillAButton.onClick.AddListener(delegate { _skillAButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
         _skillBButton.onClick.AddListener(delegate { Player.Instance.SkillBBtnClicked(); });
-        _skillBButton.onClick.AddListener(delegate { GetComponent<CoolTimeScript>().StartCoolTime(); });
+        _skillBButton.onClick.AddListener(delegate { _skillBButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
         _skillCButton.onClick.AddListener(delegate { Player.Instance.SkillCBtnClicked(); });
-        _skillCButton.onClick.AddListener(delegate { GetComponent<CoolTimeScript>().StartCoolTime(); });
+        _skillCButton.onClick.AddListener(delegate { _skillCButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
     }
 
     public override void UIExit()

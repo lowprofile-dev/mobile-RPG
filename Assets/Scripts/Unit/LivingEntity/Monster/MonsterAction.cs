@@ -818,6 +818,27 @@ public class MonsterAction : MonoBehaviour
         CameraManager.Instance.ShakeCamera(1, 0.3f, 0.2f);
     }
 
+    /// <summary>
+    /// [외부 호출] 데미지를 받았을때 이를 호출하도록 한다.
+    /// </summary>
+    public virtual float DamageCheck(float damage)
+    {
+        if (GetCanDamageCheck())
+        {
+            Debug.Log("Player -> " + gameObject.name);
+            Damaged(damage);
+            ProductionDamaged();
+            _isImmune = true;
+
+            return damage;
+        }
+
+        return 0;
+    }
+
+
+    // 사용하지 않음
+    /*
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PlayerAttack"))
@@ -831,7 +852,7 @@ public class MonsterAction : MonoBehaviour
             }
         }
     }
-
+    */
 
     /// <summary>
     /// 데미지를 받을 조건을 체크한다.

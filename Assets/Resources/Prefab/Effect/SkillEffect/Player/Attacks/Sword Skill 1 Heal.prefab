@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &862580323041456961
+--- !u!1 &5363817871045662104
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2125878905787314992}
+  - component: {fileID: 720989949545286118}
   m_Layer: 0
   m_Name: ParticlePosition
   m_TagString: Untagged
@@ -16,15 +16,15 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2125878905787314992
+--- !u!4 &720989949545286118
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862580323041456961}
+  m_GameObject: {fileID: 5363817871045662104}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.25, y: 0, z: 0.75}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7772480141173017991}
@@ -39,12 +39,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7772480141173017991}
-  - component: {fileID: 7772480141173017989}
-  - component: {fileID: 6509263468218924511}
+  - component: {fileID: 6271706095669065753}
+  - component: {fileID: 1545887994538155459}
   m_Layer: 0
-  m_Name: Sword Attack Effect 2
+  m_Name: Sword Skill 1 Heal
   m_TagString: PlayerAttack
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -56,15 +56,36 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7772480141173017988}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.22}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2125878905787314992}
+  - {fileID: 720989949545286118}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &7772480141173017989
-BoxCollider:
+--- !u!114 &6271706095669065753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7772480141173017988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86b47f1b5b2ab784f985b246ee3ee209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collider: {fileID: 1545887994538155459}
+  _particleEffectPrefab: {fileID: 1513423241279212, guid: 5d8a8ce81cd6d9449891f4ae946a3684,
+    type: 3}
+  targetNumber: 5
+  _particlePosition: {fileID: 5363817871045662104}
+  _useFixedDmg: 0
+  _useMeleeDmg: 1
+  _damage: 0.2
+  _damageCount: 3
+--- !u!135 &1545887994538155459
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -74,26 +95,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 3, z: 6}
+  m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6509263468218924511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7772480141173017988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0234355a5192fa140926814c9c0f4779, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _collider: {fileID: 7772480141173017989}
-  _particleEffectPrefab: {fileID: 1524545281820322, guid: 411f7fdca6759af4bba8e0b577648c61,
-    type: 3}
-  targetNumber: 3
-  _particlePosition: {fileID: 862580323041456961}
-  _useFixedDmg: 0
-  _useMeleeDmg: 1
-  _damage: 1.2
-  _damageCount: 1

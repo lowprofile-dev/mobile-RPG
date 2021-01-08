@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,6 +39,9 @@ public class Weapon
     public GameObject SkillAEffect;
     public GameObject SkillBEffect;
     public GameObject SkillCEffect;
+    public GameObject SkillAEffect2;
+    public GameObject SkillBEffect2;
+    public GameObject SkillCEffect2;
     public GameObject AttackEffect;
     public GameObject AttackEffect2;
     public GameObject AttackEffect3;
@@ -64,7 +68,21 @@ public class Weapon
     public virtual GameObject SkillC()
     {
         return SkillCEffect;
+    }
 
+    public virtual GameObject SkillA2()
+    {
+        return SkillAEffect2;
+    }
+
+    public virtual GameObject SkillB2()
+    {
+        return SkillBEffect2;
+    }
+
+    public virtual GameObject SkillC2()
+    {
+        return SkillCEffect2;
     }
 
     public virtual GameObject Attack3()
@@ -126,4 +144,6 @@ public class Weapon
     {
         return skillCRelease;
     }
+
+ 
 }

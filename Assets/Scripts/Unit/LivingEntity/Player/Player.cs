@@ -1,11 +1,11 @@
-﻿using System;
-using Cinemachine;
+﻿using Cinemachine;
 using SimpleInputNamespace;
+using System;
 using UnityEngine;
 
 public enum PLAYERSTATE
 {
-    PS_IDLE, PS_MOVE, PS_ATTACK, PS_EVADE, PS_DIE, PS_SKILL, PS_INTERACTING
+    PS_IDLE, PS_MOVE, PS_ATTACK, PS_EVADE, PS_RUSH, PS_DIE, PS_SKILL, PS_INTERACTING
 }
 
 /// <summary>
@@ -20,7 +20,8 @@ public class Player : LivingEntity
     private float _evadeTime;
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
     private PLAYERSTATE _cntState;
-    
+
+
     [Header("상태이상")]
     private bool isStun = false;
     private bool isFall = false;
@@ -68,7 +69,14 @@ public class Player : LivingEntity
     public float dashSpeed; // 대쉬 스피드
     public int currentCombo; // 현재 콤보 수
     private bool _canConnectCombo; public bool canconnectCombo { get { return _canConnectCombo; } } // 콤보를 더 이을 수 있는지
+
+
     [SerializeField] private TrailRenderer _trailRenderer;
+
+    private bool _isRushing;
+    [SerializeField] private Collider _rushingCollider;
+    private Vector3 _prevRushPos;
+    private float _rushTime;
 
     PartSelection selection;
     FaceCam faceCam;
@@ -90,6 +98,9 @@ public class Player : LivingEntity
         base.Start();
 
         _evadeTime = _initEvadeTime;
+
+        _rushTime = 5;
+        _prevRushPos = Vector3.zero;
         SetUpPlayerCamera();
         moveDir = Vector3.forward;
     }
@@ -166,6 +177,7 @@ public class Player : LivingEntity
         }
     }
 
+
     /// <summary>
     /// 해당 상태에 있을때 작동되는 함수이다.
     /// </summary>
@@ -231,7 +243,6 @@ public class Player : LivingEntity
 
 
 
-
     ///////////////// 테스트 관련 //////////////////
 
     /// <summary>
@@ -246,16 +257,14 @@ public class Player : LivingEntity
 
     private void PopWeaponMasteryUITest()
     {
-        if(Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             if (UINaviationManager.Instance.FindTargetIsInNav("SubUI_WeaponMasteryView"))
             {
-                Debug.Log("HELLO");
                 UINaviationManager.Instance.PopToNav("SubUI_WeaponMasteryView");
             }
             else
             {
-                Debug.Log("NO HELLO");
                 UINaviationManager.Instance.PushToNav("SubUI_WeaponMasteryView");
             }
         }
@@ -268,7 +277,7 @@ public class Player : LivingEntity
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            weaponManager.GetWeapon().exp += 10.0f;
+            weaponManager.GetWeapon().exp += 100.0f;
         }
     }
 
@@ -348,6 +357,15 @@ public class Player : LivingEntity
     private void IdleEnter()
     {
         myAnimator.SetTrigger("Idle");
+        IdleRushOutCheck();
+    }
+
+    /// <summary>
+    /// 버그 막기용. Idle에서 Rush가 살아있을 경우를 체크한다.
+    /// </summary>
+    private void IdleRushOutCheck()
+    {
+        if (_isRushing) RushExit();
     }
 
     public void IdleUpdate()
@@ -480,7 +498,7 @@ public class Player : LivingEntity
     /// </summary>
     private void SetAttackAnimationTrigger()
     {
-        switch (Player.Instance.currentCombo)
+        switch (currentCombo)
         {
             case 1: myAnimator.SetTrigger("Attack01"); break;
             case 2: myAnimator.SetTrigger("Attack02"); break;
@@ -547,14 +565,14 @@ public class Player : LivingEntity
 
 
 
+
     ///////////////// 스킬 관련 //////////////////
 
     private void SkillEnter()
     {
         SetSkillAnimation();
-        //PlayerSkillCheck();
     }
-    
+
     /// <summary>
     /// 스킬 선택에 따른 스킬 재생
     /// </summary>
@@ -562,55 +580,9 @@ public class Player : LivingEntity
     {
         switch (_cntSkillType)
         {
-            case 0: myAnimator.SetTrigger("SkillA"); PlayerSkillA(); break;
-            case 1: myAnimator.SetTrigger("SkillB"); PlayerSkillB(); break;
-            case 2: myAnimator.SetTrigger("SkillC"); PlayerSkillC(); break;
-        }
-    }
-
-
-    public void PlayerSkillA()
-    {
-        if (SkillA_ButtonClick == false)
-        {
-            //_myStateMachine.SetState("SKILL_A");
-            SkillA_ButtonClick = true;
-            skillA_Counter = 0f;
-            //GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillA());
-            //skill.transform.position = skillPoint.position;
-            //skill.transform.rotation = skillPoint.rotation;
-            weaponManager.GetWeapon().SkillA();
-            EndAttack();
-        }
-    }
-
-    public void PlayerSkillB()
-    {
-        if (SkillB_ButtonClick == false && weaponManager.GetWeapon().CheckSkillB())
-        {
-            //_myStateMachine.SetState("SKILL_B");
-            SkillB_ButtonClick = true;
-            skillB_Counter = 0f;
-            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillB());
-            skill.transform.position = skillPoint.position;
-            skill.transform.rotation = skillPoint.rotation;
-            weaponManager.GetWeapon().SkillB();
-            EndAttack();
-        }
-    }
-
-    public void PlayerSkillC()
-    {
-        if (SkillC_ButtonClick == false && weaponManager.GetWeapon().CheckSkillC())
-        {
-            //_myStateMachine.SetState("SKILL_C");
-            SkillC_ButtonClick = true;
-            skillC_Counter = 0f;
-            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillC());
-            skill.transform.position = skillPoint.position;
-            skill.transform.rotation = skillPoint.rotation;
-            weaponManager.GetWeapon().SkillC();
-            EndAttack();
+            case 0: myAnimator.SetTrigger("SkillA"); break;
+            case 1: myAnimator.SetTrigger("SkillB"); break;
+            case 2: myAnimator.SetTrigger("SkillC"); break;
         }
     }
 
@@ -634,10 +606,52 @@ public class Player : LivingEntity
     {
         switch (_cntSkillType)
         {
-            case 0: break;
-            case 1: break;
-            case 2: break;
+            case 0: PlayerSkillA2(); break;
+            case 1: PlayerSkillB2(); break;
+            case 2: PlayerSkillC2(); break;
         }
+    }
+
+    public void PlayerSkillA()
+    {
+        weaponManager.GetWeapon().SkillA();
+        InitAttack();
+    }
+
+    public void PlayerSkillB()
+    {
+        if (weaponManager.GetWeapon().CheckSkillB())
+        {
+            weaponManager.GetWeapon().SkillB();
+            InitAttack();
+        }
+    }
+
+    public void PlayerSkillC()
+    {
+        if (weaponManager.GetWeapon().CheckSkillC())
+        {
+            weaponManager.GetWeapon().SkillC();
+            InitAttack();
+        }
+    }
+
+    private void PlayerSkillA2()
+    {
+        weaponManager.GetWeapon().SkillA2();
+        InitAttack();
+    }
+
+    private void PlayerSkillB2()
+    {
+        weaponManager.GetWeapon().SkillB2();
+        InitAttack();
+    }
+
+    private void PlayerSkillC2()
+    {
+        weaponManager.GetWeapon().SkillC2();
+        InitAttack();
     }
 
     /// <summary>
@@ -650,7 +664,7 @@ public class Player : LivingEntity
 
     public void SkillUpdate()
     {
-
+        Rush();
     }
 
     /// <summary>
@@ -658,20 +672,78 @@ public class Player : LivingEntity
     /// </summary>
     public void SkillExit()
     {
-        switch (_cntSkillType)
+        myAnimator.ResetTrigger("SkillA");
+        myAnimator.ResetTrigger("SkillB");
+        myAnimator.ResetTrigger("SkillC");
+        myAnimator.ResetTrigger("SkillBAttack");
+    }
+
+    /// <summary>
+    /// 돌진 상태를 시작한다. (돌진은 스킬 상태일때만 작동한다.)
+    /// </summary>
+    public void RushEnter()
+    {
+        _isRushing = true;
+        _rushTime = 5;
+    }
+
+    /// <summary>
+    /// 돌진 상태일때 돌진한다.
+    /// </summary>
+    public void Rush()
+    {
+        if (_isRushing) // 돌진상태일때
         {
-            case 0: myAnimator.ResetTrigger("SkillA"); break;
-            case 1: myAnimator.ResetTrigger("SkillB"); break;
-            case 2: myAnimator.ResetTrigger("SkillC"); break;
+            characterController.Move(transform.forward * speed * 5 * Time.deltaTime);
+
+            RaycastHit hit = new RaycastHit();
+
+            for(int i=0; i<10; i++)
+            {
+                for(int j=0; j<14; j++)
+                {
+                    if(Physics.Raycast(transform.position + new Vector3((i-2) * 0.6f, (j-4) * 0.6f, 0), transform.forward, out hit, 2, LayerMask.GetMask("Monster")))
+                    {
+                        RushExit();
+                        return;
+                    }
+                }
+            }
+
+            _rushTime -= Time.deltaTime;
+
+            if (_rushTime < 0 || Vector3.Distance(_prevRushPos, transform.position) < 0.3f) // 최대 시간 / 막혔을때의 탈출
+            {
+                RushExit();
+            }
+
+            _prevRushPos = transform.position;
         }
     }
+
+    /// <summary>
+    /// 돌진이 끝나며 일어나는 일들
+    /// </summary>
+    public void RushExit()
+    {
+        _isRushing = false;
+        _rushTime = 5;
+
+        if (weaponManager.GetWeaponName() == "SWORD" && _cntSkillType == 1)
+        {
+            myAnimator.SetTrigger("SkillBAttack");
+            myAnimator.ResetTrigger("SkillB");
+        }
+    }
+
+
 
     /// <summary>
     /// 스킬 쿨타임 체크
     /// </summary>
     private void PlayerSkillCheck()
     {
-        switch(_cntSkillType)
+        switch (_cntSkillType)
         {
             case 0:
                 skillA_Counter += Time.deltaTime;
@@ -692,7 +764,7 @@ public class Player : LivingEntity
 
     private void InteractEnter()
     {
-        
+
     }
 
     /// <summary>
@@ -791,7 +863,7 @@ public class Player : LivingEntity
         }
 
         // 공격 중일때는 Change로 하지 않고, 다시 한번 Attack에 들어선다.
-        else if(_cntState == PLAYERSTATE.PS_ATTACK && _canConnectCombo)
+        else if (_cntState == PLAYERSTATE.PS_ATTACK && _canConnectCombo)
         {
             AttackEnter();
         }
@@ -850,7 +922,10 @@ public class Player : LivingEntity
     /// </summary>
     public void AttackBtnClicked()
     {
-        ChangeToAttackCheck();
+        if(!_isRushing)
+        {
+            ChangeToAttackCheck();
+        }
     }
 
     /// <summary>
@@ -858,7 +933,10 @@ public class Player : LivingEntity
     /// </summary>
     public void EvadeBtnClicked()
     {
-        ChangeToEvadeChack();
+        if(!_isRushing)
+        {
+            ChangeToEvadeChack();
+        }
     }
 
     /// <summary>
@@ -866,10 +944,13 @@ public class Player : LivingEntity
     /// </summary>
     public void SkillABtnClicked()
     {
-        if(_cntState != PLAYERSTATE.PS_DIE)
+        if (!_isRushing)
         {
-            _cntSkillType = 0;
-            ChangeState(PLAYERSTATE.PS_SKILL);
+            if (_cntState != PLAYERSTATE.PS_DIE)
+            {
+                _cntSkillType = 0;
+                ChangeState(PLAYERSTATE.PS_SKILL);
+            }
         }
     }
 
@@ -878,10 +959,15 @@ public class Player : LivingEntity
     /// </summary>
     public void SkillBBtnClicked()
     {
-        if (_cntState != PLAYERSTATE.PS_DIE)
+        if (!_isRushing)
         {
-            _cntSkillType = 1;
-            ChangeState(PLAYERSTATE.PS_SKILL);
+            if (_cntState != PLAYERSTATE.PS_DIE)
+            {
+                _cntSkillType = 1;
+                ChangeState(PLAYERSTATE.PS_SKILL);
+
+                if (weaponManager.GetWeaponName() == "SWORD") PlayerSkillB(); // 애니메이션을 통해 반복적으로 불러오는 스킬이 아니기때문에 대쉬 스킬인 Sword B Skill을 눌렀을때 바로 실행되도록 함.
+            }
         }
     }
 
@@ -890,6 +976,7 @@ public class Player : LivingEntity
     /// </summary>
     public void SkillCBtnClicked()
     {
+        Debug.Log("CBTN");
         if (_cntState != PLAYERSTATE.PS_DIE)
         {
             _cntSkillType = 2;
@@ -981,6 +1068,17 @@ public class Player : LivingEntity
         faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
     }
 
+
+
+    ///////////////// 기타 캐릭터 기능들 //////////////////
+
+
+    public void RestoreHP(float restoreHp)
+    {
+        Debug.Log("체력을 " + restoreHp + "만큼 회복.");
+        _hp += restoreHp;
+        if (_hp > _initHp) _hp = _initHp;
+    }
 
 
     ///////////////// 이전 사용 코드 //////////////////
