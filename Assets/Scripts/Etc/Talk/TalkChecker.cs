@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// 각 Object별 퀘스트 및 대화를 관리하는 클래스
@@ -110,7 +112,7 @@ public class TalkChecker
             }
         }
     }
-
+    
     public void AcceptQuest()
     {
         Quest quest = GetTargetQuest();
@@ -135,6 +137,7 @@ public class TalkChecker
         talk.InitConvIndex();
 
         Player.Instance.ChangeState(PLAYERSTATE.PS_IDLE);
+
         TalkManager.Instance.CheckQuestIsOn(); // 퀘스트 진행도 Refresh
 
         UINaviationManager.Instance.PopToNav("PlayerUI_TalkUIView");
@@ -171,6 +174,7 @@ public class TalkChecker
             {
                 talk.InitConvIndex();
                 Player.Instance.ChangeState(PLAYERSTATE.PS_IDLE);
+
                 UINaviationManager.Instance.PopToNav("PlayerUI_TalkUIView");
 
                 SetTalkIndex(-1); // 다음 대화로 넘어가도록 (임시)
@@ -180,6 +184,7 @@ public class TalkChecker
             {
                 if (talk.convIndex == 0)
                 {
+                    Player.Instance.ChangeState(PLAYERSTATE.PS_INTERACTING);
                     UINaviationManager.Instance.PushToNav("PlayerUI_TalkUIView"); // 첫 대화창이면 대화창 생성
                 }
 
@@ -193,7 +198,7 @@ public class TalkChecker
         {
             if (talk.IsFinished())
             {
-                if (!TalkManager.Instance.talkUI.isAcceptInput) // 퀘스트 수락 / 거절이 아닐 시에는 입력을 통해 자동으로 진행된다.
+                if(!TalkManager.Instance.talkUI.isAcceptInput) // 퀘스트 수락 / 거절이 아닐 시에는 입력을 통해 자동으로 진행된다.
                 {
                     AcceptQuest();
                 }
@@ -203,7 +208,7 @@ public class TalkChecker
             {
                 if (talk.convIndex == 0)
                 {
-                    Player.Instance.ChangeState(PLAYERSTATE.PS_IDLE);
+                    Player.Instance.ChangeState(PLAYERSTATE.PS_INTERACTING);
                     UINaviationManager.Instance.PushToNav("PlayerUI_TalkUIView");
                 }
 
