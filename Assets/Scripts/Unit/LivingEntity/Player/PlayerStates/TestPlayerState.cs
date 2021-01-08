@@ -1,11 +1,134 @@
-﻿using System.Collections;
+﻿/*
+ * 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
+
+public class StateIdle_TestPlayer : State
+{
+    public StateIdle_TestPlayer(LivingEntity parent)
+    {
+        _parentEntity = parent;
+        _myStateMachine = parent._myStateMachine;
+        _myAnimator = parent.myAnimator;
+    }
+
+    public override void EnterState()
+    {
+        _myAnimator.SetTrigger("Idle");
+        if (_myAnimator != Player.Instance.myAnimator) _myAnimator = Player.Instance.myAnimator;
+    }
+
+    public override void UpdateState()
+    {
+        if (Player.Instance.GetMove()) _myStateMachine.SetState("MOVE");
+
+        if (Player.Instance.CheckCanAttack()) _myStateMachine.SetState("ATTACK");
+
+        if (Player.Instance.GetAvoidance()) _myStateMachine.SetState("AVOID");
+    }
+
+    public override void EndState()
+    {
+        _myAnimator.ResetTrigger("Idle");
+    }
+}
+
+public class StateMove_TestPlayer : State
+{
+    public StateMove_TestPlayer(LivingEntity parent)
+    {
+        _parentEntity = parent;
+        _myStateMachine = parent._myStateMachine;
+        _myAnimator = parent.myAnimator;
+
+    }
+
+    public override void EnterState()
+    {
+        _myAnimator.SetTrigger("Move");
+        if (_myAnimator != Player.Instance.myAnimator) _myAnimator = Player.Instance.myAnimator;
+
+    }
+    public override void UpdateState()
+    {
+        if (Player.Instance.CheckCanAttack()) _myStateMachine.SetState("ATTACK");
+
+        if (Player.Instance.GetAvoidance()) _myStateMachine.SetState("AVOID");
+
+        if (!Player.Instance.GetMove()) _myStateMachine.SetState("IDLE");
+    }
+
+    public override void EndState()
+    {
+
+    }
+}
+
+public class StateAttack_TestPlayer : State
+{
+    public StateAttack_TestPlayer(LivingEntity parent)
+    {
+        _parentEntity = parent;
+        _myStateMachine = parent._myStateMachine;
+        _myAnimator = parent.myAnimator;
+    }
+
+    public override void EnterState()
+    {
+        Player.Instance.ToNextCombo();
+        SetAttackAnimationTrigger();
+        Player.Instance.SetAttackButton(false);
+        if (_myAnimator != Player.Instance.myAnimator) _myAnimator = Player.Instance.myAnimator;
+    }
+
+    /// <summary>
+    /// 현재 콤보 상태에 따라 공격 애니메이션을 재생한다.
+    /// </summary>
+    private void SetAttackAnimationTrigger()
+    {
+        switch (Player.Instance.currentCombo)
+        {
+            case 1: _myAnimator.SetTrigger("Attack01"); break;
+            case 2: _myAnimator.SetTrigger("Attack02"); break;
+            case 3: _myAnimator.SetTrigger("Attack03"); break;
+        }
+    }
+
+    public override void UpdateState()
+    {
+        _myStateMachine.SetState("IDLE");
+    }
+
+    public override void EndState()
+    {
+
+    }
+
+    
+}
 
 public class StateAvoid_TestPlayer : State
 {
+
+    public StateAvoid_TestPlayer(LivingEntity parent)
+    {
+        _parentEntity = parent;
+        _myStateMachine = parent._myStateMachine;
+        _myAnimator = parent.myAnimator;
+    }
+
+    public override void EnterState()
+    {
+        if(Player.Instance.Mp >= 2)
+        {
+            _myAnimator.SetTrigger("Avoid");
+            Player.Instance.UseMp(2);
+            Player.Instance.EndAttack();
+        }
+        if (_myAnimator != Player.Instance.myAnimator) _myAnimator = Player.Instance.myAnimator;
+    }
 
     public override void UpdateState()
     {
@@ -132,4 +255,5 @@ public class StateSkillC_TestPlayer : State
     {
     }
 }
+
 */

@@ -5,11 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonBase<GameManager>
 {
-    public bool isInteracting;
-
     public void InitGameManager()
     {
-        isInteracting = false;
     }
 
     void Start()

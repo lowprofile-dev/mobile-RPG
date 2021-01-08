@@ -23,7 +23,6 @@ public class Player : LivingEntity
 
     [Header("상태이상")]
     private bool isStun = false;
-
     private bool isFall = false;
     private bool isRigid = false;
 
@@ -64,6 +63,7 @@ public class Player : LivingEntity
     float vertical;
     float vSpeed;
     bool _isdead = false; public bool isdead { get { return _isdead; } }
+    private int _cntSkillType;
 
     public float dashSpeed; // 대쉬 스피드
     public int currentCombo; // 현재 콤보 수
@@ -93,58 +93,32 @@ public class Player : LivingEntity
         moveDir = Vector3.forward;
     }
 
+    protected override void InitObject()
+    {
+        initHp = statusManager.finalStatus.maxHp;
+        initMp = statusManager.finalStatus.maxStamina;
+        base.InitObject();
+
+        selection = GetComponent<PartSelection>();
+        selection.Start();
+        selection.Init();
+
+        myAnimator = GetComponent<Animator>();
+
+        _cntState = PLAYERSTATE.PS_IDLE;
+        EnterState();
+
+        weaponManager = WeaponManager.Instance;
+        weaponManager.SetWeapon("SWORD");
+    }
+
     protected override void Update()
     {
         TestCode();
         UpdateAll();
         UpdateState();
-
-        /*
-        Debug.Log(_canConnectCombo);
-        if (isdead)
-        {
-            // 죽었을 때
-        }
-
-        else
-        {
-
-
-
-            if (!GameManager.Instance.isInteracting) // 상호작용 중이지 않을 때
-            {
-                PlayerMove();
-                PlayerSkillCheck();
-                PlayerHpRecovery();
-                PlayerMpRecovery();
-
-                weaponManager.UpdateWeapon();
-
-                selection.Update();
-
-                if (_hp <= 0 && !isdead)
-                {
-                    _myStateMachine.SetState("DIE");
-                    _isdead = true;
-                }
-            }
-
-            else
-            {
-                ContinueInteract();
-            }
-        }
-        */
     }
 
-    /// <summary>
-    /// 테스트를 실시하는 코드 모음
-    /// </summary>
-    private void TestCode()
-    {
-        ChangeWeaponTest();
-        ChangeMasteryLevelTest();
-    }
 
 
 
@@ -257,12 +231,54 @@ public class Player : LivingEntity
 
 
 
+    ///////////////// 테스트 관련 //////////////////
+
+    /// <summary>
+    /// 테스트를 실시하는 코드 모음
+    /// </summary>
+    private void TestCode()
+    {
+        ChangeWeaponTest();
+        ChangeMasteryLevelTest();
+    }
+
+    /// <summary>
+    /// 마스터리 레벨을 올리는 테스트
+    /// </summary>
+    private void ChangeMasteryLevelTest()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            weaponManager.GetWeapon().masteryLevel++;
+            weaponManager.GetWeapon().SkillRelease();
+        }
+    }
+
+    /// <summary>
+    /// 무기 테스트를 위한 변경 함수
+    /// </summary>
+    private void ChangeWeaponTest()
+    {
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            weaponManager.SetWeapon("WAND");
+            weaponChanged = true;
+        }
+        else weaponChanged = false;
+    }
+
+
+
+
     ///////////////// 공통 관련 //////////////////
 
     private void UpdateAll()
     {
         CachingJoyStick();
         ChangeToMoveCheck();
+        CheckToDie();
+        PlayerHpRecovery();
+        PlayerMpRecovery();
     }
 
     /// <summary>
@@ -272,6 +288,37 @@ public class Player : LivingEntity
     {
         if (joystick == null)
             joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+    }
+
+
+    /// <summary>
+    /// 주기적으로 HP를 회복한다.
+    /// </summary>
+    private void PlayerHpRecovery()
+    {
+        if (Hp <= statusManager.finalStatus.maxHp)
+        {
+            if (Hp >= statusManager.finalStatus.maxHp)
+            {
+                _hp = statusManager.finalStatus.maxHp;
+            }
+            else _hp += statusManager.finalStatus.hpRecovery * Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// 주기적으로 MP를 회복한다.
+    /// </summary>
+    private void PlayerMpRecovery()
+    {
+        if (Stemina <= statusManager.finalStatus.maxStamina)
+        {
+            if (Stemina >= statusManager.finalStatus.maxStamina)
+            {
+                _stemina = statusManager.finalStatus.maxStamina;
+            }
+            else _stemina += statusManager.finalStatus.staminaRecovery * Time.deltaTime;
+        }
     }
 
 
@@ -373,7 +420,6 @@ public class Player : LivingEntity
     /// </summary>
     public void InitAttack()
     {
-        Debug.Log("INITATTACK IN");
         _canConnectCombo = false;
         currentCombo = 0;
 
@@ -396,6 +442,19 @@ public class Player : LivingEntity
     public void UnlockNextCombo()
     {
         _canConnectCombo = true;
+    }
+
+    /// <summary>
+    /// [ANIMATION EVENT] 공격 이벤트를 실시한다.
+    /// </summary>
+    public void DoAttack()
+    {
+        switch (currentCombo)
+        {
+            case 1: weaponManager.GetWeapon().Attack(); break;
+            case 2: weaponManager.GetWeapon().Attack(); break;
+            case 3: weaponManager.GetWeapon().Attack(); break;
+        }
     }
 
     /// <summary>
@@ -474,6 +533,101 @@ public class Player : LivingEntity
 
     private void SkillEnter()
     {
+        SetSkillAnimation();
+        //PlayerSkillCheck();
+    }
+    
+    /// <summary>
+    /// 스킬 선택에 따른 스킬 재생
+    /// </summary>
+    private void SetSkillAnimation()
+    {
+        switch (_cntSkillType)
+        {
+            case 0: myAnimator.SetTrigger("SkillA"); PlayerSkillA(); break;
+            case 1: myAnimator.SetTrigger("SkillB"); PlayerSkillB(); break;
+            case 2: myAnimator.SetTrigger("SkillC"); PlayerSkillC(); break;
+        }
+    }
+
+
+    public void PlayerSkillA()
+    {
+        if (SkillA_ButtonClick == false)
+        {
+            //_myStateMachine.SetState("SKILL_A");
+            SkillA_ButtonClick = true;
+            skillA_Counter = 0f;
+            //GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillA());
+            //skill.transform.position = skillPoint.position;
+            //skill.transform.rotation = skillPoint.rotation;
+            weaponManager.GetWeapon().SkillA();
+            EndAttack();
+        }
+    }
+
+    public void PlayerSkillB()
+    {
+        if (SkillB_ButtonClick == false && weaponManager.GetWeapon().CheckSkillB())
+        {
+            //_myStateMachine.SetState("SKILL_B");
+            SkillB_ButtonClick = true;
+            skillB_Counter = 0f;
+            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillB());
+            skill.transform.position = skillPoint.position;
+            skill.transform.rotation = skillPoint.rotation;
+            weaponManager.GetWeapon().SkillB();
+            EndAttack();
+        }
+    }
+
+    public void PlayerSkillC()
+    {
+        if (SkillC_ButtonClick == false && weaponManager.GetWeapon().CheckSkillC())
+        {
+            //_myStateMachine.SetState("SKILL_C");
+            SkillC_ButtonClick = true;
+            skillC_Counter = 0f;
+            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillC());
+            skill.transform.position = skillPoint.position;
+            skill.transform.rotation = skillPoint.rotation;
+            weaponManager.GetWeapon().SkillC();
+            EndAttack();
+        }
+    }
+
+    /// <summary>
+    /// [ANIMATION EVENT] 스킬에 대한 이벤트 발생 (파티클 생성 등) 1번째 케이스
+    /// </summary>
+    public void AddSkillAttackTime1()
+    {
+        switch (_cntSkillType)
+        {
+            case 0: PlayerSkillA(); break;
+            case 1: PlayerSkillB(); break;
+            case 2: PlayerSkillC(); break;
+        }
+    }
+
+    /// <summary>
+    /// [ANIMATION EVENT] 스킬에 대한 이벤트 발생 (파티클 생성 등) 2번째 케이스
+    /// </summary>
+    public void AddSkillAttackTime2()
+    {
+        switch (_cntSkillType)
+        {
+            case 0: break;
+            case 1: break;
+            case 2: break;
+        }
+    }
+
+    /// <summary>
+    /// [ANIMATION EVENT] 스킬이 끝났을때 IDLE 상태로 돌림
+    /// </summary>
+    public void SkillOver()
+    {
+        ChangeState(PLAYERSTATE.PS_IDLE);
     }
 
     public void SkillUpdate()
@@ -481,20 +635,79 @@ public class Player : LivingEntity
 
     }
 
+    /// <summary>
+    /// 스킬 선택에 따른 스킬 애니메이션 취소
+    /// </summary>
     public void SkillExit()
     {
+        switch (_cntSkillType)
+        {
+            case 0: myAnimator.ResetTrigger("SkillA"); break;
+            case 1: myAnimator.ResetTrigger("SkillB"); break;
+            case 2: myAnimator.ResetTrigger("SkillC"); break;
+        }
+    }
 
+    /// <summary>
+    /// 스킬 쿨타임 체크
+    /// </summary>
+    private void PlayerSkillCheck()
+    {
+        switch(_cntSkillType)
+        {
+            case 0:
+                skillA_Counter += Time.deltaTime;
+                if (skillA_Counter >= weaponManager.GetWeapon().skillACool) SkillA_ButtonClick = false;
+                break;
+            case 1:
+                skillB_Counter += Time.deltaTime;
+                if (skillB_Counter >= weaponManager.GetWeapon().skillBCool) SkillB_ButtonClick = false;
+                break;
+            case 2:
+                skillC_Counter += Time.deltaTime;
+                if (skillC_Counter >= weaponManager.GetWeapon().skillCCool) SkillC_ButtonClick = false;
+                break;
+        }
     }
 
     ///////////////// 상호작용 관련 //////////////////
 
     private void InteractEnter()
     {
+        
+    }
+
+    /// <summary>
+    /// 눌렀을 시 주변의 NPC와 상호작용한다.
+    /// </summary>
+    public void CheckInteractObject()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 1.9f);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].GetComponent<NonLivingEntity>())
+            {
+                colliders[i].GetComponent<NonLivingEntity>().Interaction();
+                ChangeState(PLAYERSTATE.PS_INTERACTING);
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 이후에는 누를때마다 상호작용이 이루어진다.
+    /// </summary>
+    public void ContinueInteract()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            CheckInteractObject();
+        }
     }
 
     public void InteractUpdate()
     {
-
+        ContinueInteract();
     }
 
     public void InteractExit()
@@ -506,6 +719,8 @@ public class Player : LivingEntity
 
     private void DieEnter()
     {
+        _isdead = true;
+        myAnimator.SetTrigger("Die");
     }
 
     public void DieUpdate()
@@ -515,7 +730,8 @@ public class Player : LivingEntity
 
     public void DieExit()
     {
-
+        _isdead = false;
+        myAnimator.ResetTrigger("Die");
     }
 
 
@@ -580,6 +796,17 @@ public class Player : LivingEntity
         }
     }
 
+    /// <summary>
+    /// 죽는 상태로 변환하게 한다.
+    /// </summary>
+    public void CheckToDie()
+    {
+        if (_hp <= 0 && !isdead)
+        {
+            ChangeState(PLAYERSTATE.PS_DIE);
+        }
+    }
+
     ///////////////// 입력 관련 //////////////////
 
     /// <summary>
@@ -622,7 +849,11 @@ public class Player : LivingEntity
     /// </summary>
     public void SkillABtnClicked()
     {
-        Debug.Log("Skill A Clicked");
+        if(_cntState != PLAYERSTATE.PS_DIE)
+        {
+            _cntSkillType = 0;
+            ChangeState(PLAYERSTATE.PS_SKILL);
+        }
     }
 
     /// <summary>
@@ -630,7 +861,11 @@ public class Player : LivingEntity
     /// </summary>
     public void SkillBBtnClicked()
     {
-        Debug.Log("Skill B Clicked");
+        if (_cntState != PLAYERSTATE.PS_DIE)
+        {
+            _cntSkillType = 1;
+            ChangeState(PLAYERSTATE.PS_SKILL);
+        }
     }
 
     /// <summary>
@@ -638,7 +873,11 @@ public class Player : LivingEntity
     /// </summary>
     public void SkillCBtnClicked()
     {
-        Debug.Log("Skill C Clicked");
+        if (_cntState != PLAYERSTATE.PS_DIE)
+        {
+            _cntSkillType = 2;
+            ChangeState(PLAYERSTATE.PS_SKILL);
+        }
     }
 
 
@@ -671,33 +910,6 @@ public class Player : LivingEntity
     }
 
 
-
-    ///////////////// 테스트 관련 //////////////////
-
-    /// <summary>
-    /// 마스터리 레벨을 올리는 테스트
-    /// </summary>
-    private void ChangeMasteryLevelTest()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            weaponManager.GetWeapon().masteryLevel++;
-            weaponManager.GetWeapon().SkillRelease();
-        }
-    }
-
-    /// <summary>
-    /// 무기 테스트를 위한 변경 함수
-    /// </summary>
-    private void ChangeWeaponTest()
-    {
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            weaponManager.SetWeapon("WAND");
-            weaponChanged = true;
-        }
-        else weaponChanged = false;
-    }
 
 
 
@@ -754,99 +966,7 @@ public class Player : LivingEntity
 
 
 
-    ///////////////// 공격 관련 //////////////////
-
-    private void PlayerSkillCheck()
-    {
-        if (SkillA_ButtonClick)
-        {
-            skillA_Counter += Time.deltaTime;
-            if (skillA_Counter >= weaponManager.GetWeapon().skillACool)
-            {
-                SkillA_ButtonClick = false;
-            }
-        }
-
-        if (SkillB_ButtonClick)
-        {
-            skillB_Counter += Time.deltaTime;
-            if (skillB_Counter >= weaponManager.GetWeapon().skillBCool)
-            {
-                SkillB_ButtonClick = false;
-            }
-        }
-
-        if (SkillC_ButtonClick)
-        {
-            skillC_Counter += Time.deltaTime;
-            if (skillC_Counter >= weaponManager.GetWeapon().skillCCool)
-            {
-                SkillC_ButtonClick = false;
-            }
-        }
-    }
-
-    public void DoAttack()
-    {
-        // 공격 생성
-
-        switch (currentCombo)
-        {
-            case 1:
-                weaponManager.GetWeapon().Attack();
-                break;
-            case 2:
-                weaponManager.GetWeapon().Attack();
-                break;
-            case 3:
-                weaponManager.GetWeapon().Attack();
-                break;
-        }
-
-    }
-
-    public void PlayerSkillA()
-    {
-        if (SkillA_ButtonClick == false)
-        {
-            //_myStateMachine.SetState("SKILL_A");
-            SkillA_ButtonClick = true;
-            skillA_Counter = 0f;
-            //GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillA());
-            //skill.transform.position = skillPoint.position;
-            //skill.transform.rotation = skillPoint.rotation;
-            weaponManager.GetWeapon().SkillA();
-            EndAttack();
-        }
-    }
-
-    public void PlayerSkillB()
-    {
-        if (SkillB_ButtonClick == false && weaponManager.GetWeapon().CheckSkillB())
-        {
-            //_myStateMachine.SetState("SKILL_B");
-            SkillB_ButtonClick = true;
-            skillB_Counter = 0f;
-            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillB());
-            skill.transform.position = skillPoint.position;
-            skill.transform.rotation = skillPoint.rotation;
-            EndAttack();
-        }
-    }
-
-    public void PlayerSkillC()
-    {
-        if (SkillC_ButtonClick == false && weaponManager.GetWeapon().CheckSkillC())
-        {
-            //_myStateMachine.SetState("SKILL_C");
-            SkillC_ButtonClick = true;
-            skillC_Counter = 0f;
-            GameObject skill = ObjectPoolManager.Instance.GetObject(weaponManager.GetWeapon().SkillC());
-            skill.transform.position = skillPoint.position;
-            skill.transform.rotation = skillPoint.rotation;
-            EndAttack();
-        }
-    }
+    ///////////////// 이전 사용 코드 //////////////////
 
     public bool GetAttackButton()
     {
@@ -874,75 +994,7 @@ public class Player : LivingEntity
     {
         avoidButtonClick = avoidbutton;
     }
-    protected override void InitObject()
-    {
-        initHp = statusManager.finalStatus.maxHp;
-        initMp = statusManager.finalStatus.maxStamina;
-        base.InitObject();
 
-        selection = GetComponent<PartSelection>();
-        selection.Start();
-        selection.Init();
-
-        myAnimator = GetComponent<Animator>();
-
-        _cntState = PLAYERSTATE.PS_IDLE;
-        EnterState();
-
-        weaponManager = WeaponManager.Instance;
-        weaponManager.SetWeapon("SWORD");
-    }
-
-    public void CheckInteractObject()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 1.9f);
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (colliders[i].GetComponent<NonLivingEntity>())
-            {
-                colliders[i].GetComponent<NonLivingEntity>().Interaction();
-                break;
-            }
-        }
-    }
-
-    public void ContinueInteract()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            CheckInteractObject();
-        }
-    }
-
-    /// <summary>
-    /// 주기적으로 HP를 회복한다.
-    /// </summary>
-    private void PlayerHpRecovery()
-    {
-        if (Hp <= statusManager.finalStatus.maxHp)
-        {
-            if (Hp >= statusManager.finalStatus.maxHp)
-            {
-                _hp = statusManager.finalStatus.maxHp;
-            }
-            else _hp += statusManager.finalStatus.hpRecovery * Time.deltaTime;
-        }
-    }
-
-    /// <summary>
-    /// 주기적으로 MP를 회복한다.
-    /// </summary>
-    private void PlayerMpRecovery()
-    {
-        if (Stemina <= statusManager.finalStatus.maxStamina)
-        {
-            if (Stemina >= statusManager.finalStatus.maxStamina)
-            {
-                _stemina = statusManager.finalStatus.maxStamina;
-            }
-            else _stemina += statusManager.finalStatus.staminaRecovery * Time.deltaTime;
-        }
-    }
 
     private void OnTriggerEnter(Collider other)
     {
