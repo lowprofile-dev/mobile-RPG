@@ -13779,7 +13779,7 @@ MonoBehaviour:
   Entrance: {fileID: 0}
   Exit: {fileID: 0}
   OverrideConnectionChance: 0
-  ConnectionChance: 0
+  ConnectionChance: 1
   AllDoorways: []
   UsedDoorways: []
   UnusedDoorways: []
@@ -13826,19 +13826,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   areaCode: 0
-  isCleared: 0
+  isCleared: 1
   isSetArea: 0
   hasPlayer: 0
   monsterSpawnPoints: []
-  monsterPrefabs:
-  - {fileID: 5711455880128171077, guid: b15fb212ab8e20b48978202886a9bfdc, type: 3}
-  - {fileID: 3184240531697180170, guid: 59a6e3d3c78516e41b1101e20d3e0e25, type: 3}
-  - {fileID: 1355095795314762, guid: 9f160afaef86a164ea4b662a1da64180, type: 3}
-  monsterSpawnInterval: 2
-  nMonsterPerSpawn: 1
-  nMonsterToSpawn: 7
+  monsterPrefabs: []
+  monsterSpawnInterval: 0
+  nMonsterPerSpawn: 0
+  nMonsterToSpawn: 0
   nMonsterSpawned: 0
   isSpawning: 0
+  doorPrefab: {fileID: 0}
 --- !u!1 &5764685885802554680
 GameObject:
   m_ObjectHideFlags: 0
@@ -23254,7 +23252,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6927517487505653739}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -1.92, y: -11.61, z: -4.38}
+  m_LocalPosition: {x: -1.92, y: -13.2, z: -0.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5764685886190052233}
@@ -25360,7 +25358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4518163363687192, guid: 8ec465da916b9417ea3e37d5cbe895b3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 12.16
       objectReference: {fileID: 0}
     - target: {fileID: 4518163363687192, guid: 8ec465da916b9417ea3e37d5cbe895b3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -25389,6 +25387,11 @@ PrefabInstance:
     - target: {fileID: 4518163363687192, guid: 8ec465da916b9417ea3e37d5cbe895b3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23073247968017086, guid: 8ec465da916b9417ea3e37d5cbe895b3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ec465da916b9417ea3e37d5cbe895b3, type: 3}

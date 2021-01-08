@@ -28,6 +28,7 @@ public class MonsterAction : MonoBehaviour
 
     // 기타 변수
     protected STATE _currentState;                  // 현재 상태
+    public STATE currentState { get { return _currentState; } }
     protected float _distance;                      // 타겟과의 거리
     protected float _traceTimer;                    // 추적 이후 경과한 시간
     protected Vector3 _spawnPosition;               // 스폰된 위치

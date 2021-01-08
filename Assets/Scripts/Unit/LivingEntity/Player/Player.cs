@@ -2,6 +2,7 @@
 using Cinemachine;
 using SimpleInputNamespace;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum PLAYERSTATE
 {
@@ -108,6 +109,7 @@ public class Player : LivingEntity
 
     protected override void Update()
     {
+        SetUpPlayerCamera();
         TestCode();
         UpdateAll();
         UpdateState();
@@ -822,6 +824,8 @@ public class Player : LivingEntity
     /// </summary>
     private void GetJoystickInput()
     {
+        if (joystick == null)
+            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
         horizontal = joystick.GetX_axis().value;
         vertical = joystick.GetY_axis().value;
 
@@ -931,6 +935,8 @@ public class Player : LivingEntity
         SetPlayerFaceCam();
         SetPlayerFollowCam();
         SetMinimapFreeLook();
+        if (cam != null)
+            return;
         cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
     }
 
@@ -939,6 +945,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetPlayerFaceCam()
     {
+        if (faceCam != null)
+            return;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
         faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
     }
@@ -948,6 +956,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetPlayerFollowCam()
     {
+        if (playerFollowCam != null)
+            return;
         playerFollowCam = GameObject.FindGameObjectWithTag("PlayerFollowCamera");
         playerFreeLook = playerFollowCam.GetComponent<CinemachineFreeLook>();
         playerFreeLook.Follow = transform;
@@ -959,6 +969,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetMinimapFreeLook()
     {
+        if (minimapFreeLook != null || SceneManager.GetActiveScene().name != "DungeonScene")
+            return;
         minimapFreeLook = GameObject.FindGameObjectWithTag("MinimapCamera").GetComponent<CinemachineFreeLook>();
         minimapFreeLook.Follow = transform;
         minimapFreeLook.LookAt = transform;
