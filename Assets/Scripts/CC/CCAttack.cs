@@ -15,6 +15,8 @@ public class CCAttack : MonoBehaviour
 
     public void ApplyCC(GameObject unit , float fstun , float ffall , float frig) // CC 적용시키는 코드
     {
+        if (unit.GetComponent<LivingEntity>().Hp <= 0) return;
+
         float roll = Random.Range(0, 100);
 
         float fallRate = ffall * 100f;
@@ -55,7 +57,7 @@ public class CCAttack : MonoBehaviour
     {
         if (other.CompareTag("Monster"))
         {
-            ApplyCC(other.gameObject, 0.5f, 0.6f, 0.4f);
+            ApplyCC(other.gameObject, 0.5f, 0.1f, 0.5f);
         }
     }
 }

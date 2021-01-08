@@ -48,68 +48,68 @@ public class SkeletonAction : MonsterAction
         // 스테이트별 업데이트 내용
         switch (_currentState)
         {
-            case STATE.STATE_SPAWN:
+            case MONSTER_STATE.STATE_SPAWN:
                 SpawnAction();
                 break;
-            case STATE.STATE_IDLE:
+            case MONSTER_STATE.STATE_IDLE:
                 IdleUpdate();
                 break;
-            case STATE.STATE_STIRR:
+            case MONSTER_STATE.STATE_STIRR:
                 GroundSearch();
                 break;
-            case STATE.STATE_FIND:
+            case MONSTER_STATE.STATE_FIND:
                 FindPlayer();
                 break;
-            case STATE.STATE_TRACE:
+            case MONSTER_STATE.STATE_TRACE:
                 MoveToTarget();
                 CheckLimitPlayerDistance();
                 break;
-            case STATE.STATE_ATTACK:
+            case MONSTER_STATE.STATE_ATTACK:
                 AttackUpdate();
                 break;
-            case STATE.STATE_KILL:
+            case MONSTER_STATE.STATE_KILL:
                 KillPlayer();        
                 break;
-            case STATE.STATE_DEBUFF:
+            case MONSTER_STATE.STATE_DEBUFF:
                 break;
-            case STATE.STATE_DIE:
+            case MONSTER_STATE.STATE_DIE:
                 break;
             default:
                 break;
         }
     }
 
-    public override void EnterState(STATE targetState)
+    public override void EnterState(MONSTER_STATE targetState)
     {
         switch (targetState)
         {
-            case STATE.STATE_SPAWN:
+            case MONSTER_STATE.STATE_SPAWN:
                 SpawnStart();
                 break;
-            case STATE.STATE_IDLE:
+            case MONSTER_STATE.STATE_IDLE:
                 IdleStart();
                 break;
-            case STATE.STATE_STIRR:
+            case MONSTER_STATE.STATE_STIRR:
                 StirrStart();
                 break;
-            case STATE.STATE_FIND:
+            case MONSTER_STATE.STATE_FIND:
                 FindStart();
                 break;
-            case STATE.STATE_TRACE:
+            case MONSTER_STATE.STATE_TRACE:
                 TraceStart();
                 break;
-            case STATE.STATE_DEBUFF:
+            case MONSTER_STATE.STATE_DEBUFF:
                 break;
-            case STATE.STATE_ATTACK:
+            case MONSTER_STATE.STATE_ATTACK:
                 AttackStart();
                 break;
-            case STATE.STATE_KILL:
+            case MONSTER_STATE.STATE_KILL:
                 KillStart();
                 break;
-            case STATE.STATE_DIE:
+            case MONSTER_STATE.STATE_DIE:
                 DeathStart();
                 break;
-            case STATE.STATE_CAST:
+            case MONSTER_STATE.STATE_CAST:
                 CastStart();
                 break;
             default:
@@ -124,33 +124,33 @@ public class SkeletonAction : MonsterAction
         _navMeshAgent.enabled = false;
     }
 
-    public override void ExitState(STATE targetState)
+    public override void ExitState(MONSTER_STATE targetState)
     {
         switch (targetState)
         {
-            case STATE.STATE_IDLE:
+            case MONSTER_STATE.STATE_IDLE:
                 IdleExit();
                 break;
-            case STATE.STATE_STIRR:
+            case MONSTER_STATE.STATE_STIRR:
                 StirrExit();
                 break;
-            case STATE.STATE_FIND:
+            case MONSTER_STATE.STATE_FIND:
                 FindExit();
                 break;
-            case STATE.STATE_TRACE:
+            case MONSTER_STATE.STATE_TRACE:
                 TraceExit();
                 break;
-            case STATE.STATE_DEBUFF:
+            case MONSTER_STATE.STATE_DEBUFF:
                 break;
-            case STATE.STATE_ATTACK:
+            case MONSTER_STATE.STATE_ATTACK:
                 AttackExit();
                 break;
-            case STATE.STATE_CAST:
+            case MONSTER_STATE.STATE_CAST:
                 CastExit();
                 break;
-            case STATE.STATE_KILL:
+            case MONSTER_STATE.STATE_KILL:
                 break;
-            case STATE.STATE_DIE:
+            case MONSTER_STATE.STATE_DIE:
                 break;
             default:
                 break;
@@ -191,7 +191,7 @@ public class SkeletonAction : MonsterAction
         // 사거리 내에 적 존재 시 발동
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
-            ChangeState(STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
     }
 
@@ -210,7 +210,7 @@ public class SkeletonAction : MonsterAction
         // 타겟과의 거리가 공격 범위보다 커지면
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
         {       
-            ChangeState(STATE.STATE_IDLE);
+            ChangeState(MONSTER_STATE.STATE_IDLE);
         }
     }
 
@@ -262,12 +262,12 @@ public class SkeletonAction : MonsterAction
 
                 //if (toCastRandomValue < _monster.castPercent)
                 //{
-                //    ChangeState(STATE.STATE_CAST);
+                //    ChangeState(MONSTER_STATE.STATE_CAST);
                 //}
             }
             else
             {
-                ChangeState(STATE.STATE_IDLE);
+                ChangeState(MONSTER_STATE.STATE_IDLE);
             }
         }
 
@@ -314,7 +314,7 @@ public class SkeletonAction : MonsterAction
             panic = true;
             idleCnt = 0;
             if (UnityEngine.Random.Range(1, 100) <= 30)
-                ChangeState(STATE.STATE_STIRR);
+                ChangeState(MONSTER_STATE.STATE_STIRR);
         }
        
     }
@@ -337,9 +337,9 @@ public class SkeletonAction : MonsterAction
     
     public override void TargetDeathCheck()
     {
-        if (_currentState != STATE.STATE_KILL && _target.GetComponent<LivingEntity>().Hp <= 0)
+        if (_currentState != MONSTER_STATE.STATE_KILL && _target.GetComponent<LivingEntity>().Hp <= 0)
         {
-            ChangeState(STATE.STATE_KILL);         
+            ChangeState(MONSTER_STATE.STATE_KILL);         
         }
     }
 
@@ -370,7 +370,7 @@ public class SkeletonAction : MonsterAction
 
         if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
-            ChangeState(STATE.STATE_IDLE);
+            ChangeState(MONSTER_STATE.STATE_IDLE);
         }
     }
 
@@ -380,7 +380,7 @@ public class SkeletonAction : MonsterAction
         if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
             _navMeshAgent.isStopped = false;
-            ChangeState(STATE.STATE_TRACE);
+            ChangeState(MONSTER_STATE.STATE_TRACE);
         }
 
     }
@@ -389,7 +389,7 @@ public class SkeletonAction : MonsterAction
     {
         if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
-            ChangeState(STATE.STATE_IDLE);
+            ChangeState(MONSTER_STATE.STATE_IDLE);
         }
     }
 
@@ -424,7 +424,7 @@ public class SkeletonAction : MonsterAction
             if (_hitCoroutine == null)
                 _hitCoroutine = StartCoroutine(DoHitAction());
             else
-                ChangeState(STATE.STATE_IDLE);
+                ChangeState(MONSTER_STATE.STATE_IDLE);
         }
     }
    
@@ -442,7 +442,7 @@ public class SkeletonAction : MonsterAction
             {
                 StopCoroutine(_hitCoroutine);
                 _hitCoroutine = null;
-                ChangeState(STATE.STATE_IDLE);
+                ChangeState(MONSTER_STATE.STATE_IDLE);
             }
         }
     }

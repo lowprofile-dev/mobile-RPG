@@ -157,7 +157,7 @@ public class DungeonRoom : MonoBehaviour
     {
         for (int i = 0; i < monsters.Count; i++)
         {
-            if (monsters[i].GetComponent<MonsterAction>().currentState != STATE.STATE_DIE)
+            if (monsters[i].GetComponent<MonsterAction>().currentState != MONSTER_STATE.STATE_DIE)
             {
                 return false;
             }

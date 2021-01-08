@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public enum PLAYERSTATE
 {
-    PS_IDLE, PS_MOVE, PS_ATTACK, PS_EVADE, PS_DIE, PS_SKILL, PS_INTERACTING
+    PS_IDLE, PS_MOVE, PS_ATTACK, PS_EVADE, PS_DIE, PS_SKILL, PS_INTERACTING , PS_STUN , PS_RIGID , PS_FALL
 }
 
 /// <summary>
@@ -70,7 +70,6 @@ public class Player : LivingEntity
     public WeaponManager weaponManager;
     ItemManager itemManager;
     StatusManager statusManager;
-
     private void Awake()
     {
         Instance = this;
@@ -80,7 +79,8 @@ public class Player : LivingEntity
     {
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
-
+        var _player = this;
+        _CCManager = new CCManager(ref _player, "player");
         base.Start();
 
         _evadeTime = _initEvadeTime;
@@ -109,6 +109,7 @@ public class Player : LivingEntity
 
     protected override void Update()
     {
+        _CCManager.Update();
         SetUpPlayerCamera();
         TestCode();
         UpdateAll();

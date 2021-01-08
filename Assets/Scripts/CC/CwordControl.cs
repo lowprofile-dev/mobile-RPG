@@ -8,7 +8,6 @@ public abstract class CwordControl
     private float duration;
     protected float elapsed;
     protected string type;
-
     public CwordControl(LivingEntity target, float duration, string type)
     {
         this.target = target;
@@ -29,9 +28,7 @@ public abstract class CwordControl
     {
         if (target != null)
         {
-            target.Stun = false;
-            target.Fall = false;
-            target.Rigid = false;
+
             target.CCManager.RemoveCC(type);
             target.CCManager.CurrentCC = null;
 

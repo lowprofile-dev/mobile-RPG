@@ -55,7 +55,7 @@ public class BossSkeletonAction : MonsterAction
     }
     protected override void SpawnStart()
     {
-        ChangeState(STATE.STATE_IDLE);
+        ChangeState(MONSTER_STATE.STATE_IDLE);
     }
 
     protected override void SpawnExit()
@@ -73,7 +73,7 @@ public class BossSkeletonAction : MonsterAction
             _cntCastTime = 0;
             _readyCast = true;
             _attackType = 2;
-            ChangeState(STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
 
     }
@@ -123,6 +123,6 @@ public class BossSkeletonAction : MonsterAction
     }
     protected override void IdleStart()
     {
-        ChangeState(STATE.STATE_TRACE);
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 }
