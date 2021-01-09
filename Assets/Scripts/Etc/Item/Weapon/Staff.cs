@@ -7,19 +7,22 @@ public class Staff : Weapon
     // Start is called before the first frame update
     public Staff()
     {
+        name = "staff";
         hitStun = 0.5f;
         hitRigid = 0.5f;
         hitFail = 0.5f;
         outfitGrade = 0;
-        masteryLevel = 1;
+        masteryLevel = MasteryManager.Instance.currentMastery.currentStaffMasteryLevel;
 
-        skillBRelease = false;
-        skillCRelease = false;
+        skillBRelease = MasteryManager.Instance.currentMastery.currentStaffSkillBReleased;
+        skillCRelease = MasteryManager.Instance.currentMastery.currentStaffSkillCReleased;
 
-        skillLevel[0] = 1;
-        skillLevel[1] = 1;
-        skillLevel[2] = 0;
-        skillLevel[3] = 0;
+        skillLevel[0] = MasteryManager.Instance.weaponSkillLevel[4].autoAttackLevel;
+        skillLevel[1] = MasteryManager.Instance.weaponSkillLevel[4].skillALevel;
+        skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[4].skillBLevel;
+        skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[4].skillCLevel;
+
+        exp = MasteryManager.Instance.currentMastery.currentStaffMasteryExp;
 
         attackDamage = 1;
         magicDamage = 0;

@@ -6,19 +6,23 @@ public class Wand : Weapon
     // Start is called before the first frame update
     public Wand()
     {
+        name = "wand";
         hitStun = 0.5f;
         hitRigid = 0.5f;
         hitFail = 0.5f;
         outfitGrade = 0;
-        masteryLevel = 1;
+        masteryLevel = MasteryManager.Instance.currentMastery.currentWandMasteryLevel;
 
-        skillBRelease = false;
-        skillCRelease = false;
+        skillBRelease = MasteryManager.Instance.currentMastery.currentWandSkillBReleased;
+        skillCRelease = MasteryManager.Instance.currentMastery.currentWandSkillCReleased;
 
-        skillLevel[0] = 1;
-        skillLevel[1] = 1;
-        skillLevel[2] = 0;
-        skillLevel[3] = 0;
+        skillLevel[0] = MasteryManager.Instance.weaponSkillLevel[3].autoAttackLevel;
+        skillLevel[1] = MasteryManager.Instance.weaponSkillLevel[3].skillALevel;
+        skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[3].skillBLevel;
+        skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[3].skillCLevel;
+
+        exp = MasteryManager.Instance.currentMastery.currentWandMasteryExp;
+
 
         attackDamage = 0;
         magicDamage = 1;
