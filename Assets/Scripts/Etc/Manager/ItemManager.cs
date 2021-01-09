@@ -103,6 +103,14 @@ public class ItemManager : SingletonBase<ItemManager>
         currentItemKeys = JsonUtility.FromJson<CurrentItemKeys>(jsonData);
     }
 
+    public void SellItem(ItemData itemdata)
+    {
+        playerInventory[itemdata.id] -= 1;
+        currentItems.gold += (int)itemdata.sellprice;
+        SaveInventoryData();
+        SaveCurrentItems();
+    }
+
     /// <summary>
     /// 획득한 아이템 인벤토리에 추가!
     /// </summary>
@@ -118,6 +126,24 @@ public class ItemManager : SingletonBase<ItemManager>
             playerInventory.Add(item.itemData.id, 1);
         }
         SaveInventoryData();
+    }
+
+    public void AddGold(int amount)
+    {
+        currentItems.gold += amount;
+        SaveCurrentItems();
+    }
+
+    public void AddCoin(int amount)
+    {
+        currentItems.coin += amount;
+        SaveCurrentItems();
+    }
+
+    public void AddGem(int amount)
+    {
+        currentItems.gem += amount;
+        SaveCurrentItems();
     }
 
     public void RemoveItem(Item item)

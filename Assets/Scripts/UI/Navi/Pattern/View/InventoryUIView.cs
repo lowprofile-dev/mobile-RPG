@@ -11,6 +11,9 @@ public class InventoryUIView : View
     [SerializeField] Transform content;
     [SerializeField] GameObject itemDetail;
     [SerializeField] Button quitBtn;
+    [SerializeField] TextMeshProUGUI gold;
+    [SerializeField] TextMeshProUGUI coin;
+    [SerializeField] TextMeshProUGUI gem;
 
     ItemManager itemManager;
     List<GameObject> itemSlots;
@@ -42,6 +45,9 @@ public class InventoryUIView : View
     private void OnEnable()
     {
         LoadPlayerInventory();
+        gold.text = ItemManager.Instance.currentItems.gold.ToString();
+        coin.text = ItemManager.Instance.currentItems.coin.ToString();
+        gem.text = ItemManager.Instance.currentItems.gem.ToString();
     }
 
     private void LoadPlayerInventory()
