@@ -155,6 +155,11 @@ public class DungeonRoom : MonoBehaviour
 
     private bool KilledAllMonster()
     {
+        for (int i = monsters.Count - 1; i > -1; i--)
+        {
+            if (monsters[i] == null)
+                monsters.RemoveAt(i);
+        }
         for (int i = 0; i < monsters.Count; i++)
         {
             if (monsters[i].GetComponent<MonsterAction>().currentState != MONSTER_STATE.STATE_DIE)
