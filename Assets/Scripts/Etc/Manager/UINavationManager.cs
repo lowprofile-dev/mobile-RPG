@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UINaviationManager : SingletonBase<UINaviationManager>
@@ -33,6 +34,18 @@ public class UINaviationManager : SingletonBase<UINaviationManager>
         else
         {
             PushToNav("SubUI_CardUIView");
+        }
+    }
+
+    internal void ToggleShopView()
+    {
+        if (FindTargetIsInNav("SubUI_ShopBase"))
+        {
+            PopToNav("SubUI_ShopBase");
+        }
+        else
+        {
+            PushToNav("SubUI_ShopBase");
         }
     }
 

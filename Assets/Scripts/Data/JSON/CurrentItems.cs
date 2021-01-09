@@ -5,6 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class CurrentItems
 {
+    [Header("재화 및 재료")]
+    public int gold;
+    public int coin;
+    //강화석
+    public int gem;
+
+    [Header("장비")]
     //투구
     public int headAccesoriesIndex;
     //장갑
@@ -25,6 +32,9 @@ public class CurrentItems
 
     public CurrentItems()
     {
+        this.gold = 100;
+        this.coin = 50;
+        this.gem = 10;
         this.headAccesoriesIndex = 7;
         this.leftElbowIndex = 48;
         this.rightElbowIndex = 48;
