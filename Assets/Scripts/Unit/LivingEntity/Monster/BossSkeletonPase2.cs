@@ -38,13 +38,11 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void DoAttack()
     {
-         
-        MakeEffect();
-
         StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
-        
+
+        MakeEffect();
         _navMeshAgent.acceleration = 8f;
         CameraManager.Instance.ShakeCamera(3, 1, 0.5f);
         currentTarget = _target;
@@ -54,29 +52,26 @@ public class BossSkeletonPase2 : MonsterAction
 
     private void MakeEffect()
     {
-        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        obj.transform.SetParent(this.transform);
-        obj.transform.position = _baseMeleeAttackPos.position;
+        //GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+        //obj.transform.SetParent(this.transform);
+        //obj.transform.position = _baseMeleeAttackPos.position;
 
-        Attack atk = obj.GetComponent<Attack>();
-        atk.SetParent(gameObject);
-        atk.PlayAttackTimer(1);
+        //Attack atk = obj.GetComponent<Attack>();
+        //atk.SetParent(gameObject);
+        //atk.PlayAttackTimer(1);
+
         switch (attackType)
         {
             case AttackType.JUMP_ATTACK:
-                atk.SetCollierSize(JumpSkillRange);
                 JumpAttackEffect();
                 break;
             case AttackType.SHOCK_WAVE:
-                atk.SetCollierSize(ShokeSkillRange);
                 ShockWave1Effect();
                 break;
             case AttackType.SHOCK_WAVE2:
-                atk.SetCollierSize(ShokeSkillEffect2);
                 ShockWave2Effect();
                 break;
             case AttackType.DASH_ATTACK:
-                atk.SetCollierSize(ShokeSkillRange);
                 ShockWave1Effect();
                 break;
             case AttackType.LEFT_ATTACK:
@@ -85,34 +80,29 @@ public class BossSkeletonPase2 : MonsterAction
                 break;
         }
     }
-
-    private void RotateEffect(GameObject eft , float x)
-    {
-        Vector3 dir = eft.transform.forward + _target.transform.right;
-        float pos = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-        angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, pos, ref velocity, 1f);
-        eft.transform.rotation = Quaternion.Euler(x, angle, 0f);
-    }
-
     private void ShockWave1Effect()
     {
-        GameObject eft = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect1);
-        eft.transform.position = transform.position;
-        RotateEffect(eft,0f);
+        BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect1).GetComponent<BossAttack>();
+        atk.SetParent(gameObject);
+        atk.PlayAttackTimer(1f);
+        atk.OnLoad(gameObject, currentTarget);
+
     }
 
     private void JumpAttackEffect()
     {
-        GameObject eft = ObjectPoolManager.Instance.GetObject(JumpSkillEffect);
-        eft.transform.position = currentTarget.transform.position;
+        SkeletonBaseJumpAttack atk = ObjectPoolManager.Instance.GetObject(JumpSkillEffect).GetComponent<SkeletonBaseJumpAttack>();
+        atk.SetParent(gameObject);
+        atk.PlayAttackTimer(1f);
+        atk.OnLoad(currentTarget, currentTarget);
     }
 
     private void ShockWave2Effect()
     {
-        GameObject eft = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect2);
-        eft.transform.position = _ShokeWavePoint.transform.position;
-        RotateEffect(eft,90f);
-
+        BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect2).GetComponent<BossAttack>();
+        atk.SetParent(_ShokeWavePoint.gameObject);
+        atk.PlayAttackTimer(1f);
+        atk.OnLoad(_ShokeWavePoint.gameObject, currentTarget);
 
     }
 
