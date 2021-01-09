@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using TMPro;
+using System;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] GameObject areaPrefab;
     [SerializeField] DunGen.Dungeon dungeon;
     [SerializeField] int dungeonStage = 1;
+    [SerializeField] TextMeshProUGUI stageInfo;
 
     public GameObject player;
     public bool hasPlane;
@@ -15,7 +18,7 @@ public class DungeonManager : MonoBehaviour
     public Vector2 LT;
     public float dungeonWidth, dungeonLength, dungeonSize, planeCoef;
 
-    public int nRoomCleared { get; set; }
+    public int nRoomCleared = 0;
     public float nMonsterCoef;
     public bool isStageCleared = false;
 
@@ -35,6 +38,21 @@ public class DungeonManager : MonoBehaviour
         {
             GameObject.FindGameObjectWithTag("Player");
         }
+        InitDungeon();
+        SetStageInfo();
+        if (isStageCleared)
+        {
+            ClearStage();
+        }
+    }
+
+    private void SetStageInfo()
+    {
+        stageInfo.text = dungeonStage + " - " + nRoomCleared;
+    }
+
+    private void InitDungeon()
+    {
         if (dungeon == null)
         {
             dungeon = gameObject.GetComponent<DunGen.Dungeon>();
@@ -53,10 +71,6 @@ public class DungeonManager : MonoBehaviour
             dungeonWidth = bounds.size.x;
             dungeonLength = bounds.size.z;
             LT = new Vector2(dungeonCenter.x - bounds.extents.x, dungeonCenter.y + bounds.extents.z);
-        }
-        if (isStageCleared)
-        {
-            ClearStage();
         }
     }
 
@@ -82,10 +96,11 @@ public class DungeonManager : MonoBehaviour
     private void SpawnPlayer()
     {
         playerSpawnPoint = GameObject.FindGameObjectWithTag("PlayerSpawnPoint");
-        if (player == null)
+        if (player != null)
         {
-            player = Instantiate(playerPrefab);
+            Destroy(player);
         }
+        player = Instantiate(playerPrefab);
         player.transform.position = playerSpawnPoint.transform.TransformPoint(0, 1, 0);
         player.transform.SetParent(null);
     }
@@ -104,5 +119,6 @@ public class DungeonManager : MonoBehaviour
         isStageCleared = false;
         hasPlane = false;
         dungeonStage++;
+        nRoomCleared = 0;
     }
 }
