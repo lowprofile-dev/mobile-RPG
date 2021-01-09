@@ -8,7 +8,6 @@ public class CoolTimeScript : MonoBehaviour
     public Image image;
     public Image lockImage;
     public Button button;
-    public float coolTime = 10.0f;
     public bool isClicked = false;
     float leftTime = 0f;
     public bool isLock;
@@ -18,23 +17,33 @@ public class CoolTimeScript : MonoBehaviour
         if (gameObject.name == "SkillA")
         {
             isLock = false;
-            if(WeaponManager.Instance != null) coolTime = WeaponManager.Instance.GetWeapon().skillACool;
         }
+
         else if (gameObject.name == "SkillB")
         {
             isLock = true;
             button.enabled = false;
-            if (WeaponManager.Instance != null) coolTime = WeaponManager.Instance.GetWeapon().skillBCool;
             lockImage.enabled = true;
-
         }
+
         else if (gameObject.name == "SkillC")
         {
             isLock = true;
             button.enabled = false;
-            if (WeaponManager.Instance != null) coolTime = WeaponManager.Instance.GetWeapon().skillCCool;
             lockImage.enabled = true;
         }
+    }
+
+    public float GetCoolTime()
+    {
+        switch (gameObject.name)
+        {
+            case "SkillA": return WeaponManager.Instance.GetWeapon().skillACool;
+            case "SkillB": return WeaponManager.Instance.GetWeapon().skillBCool;
+            case "SkillC": return WeaponManager.Instance.GetWeapon().skillCCool;
+        }
+
+        return 0;
     }
 
     void Update()
@@ -43,6 +52,8 @@ public class CoolTimeScript : MonoBehaviour
 
         SkillRelease();
 
+
+        float coolTime = GetCoolTime();
         if (isClicked)
             if (leftTime >= 0)
             {

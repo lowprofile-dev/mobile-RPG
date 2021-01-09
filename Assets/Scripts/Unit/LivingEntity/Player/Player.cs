@@ -100,7 +100,7 @@ public class Player : LivingEntity
 
         _evadeTime = _initEvadeTime;
 
-        _rushTime = 5;
+        _rushTime = 2;
         _prevRushPos = Vector3.zero;
         
         moveDir = Vector3.forward;
@@ -284,7 +284,27 @@ public class Player : LivingEntity
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            weaponManager.GetWeapon().exp += 100.0f;
+            weaponManager.GetWeapon().exp += 80;
+            weaponManager.GetWeapon().MasteryLevelUp();
+            switch (weaponManager.GetWeapon().name)
+            {
+                case "sword":
+                    MasteryManager.Instance.currentMastery.currentSwordMasteryExp = weaponManager.GetWeapon().exp;
+                    break;
+                case "dagger":
+                    MasteryManager.Instance.currentMastery.currentDaggerMasterExp = weaponManager.GetWeapon().exp;
+                    break;
+                case "blunt":
+                    MasteryManager.Instance.currentMastery.currentBluntMasteryExp = weaponManager.GetWeapon().exp;
+                    break;
+                case "wand":
+                    MasteryManager.Instance.currentMastery.currentWandMasteryExp = weaponManager.GetWeapon().exp;
+                    break;
+                case "staff":
+                    MasteryManager.Instance.currentMastery.currentStaffMasteryExp = weaponManager.GetWeapon().exp;
+                    break;
+            }
+            MasteryManager.Instance.SaveCurrentMastery();
         }
     }
 
@@ -490,9 +510,9 @@ public class Player : LivingEntity
     {
         switch (currentCombo)
         {
-            case 1: weaponManager.GetWeapon().Attack(); break;
-            case 2: weaponManager.GetWeapon().Attack2(); break;
-            case 3: weaponManager.GetWeapon().Attack3(); break;
+            case 1: Debug.Log("1"); weaponManager.GetWeapon().Attack(); break;
+            case 2: Debug.Log("2"); weaponManager.GetWeapon().Attack2(); break;
+            case 3: Debug.Log("3"); weaponManager.GetWeapon().Attack3(); break;
         }
     }
 
@@ -690,7 +710,7 @@ public class Player : LivingEntity
     {
         OnTrailparticles();
         _isRushing = true;
-        _rushTime = 5;
+        _rushTime = 2;
     }
 
     /// <summary>
@@ -734,7 +754,7 @@ public class Player : LivingEntity
     {
         OffTrailParticles();
         _isRushing = false;
-        _rushTime = 5;
+        _rushTime = 2;
 
         if (weaponManager.GetWeaponName() == "SWORD" && _cntSkillType == 1)
         {

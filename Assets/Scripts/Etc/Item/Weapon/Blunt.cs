@@ -6,19 +6,23 @@ public class Blunt : Weapon
     // Start is called before the first frame update
     public Blunt()
     {
+        name = "blunt";
         hitStun = 0.5f;
         hitRigid = 0.5f;
         hitFail = 0.5f;
         outfitGrade = 0;
-        masteryLevel = 1;
+        masteryLevel = MasteryManager.Instance.currentMastery.currentBluntMasteryLevel;
 
-        skillBRelease = false;
-        skillCRelease = false;
+        skillBRelease = MasteryManager.Instance.currentMastery.currentBluntSkillBReleased;
+        skillCRelease = MasteryManager.Instance.currentMastery.currentBluntSkillCReleased;
 
-        skillLevel[0] = 1;
-        skillLevel[1] = 1;
-        skillLevel[2] = 0;
-        skillLevel[3] = 0;
+        skillLevel[0] = MasteryManager.Instance.weaponSkillLevel[2].autoAttackLevel;
+        skillLevel[1] = MasteryManager.Instance.weaponSkillLevel[2].skillALevel;
+        skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[2].skillBLevel;
+        skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[2].skillCLevel;
+
+        exp = MasteryManager.Instance.currentMastery.currentBluntMasteryExp;
+
 
         attackDamage = 1;
         magicDamage = 0;

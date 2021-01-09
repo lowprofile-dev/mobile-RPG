@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class ParticleAutoDelete : MonoBehaviour
 {
+    [SerializeField] private bool deleteParent = false;
+
     private void OnEnable()
     {
         StartCoroutine(CheckAilve());
@@ -17,6 +19,15 @@ public class ParticleAutoDelete : MonoBehaviour
     private IEnumerator CheckAilve()
     {
         yield return new WaitForSeconds(gameObject.GetComponent<ParticleSystem>().main.duration);
-        ObjectPoolManager.Instance.ReturnObject(gameObject);
+
+        if (deleteParent)
+        {
+            ObjectPoolManager.Instance.ReturnObject(transform.parent.gameObject);
+        }
+
+        else
+        {
+            ObjectPoolManager.Instance.ReturnObject(gameObject);
+        }
     }
 }

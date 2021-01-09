@@ -20,7 +20,6 @@ public class CameraManager : SingletonBase<CameraManager>
         CinemachineCamera = obj.GetComponent<CinemachineFreeLook>();
         CinemachineCore.GetInputAxis = this.HandleAxisInputDelegate;
         CinemachineCamera.m_CommonLens = true;
-        
     }
 
     private void Update()

@@ -8,7 +8,6 @@ public class PlayerAttack: MonoBehaviour
     [SerializeField] protected Collider _collider;
     [SerializeField] protected GameObject _particleEffectPrefab;
     [SerializeField] private int targetNumber;
-    [SerializeField] private GameObject _particlePosition; public GameObject particlePosition { get { return _particlePosition; } }
     protected HashSet<GameObject> _attackedTarget;
     protected GameObject _baseParent;
 
@@ -31,9 +30,9 @@ public class PlayerAttack: MonoBehaviour
     {
         GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
 
+        Effect.transform.position = transform.position;
         Effect.transform.rotation = Quaternion.identity;
         Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
-        Effect.transform.position = _particlePosition.transform.position;
 
         SetLocalRotation(Effect);
 

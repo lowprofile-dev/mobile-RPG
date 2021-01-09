@@ -12,6 +12,9 @@ public class WeaponMasteryView : View
     [SerializeField] private Image _basePanel;
 
     WeaponManager weaponManager;
+    MasteryManager masteryManager;
+    WeaponSkillLevel weaponSkillLevel;
+
     Sword sword;
     Dagger dagger;
     Blunt blunt;
@@ -78,6 +81,7 @@ public class WeaponMasteryView : View
     {
         if (WeaponManager.Instance != null && !isInit)
         {
+            masteryManager = MasteryManager.Instance;
             weaponManager = WeaponManager.Instance;
 
             sword = weaponManager._weaponDic["SWORD"] as Sword;
@@ -86,10 +90,10 @@ public class WeaponMasteryView : View
             wand = weaponManager._weaponDic["WAND"] as Wand;
             staff = weaponManager._weaponDic["STAFF"] as Staff;
 
-            swordLevel = sword.masteryLevel;
+            swordLevel = sword.masteryLevel; 
             daggerLevel = dagger.masteryLevel;
             bluntLevel = blunt.masteryLevel;
-            wandLevel = wand.masteryLevel;
+            wandLevel = wand.masteryLevel; 
             staffLevel = staff.masteryLevel;
 
             LevelPrint();
@@ -99,6 +103,8 @@ public class WeaponMasteryView : View
             bluntLevelText.text = "Lv." + bluntLevel;
             wandLevelText.text = "Lv." + wandLevel;
             staffLevelText.text = "Lv." + staffLevel;
+
+            SkillLevelInit();
 
             isInit = true;
         }
@@ -110,37 +116,149 @@ public class WeaponMasteryView : View
         }
     }
 
+    private void SkillLevelInit()
+    {
+        for(int i =0; i <4; i++)
+        {
+            _swordScript[i].skillLevel = sword.skillLevel[i];
+            _swordScript[i].SkillLevelPrint();
+
+            _daggerScript[i].skillLevel = dagger.skillLevel[i];
+            _daggerScript[i].SkillLevelPrint();
+
+            _bluntScript[i].skillLevel = blunt.skillLevel[i];
+            _bluntScript[i].SkillLevelPrint();
+
+            _wandScript[i].skillLevel = wand.skillLevel[i];
+            _wandScript[i].SkillLevelPrint();
+
+            _staffScript[i].skillLevel = staff.skillLevel[i];
+            _staffScript[i].SkillLevelPrint();
+        }
+    }
+
     private void SkillLevelPrint()
     {   
         for(int i =0; i <4; i++)
         {
             if(_swordScript[i].skillLevel != sword.skillLevel[i])
             {
-                if (_swordScript[i].skillLevel > sword.skillLevel[i]) sword.skillLevel[i] = _swordScript[i].skillLevel;
-                else  _swordScript[i].skillLevel = sword.skillLevel[i];
+                if (_swordScript[i].skillLevel > sword.skillLevel[i])
+                {
+                    sword.skillLevel[i] = _swordScript[i].skillLevel;
+                    switch (i)
+                    {
+                        case 0:
+                            masteryManager.incrementSkillLevel("sword", "autoAttack");
+                            break;
+                        case 1:
+                            masteryManager.incrementSkillLevel("sword", "skillA");
+                            break;
+                        case 2:
+                            masteryManager.incrementSkillLevel("sword", "skillB");
+                            break;
+                        case 3:
+                            masteryManager.incrementSkillLevel("sword", "skillC");
+                            break;
+                    }
+                }
+                else _swordScript[i].skillLevel = sword.skillLevel[i];
                 _swordScript[i].SkillLevelPrint();
             }
             if (_daggerScript[i].skillLevel != dagger.skillLevel[i])
             {
-                if (_daggerScript[i].skillLevel > dagger.skillLevel[i]) dagger.skillLevel[i] = _daggerScript[i].skillLevel;
+                if (_daggerScript[i].skillLevel > dagger.skillLevel[i])
+                {
+                    dagger.skillLevel[i] = _daggerScript[i].skillLevel;
+                    switch (i)
+                    {
+                        case 0:
+                            masteryManager.incrementSkillLevel("dagger", "autoAttack");
+                            break;
+                        case 1:
+                            masteryManager.incrementSkillLevel("dagger", "skillA");
+                            break;
+                        case 2:
+                            masteryManager.incrementSkillLevel("dagger", "skillB");
+                            break;
+                        case 3:
+                            masteryManager.incrementSkillLevel("dagger", "skillC");
+                            break;
+                    }
+                }
                 else _daggerScript[i].skillLevel = dagger.skillLevel[i];
                 _daggerScript[i].SkillLevelPrint();
             }
             if (_bluntScript[i].skillLevel != blunt.skillLevel[i])
             {
-                if (_bluntScript[i].skillLevel > blunt.skillLevel[i]) blunt.skillLevel[i] = _bluntScript[i].skillLevel;
+                if (_bluntScript[i].skillLevel > blunt.skillLevel[i])
+                {
+                    blunt.skillLevel[i] = _bluntScript[i].skillLevel;
+                    switch (i)
+                    {
+                        case 0:
+                            masteryManager.incrementSkillLevel("blunt", "autoAttack");
+                            break;
+                        case 1:
+                            masteryManager.incrementSkillLevel("blunt", "skillA");
+                            break;
+                        case 2:
+                            masteryManager.incrementSkillLevel("blunt", "skillB");
+                            break;
+                        case 3:
+                            masteryManager.incrementSkillLevel("blunt", "skillC");
+                            break;
+                    }
+                }
                 else _bluntScript[i].skillLevel = blunt.skillLevel[i];
+
                 _bluntScript[i].SkillLevelPrint();
             }
             if (_wandScript[i].skillLevel != wand.skillLevel[i])
             {
-                if (_wandScript[i].skillLevel > wand.skillLevel[i]) wand.skillLevel[i] = _wandScript[i].skillLevel;
+                if (_wandScript[i].skillLevel > wand.skillLevel[i])
+                {
+                    wand.skillLevel[i] = _wandScript[i].skillLevel;
+                    switch (i)
+                    {
+                        case 0:
+                            masteryManager.incrementSkillLevel("wand", "autoAttack");
+                            break;
+                        case 1:
+                            masteryManager.incrementSkillLevel("wand", "skillA");
+                            break;
+                        case 2:
+                            masteryManager.incrementSkillLevel("wand", "skillB");
+                            break;
+                        case 3:
+                            masteryManager.incrementSkillLevel("wand", "skillC");
+                            break;
+                    }
+                }
                 else _wandScript[i].skillLevel = wand.skillLevel[i];
                 _wandScript[i].SkillLevelPrint();
             }
             if (_staffScript[i].skillLevel != staff.skillLevel[i])
             {
-                if (_staffScript[i].skillLevel > staff.skillLevel[i]) staff.skillLevel[i] = _staffScript[i].skillLevel;
+                if (_staffScript[i].skillLevel > staff.skillLevel[i])
+                {
+                    staff.skillLevel[i] = _staffScript[i].skillLevel;
+                    switch (i)
+                    {
+                        case 0:
+                            masteryManager.incrementSkillLevel("staff", "autoAttack");
+                            break;
+                        case 1:
+                            masteryManager.incrementSkillLevel("staff", "skillA");
+                            break;
+                        case 2:
+                            masteryManager.incrementSkillLevel("staff", "skillB");
+                            break;
+                        case 3:
+                            masteryManager.incrementSkillLevel("staff", "skillC");
+                            break;
+                    }
+                }
                 else _staffScript[i].skillLevel = staff.skillLevel[i];
                 _staffScript[i].SkillLevelPrint();
             }
