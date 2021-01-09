@@ -13,14 +13,15 @@ public class FaceCam : MonoBehaviour
 
     public void InitFaceCam(GameObject avatar)
     {
-        //OnDisable();
+        OnDisable();
         SetTargetWithGenerate(avatar);
     }
 
     private void OnDisable()
     {
         if (followAvatar != null)
-            ObjectPoolManager.Instance.ReturnObject(followAvatar);
+            Destroy(followAvatar.gameObject);
+            //ObjectPoolManager.Instance.ReturnObject(followAvatar);
         if (bodyAvatar != null)
             ObjectPoolManager.Instance.ReturnObject(bodyAvatar);
     }
@@ -28,7 +29,8 @@ public class FaceCam : MonoBehaviour
     public void SetTargetWithGenerate(GameObject target)
     {
         faceCam = GetComponent<CinemachineFreeLook>();
-        followAvatar = ObjectPoolManager.Instance.GetObject(target);
+        followAvatar = Instantiate(target);
+        //followAvatar = ObjectPoolManager.Instance.GetObject(target);
         followAvatar.transform.position = new Vector3(950, 1000, -15);
         followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         followAvatar.tag = "FaceCamAvata";
