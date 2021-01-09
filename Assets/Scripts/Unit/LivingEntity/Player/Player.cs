@@ -79,7 +79,7 @@ public class Player : LivingEntity
     private Vector3 _prevRushPos;
     private float _rushTime;
 
-    PartSelection selection;
+    public PartSelection selection;
     FaceCam faceCam;
 
     public WeaponManager weaponManager;
@@ -102,7 +102,7 @@ public class Player : LivingEntity
 
         _rushTime = 5;
         _prevRushPos = Vector3.zero;
-        SetUpPlayerCamera();
+        
         moveDir = Vector3.forward;
         OffTrailParticles();
     }
@@ -116,6 +116,7 @@ public class Player : LivingEntity
         selection = GetComponent<PartSelection>();
         selection.Start();
         selection.Init();
+        itemManager.SetItemToPlayer(this);
 
         myAnimator = GetComponent<Animator>();
 
@@ -124,6 +125,8 @@ public class Player : LivingEntity
 
         weaponManager = WeaponManager.Instance;
         weaponManager.SetWeapon("SWORD");
+
+        SetUpPlayerCamera();
     }
 
     protected override void Update()
@@ -281,7 +284,27 @@ public class Player : LivingEntity
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            weaponManager.GetWeapon().exp += 100.0f;
+            weaponManager.GetWeapon().exp += 80;
+            weaponManager.GetWeapon().MasteryLevelUp();
+            switch (weaponManager.GetWeapon().name)
+            {
+                case "sword":
+                    MasteryManager.Instance.currentMastery.currentSwordMasteryExp = weaponManager.GetWeapon().exp;
+                    break;
+                case "dagger":
+                    MasteryManager.Instance.currentMastery.currentDaggerMasterExp = weaponManager.GetWeapon().exp;
+                    break;
+                case "blunt":
+                    MasteryManager.Instance.currentMastery.currentBluntMasteryExp = weaponManager.GetWeapon().exp;
+                    break;
+                case "wand":
+                    MasteryManager.Instance.currentMastery.currentWandMasteryExp = weaponManager.GetWeapon().exp;
+                    break;
+                case "staff":
+                    MasteryManager.Instance.currentMastery.currentStaffMasteryExp = weaponManager.GetWeapon().exp;
+                    break;
+            }
+            MasteryManager.Instance.SaveCurrentMastery();
         }
     }
 

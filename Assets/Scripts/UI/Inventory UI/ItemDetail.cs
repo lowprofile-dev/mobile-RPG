@@ -35,6 +35,9 @@ public class ItemDetail : MonoBehaviour
         if (itemData.moveSpeed != 0) allData += UIManager.Instance.AddFontData("이동 속도 \t\t +" + itemData.moveSpeed + "%", "white", 18) + "\n";
         if (itemData.dashCooldown != 0) allData += UIManager.Instance.AddFontData("대쉬 쿨타임 \t\t -" + itemData.dashCooldown + "%", "white", 18) + "\n";
         if (itemData.dashStamina != 0) allData += UIManager.Instance.AddFontData("대쉬 스태미너 \t -" + itemData.dashStamina + "%", "white", 18) + "\n";
+        if (itemData.rigidresistance != 0) allData += UIManager.Instance.AddFontData("경직 저항 \t -" + itemData.rigidresistance + "%", "white", 18) + "\n";
+        if (itemData.stunresistance != 0) allData += UIManager.Instance.AddFontData("기절 저항 \t -" + itemData.stunresistance + "%", "white", 18) + "\n";
+        if (itemData.fallresistance != 0) allData += UIManager.Instance.AddFontData("넉백 저항 \t -" + itemData.fallresistance + "%", "white", 18) + "\n";
 
         allData = allData.Remove(allData.Length - 1, 1);
         itemText.text = allData;

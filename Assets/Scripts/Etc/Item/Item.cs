@@ -20,7 +20,7 @@ public class Item : MonoBehaviour
     [ContextMenu("Load item data")]
     public void LoadItemData()
     {
-        itemManager.SetItemData(id, out itemData);
+        ItemManager.Instance.SetItemData(id, out itemData);
     }
 
     //  COMMENT : 아이템 스크립트에서 모델링까지 불러오는 방식 (비용이 높아 폐기)
