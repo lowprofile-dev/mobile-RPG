@@ -207,6 +207,12 @@ public class PartSelection : MonoBehaviour
         characterParts.ChangeLeftShoulder(collections.GetShoulder(shoulderKeys[leftShoulderIndex]));
     }
 
+    public void ChangeLeftShoulderPart(int index)
+    {
+        leftShoulderIndex = index;
+        characterParts.ChangeLeftShoulder(collections.GetShoulder(shoulderKeys[leftShoulderIndex]));
+    }
+
     public void ChangeLeftElbowPart()
     {
         leftElbowIndex = GetPartKeyIndex(leftElbowIndex, elbowKeys);
@@ -238,6 +244,12 @@ public class PartSelection : MonoBehaviour
     public void ChangeRightShoulderPart()
     {
         rightShoulderIndex = GetPartKeyIndex( rightShoulderIndex, shoulderKeys);
+        characterParts.ChangeRightShoulder(collections.GetShoulder(shoulderKeys[rightShoulderIndex]));
+    }
+
+    public void ChangeRightShoulderPart(int index)
+    {
+        rightShoulderIndex = index;
         characterParts.ChangeRightShoulder(collections.GetShoulder(shoulderKeys[rightShoulderIndex]));
     }
 
@@ -314,6 +326,12 @@ public class PartSelection : MonoBehaviour
         characterParts.ChangeLeftHip(collections.GetHip(hipKeys[leftHipIndex]));
     }
 
+    public void ChangeLeftHipPart(int index)
+    {
+        leftHipIndex = index;
+        characterParts.ChangeLeftHip(collections.GetHip(hipKeys[leftHipIndex]));
+    }
+
     public void ChangeLeftKneePart()
     {
         leftKneeIndex = GetPartKeyIndex(leftKneeIndex, kneeKeys);
@@ -329,6 +347,12 @@ public class PartSelection : MonoBehaviour
     public void ChangeRightHipPart()
     {
         rightHipIndex = GetPartKeyIndex(rightHipIndex, hipKeys);
+        characterParts.ChangeRightHip(collections.GetHip(hipKeys[rightHipIndex]));
+    }
+
+    public void ChangeRightHipPart(int index)
+    {
+        rightHipIndex = index;
         characterParts.ChangeRightHip(collections.GetHip(hipKeys[rightHipIndex]));
     }
 

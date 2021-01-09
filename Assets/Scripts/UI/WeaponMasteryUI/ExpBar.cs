@@ -11,7 +11,7 @@ public class ExpBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float ratio = (WeaponManager.Instance._weaponDic[name].exp / WeaponManager.Instance._weaponDic[name].expMax);
+        float ratio = ((float) WeaponManager.Instance._weaponDic[name].exp / (float)WeaponManager.Instance._weaponDic[name].expMax);
         if (image)
             image.fillAmount = ratio;
     }

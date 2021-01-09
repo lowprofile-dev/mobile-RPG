@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Weapon
 {
+    public string name;
+
     public int outfitGrade;
     public int masteryLevel;
 
@@ -25,8 +27,8 @@ public class Weapon
     public float skillBCool;
     public float skillCCool;
 
-    public float expMax= 100;
-    public float exp =0;
+    public int expMax= 100;
+    public int exp =0;
 
 
     public float attackDamage;
@@ -50,7 +52,6 @@ public class Weapon
     public virtual void Update()
     {
         OutfitGradeCheck();
-        MasteryLevelUp();
     }
 
     public virtual GameObject SkillA()
@@ -115,19 +116,64 @@ public class Weapon
             exp = exp - expMax;
             masteryLevel++;
             SkillRelease();
+            Weaponcheck();
         }
+    }
+
+    private void Weaponcheck()
+    {
+        MasteryManager.Instance.incrementMasteryLevel(this.name);
     }
 
     public void SkillRelease()
     {
         if (masteryLevel >= 19 && skillCRelease == false)
         {
+            switch (this.name)
+            {
+                case "sword":
+                    MasteryManager.Instance.currentMastery.currentSwordSkillCReleased = true;
+                    break;
+                case "dagger":
+                    MasteryManager.Instance.currentMastery.currentDaggerSkillCReleased = true;
+                    break;
+                case "blunt":
+                    MasteryManager.Instance.currentMastery.currentBluntSkillCReleased = true;
+                    break;
+                case "wand":
+                    MasteryManager.Instance.currentMastery.currentWandSkillCReleased = true;
+                    break;
+                case "staff":
+                    MasteryManager.Instance.currentMastery.currentStaffSkillCReleased = true;
+                    break;
+            }
+
             skillCRelease = true;
+            MasteryManager.Instance.incrementSkillLevel(this.name, "skillC");
             skillLevel[3] = 1;
         }
         else if (masteryLevel >= 10 && skillBRelease == false)
         {
+            switch (this.name)
+            {
+                case "sword":
+                    MasteryManager.Instance.currentMastery.currentSwordSkillBReleased = true;
+                    break;
+                case "dagger":
+                    MasteryManager.Instance.currentMastery.currentDaggerSkillBReleased = true;
+                    break;
+                case "blunt":
+                    MasteryManager.Instance.currentMastery.currentBluntSkillBReleased = true;
+                    break;
+                case "wand":
+                    MasteryManager.Instance.currentMastery.currentWandSkillBReleased = true;
+                    break;
+                case "staff":
+                    MasteryManager.Instance.currentMastery.currentStaffSkillBReleased = true;
+                    break;
+            }
             skillBRelease = true;
+            MasteryManager.Instance.incrementSkillLevel(this.name, "skillB");
             skillLevel[2] = 1;
         }
     }

@@ -56,6 +56,25 @@ public class InventoryUIView : View
             slot.GetComponent<ItemSlot>().SetItemData(itemManager.itemDictionary[item.Key]);
             slot.GetComponent<ItemSlot>().SetItemDetail(itemDetail);
             itemSlots.Add(slot);
+            switch(itemData.itemgrade)
+            {
+                case 1:
+                    slot.GetComponent<ItemSlot>().SetItemGrade(new Color(1, 1, 1, 0.15f));
+                    break;
+                case 2:
+                    slot.GetComponent<ItemSlot>().SetItemGrade(new Color(0, 1, 0, 0.15f));
+                    break;
+                case 3:
+                    slot.GetComponent<ItemSlot>().SetItemGrade(new Color(0, 0, 1, 0.15f));
+                    break;
+                case 4:
+                    slot.GetComponent<ItemSlot>().SetItemGrade(new Color(153, 50, 204, 0.15f));
+                    break;
+                case 5:
+                    slot.GetComponent<ItemSlot>().SetItemGrade(new Color(1, 0.92f, 0.016f, 0.15f));
+                    break;
+            }
+            
         }
     }
 

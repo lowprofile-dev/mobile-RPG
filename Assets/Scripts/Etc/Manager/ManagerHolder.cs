@@ -15,6 +15,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     [HideInInspector] public UILoaderManager uiLoaderManager;
     [HideInInspector] public ObjectPoolManager objectPoolManager;
     [HideInInspector] public UINaviationManager uiNavationManager;
+    [HideInInspector] public MasteryManager masteryManager;
     [HideInInspector] public WeaponManager weaponManager;
     [HideInInspector] public ItemManager itemManager;
 
@@ -42,6 +43,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         gameManager = (GameManager)AddManager<GameManager>();
         resourceManager = (ResourceManager)AddManager<ResourceManager>();
         objectPoolManager = (ObjectPoolManager)AddManager<ObjectPoolManager>();
+        masteryManager = (MasteryManager)AddManager<MasteryManager>();
         weaponManager = (WeaponManager)AddManager<WeaponManager>();
         uiLoaderManager = (UILoaderManager)AddManager<UILoaderManager>();
         talkManager = (TalkManager)AddManager<TalkManager>();
@@ -59,6 +61,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         gameManager.InitGameManager();
         resourceManager.InitResourceManager();
         objectPoolManager.InitObjectPoolManager();
+        masteryManager.InitMasteryManager();
         weaponManager.InitWeaponManager();
         statusManager.InitStatusManager();
         uiLoaderManager.InitUILoaderManager();

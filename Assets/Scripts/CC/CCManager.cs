@@ -100,6 +100,7 @@ public class CCManager : MonoBehaviour
     {
         ccControl.Remove(type);
         ccControl[type] = null;
+        currentCC = null;
 
         if (currentType == "monster")
             mons.ChangeState(MONSTER_STATE.STATE_IDLE);
