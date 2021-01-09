@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 public class Wand : Weapon
 {
     // Start is called before the first frame update
@@ -32,23 +30,74 @@ public class Wand : Weapon
         skillBCool = 0;
         skillCCool = 0;
 
-        AttackEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Attack");
-        SkillAEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Skill A");
-        SkillBEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Skill B");
-        SkillCEffect = Resources.Load<GameObject>("Prefab/PlayerEffect/Wand Skill C");
+        AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Attack Effect 1");
+        AttackEffect2 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Attack Effect 2");
+        AttackEffect3 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Attack Effect 3");
+        SkillAEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Skill A");
+        SkillBEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Skill B");
+        SkillCEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Skill C");
+
         WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Wand Animator");
 
     }
 
-
-    // Update is called once per frame
-    public override void Update()
+    public override GameObject SkillA()
     {
-        base.Update();
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillAEffect).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
 
-        //if(Input.GetKeyDown(KeyCode.P))
-        //{
-        //    masteryLevel++;
-        //}
+        return SkillAEffect;
+    }
+
+    public override GameObject SkillB()
+    {
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillBEffect).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
+
+        return SkillBEffect;
+    }
+
+    public override GameObject SkillC()
+    {
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillCEffect).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
+
+        return SkillCEffect;
+    }
+
+    public override GameObject Attack3()
+    {
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect3).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
+
+        return null;
+    }
+
+    public override GameObject Attack2()
+    {
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect2).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
+
+        return null;
+    }
+
+    public override GameObject Attack()
+    {
+        PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<PlayerAttack>();
+        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.PlayAttackTimer(0.4f);
+        atk.OnLoad();
+
+        return null;
     }
 }

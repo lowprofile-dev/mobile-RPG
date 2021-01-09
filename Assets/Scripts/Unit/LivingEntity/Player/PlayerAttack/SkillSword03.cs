@@ -7,9 +7,9 @@ public class SkillSword03 : PlayerAttack
     {
         GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
 
+        Effect.transform.position = transform.position;
         Effect.transform.rotation = Quaternion.identity;
         Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
-        Effect.transform.position = particlePosition.transform.position;
 
         SetLocalRotation(Effect);
 

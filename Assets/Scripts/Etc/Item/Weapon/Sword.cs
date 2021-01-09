@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using CSVReader;
+﻿using UnityEngine;
 
 public class Sword : Weapon
 {
@@ -12,7 +9,7 @@ public class Sword : Weapon
         hitRigid = 0.5f;
         hitFail = 0.5f;
         outfitGrade = 0;
-        masteryLevel=1;
+        masteryLevel = 1;
 
         skillBRelease = false;
         skillCRelease = false;
@@ -22,14 +19,14 @@ public class Sword : Weapon
         skillLevel[2] = 0;
         skillLevel[3] = 0;
 
-        attackDamage= 1;
+        attackDamage = 1;
         magicDamage = 0;
         skillSpeed = 0;
 
         skillACoef = 0;
         skillBCoef = 0;
         skillCCoef = 0;
-                  
+
         skillACool = 0;
         skillBCool = 0;
         skillCCool = 0;
@@ -40,19 +37,8 @@ public class Sword : Weapon
         SkillAEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Skill 1 Heal");
         SkillBEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Skill B");
         SkillCEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Skill C");
-       
+
         WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Sword Animator");
-    }
-
-    // Update is called once per frame
-    public override void Update()
-    {
-        base.Update();
-
-        //if(Input.GetKeyDown(KeyCode.P))
-        //{
-        //    masteryLevel++;
-        //}
     }
 
     public override GameObject SkillA()
@@ -61,7 +47,7 @@ public class Sword : Weapon
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
-        
+
         return SkillAEffect;
     }
 
@@ -119,8 +105,8 @@ public class Sword : Weapon
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
-        
+
         return null;
-        
+
     }
 }

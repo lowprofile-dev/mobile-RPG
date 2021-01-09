@@ -100,7 +100,7 @@ public class Player : LivingEntity
 
         _evadeTime = _initEvadeTime;
 
-        _rushTime = 5;
+        _rushTime = 3;
         _prevRushPos = Vector3.zero;
         SetUpPlayerCamera();
         moveDir = Vector3.forward;
@@ -687,7 +687,7 @@ public class Player : LivingEntity
     {
         OnTrailparticles();
         _isRushing = true;
-        _rushTime = 5;
+        _rushTime = 3;
     }
 
     /// <summary>
@@ -731,7 +731,7 @@ public class Player : LivingEntity
     {
         OffTrailParticles();
         _isRushing = false;
-        _rushTime = 5;
+        _rushTime = 3;
 
         if (weaponManager.GetWeaponName() == "SWORD" && _cntSkillType == 1)
         {
