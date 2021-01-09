@@ -6,6 +6,56 @@ using Newtonsoft.Json;
 using System;
 using CSVReader;
 
+public class AdditionStatus
+{
+    public float hp;                    //최대 체력 증가
+    public float hpRecovery;            //체력 회복량
+    public float stamina;               //최대 스태미너 증가
+    public float staminaRecovery;       //스태미너 회복량
+    public float attackDamage;          //공격력 증가
+    public float armor;                 //방어력 증가
+    public float magicResistance;       //마법 방어력 증가
+    public float rigidresistance;       //경직 cc 저항
+    public float stunresistance;        //스턴 cc 저항
+    public float fallresistance;        //넘어짐 cc 저항 
+
+    public AdditionStatus()
+    {
+        hp = 0;                    //최대 체력 증가
+        hpRecovery = 0;            //체력 회복량
+        stamina = 0;               //최대 스태미너 증가
+        staminaRecovery = 0;       //스태미너 회복량
+        attackDamage = 0;          //공격력 증가
+        armor = 0;                 //방어력 증가
+        magicResistance = 0;       //마법 방어력 증가
+        rigidresistance = 0;       //경직 cc 저항
+        stunresistance = 0;        //스턴 cc 저항
+        fallresistance = 0;        //넘어짐 cc 저항 
+    }
+}
+
+public class MultiplicationStatus
+{
+    public float hpIncreaseRate;        //체력 % 증가
+    public float attackSpeed;           //공격속도 % 증가
+    public float attackCooldown;        //공격스킬 쿨타임 % 감소
+    public float armorIncreaseRate;     //방어력 % 증가
+    public float moveSpeed;             //이동 속도 % 증가
+    public float dashCooldown;          //대쉬 스킬 쿨타임 % 감소
+    public float dashStamina;           //대쉬 스킬 스태미너 % 감소
+
+    public MultiplicationStatus()
+    {
+        hpIncreaseRate = 0;        //체력 % 증가
+        attackSpeed = 0;           //공격속도 % 증가
+        attackCooldown = 0;        //공격스킬 쿨타임 % 감소
+        armorIncreaseRate = 0;     //방어력 % 증가
+        moveSpeed = 0;             //이동 속도 % 증가
+        dashCooldown = 0;          //대쉬 스킬 쿨타임 % 감소
+        dashStamina = 0;           //대쉬 스킬 스태미너 % 감소
+    }
+}
+
 /// <summary>
 /// 세이브 및 로드, 이런저런 상황에 사용되는 수치들을 종합한다.
 /// </summary>
@@ -14,6 +64,9 @@ public class StatusManager : SingletonBase<StatusManager>
     [SerializeField] Player player;
     [SerializeField] Dictionary<int, StatusData> statusDictionary;
     public CurrentStatus playerStatus;
+    public AdditionStatus itemAdditionStatus;
+    public MultiplicationStatus itemMultiplicationStatus;
+    public CurrentStatus itemAppliedStatus;
     public CurrentStatus finalStatus;
 
     // 카드 리롤
@@ -35,6 +88,9 @@ public class StatusManager : SingletonBase<StatusManager>
     {
         player = Player.Instance;
         playerStatus = new CurrentStatus();
+        itemAdditionStatus = new AdditionStatus();
+        itemMultiplicationStatus = new MultiplicationStatus();
+        itemAppliedStatus = new CurrentStatus();
         finalStatus = new CurrentStatus();
         Table statusTable = CSVReader.Reader.ReadCSVToTable("CSVData/StatusDatabase");
         statusDictionary = statusTable.TableToDictionary<int, StatusData>();
@@ -47,8 +103,45 @@ public class StatusManager : SingletonBase<StatusManager>
         {
             player = Player.Instance;
         }
+    }
 
-        
+    public void UpdateFinalStatus()
+    {
+        AddCurrentStatus();
+        MultiplyCurrentStatus();
+        finalStatus = itemAppliedStatus;
+    }
+
+    private void AddCurrentStatus()
+    {
+        //hp = 0;                    //최대 체력 증가
+        //hpRecovery = 0;            //체력 회복량
+        //stamina = 0;               //최대 스태미너 증가
+        //staminaRecovery = 0;       //스태미너 회복량
+        //attackDamage = 0;          //공격력 증가
+        //armor = 0;                 //방어력 증가
+        //magicResistance = 0;       //마법 방어력 증가
+        //rigidresistance = 0;       //경직 cc 저항
+        //stunresistance = 0;        //스턴 cc 저항
+        //fallresistance = 0;        //넘어짐 cc 저항 
+        itemAppliedStatus.maxHp = playerStatus.maxHp + itemAdditionStatus.hp;
+        itemAppliedStatus.hpRecovery = playerStatus.hpRecovery + itemAdditionStatus.hpRecovery;
+        itemAppliedStatus.maxStamina = playerStatus.maxStamina + itemAdditionStatus.stamina;
+        itemAppliedStatus.staminaRecovery = playerStatus.staminaRecovery + itemAdditionStatus.staminaRecovery;
+        itemAppliedStatus.attackDamage = playerStatus.attackDamage + itemAdditionStatus.attackDamage;
+        itemAppliedStatus.armor = playerStatus.armor + itemAdditionStatus.armor;
+        itemAppliedStatus.magicResistance = playerStatus.magicResistance + itemAdditionStatus.magicResistance;
+        itemAppliedStatus.rigidresistance = playerStatus.rigidresistance + itemAdditionStatus.rigidresistance;
+        itemAppliedStatus.stunresistance = playerStatus.stunresistance + itemAdditionStatus.stunresistance;
+        itemAppliedStatus.fallresistance = playerStatus.fallresistance + itemAdditionStatus.fallresistance;
+    }
+
+    private void MultiplyCurrentStatus()
+    {
+        itemAppliedStatus.armor = itemAppliedStatus.armor * (1 + itemMultiplicationStatus.armorIncreaseRate/100.0f);
+        itemAppliedStatus.attackCooldown = itemAppliedStatus.attackCooldown - (itemMultiplicationStatus.armorIncreaseRate / 100.0f);
+        itemAppliedStatus.dashCooldown = itemAppliedStatus.dashCooldown - (itemMultiplicationStatus.dashCooldown / 100.0f);
+        itemAppliedStatus.dashStamina = itemAppliedStatus.dashStamina * (1 - itemMultiplicationStatus.dashStamina / 100f);
     }
 
     private void LoadCurrentStatus()
@@ -72,30 +165,5 @@ public class StatusManager : SingletonBase<StatusManager>
         string jsonData = JsonUtility.ToJson(playerStatus, true);
         string path = Path.Combine(Application.persistentDataPath, "playerCurrentStatus.json");
         File.WriteAllText(path, jsonData);
-    }
-
-    public void AddExp(int _exp)
-    {
-        playerStatus.exp += _exp;
-        if (statusDictionary[playerStatus.level].exp <= playerStatus.exp)
-        {
-            playerStatus.exp -= statusDictionary[playerStatus.level].exp;
-            LevelUp();
-        }
-        SaveCurrentStatus();
-    }
-
-    private void LevelUp()
-    {
-        playerStatus.level += 1;
-        playerStatus.maxHp = statusDictionary[playerStatus.level].maxHp;
-        playerStatus.attackDamage = statusDictionary[playerStatus.level].attackDamage;
-        playerStatus.magicDamage = statusDictionary[playerStatus.level].magicDamage;
-        playerStatus.armor = statusDictionary[playerStatus.level].armor;
-        playerStatus.magicResistance = statusDictionary[playerStatus.level].magicResistance;
-        playerStatus.maxHp = statusDictionary[playerStatus.level].maxHp;
-        playerStatus.moveSpeed = statusDictionary[playerStatus.level].moveSpeed;
-        playerStatus.attackSpeed = statusDictionary[playerStatus.level].attackSpeed;
-        playerStatus.tenacity = statusDictionary[playerStatus.level].tenacity;
     }
 }

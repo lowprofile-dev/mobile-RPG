@@ -14,6 +14,7 @@ public class ItemManager : SingletonBase<ItemManager>
     //Dictionary<ItemData, int> playerInventory;
     public Dictionary<int, int> playerInventory;
     public Dictionary<int, ItemData> itemDictionary;
+    public List<ItemData> itemList = new List<ItemData>();
     Player player;
     PartSelection playerPartSelection;
     StatusManager statusManager;
@@ -22,13 +23,16 @@ public class ItemManager : SingletonBase<ItemManager>
 
     private void Start()
     {
+        //아이템 데이터 초기화를 원할시 주석 풀것!
+        PlayerPrefs.DeleteAll();
         statusManager = StatusManager.Instance;
         currentItems = new CurrentItems();
         currentItemKeys = new CurrentItemKeys();
         itemDictionary = new Dictionary<int, ItemData>();
-        playerInventory = new Dictionary<int, int>();
+        playerInventory = new Dictionary<int, int>(); //ID,개수
         Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
         itemDictionary = itemTable.TableToDictionary<int, ItemData>();
+        itemList = itemTable.TableToList<ItemData>();
         LoadCurrentItems();
         LoadInventoryData();
         EquipItems();
@@ -40,6 +44,7 @@ public class ItemManager : SingletonBase<ItemManager>
         if (player == null)
         {
             player = Player.Instance;
+            //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
             if (player != null)
                 playerPartSelection = player.gameObject.GetComponent<PartSelection>();
         }
@@ -61,16 +66,11 @@ public class ItemManager : SingletonBase<ItemManager>
     private void LoadCurrentItems()
     {
         PlayerPrefs.SetInt("LoadCurrentItemCount", PlayerPrefs.GetInt("LoadCurrentItemCount", 0));
-        TextAsset jsonRawData;
         if (PlayerPrefs.GetInt("LoadCurrentItemCount") == 0)
         {
             Debug.Log("최초 아이템 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadCurrentItemCount", 1);
-
-            jsonRawData = Resources.Load("Data/playerCurrentItems") as TextAsset;
-            string jsonFirstData = jsonRawData.ToString();
-            string pathFirst = Path.Combine(Application.persistentDataPath, "playerCurrentItems.json");
-            File.WriteAllText(pathFirst, jsonFirstData);
+            SaveCurrentItems();
             PlayerPrefs.Save();
         }
 
@@ -140,8 +140,32 @@ public class ItemManager : SingletonBase<ItemManager>
         playerPartSelection.ChangeHeadAccesoriesPart(currentItems.headAccesoriesIndex);
         playerPartSelection.ChangeLeftElbowPart(currentItems.leftElbowIndex);
         playerPartSelection.ChangeRightElbowPart(currentItems.rightElbowIndex);
+        playerPartSelection.ChangeLeftShoulderPart(currentItems.leftShoulderIndex);
+        playerPartSelection.ChangeRightShoulderPart(currentItems.rightShoulderIndex);
         playerPartSelection.ChangeLeftKneePart(currentItems.leftKneeIndex);
         playerPartSelection.ChangeRightKneePart(currentItems.rightKneeIndex);
+        playerPartSelection.ChangeLeftHipPart(currentItems.leftHipIndex);
+        playerPartSelection.ChangeRightHipPart(currentItems.rightHipIndex);
+        //이거 풀면 초상화는 해결되는데 조이스틱이 망가짐
+        //player.ChangeFaceCamera();
+    }
+
+    public void SetItemToPlayer(Player _player)
+    {
+        _player.selection.ChangeChestPart(currentItems.chestIndex);
+        _player.selection.ChangeSpinePart(currentItems.spineIndex);
+        _player.selection.ChangeLowerSpinePart(currentItems.lowerSpineIndex);
+        _player.selection.ChangeHeadAccesoriesPart(currentItems.headAccesoriesIndex);
+        _player.selection.ChangeLeftElbowPart(currentItems.leftElbowIndex);
+        _player.selection.ChangeRightElbowPart(currentItems.rightElbowIndex);
+        _player.selection.ChangeLeftShoulderPart(currentItems.leftShoulderIndex);
+        _player.selection.ChangeRightShoulderPart(currentItems.rightShoulderIndex);
+        _player.selection.ChangeLeftKneePart(currentItems.leftKneeIndex);
+        _player.selection.ChangeRightKneePart(currentItems.rightKneeIndex);
+        _player.selection.ChangeLeftHipPart(currentItems.leftHipIndex);
+        _player.selection.ChangeRightHipPart(currentItems.rightHipIndex);
+        //이거 풀면 초상화는 해결되는데 조이스틱이 망가짐
+        //_player.ChangeFaceCamera();
     }
 
     /// <summary>
@@ -172,6 +196,8 @@ public class ItemManager : SingletonBase<ItemManager>
             case "Gloves":
                 playerPartSelection.ChangeLeftElbowPart(itemData.itemIndex);
                 playerPartSelection.ChangeRightElbowPart(itemData.itemIndex);
+                playerPartSelection.ChangeRightShoulderPart(itemData.itemIndex);
+                playerPartSelection.ChangeLeftShoulderPart(itemData.itemIndex);
                 currentItems.leftElbowIndex = itemData.itemIndex;
                 currentItems.rightElbowIndex = itemData.itemIndex;
                 currentItemKeys.GlovesKey = itemData.id;
@@ -179,6 +205,8 @@ public class ItemManager : SingletonBase<ItemManager>
             case "Boot":
                 playerPartSelection.ChangeLeftKneePart(itemData.itemIndex);
                 playerPartSelection.ChangeRightKneePart(itemData.itemIndex);
+                playerPartSelection.ChangeLeftHipPart(itemData.itemIndex);
+                playerPartSelection.ChangeRightHipPart(itemData.itemIndex);
                 currentItems.leftKneeIndex = itemData.itemIndex;
                 currentItems.rightKneeIndex = itemData.itemIndex;
                 currentItemKeys.BootKey = itemData.id;
@@ -188,6 +216,7 @@ public class ItemManager : SingletonBase<ItemManager>
         SaveCurrentItemKeys();
         EquipItems();
     }
+
 
     /// <summary>
     /// 인벤토리 데이터 JSON 저장
@@ -206,17 +235,12 @@ public class ItemManager : SingletonBase<ItemManager>
     [ContextMenu("Load Inventory Data from Json")]
     public void LoadInventoryData()
     {
-        TextAsset jsonRawData;
         if (PlayerPrefs.GetInt("LoadInventoryDataCount") == 0)
         {
             Debug.Log("최초 인벤토리 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadInventoryDataCount", 1);
-
-            jsonRawData = Resources.Load("Data/inventoryDB") as TextAsset;
-            string jsonFirstData = jsonRawData.ToString();
-            string pathFirst = Path.Combine(Application.persistentDataPath, "inventoryDB.json");
-            File.WriteAllText(pathFirst, jsonFirstData);
-
+            InitInventoryData();
+            SaveInventoryData();
             PlayerPrefs.Save();
         }
         //List<KeyValuePair<ItemData, int>> temp = new List<KeyValuePair<ItemData, int>>();
@@ -224,6 +248,15 @@ public class ItemManager : SingletonBase<ItemManager>
         string jsonData = File.ReadAllText(path);
         if (jsonData == null) return;
         playerInventory = JsonConvert.DeserializeObject<Dictionary<int, int>>(jsonData);
+    }
+
+    private void InitInventoryData()
+    {
+        playerInventory.Add(1, 1);
+        playerInventory.Add(2, 1);
+        playerInventory.Add(3, 1);
+        playerInventory.Add(4, 1);
+        playerInventory.Add(5, 1);
     }
 
     [ContextMenu("Save Item Data to Json")]
@@ -234,66 +267,52 @@ public class ItemManager : SingletonBase<ItemManager>
         File.WriteAllText(path, jsonData);
     }
 
-    //private List<KeyValuePair<ItemData, int>> DictToList(Dictionary<ItemData, int> dict)
-    //{
-    //    List<KeyValuePair<ItemData, int>> result = new List<KeyValuePair<ItemData, int>>();
-    //    foreach(var data in dict)
-    //    {
-    //        result.Add(data);
-    //    }
-    //    return result;
-    //}
-    //private Dictionary<ItemData, int> ListToDict(List<KeyValuePair<ItemData, int>> list)
-    //{
-    //    Dictionary<ItemData, int> result = new Dictionary<ItemData, int>();
-    //    foreach(var data in list)
-    //    {
-    //        result.Add(data.Key, data.Value);
-    //    }
-    //    return result;
-    //}
     private void EquipItems()
     {
-        statusManager.finalStatus = (CurrentStatus) statusManager.playerStatus.Clone();
+        statusManager.itemMultiplicationStatus = new MultiplicationStatus();
+        statusManager.itemAdditionStatus = new AdditionStatus();
         EquipArmor(currentItemKeys.ArmorKey);
         EquipBottom(currentItemKeys.BottomKey);
         EquipHelmet(currentItemKeys.HelmetKey);
         EquipGloves(currentItemKeys.GlovesKey);
         EquipBoot(currentItemKeys.BootKey);
+        statusManager.UpdateFinalStatus();
         Debug.Log("curreunt status : " + statusManager.finalStatus);
     }
 
     private void EquipBoot(int bootKey)
     {
-        statusManager.finalStatus.moveSpeed *= (1 + itemDictionary[bootKey].moveSpeed);
-        statusManager.finalStatus.dashCooldown *= (1 + itemDictionary[bootKey].dashCooldown);
-        statusManager.finalStatus.dashStamina -= itemDictionary[bootKey].dashStamina;
+        statusManager.itemMultiplicationStatus.moveSpeed += itemDictionary[bootKey].moveSpeed;
+        statusManager.itemMultiplicationStatus.dashCooldown +=  itemDictionary[bootKey].dashCooldown;
+        statusManager.itemMultiplicationStatus.dashStamina += itemDictionary[bootKey].dashStamina;
     }
 
     private void EquipGloves(int glovesKey)
     {
-        statusManager.finalStatus.attackDamage *= (1 + itemDictionary[glovesKey].attackDamage);
-        statusManager.finalStatus.attackSpeed *= (1 + itemDictionary[glovesKey].attackSpeed);
-        statusManager.finalStatus.attackCooldown += itemDictionary[glovesKey].attackCooldown;
+        statusManager.itemAdditionStatus.attackDamage += itemDictionary[glovesKey].attackDamage;
+        statusManager.itemMultiplicationStatus.attackSpeed += itemDictionary[glovesKey].attackSpeed;
+        statusManager.itemMultiplicationStatus.attackCooldown += itemDictionary[glovesKey].attackCooldown;
     }
 
     private void EquipHelmet(int helmetKey)
     {
-        statusManager.finalStatus.tenacity += itemDictionary[helmetKey].tenacity;
+        statusManager.itemAdditionStatus.rigidresistance += itemDictionary[helmetKey].rigidresistance;
+        statusManager.itemAdditionStatus.stunresistance += itemDictionary[helmetKey].stunresistance;
+        statusManager.itemAdditionStatus.fallresistance += itemDictionary[helmetKey].fallresistance;
     }
 
     private void EquipBottom(int bottomKey)
     {
-        statusManager.finalStatus.maxStamina += itemDictionary[bottomKey].stamina;
-        statusManager.finalStatus.staminaRecovery += (1 + itemDictionary[bottomKey].staminaRecovery);
-        statusManager.finalStatus.maxHp += (1 + itemDictionary[bottomKey].hp);
-        statusManager.finalStatus.hpRecovery += (1 + itemDictionary[bottomKey].hpRecovery);
+        statusManager.itemAdditionStatus.stamina += itemDictionary[bottomKey].stamina;
+        statusManager.itemAdditionStatus.staminaRecovery += (1 + itemDictionary[bottomKey].staminaRecovery);
+        statusManager.itemAdditionStatus.hp += itemDictionary[bottomKey].hp;
+        statusManager.itemAdditionStatus.hpRecovery += itemDictionary[bottomKey].hpRecovery;
     }
 
     private void EquipArmor(int armorKey)
     {
-        statusManager.finalStatus.maxHp *= (1 + itemDictionary[armorKey].hpIncreaseRate);
-        statusManager.finalStatus.maxHp *= (1 + itemDictionary[armorKey].armor);
-        statusManager.finalStatus.maxHp *= (1 + itemDictionary[armorKey].magicResistance);
+        statusManager.itemAdditionStatus.hp += itemDictionary[armorKey].hpIncreaseRate;
+        statusManager.itemAdditionStatus.armor += itemDictionary[armorKey].armor;
+        statusManager.itemAdditionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
     }
 }

@@ -12,6 +12,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] GameObject itemQuantity;
     [SerializeField] GameObject itemDetail;
     [SerializeField] GameObject itemDetailPrefab;
+    [SerializeField] GameObject itemGrade;
     bool isShowingItemInfo;
     ItemData itemData;
     ItemManager itemManager;
@@ -20,10 +21,15 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         itemIcon = gameObject.transform.GetChild(0).gameObject;
         itemQuantity = gameObject.transform.GetChild(1).gameObject;
+        itemGrade = gameObject.transform.GetChild(2).gameObject;
         isShowingItemInfo = false;
         itemManager = ItemManager.Instance;
     }
 
+    public void SetItemGrade(Color color)
+    {
+        itemGrade.GetComponent<Image>().color = color;
+    }
 
     public void SetIcon(Transform model)
     {

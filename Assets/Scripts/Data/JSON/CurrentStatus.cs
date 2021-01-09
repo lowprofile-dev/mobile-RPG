@@ -10,8 +10,6 @@ public class CurrentStatus : ICloneable
     //향후 서버 or 멀티플레이 구축시 필요한 데이터
     //public int id;
     //public string name;
-    public int level;                   //숙련도의 총합
-    public int exp;                     //경험치
 
     [Header("체력 스텟")]
     public float hp;                    //현재 체력량
@@ -31,76 +29,31 @@ public class CurrentStatus : ICloneable
     [Header("방어 및 이동 관련 스텟")]
     public float armor;                 //방어력
     public float magicResistance;       //마법 방어력
-    public float tenacity;              //cc저항
+    public float rigidresistance;       //경직 cc 저항
+    public float stunresistance;        //스턴 cc 저항
+    public float fallresistance;        //넘어짐 cc 저항
     public float moveSpeed;             //이동 속도
     public float dashCooldown;          //대쉬 스킬 쿨타임 % 감소
     public float dashStamina;           //대쉬 스킬 스태미너 % 감소
 
-    [Header("무기 숙련도")]
-    public float swordLevel;            //한손검 숙련도
-    public float daggerLevel;           //단검 숙련도
-    public float greatSwordLevel;       //대검 숙련도
-    public float bluntLevel;            //둔기 숙련도
-    public float staffLevel;            //지팡이(근거리) 숙련도
-    public float wandLevel;             //지팡이(원거리) 숙련도
-
     public CurrentStatus()
     {
-        level = 1;
-        exp = 0;
         hp = 150;
         maxHp = 150;
         hpRecovery = 1f;
         maxStamina = 100;
         staminaRecovery = 3f;
-        attackDamage = 10;
+        attackDamage = 1000;
         attackSpeed = 0.5f;
-        attackCooldown = 0;
+        attackCooldown = 1;
         armor = 3;
         magicResistance = 4;
-        tenacity = 40;
+        rigidresistance = 40;
+        stunresistance = 40;
+        fallresistance = 40;
         moveSpeed = 6;
-        dashCooldown = 0;
-        dashStamina = 0;
-        swordLevel = 1;
-        daggerLevel = 1;
-        greatSwordLevel = 1;
-        bluntLevel = 1;
-        staffLevel = 1;
-        wandLevel = 1;
-    }
-
-    /// <summary>
-    /// 얕은 복사
-    /// </summary>
-    /// <returns></returns>
-    public CurrentStatus ShallowCopy()
-    {
-        CurrentStatus copy = new CurrentStatus();
-        copy.level = this.level;
-        copy.exp = this.exp;
-        copy.hp = this.hp;
-        copy.maxHp = this.maxHp;
-        copy.hpRecovery = this.hpRecovery;
-        copy.maxStamina = this.maxStamina;
-        copy.staminaRecovery = this.staminaRecovery;
-        copy.attackDamage = this.attackDamage;
-        copy.attackSpeed = this.attackSpeed;
-        copy.attackCooldown = this.attackCooldown;
-        copy.armor = this.armor;
-        copy.magicResistance = this.magicResistance;
-        copy.tenacity = this.tenacity;
-        copy.moveSpeed = this.moveSpeed;
-        copy.dashCooldown = this.dashCooldown;
-        copy.dashStamina = this.dashStamina;
-        copy.swordLevel = this.swordLevel;
-        copy.daggerLevel = this.daggerLevel;
-        copy.greatSwordLevel = this.greatSwordLevel;
-        copy.bluntLevel = this.bluntLevel;
-        copy.staffLevel = this.staffLevel;
-        copy.wandLevel = this.wandLevel;
-
-        return copy;
+        dashCooldown = 1;
+        dashStamina = 1;
     }
 
     /// <summary>
