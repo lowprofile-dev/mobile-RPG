@@ -30,8 +30,42 @@ public class BossSkeletonAction : MonsterAction
         Attack atk = obj.GetComponent<Attack>();
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(1);
-
+       
     }
+    protected override IEnumerator AttackTarget()
+    {
+
+        while (true)
+        {
+            yield return null;
+
+            if (CanAttackState())
+            {
+
+                yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                SetAttackType();
+                SetAttackAnimation();
+
+                LookTarget();
+
+                StartCoroutine(DoAttackAction());
+
+                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime/2);
+
+                _monster.myAnimator.SetTrigger("Idle");
+
+                _readyCast = false;
+                if (!_readyCast && ToCast()) break;
+            }
+
+            else
+            {
+                ChangeState(MONSTER_STATE.STATE_TRACE);
+                break;
+            }
+        }
+    }
+
     protected override void SetAttackAnimation()
     {
         transform.LookAt(_target.transform);
@@ -77,7 +111,11 @@ public class BossSkeletonAction : MonsterAction
         }
 
     }
-
+    protected override void AttackStart()
+    {
+        base.AttackStart();
+       // _monster.myAnimator.SetTrigger("Idle");
+    }
     protected override void LookTarget()
     {
        
@@ -120,6 +158,7 @@ public class BossSkeletonAction : MonsterAction
         _navMeshAgent.isStopped = false;
         _monster.myAnimator.ResetTrigger(currentAnimation);
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
+        
     }
     protected override void IdleStart()
     {

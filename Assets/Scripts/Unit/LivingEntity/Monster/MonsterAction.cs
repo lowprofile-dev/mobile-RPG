@@ -595,6 +595,7 @@ public class MonsterAction : MonoBehaviour
         while (true)
         {
             yield return null;
+            
 
             if (CanAttackState())
             {
@@ -613,7 +614,7 @@ public class MonsterAction : MonoBehaviour
 
                 ResetAttackAnimation();
                 _monster.myAnimator.ResetTrigger("Attack"); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
-
+               
                 _readyCast = false;
                 if(!_readyCast && ToCast()) break;
             }
@@ -897,6 +898,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void DeathStart()
     {
+        StopAllCoroutines();
         StartCoroutine(DoDeathAction());
     }
 
@@ -1041,6 +1043,9 @@ public class MonsterAction : MonoBehaviour
         _navMeshAgent.isStopped = true;
         Debug.Log("스턴걸림");
         StopAllCoroutines();
+        //StopCoroutine(_attackCoroutine);
+        //StopCoroutine(_idleCoroutine);
+        //StopCoroutine(_castCoroutine);
         _monster.myAnimator.SetTrigger("Stun");
     }
 
@@ -1049,6 +1054,9 @@ public class MonsterAction : MonoBehaviour
         _navMeshAgent.isStopped = true;
         Debug.Log("넘어짐걸림");
         StopAllCoroutines();
+        //StopCoroutine(_attackCoroutine);
+        //StopCoroutine(_idleCoroutine);
+        //StopCoroutine(_castCoroutine);
         _monster.myAnimator.SetTrigger("Fall");
     }
 
@@ -1066,29 +1074,25 @@ public class MonsterAction : MonoBehaviour
     {
 
     }
-
-
     protected virtual void RigidExit()
     {
         _monster.myAnimator.ResetTrigger("rigid");
         _navMeshAgent.isStopped = false;
-        _monster.myAnimator.SetTrigger("idle");
+        _monster.myAnimator.SetTrigger("Idle");
     }
 
     protected virtual void StunExit()
     {
         _monster.myAnimator.ResetTrigger("stun");
         _navMeshAgent.isStopped = false;
-        _monster.myAnimator.SetTrigger("idle");
+        _monster.myAnimator.SetTrigger("Idle");
     }
 
     protected virtual void FallExit()
     {
         _monster.myAnimator.ResetTrigger("fall");
         _navMeshAgent.isStopped = false;
-        _monster.myAnimator.SetTrigger("idle");
+        _monster.myAnimator.SetTrigger("Idle");
     }
-
-
 
 }

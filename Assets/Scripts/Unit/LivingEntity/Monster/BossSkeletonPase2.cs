@@ -14,7 +14,16 @@ public class BossSkeletonPase2 : MonsterAction
     AttackType attackType;
     [SerializeField] private GameObject JumpSkillRange;
     [SerializeField] private GameObject ShokeSkillRange;
+    [SerializeField] private GameObject ShokeSkillRange2;
+
+    [SerializeField] private GameObject ShokeSkillEffect2;
+    [SerializeField] private GameObject ShokeSkillEffect1;
+    [SerializeField] private GameObject JumpSkillEffect;
     private GameObject currentTarget;
+    [SerializeField] private Transform _ShokeWavePoint;
+
+    private float velocity;
+    private float angle;
 
     string currentAnimation;
     
@@ -29,7 +38,22 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void DoAttack()
     {
-          
+         
+        MakeEffect();
+
+        StopCoroutine(_attackCoroutine);
+        _attackCoroutine = null;
+        _readyCast = false;
+        
+        _navMeshAgent.acceleration = 8f;
+        CameraManager.Instance.ShakeCamera(3, 1, 0.5f);
+        currentTarget = _target;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
+
+    }
+
+    private void MakeEffect()
+    {
         GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
         obj.transform.SetParent(this.transform);
         obj.transform.position = _baseMeleeAttackPos.position;
@@ -37,17 +61,75 @@ public class BossSkeletonPase2 : MonsterAction
         Attack atk = obj.GetComponent<Attack>();
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(1);
+        switch (attackType)
+        {
+            case AttackType.JUMP_ATTACK:
+                atk.SetCollierSize(JumpSkillRange);
+                JumpAttackEffect();
+                break;
+            case AttackType.SHOCK_WAVE:
+                atk.SetCollierSize(ShokeSkillRange);
+                ShockWave1Effect();
+                break;
+            case AttackType.SHOCK_WAVE2:
+                atk.SetCollierSize(ShokeSkillEffect2);
+                ShockWave2Effect();
+                break;
+            case AttackType.DASH_ATTACK:
+                atk.SetCollierSize(ShokeSkillRange);
+                ShockWave1Effect();
+                break;
+            case AttackType.LEFT_ATTACK:
+                break;
+            default:
+                break;
+        }
+    }
 
+    private void RotateEffect(GameObject eft , float x)
+    {
+        Vector3 dir = eft.transform.forward + _target.transform.right;
+        float pos = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, pos, ref velocity, 1f);
+        eft.transform.rotation = Quaternion.Euler(x, angle, 0f);
+    }
+
+    private void ShockWave1Effect()
+    {
+        GameObject eft = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect1);
+        eft.transform.position = transform.position;
+        RotateEffect(eft,0f);
+    }
+
+    private void JumpAttackEffect()
+    {
+        GameObject eft = ObjectPoolManager.Instance.GetObject(JumpSkillEffect);
+        eft.transform.position = currentTarget.transform.position;
+    }
+
+    private void ShockWave2Effect()
+    {
+        GameObject eft = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect2);
+        eft.transform.position = _ShokeWavePoint.transform.position;
+        RotateEffect(eft,90f);
+
+
+    }
+
+    private void DoShokeWave()
+    {
+
+        MakeEffect();
+        
         StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
-        
+
+        _navMeshAgent.speed = _moveSpeed;
         _navMeshAgent.acceleration = 8f;
-        currentTarget = _target;
         CameraManager.Instance.ShakeCamera(3, 1, 0.5f);
         currentTarget = _target;
         ChangeState(MONSTER_STATE.STATE_TRACE);
-
     }
     protected void ComboAttack()
     {
@@ -107,8 +189,17 @@ public class BossSkeletonPase2 : MonsterAction
 
         //if (_attackCoroutine != null) Invoke("AttackCorotineInit", 1.5f);
 
+        if(Vector3.Distance(transform.position , _target.transform.position) <= _navMeshAgent.stoppingDistance)
+        {
+            _monster.myAnimator.SetTrigger("Idle");
+        }
+        else
+        {
+        _monster.myAnimator.SetTrigger("Walk");
+        }
        
         int proc = UnityEngine.Random.Range(0, 100);
+
 
         if (proc <= 25)
         {
@@ -120,16 +211,17 @@ public class BossSkeletonPase2 : MonsterAction
             _castTime = 1f;
             attackType = AttackType.SHOCK_WAVE;
         }
-        //else if (proc <= 75)
-        //{
-        //    _castTime = 0f;
-        //    attackType = AttackType.SHOCK_WAVE2;
-        //}
+        else if (proc <= 75)
+        {
+            _castTime = 0f;
+            attackType = AttackType.SHOCK_WAVE2;
+        }
         else
         {
             _castTime = 1.5f;
             attackType = AttackType.DASH_ATTACK;
         }
+
         Debug.Log("캐스팅" + attackType.ToString());
     }
 
@@ -221,7 +313,8 @@ public class BossSkeletonPase2 : MonsterAction
 
     private void AttackAction()
     {
-        _monster.myAnimator.SetTrigger("Walk");
+        if (attackType != AttackType.DASH_ATTACK)
+            _monster.myAnimator.SetTrigger("Walk");
 
         switch (attackType)
         {
@@ -232,6 +325,7 @@ public class BossSkeletonPase2 : MonsterAction
                 StartCoroutine(ShokeAction());
                 break;
             case AttackType.SHOCK_WAVE2:
+                StartCoroutine(ShokeAction2());
                 break;
             case AttackType.DASH_ATTACK:
                 StartCoroutine(DashAction());
@@ -273,31 +367,41 @@ public class BossSkeletonPase2 : MonsterAction
 
     private IEnumerator JumpAction()
     {
+        yield return null;
         //range 가 맵밖으로 나갔을경우를 생각해야함.
         _navMeshAgent.acceleration = 10f;
         GameObject range = ObjectPoolManager.Instance.GetObject(JumpSkillRange);
+        range.GetComponent<BossSkillRange>().RemovedRange(gameObject , _attackSpeed);
         range.transform.position = _target.transform.position;
         currentTarget = range;
         _navMeshAgent.SetDestination(range.transform.position);
-
         transform.LookAt(range.transform.position);
-
-        yield return new WaitForSeconds(_attackSpeed);
-        ObjectPoolManager.Instance.ReturnObject(range);
     }
 
     private IEnumerator ShokeAction()
     {       
+        yield return null;
 
         _navMeshAgent.SetDestination(_target.transform.position);
 
         GameObject range = ObjectPoolManager.Instance.GetObject(ShokeSkillRange);
-
+        range.GetComponent<BossSkillRange>().RemovedRange(gameObject, _attackSpeed);
         range.GetComponent<BossSkillRange>().setFollow();
-              
-        yield return new WaitForSeconds(_attackSpeed);
-          
-        ObjectPoolManager.Instance.ReturnObject(range);
+
+    }
+
+    private IEnumerator ShokeAction2()
+    {
+        yield return null;
+        //_navMeshAgent.isStopped = true;
+        _navMeshAgent.speed = _moveSpeed / 2f;
+        _navMeshAgent.SetDestination(_target.transform.position);
+        transform.LookAt(_target.transform.position);
+
+        GameObject range = ObjectPoolManager.Instance.GetObject(ShokeSkillRange2);
+        range.GetComponent<BossSkillRangeFill>().RemovedRange(gameObject, _target, _attackSpeed);
+        range.GetComponent<BossSkillRangeFill>().setFollow();
+
     }
 
 
@@ -328,8 +432,23 @@ public class BossSkeletonPase2 : MonsterAction
         base.Damaged(dmg, false);
     }
 
-    protected override void AttackUpdate()
+    protected override void AttackUpdate() { }
+
+    protected override void RigidExit()
     {
-        
+        base.RigidExit();
+        _attackCoroutine = null;
     }
+    protected override void StunExit()
+    {
+        base.StunExit();
+        _attackCoroutine = null;
+
+    }
+    protected override void FallExit()
+    {
+        base.FallExit();
+        _attackCoroutine = null;
+    }
+
 }

@@ -1371,7 +1371,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1402,6 +1402,8 @@ MonoBehaviour:
   _stemina: 0
   _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
     type: 3}
+  _speed: 0
+  _MAXspeed: 0
   myAnimator: {fileID: 0}
   _monsterName: BossSkeleton
   _grade: 1
@@ -1411,8 +1413,6 @@ MonoBehaviour:
   _attackType: 0
   _attackPattern: 0
   _description: 
-  _speed: 0
-  _MAXspeed: 0
   _attackTime: 0
   _attackDamage: 0
   _dissolveMaterial: {fileID: 2100000, guid: 619dfddba20f4e84da177cdb2ad04d32, type: 2}

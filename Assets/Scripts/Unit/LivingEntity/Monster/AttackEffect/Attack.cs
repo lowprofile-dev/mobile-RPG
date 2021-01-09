@@ -77,4 +77,9 @@ public class Attack : MonoBehaviour
 
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
+
+    public void SetCollierSize(GameObject obj)
+    {
+        ((BoxCollider)_collider).size = obj.transform.lossyScale;
+    }
 }

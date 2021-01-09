@@ -576,6 +576,7 @@ Transform:
   - {fileID: 838412482858713826}
   - {fileID: 453635955253956859}
   - {fileID: 8274523028306129878}
+  - {fileID: 8130928642352778609}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -641,8 +642,17 @@ MonoBehaviour:
     type: 3}
   JumpSkillRange: {fileID: 6887708075749539812, guid: 3763658679418f34d912a92eb37befb5,
     type: 3}
-  ShokeSkillRange: {fileID: 6887708075749539812, guid: 079961a98f6473e43a40cd86e6b78c76,
+  ShokeSkillRange: {fileID: 6887708075749539812, guid: 702eff2a068749f46b4838a1879940c4,
     type: 3}
+  ShokeSkillRange2: {fileID: 6887708075749539812, guid: 4355c34b1e7836043bb7880b5f6e33cc,
+    type: 3}
+  ShokeSkillEffect2: {fileID: 1904777774981058, guid: a7f59c36c6a7bba46b884ce7fd85414e,
+    type: 3}
+  ShokeSkillEffect1: {fileID: 1844560813758758, guid: 616a325e12dd12749930630c9501eb6d,
+    type: 3}
+  JumpSkillEffect: {fileID: 1449926545655844, guid: 387a54c5f8b249642be6f9f89cb376de,
+    type: 3}
+  _ShokeWavePoint: {fileID: 8130928642352778609}
 --- !u!195 &1998575151520961608
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -678,12 +688,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 0
-  _initHp: 1000
+  _initHp: 10000
   _initMp: 0
   _hp: 0
   _stemina: 0
   _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
     type: 3}
+  _speed: 0
+  _MAXspeed: 0
   myAnimator: {fileID: 0}
   _monsterName: BossSkeletonPase2
   _grade: 0
@@ -693,8 +705,6 @@ MonoBehaviour:
   _attackType: 0
   _attackPattern: 0
   _description: 
-  _speed: 0
-  _MAXspeed: 0
   _attackTime: 0
   _attackDamage: 0
   _dissolveMaterial: {fileID: 2100000, guid: 619dfddba20f4e84da177cdb2ad04d32, type: 2}
@@ -3627,6 +3637,36 @@ Transform:
   - {fileID: 838319077970266426}
   m_Father: {fileID: 838793834485715392}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1477492133300689651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8130928642352778609}
+  m_Layer: 13
+  m_Name: ShokeWavePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8130928642352778609
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477492133300689651}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.018, y: 1.534, z: 1.426}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 838332034695600356}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1604109642681593737
 GameObject:
