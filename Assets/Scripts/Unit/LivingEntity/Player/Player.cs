@@ -100,7 +100,7 @@ public class Player : LivingEntity
 
         _evadeTime = _initEvadeTime;
 
-        _rushTime = 3;
+        _rushTime = 2;
         _prevRushPos = Vector3.zero;
         SetUpPlayerCamera();
         moveDir = Vector3.forward;
@@ -487,9 +487,9 @@ public class Player : LivingEntity
     {
         switch (currentCombo)
         {
-            case 1: weaponManager.GetWeapon().Attack(); break;
-            case 2: weaponManager.GetWeapon().Attack2(); break;
-            case 3: weaponManager.GetWeapon().Attack3(); break;
+            case 1: Debug.Log("1"); weaponManager.GetWeapon().Attack(); break;
+            case 2: Debug.Log("2"); weaponManager.GetWeapon().Attack2(); break;
+            case 3: Debug.Log("3"); weaponManager.GetWeapon().Attack3(); break;
         }
     }
 
@@ -687,7 +687,7 @@ public class Player : LivingEntity
     {
         OnTrailparticles();
         _isRushing = true;
-        _rushTime = 3;
+        _rushTime = 2;
     }
 
     /// <summary>
@@ -731,7 +731,7 @@ public class Player : LivingEntity
     {
         OffTrailParticles();
         _isRushing = false;
-        _rushTime = 3;
+        _rushTime = 2;
 
         if (weaponManager.GetWeaponName() == "SWORD" && _cntSkillType == 1)
         {

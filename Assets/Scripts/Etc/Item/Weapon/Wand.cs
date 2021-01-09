@@ -26,9 +26,9 @@ public class Wand : Weapon
         skillBCoef = 0;
         skillCCoef = 0;
 
-        skillACool = 0;
-        skillBCool = 0;
-        skillCCool = 0;
+        skillACool = 4;
+        skillBCool = 6;
+        skillCCool = 9;
 
         AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Attack Effect 1");
         AttackEffect2 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Attack Effect 2");
@@ -45,7 +45,7 @@ public class Wand : Weapon
     {
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillAEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
-        atk.PlayAttackTimer(0.4f);
+        atk.PlayAttackTimer(1.4f);
         atk.OnLoad();
 
         return SkillAEffect;
@@ -55,7 +55,7 @@ public class Wand : Weapon
     {
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillBEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
-        atk.PlayAttackTimer(0.4f);
+        atk.PlayAttackTimer(1.0f);
         atk.OnLoad();
 
         return SkillBEffect;

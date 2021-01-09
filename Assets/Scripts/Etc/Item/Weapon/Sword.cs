@@ -27,9 +27,9 @@ public class Sword : Weapon
         skillBCoef = 0;
         skillCCoef = 0;
 
-        skillACool = 0;
-        skillBCool = 0;
-        skillCCool = 0;
+        skillACool = 5;
+        skillBCool = 6;
+        skillCCool = 7;
 
         AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 1");
         AttackEffect2 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 2");
