@@ -65,4 +65,9 @@ public class PlayerUIView : View
         _hpSlider.fillAmount = StatusManager.Instance.GetCurrentHpPercent();
         _steminaSlider.fillAmount = StatusManager.Instance.GetCurrentSteminaPercent();
     }
+
+    public void SetEffectList()
+    {
+        Debug.Log("EFFECT LIST INVOKED");
+    }
 }

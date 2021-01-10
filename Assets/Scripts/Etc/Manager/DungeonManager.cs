@@ -23,6 +23,8 @@ public class DungeonManager : MonoBehaviour
     public float nMonsterCoef;
     public bool isStageCleared = false;
 
+    public int playerCurrentArea;
+
     private GameObject stageExit;
 
     //디버깅용
@@ -30,6 +32,7 @@ public class DungeonManager : MonoBehaviour
 
     private void Start()
     {
+        playerCurrentArea = -1;
         CardManager.Instance._cntDungeon = this;
         hasPlane = false;
     }
@@ -42,6 +45,7 @@ public class DungeonManager : MonoBehaviour
         }
         InitDungeon();
         SetStageInfo();
+        ChangeAreaCheck();
         if (isStageCleared)
         {
             ClearStage();
@@ -144,5 +148,17 @@ public class DungeonManager : MonoBehaviour
         hasPlane = false;
         dungeonStage++;
         nRoomCleared = 0;
+    }
+
+    public void ChangeAreaCheck()
+    {
+        Debug.Log("current Dungeon : " + playerCurrentArea + "// player Current Dungeon : " + Player.Instance.currentDungeonArea);
+        if(playerCurrentArea != Player.Instance.currentDungeonArea)
+        {
+            if (playerCurrentArea != -1) CardManager.Instance.ExitEffectCards(playerCurrentArea);
+            CardManager.Instance.EnterEffectCards(Player.Instance.currentDungeonArea);
+            playerCurrentArea = Player.Instance.currentDungeonArea;
+            UIManager.Instance.playerUIView.SetEffectList();
+        }
     }
 }

@@ -190,7 +190,6 @@ public class StatusManager : SingletonBase<StatusManager>
 
     public float GetCurrentHpPercent()
     {
-        Debug.Log(Player.Instance.Hp + " " + finalStatus.maxHp);
         return Player.Instance.Hp / finalStatus.maxHp;
     }
 
