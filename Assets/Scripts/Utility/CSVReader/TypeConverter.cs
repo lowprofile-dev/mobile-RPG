@@ -35,7 +35,16 @@ namespace CSVReader
             System.ComponentModel.TypeConverter converter = TypeDescriptor.GetConverter(type);
             if(converter != null && converter.CanConvertFrom(value.GetType()))
             {
-                return converter.ConvertFrom(value);
+                try
+                {
+                    return converter.ConvertFrom(value);
+                }
+                catch
+                {
+                    Debug.Log("버그 발생");
+                    return null; 
+                }
+
             }
             else
             {

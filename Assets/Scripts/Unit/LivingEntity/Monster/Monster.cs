@@ -30,6 +30,9 @@ public enum ATTACKTYPE
 
 public class Monster : LivingEntity
 {
+    [SerializeField] protected float _initHp; public float initHp { get { return _initHp; } set { _initHp = value; } }
+    [SerializeField] protected float _initStemina; public float initStemina { get { return _initStemina; } set { _initStemina = value; } }
+
     [SerializeField] protected string _monsterName; public string monsterName { get { return _monsterName; } }
     [SerializeField] protected MONSTERGRADE _grade; public MONSTERGRADE grade { get { return _grade; } }
     [SerializeField] protected MONSTERRACE _race; public MONSTERRACE race { get { return _race; } }
@@ -53,7 +56,9 @@ public class Monster : LivingEntity
         base.Start();
         myAnimator = GetComponent<Animator>();
         _MAXspeed = speed;
-        
+
+        _hp = _initHp;
+        _stemina = _initStemina;
     }
 
     protected override void Update()

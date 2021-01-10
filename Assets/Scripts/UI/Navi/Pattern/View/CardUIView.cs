@@ -39,7 +39,8 @@ public class CardUIView : View
     [HideInInspector] public CardUIRoomArea cntPointerArea;
     [HideInInspector] public bool isRerollingAnimationPlaying;
 
-    string iconPath = "Image/Icons/150 Fantasy Skill Icons/";
+    string iconPath = "Image/TonityEden/Skill Icons Megapack/";
+
 
     private void Start()
     {
@@ -50,10 +51,7 @@ public class CardUIView : View
         _isRerolling = false;
         isRerollingAnimationPlaying = false;
 
-        for (int i = 0; i < _roomAreaImg.Length; i++)
-        {
-            _roomAreaImg[i].pos = i;
-        }
+        for (int i = 0; i < _roomAreaImg.Length; i++) _roomAreaImg[i].roomNumber = i;
     }
 
 
@@ -70,6 +68,7 @@ public class CardUIView : View
         for (int i = 0; i < _roomAreaImg.Length; i++)
         {
             Card cntCard = cardManager.dungeonCardData[cardManager.currentStage, i];
+            _roomAreaImg[i].roomNumber = i;
             _roomAreaImg[i].InitCardRoomData(cntCard);
         } // 카드 갱신
 
@@ -98,27 +97,18 @@ public class CardUIView : View
     {
         if (!isRerollingAnimationPlaying) // 리롤 애니메이션 재생 중이 아니면
         {
-            for (int i = 0; i < _roomAreaImg.Length; i++)
-            {
-                for (int j = 0; j < _roomAreaImg[i].cntCard.effectList.Count; j++)
-                {
-                    //Debug.Log(i + "의 " + j + "번째 " + _roomAreaImg[i].cntCard.effectList[j].GetDescription(_roomAreaImg[i].cntCard));
-                }
-
-                for (int j = 0; j < _roomAreaImg[i].cntCard.addedSetEffectList.Count; j++)
-                {
-                    //Debug.Log(i + "의 세트효과 " + j + "번째 " + _roomAreaImg[i].cntCard.addedSetEffectList[j].GetDescription(_roomAreaImg[i].cntCard));
-                }
-
-                _roomAreaImg[i].cntCard.CardStart(); // 해당 카드의 효과들을 발동시킨다.
-            }
-
             UINaviationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
 
-            // 씬 이동
-            UILoaderManager.Instance.CloseScene("VillageScene");
-            UILoaderManager.Instance.AddScene("DungeonScene");
-           
+            if(CardManager.Instance._cntDungeon == null)
+            {
+                UILoaderManager.Instance.CloseScene("VillageScene");
+                UILoaderManager.Instance.AddScene("DungeonScene");
+            } // 던전으로 가는것이면 던전으로 가도록
+
+            else
+            {
+                CardManager.Instance._cntDungeon.ToNextStage();
+            } // 다음 층으로 가는거면 다음 층으로 가도록
         }
     }
 

@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 
 public class UIManager : SingletonBase<UIManager>
 {
+    public PlayerUIView playerUIView;
+
     //[SerializeField] private Button AttackBtn;
     [SerializeField] private Button InvincibleBtn;
     [SerializeField] private Button SkillAbtn;
@@ -17,6 +19,8 @@ public class UIManager : SingletonBase<UIManager>
 
     public void InitUIManager()
     {
+        playerUIView = GameObject.FindGameObjectWithTag("View").transform.Find("PlayerUI_View").GetComponent<PlayerUIView>();
+
         Transform playerView = GameObject.Find("PlayerUI_View").transform;
         InvincibleBtn = playerView.Find("InvincibleFrame").GetComponent<Button>();
         SkillAbtn = playerView.Find("SkillA").GetComponent<Button>();

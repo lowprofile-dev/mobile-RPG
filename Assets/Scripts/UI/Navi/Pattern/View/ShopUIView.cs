@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public enum Shoptype
 {
@@ -19,20 +20,20 @@ public class ShopUIView : View
     [SerializeField] GameObject PriceOrBudgetPanel;
     [SerializeField] GameObject PurchaseOrSellPanel;
     [SerializeField] GameObject itemBag;
+    [SerializeField] GameObject shopItemCardPrefab;
+    [SerializeField] GameObject[] cardslots;
+
+    [SerializeField] InventoryUIView inventoryUI;
     [SerializeField] Transform content;
     [SerializeField] Button PurchaseOrSellBtn;
     [SerializeField] Button ExitShopButton;
-    [SerializeField] Shoptype currentShopType = 0;
-    [SerializeField] GameObject[] cardslots;
-    [SerializeField] InventoryUIView inventoryUI;
+    [SerializeField] Shoptype currentShopType = Shoptype.IMPERIALMARKET;
 
     List<GameObject> itemSlots = new List<GameObject>();
     ItemManager itemManager;
-    public Transform[] iconList;
-    public float totalPrice;
-    public ShopItemCard shopItemCard;
+    Transform[] iconList;
 
-    public List<ItemData> bucketList = new List<ItemData>();
+    public int currentCardIndex;
 
     private void Awake()
     {
@@ -43,13 +44,53 @@ public class ShopUIView : View
 
     private void Start()
     {
+        itemManager = ItemManager.Instance;
+        iconList = inventoryUI.iconList;
         EnterShopUI(Shoptype.IMPERIALMARKET);
+    }
+
+    private void Update()
+    {
+        if (itemManager == null) itemManager = ItemManager.Instance;
     }
 
     private void OnEnable()
     {
+        itemBag.SetActive(false);
+        itemManager.ResetCart();
         LoadPlayerInventory();
-        totalPrice = 0;
+        LoadItemCards();
+    }
+
+    public void LoadItemCards()
+    {
+        for (int i = 0; i < cardslots.Length; i++)
+        {
+            GameObject card;
+            if (cardslots[i].transform.childCount == 0)
+            {
+                card = Instantiate(shopItemCardPrefab, cardslots[i].transform);
+                card.GetComponent<ShopItemCard>().index = i;
+            }
+            else
+            {
+                card = cardslots[i].transform.GetChild(0).gameObject;
+            }
+            //var card = ObjectPoolManager.Instance.GetObject(shopItemCardPrefab, cardslots[i].transform.position, Quaternion.identity);
+
+            if (itemManager.itemCart[i] != null)
+            //if (itemManager.itemCart[i].id != 0)
+            {
+                card.GetComponent<ShopItemCard>().itemData = itemManager.itemCart[i];
+                if (itemManager.itemCart[i].id > 0)
+                    card.GetComponent<ShopItemCard>().SetIcon(iconList[itemManager.itemCart[i].id - 1]);
+            }
+            else
+            {
+                card.GetComponent<ShopItemCard>().ResetItemCard();
+            }
+        }
+        SetTotalPrice();
     }
 
     private void OnClickExitShotButton()
@@ -57,7 +98,7 @@ public class ShopUIView : View
         UINaviationManager.Instance.PopToNav("SubUI_ShopBase");
     }
 
-    private void LoadPlayerInventory()
+    public void LoadPlayerInventory()
     {
         ClearInventoryCache();
         if (itemManager == null) itemManager = ItemManager.Instance;
@@ -67,6 +108,7 @@ public class ShopUIView : View
             GameObject slot = Instantiate(itemSlot, content);
             slot.GetComponent<ShopItemSlot>().SetIcon(iconList[item.Key - 1]);
             slot.GetComponent<ShopItemSlot>().SetQuantity(item.Value);
+            //slot.GetComponent<ShopItemSlot>().SetItemData(itemManager.itemDictionary[item.Key]);
             slot.GetComponent<ShopItemSlot>().SetItemData(itemManager.itemDictionary[item.Key]);
             itemSlots.Add(slot);
             switch (itemData.itemgrade)
@@ -113,10 +155,10 @@ public class ShopUIView : View
 
     private void OnClickSellInImperial()
     {
-        for (int i = 0; i < bucketList.Count; i++)
-        {
-            itemManager.SellItem(bucketList[i]);
-        }
+        if (itemManager == null) itemManager = ItemManager.Instance;
+        itemManager.SellItem();
+        LoadItemCards();
+        SetTotalPrice();
     }
 
     private void OnClickExtract()
@@ -126,7 +168,9 @@ public class ShopUIView : View
 
     public void SetTotalPrice()
     {
-        PriceOrBudgetPanel.transform.GetChild(1).GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = totalPrice.ToString();
+        if (itemManager == null)
+            itemManager = ItemManager.Instance;
+        PriceOrBudgetPanel.transform.GetChild(1).GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = itemManager.GetTotalCartPrice().ToString();
     }
 
     public void EnterShopUI(Shoptype type)

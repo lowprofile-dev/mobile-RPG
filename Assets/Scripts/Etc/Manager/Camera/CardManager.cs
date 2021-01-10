@@ -10,21 +10,27 @@ public class CardManager : SingletonBase<CardManager>
     private Dictionary<int, CardEffectData> _csvEffectData; public Dictionary<int, CardEffectData> csvEffectData { get { return _csvEffectData; } }
     private Dictionary<int, CardEffect> _effectData; public Dictionary<int, CardEffect> effectData { get { return _effectData; } }
 
+    public DungeonManager _cntDungeon; 
+
     List<Card> currentCards;
 
     public Card[,] dungeonCardData;
     public int currentStage;
+
+    public HashSet<CardEffect> activeEffects;
 
     /// <summary>
     /// 카드 매니저 초기화 (데이터를 받고, 정제하며, 초기화한다)
     /// </summary>
     public void InitCardManager()
     {
+        _cntDungeon = null;
         currentCards = new List<Card>();
         dungeonCardData = new Card[4, 9];
 
         _cardData = new Dictionary<int, Card>();
         _effectData = new Dictionary<int, CardEffect>();
+        activeEffects = new HashSet<CardEffect>();
 
         GetEffectData();
         GetCardData();
@@ -36,6 +42,36 @@ public class CardManager : SingletonBase<CardManager>
     public Card GetCardCntStage(int pos)
     {
         return dungeonCardData[currentStage, pos];
+    }
+    
+    /// <summary>
+    /// area의 카드 이펙트들을 실행한다.
+    /// </summary>
+    public void EnterEffectCards(int area)
+    {
+        for(int i=0; i<4; i++)
+        {
+            if (dungeonCardData[i, area] != null) dungeonCardData[i, area].CardStart();
+        }
+    }
+
+    public void UpdateEffectCards()
+    {
+        for (int i = 0; i<4; i++)
+        {
+            if (dungeonCardData[i, Player.Instance.currentDungeonArea] != null) dungeonCardData[i, Player.Instance.currentDungeonArea].CardUpdate();
+        }
+    }
+
+    /// <summary>
+    /// area의 카드 이펙트들을 종료한다.
+    /// </summary>
+    public void ExitEffectCards(int area)
+    {
+        for(int i=0; i<4; i++)
+        {
+            if(dungeonCardData[i, area] != null) dungeonCardData[i, area].CardEnd();
+        }
     }
 
     /// <summary>

@@ -1,24 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class PlayerUIView : View
 {
+    string iconPath = "Image/TonityEden/Skill Icons Megapack/";
+
     [SerializeField] private Button _cardTestBtn;
-    [SerializeField] private Button _talkTestBtn;
     [SerializeField] private Button _shopTestBtn;
     [SerializeField] private Button _atkBtn;
     [SerializeField] private Button _invincibleBtn;
     [SerializeField] private Button _skillAButton;
     [SerializeField] private Button _skillBButton;
     [SerializeField] private Button _skillCButton;
+    [SerializeField] private TextMeshProUGUI _masteryText;
+    [SerializeField] private TextMeshProUGUI _weaponText;
+    [SerializeField] private Button _masteryButton;
+    [SerializeField] private Button _weaponButton;
+    [SerializeField] private Image _hpSlider;
+    [SerializeField] private Image _steminaSlider;
+    [SerializeField] private GameObject _buffFrame;
+    [SerializeField] private GameObject _buffImgPrefab;
 
     private void Start()
     {
         _cardTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleCardUIView(); });
-        _talkTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleTalkView(); });
         _shopTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleShopView(); });
         _atkBtn.onClick.AddListener(delegate { Player.Instance.CheckInteractObject(); });
         _invincibleBtn.onClick.AddListener(delegate { Player.Instance.EvadeBtnClicked(); });
@@ -29,6 +35,9 @@ public class PlayerUIView : View
         _skillBButton.onClick.AddListener(delegate { _skillBButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
         _skillCButton.onClick.AddListener(delegate { Player.Instance.SkillCBtnClicked(); });
         _skillCButton.onClick.AddListener(delegate { _skillCButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
+        _masteryButton.onClick.AddListener(delegate { _masteryButton.GetComponent<MasteryButton>().onButtonClick(); });
+        _weaponButton.onClick.AddListener(delegate { _weaponButton.GetComponent<WeaponButton>().onButtonClick(); });
+
     }
 
     public override void UIExit()
@@ -44,5 +53,46 @@ public class PlayerUIView : View
     public override void UIUpdate()
     {
         base.UIUpdate();
+
+        SetMyStatusText();
+        SetHpStemina();
+    }
+
+    /// <summary>
+    /// 마스터리와 숙련도 레벨을 설정한다.
+    /// </summary>
+    public void SetMyStatusText()
+    {
+        _masteryText.text = MasteryManager.Instance.currentMastery.currentMasteryLevel.ToString();
+        _weaponText.text = WeaponManager.Instance.GetWeapon().masteryLevel.ToString();
+    }
+
+    public void SetHpStemina()
+    {
+        _hpSlider.fillAmount = StatusManager.Instance.GetCurrentHpPercent();
+        _steminaSlider.fillAmount = StatusManager.Instance.GetCurrentSteminaPercent();
+    }
+
+    public void SetEffectList()
+    {
+        int count = 0;
+        while (_buffFrame.transform.childCount > 0)
+        {
+            ObjectPoolManager.Instance.ReturnObject(_buffFrame.transform.GetChild(0).gameObject);
+            if (count > 100) break;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            Card cardData = CardManager.Instance.dungeonCardData[i, Player.Instance.currentDungeonArea];
+
+            if (cardData != null)
+            {
+                GameObject buffImgObj = ObjectPoolManager.Instance.GetObject(_buffImgPrefab);
+                buffImgObj.transform.SetParent(_buffFrame.transform);
+                buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>(iconPath + cardData.cardData.iconImg);
+                buffImgObj.GetComponent<RectTransform>().localScale = Vector3.one;
+            }
+        }
     }
 }

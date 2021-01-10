@@ -14,33 +14,52 @@ public class ItemManager : SingletonBase<ItemManager>
     //Dictionary<ItemData, int> playerInventory;
     public Dictionary<int, int> playerInventory;
     public Dictionary<int, ItemData> itemDictionary;
-    public List<ItemData> itemList = new List<ItemData>();
+    public List<ItemData> itemCart = new List<ItemData>();
     Player player;
     PartSelection playerPartSelection;
     StatusManager statusManager;
 
     public int inventorySize;
+    public int dictionarySize;
 
     private void Start()
     {
         //아이템 데이터 초기화를 원할시 주석 풀것!
         PlayerPrefs.DeleteAll();
-        statusManager = StatusManager.Instance;
-        currentItems = new CurrentItems();
-        currentItemKeys = new CurrentItemKeys();
-        itemDictionary = new Dictionary<int, ItemData>();
-        playerInventory = new Dictionary<int, int>(); //ID,개수
-        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
-        itemDictionary = itemTable.TableToDictionary<int, ItemData>();
-        itemList = itemTable.TableToList<ItemData>();
-        LoadCurrentItems();
-        LoadInventoryData();
-        EquipItems();
+        //statusManager = StatusManager.Instance;
+        //currentItems = new CurrentItems();
+        //currentItemKeys = new CurrentItemKeys();
+        //itemDictionary = new Dictionary<int, ItemData>();
+        //playerInventory = new Dictionary<int, int>(); //ID,개수
+        //Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
+        //itemDictionary = itemTable.TableToDictionary<int, ItemData>();
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //LoadCurrentItems();
+        //LoadInventoryData();
+        //EquipItems();
     }
+    
 
     private void Update()
     {
-        inventorySize = playerInventory.Count;
+        if (itemCart.Count == 0)
+        {
+            itemCart.Add(null);
+            itemCart.Add(null);
+            itemCart.Add(null);
+            itemCart.Add(null);
+        }
+        //inventorySize = playerInventory.Count;
+        //playerInventory.Remove(0);
+        inventorySize = 0;
+        foreach (var item in playerInventory)
+        {
+            inventorySize += item.Value;
+        }
+        dictionarySize = itemDictionary.Count;
         if (player == null)
         {
             player = Player.Instance;
@@ -80,6 +99,24 @@ public class ItemManager : SingletonBase<ItemManager>
         currentItems = JsonUtility.FromJson<CurrentItems>(jsonData);
     }
 
+    internal void InitItemManager()
+    {
+        statusManager = StatusManager.Instance;
+        currentItems = new CurrentItems();
+        currentItemKeys = new CurrentItemKeys();
+        itemDictionary = new Dictionary<int, ItemData>();
+        playerInventory = new Dictionary<int, int>(); //ID,개수
+        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
+        itemDictionary = itemTable.TableToDictionary<int, ItemData>();
+        itemCart.Add(null);
+        itemCart.Add(null);
+        itemCart.Add(null);
+        itemCart.Add(null);
+        LoadCurrentItems();
+        LoadInventoryData();
+        EquipItems();
+    }
+
     private void SaveCurrentItemKeys()
     {
         string jsonData = JsonUtility.ToJson(currentItemKeys, true);
@@ -103,10 +140,78 @@ public class ItemManager : SingletonBase<ItemManager>
         currentItemKeys = JsonUtility.FromJson<CurrentItemKeys>(jsonData);
     }
 
-    public void SellItem(ItemData itemdata)
+    public void AddToCart(int index, ItemData itemData)
     {
-        playerInventory[itemdata.id] -= 1;
-        currentItems.gold += (int)itemdata.sellprice;
+        //if (playerInventory)
+        if (itemCart[index] != null && itemCart[index].id != 0)
+        {
+            AddItem(itemCart[index]);
+        }
+        if (playerInventory[itemData.id] == 1)
+        {
+            if (currentItemKeys.ArmorKey == itemData.id ||
+                currentItemKeys.BottomKey == itemData.id ||
+                currentItemKeys.HelmetKey == itemData.id ||
+                currentItemKeys.GlovesKey == itemData.id ||
+                currentItemKeys.BootKey == itemData.id)
+                return;
+        }
+        playerInventory[itemData.id] -= 1;
+        if (playerInventory[itemData.id] == 0)
+            playerInventory.Remove(itemData.id);
+        itemCart[index] = (itemData);
+        SaveInventoryData();
+        LoadInventoryData();
+    }
+
+    public void ResetCart()
+    {
+        //foreach (var itemData in itemCart)
+        //{
+        //    if (itemData.id == 0) continue;
+        //    //if (itemData != null)
+        //    if (itemData.id != 0)
+        //        AddItem(itemData);
+        //    itemData = null;
+        //}
+        for (int i = 0; i < itemCart.Count; i++)
+        {
+            if (itemCart[i] != null)
+                AddItem(itemCart[i]);
+            itemCart[i] = null;
+        }
+        //itemCart.Clear();
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        playerInventory.Remove(0);
+        SaveInventoryData();
+    }
+
+    public int GetTotalCartPrice()
+    {
+        int totalPrice = 0;
+        foreach (var itemData in itemCart)
+        {
+            if (itemData == null) continue;
+            totalPrice += (int)itemData.sellprice;
+        }
+        return totalPrice;
+    }
+
+    public void SellItem()
+    {
+        foreach (var itemdata in itemCart) {
+            if (itemdata == null) continue;
+            currentItems.gold += (int)itemdata.sellprice;
+        }
+        itemCart.Clear();
+        itemCart.Add(null);
+        itemCart.Add(null);
+        itemCart.Add(null);
+        itemCart.Add(null);
+        ResetCart();
         SaveInventoryData();
         SaveCurrentItems();
     }
@@ -124,6 +229,20 @@ public class ItemManager : SingletonBase<ItemManager>
         else
         {
             playerInventory.Add(item.itemData.id, 1);
+        }
+        SaveInventoryData();
+    }
+
+    public void AddItem(ItemData itemData)
+    {
+        if (itemData.id == 0) return;
+        if (playerInventory.ContainsKey(itemData.id))
+        {
+            playerInventory[itemData.id] += 1;
+        }
+        else
+        {
+            playerInventory.Add(itemData.id, 1);
         }
         SaveInventoryData();
     }
@@ -295,8 +414,8 @@ public class ItemManager : SingletonBase<ItemManager>
 
     private void EquipItems()
     {
-        statusManager.itemMultiplicationStatus = new MultiplicationStatus();
-        statusManager.itemAdditionStatus = new AdditionStatus();
+        statusManager.multiplicationStatus = new MultiplicationStatus();
+        statusManager.additionStatus = new AdditionStatus();
         EquipArmor(currentItemKeys.ArmorKey);
         EquipBottom(currentItemKeys.BottomKey);
         EquipHelmet(currentItemKeys.HelmetKey);
@@ -308,37 +427,37 @@ public class ItemManager : SingletonBase<ItemManager>
 
     private void EquipBoot(int bootKey)
     {
-        statusManager.itemMultiplicationStatus.moveSpeed += itemDictionary[bootKey].moveSpeed;
-        statusManager.itemMultiplicationStatus.dashCooldown +=  itemDictionary[bootKey].dashCooldown;
-        statusManager.itemMultiplicationStatus.dashStamina += itemDictionary[bootKey].dashStamina;
+        statusManager.multiplicationStatus.moveSpeed += itemDictionary[bootKey].moveSpeed;
+        statusManager.multiplicationStatus.dashCooldown +=  itemDictionary[bootKey].dashCooldown;
+        statusManager.multiplicationStatus.dashStamina += itemDictionary[bootKey].dashStamina;
     }
 
     private void EquipGloves(int glovesKey)
     {
-        statusManager.itemAdditionStatus.attackDamage += itemDictionary[glovesKey].attackDamage;
-        statusManager.itemMultiplicationStatus.attackSpeed += itemDictionary[glovesKey].attackSpeed;
-        statusManager.itemMultiplicationStatus.attackCooldown += itemDictionary[glovesKey].attackCooldown;
+        statusManager.additionStatus.attackDamage += itemDictionary[glovesKey].attackDamage;
+        statusManager.multiplicationStatus.attackSpeed += itemDictionary[glovesKey].attackSpeed;
+        statusManager.multiplicationStatus.attackCooldown += itemDictionary[glovesKey].attackCooldown;
     }
 
     private void EquipHelmet(int helmetKey)
     {
-        statusManager.itemAdditionStatus.rigidresistance += itemDictionary[helmetKey].rigidresistance;
-        statusManager.itemAdditionStatus.stunresistance += itemDictionary[helmetKey].stunresistance;
-        statusManager.itemAdditionStatus.fallresistance += itemDictionary[helmetKey].fallresistance;
+        statusManager.additionStatus.rigidresistance += itemDictionary[helmetKey].rigidresistance;
+        statusManager.additionStatus.stunresistance += itemDictionary[helmetKey].stunresistance;
+        statusManager.additionStatus.fallresistance += itemDictionary[helmetKey].fallresistance;
     }
 
     private void EquipBottom(int bottomKey)
     {
-        statusManager.itemAdditionStatus.stamina += itemDictionary[bottomKey].stamina;
-        statusManager.itemAdditionStatus.staminaRecovery += (1 + itemDictionary[bottomKey].staminaRecovery);
-        statusManager.itemAdditionStatus.hp += itemDictionary[bottomKey].hp;
-        statusManager.itemAdditionStatus.hpRecovery += itemDictionary[bottomKey].hpRecovery;
+        statusManager.additionStatus.stamina += itemDictionary[bottomKey].stamina;
+        statusManager.additionStatus.staminaRecovery += (1 + itemDictionary[bottomKey].staminaRecovery);
+        statusManager.additionStatus.hp += itemDictionary[bottomKey].hp;
+        statusManager.additionStatus.hpRecovery += itemDictionary[bottomKey].hpRecovery;
     }
 
     private void EquipArmor(int armorKey)
     {
-        statusManager.itemAdditionStatus.hp += itemDictionary[armorKey].hpIncreaseRate;
-        statusManager.itemAdditionStatus.armor += itemDictionary[armorKey].armor;
-        statusManager.itemAdditionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
+        statusManager.additionStatus.hp += itemDictionary[armorKey].hpIncreaseRate;
+        statusManager.additionStatus.armor += itemDictionary[armorKey].armor;
+        statusManager.additionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
     }
 }
