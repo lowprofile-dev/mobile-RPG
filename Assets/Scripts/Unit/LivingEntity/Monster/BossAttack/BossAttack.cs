@@ -43,11 +43,13 @@ public class BossAttack : MonoBehaviour
             _attackedTarget.Clear();
         }
     }
+   
 
     protected virtual void SetLocalRotation(GameObject Effect , GameObject target)
     {
 
     }
+    protected virtual void SetLocalRotation(GameObject start, GameObject Effect, GameObject target) { }
 
     public virtual void SetParent(GameObject parent)
     {
@@ -55,7 +57,11 @@ public class BossAttack : MonoBehaviour
         transform.SetParent(parent.transform);
         transform.localPosition = Vector3.zero;
     }
-    public virtual void SetParent(GameObject parent, GameObject target) { }
+
+    public virtual void SetParent(GameObject parent, Transform target) {
+        _baseParent = parent;
+        transform.position = target.position;
+    }
 
 
     protected virtual void OnTriggerEnter(Collider other)

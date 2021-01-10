@@ -4,23 +4,29 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class BossSkeletonPase2 : MonsterAction
+public class BossSkeletonKingAction : MonsterAction
 {
-    enum AttackType { JUMP_ATTACK , SHOCK_WAVE, SHOCK_WAVE2, DASH_ATTACK , LEFT_ATTACK}
+    enum AttackType { AIR_ATTACK , ATTACK1,ATTACK2, BLACKHOLE, JUMP_ATTACK , SUMMON}
 
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
+    [SerializeField] private GameObject attackPos;
+    //[SerializeField] private Transform _baseMeleeAttackPos;
+    //[SerializeField] private GameObject _baseMeleeAttackPrefab;
 
     AttackType attackType;
     [SerializeField] private GameObject JumpSkillRange;
-    [SerializeField] private GameObject ShokeSkillRange;
-    [SerializeField] private GameObject ShokeSkillRange2;
 
-    [SerializeField] private GameObject ShokeSkillEffect2;
-    [SerializeField] private GameObject ShokeSkillEffect1;
-    [SerializeField] private GameObject JumpSkillEffect;
+    [SerializeField] private GameObject AttackRange;
+    [SerializeField] private GameObject AttackEffect;
+
+    [SerializeField] private GameObject AirSkillRange;
+    [SerializeField] private GameObject AirSkillEffect;
+
+    [SerializeField] private GameObject BlackHoleRange;
+    [SerializeField] private GameObject BlackHoleEffect;
+
+    List<Transform> ProjectileList = new List<Transform>();
+
     private GameObject currentTarget;
-    [SerializeField] private Transform _ShokeWavePoint;
 
     private float velocity;
     private float angle;
@@ -38,11 +44,14 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void DoAttack()
     {
+     
         StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
 
         MakeEffect();
+
+        _navMeshAgent.isStopped = false;
         _navMeshAgent.acceleration = 8f;
         CameraManager.Instance.ShakeCamera(3, 1, 0.5f);
         currentTarget = _target;
@@ -52,119 +61,83 @@ public class BossSkeletonPase2 : MonsterAction
 
     private void MakeEffect()
     {
-        //GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        //obj.transform.SetParent(this.transform);
-        //obj.transform.position = _baseMeleeAttackPos.position;
-
-        //Attack atk = obj.GetComponent<Attack>();
-        //atk.SetParent(gameObject);
-        //atk.PlayAttackTimer(1);
 
         switch (attackType)
-        {
-            case AttackType.JUMP_ATTACK:
-                JumpAttackEffect();
-                break;
-            case AttackType.SHOCK_WAVE:
-                ShockWave1Effect();
-                break;
-            case AttackType.SHOCK_WAVE2:
-                ShockWave2Effect();
-                break;
-            case AttackType.DASH_ATTACK:
-                ShockWave1Effect();
-                break;
-            case AttackType.LEFT_ATTACK:
+        {        
+            case AttackType.ATTACK1: case AttackType.ATTACK2: case AttackType.JUMP_ATTACK:
+                DefalutAttackEffect();
+                break;         
+            case AttackType.SUMMON:              
                 break;
             default:
                 break;
         }
     }
-    private void ShockWave1Effect()
-    {
-        BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect1).GetComponent<BossAttack>();
-        atk.SetParent(gameObject);
+    private void DefalutAttackEffect()
+    {      
+        transform.LookAt(_target.transform.position);
+        BossAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<BossAttack>();
+        atk.SetParent(gameObject , attackPos.transform);
         atk.PlayAttackTimer(1f);
-        atk.OnLoad(gameObject, currentTarget);
+        atk.OnLoad(gameObject, attackPos);
 
     }
 
-    private void JumpAttackEffect()
+    private void AirAttackEffect(Transform target)
     {
-        
-        BossAttack atk = ObjectPoolManager.Instance.GetObject(JumpSkillEffect).GetComponent<BossAttack>();
-        atk.SetParent(gameObject);
+        BossAttack atk = ObjectPoolManager.Instance.GetObject(AirSkillEffect).GetComponent<BossAttack>();
+        atk.SetParent(gameObject , target);
         atk.PlayAttackTimer(1f);
         atk.OnLoad(currentTarget, currentTarget);
     }
 
-    private void ShockWave2Effect()
+    private void BlackHoleAttackEffect(Transform target)
     {
-        BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect2).GetComponent<BossAttack>();
-        atk.SetParent(_ShokeWavePoint.gameObject);
+        BossAttack atk = ObjectPoolManager.Instance.GetObject(BlackHoleEffect).GetComponent<BossAttack>();
+        atk.SetParent(gameObject, target);
         atk.PlayAttackTimer(1f);
-        atk.OnLoad(_ShokeWavePoint.gameObject, currentTarget);
+        atk.OnLoad(currentTarget, currentTarget);
 
-    }
-
-    private void DoShokeWave()
-    {
-
-        MakeEffect();
-        
-        StopCoroutine(_attackCoroutine);
-        _attackCoroutine = null;
-        _readyCast = false;
-
-        _navMeshAgent.speed = _moveSpeed;
-        _navMeshAgent.acceleration = 8f;
-        CameraManager.Instance.ShakeCamera(3, 1, 0.5f);
-        currentTarget = _target;
-        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
     protected void ComboAttack()
     {
         //애니메이터 호출용
-        _monster.myAnimator.SetTrigger("Combo1");
-        currentAnimation = "Combo1";
+        _monster.myAnimator.SetTrigger("Attack1");
+        currentAnimation = "Attack1";
 
     }
     protected override void SetAttackAnimation()
     {
         
         switch (attackType)
-        {
-            case AttackType.JUMP_ATTACK:
+        {           
+            case AttackType.ATTACK1:
                 _monster.myAnimator.SetTrigger("Attack0");
                 currentAnimation = "Attack0";
                 break;
-            case AttackType.SHOCK_WAVE:
+            case AttackType.ATTACK2:
                 _monster.myAnimator.SetTrigger("Attack1");
                 currentAnimation = "Attack1";
-                break;
-            case AttackType.SHOCK_WAVE2:
-                _monster.myAnimator.SetTrigger("Attack2");
-                currentAnimation = "Attack2";
-                break;
-            case AttackType.DASH_ATTACK:
-                _monster.myAnimator.SetTrigger("Combo1");
-                currentAnimation = "Combo1";
-                break;
-            case AttackType.LEFT_ATTACK:
+                break;                      
+            case AttackType.SUMMON:
+                _monster.myAnimator.SetTrigger("Summon");
+                currentAnimation = "Summon";
                 break;
             default:
                 break;
         }
        
     }
+
     protected override void SpawnStart()
     {
-        ChangeState(MONSTER_STATE.STATE_IDLE);
+        _isImmune = true; // 스폰 중 무적
+        _monster.myAnimator.SetTrigger("Spawn");
     }
-
     protected override void SpawnExit()
     {
         base.SpawnExit();
+        currentTarget = _target;
     }
     private void AttackCorotineInit()
     {
@@ -191,26 +164,25 @@ public class BossSkeletonPase2 : MonsterAction
        
         int proc = UnityEngine.Random.Range(0, 100);
 
-
         if (proc <= 25)
         {
-            _castTime = 1.5f;
-            attackType = AttackType.JUMP_ATTACK;
+            _castTime = 0f;
+            attackType = AttackType.ATTACK1;
         }
         else if (proc <= 50)
         {
-            _castTime = 1f;
-            attackType = AttackType.SHOCK_WAVE;
+            _castTime = 0f;
+            attackType = AttackType.ATTACK2;
         }
         else if (proc <= 75)
         {
-            _castTime = 0f;
-            attackType = AttackType.SHOCK_WAVE2;
+            _castTime = 2f;
+            attackType = AttackType.AIR_ATTACK;
         }
-        else
+        else if (proc <= 100)
         {
-            _castTime = 1.5f;
-            attackType = AttackType.DASH_ATTACK;
+            _castTime = 2f;
+            attackType = AttackType.BLACKHOLE;
         }
 
         Debug.Log("캐스팅" + attackType.ToString());
@@ -252,23 +224,12 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void AttackExit()
     {
-        //_monster.myAnimator.ResetTrigger(currentAnimation);
-        //if (_attackCoroutine != null)
-        //{
-        //    StopCoroutine(_attackCoroutine);
-        //    _attackCoroutine = null;
-        //}
-            
     }
 
     public override void MoveToTarget()
     {
 
-        //if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        //{
-        //    _monster.myAnimator.SetTrigger("Walk");
-        //}
-        _navMeshAgent.SetDestination(currentTarget.transform.position);
+        _navMeshAgent.SetDestination(_target.transform.position);
 
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
@@ -304,24 +265,25 @@ public class BossSkeletonPase2 : MonsterAction
 
     private void AttackAction()
     {
-        if (attackType != AttackType.DASH_ATTACK)
+        if (attackType != AttackType.JUMP_ATTACK)
             _monster.myAnimator.SetTrigger("Walk");
+        _navMeshAgent.SetDestination(_target.transform.position);
 
         switch (attackType)
         {
+            case AttackType.AIR_ATTACK:
+                StartCoroutine(AirAction());
+                break;
+            case AttackType.ATTACK1: case AttackType.ATTACK2:
+                StartCoroutine(DefalutAttackAction());
+                break;
+            case AttackType.BLACKHOLE:
+                StartCoroutine(BlackHoleAction());
+                break;
             case AttackType.JUMP_ATTACK:
-                StartCoroutine(JumpAction());
+                StartCoroutine(JumpAttackAction());
                 break;
-            case AttackType.SHOCK_WAVE:
-                StartCoroutine(ShokeAction());
-                break;
-            case AttackType.SHOCK_WAVE2:
-                StartCoroutine(ShokeAction2());
-                break;
-            case AttackType.DASH_ATTACK:
-                StartCoroutine(DashAction());
-                break;
-            case AttackType.LEFT_ATTACK:
+            case AttackType.SUMMON:
                 break;
             default:
                 break;
@@ -329,7 +291,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     }
 
-    private IEnumerator DashAction()
+    private IEnumerator JumpAttackAction()
     {
         _navMeshAgent.stoppingDistance = 0f;
         currentTarget = _target;
@@ -339,16 +301,8 @@ public class BossSkeletonPase2 : MonsterAction
         _navMeshAgent.acceleration = 500f;
         transform.LookAt(_target.transform.position);
 
-        _monster.myAnimator.SetTrigger("Attack3");
-        currentAnimation = "Attack3";
-
-        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        obj.transform.SetParent(this.transform);
-        obj.transform.position = _baseMeleeAttackPos.position;
-
-        Attack atk = obj.GetComponent<Attack>();
-        atk.SetParent(gameObject);
-        atk.PlayAttackTimer(1);
+        _monster.myAnimator.SetTrigger("Jump");
+        currentAnimation = "Jump";
 
         yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         _navMeshAgent.acceleration = 8f;
@@ -356,53 +310,82 @@ public class BossSkeletonPase2 : MonsterAction
         _navMeshAgent.stoppingDistance = 3f;
     }
 
-    private IEnumerator JumpAction()
+    private IEnumerator AirAction()
     {
+
+        _monster.myAnimator.SetTrigger("HoldAttack");
         yield return null;
-        //range 가 맵밖으로 나갔을경우를 생각해야함.
-        _navMeshAgent.acceleration = 10f;
-        GameObject range = ObjectPoolManager.Instance.GetObject(JumpSkillRange);
-        range.GetComponent<BossSkillRange>().RemovedRange(gameObject , _attackSpeed);
-        range.transform.position = _target.transform.position;
-        currentTarget = range;
-        _navMeshAgent.SetDestination(range.transform.position);
-        transform.LookAt(range.transform.position);
+
+        for (int i = 0; i < 10; i++)
+        {
+            GameObject range = ObjectPoolManager.Instance.GetObject(AirSkillRange);
+            range.GetComponent<BossSkillRange>().RemovedRange(gameObject, _attackSpeed);
+            range.transform.position = new Vector3(UnityEngine.Random.Range(transform.position.x - 20, transform.position.x + 20), _target.transform.position.y, UnityEngine.Random.Range(transform.position.z - 20, transform.position.z + 20));
+            ProjectileList.Add(range.transform);
+        }
+
+        yield return new WaitForSeconds(_attackSpeed);
+
+        foreach (Transform item in ProjectileList)
+        {
+            AirAttackEffect(item);
+        }
+
+        ProjectileList.Clear();
+
+        DoAttack();
     }
 
-    private IEnumerator ShokeAction()
+    private IEnumerator DefalutAttackAction()
     {       
         yield return null;
 
         _navMeshAgent.SetDestination(_target.transform.position);
 
-        GameObject range = ObjectPoolManager.Instance.GetObject(ShokeSkillRange);
+        GameObject range = ObjectPoolManager.Instance.GetObject(AttackRange);
         range.GetComponent<BossSkillRange>().RemovedRange(gameObject, _attackSpeed);
         range.GetComponent<BossSkillRange>().setFollow();
 
     }
 
-    private IEnumerator ShokeAction2()
+    private IEnumerator BlackHoleAction()
     {
+
+        _monster.myAnimator.SetTrigger("HoldAttack");
         yield return null;
-        //_navMeshAgent.isStopped = true;
-        _navMeshAgent.speed = _moveSpeed / 2f;
-        _navMeshAgent.SetDestination(_target.transform.position);
-        transform.LookAt(_target.transform.position);
 
-        GameObject range = ObjectPoolManager.Instance.GetObject(ShokeSkillRange2);
-        range.GetComponent<BossSkillRangeFill>().RemovedRange(gameObject, _target, _attackSpeed);
-        range.GetComponent<BossSkillRangeFill>().setFollow();
+        GameObject range = ObjectPoolManager.Instance.GetObject(BlackHoleRange);
+        range.GetComponent<BossSkillRange>().RemovedRange(_target, _attackSpeed);
+        range.transform.position = _target.transform.position;
 
+        yield return new WaitForSeconds(_attackSpeed);
+
+        BlackHoleAttackEffect(range.transform);
+
+        DoAttack();
     }
 
 
     protected override void TraceStart()
     {
         StopCoroutine(_attackCoroutine);
+        _attackCoroutine = null;
         _monster.myAnimator.ResetTrigger("Walk");
+
+        if(Vector3.Distance(transform.position , _target.transform.position) >= _navMeshAgent.stoppingDistance)
+        {
+            _monster.myAnimator.SetTrigger("Idle");
+        }
+        else
+        {
         _monster.myAnimator.SetTrigger("Walk");
-        _navMeshAgent.speed = _moveSpeed * 2f;
+        }
+        _navMeshAgent.speed = _moveSpeed * 1.5f;
         _navMeshAgent.isStopped = false;
+    }
+    protected override void TraceUpdate()
+    {
+        MoveToTarget();
     }
 
     protected override void AttackStart()
@@ -436,10 +419,10 @@ public class BossSkeletonPase2 : MonsterAction
         _attackCoroutine = null;
 
     }
-    protected override void FallExit()
+    protected override void FallStart()
     {
-        base.FallExit();
-        _attackCoroutine = null;
+        Debug.Log("넘어짐 면역");
     }
+    protected override void FallExit() { }
 
 }
