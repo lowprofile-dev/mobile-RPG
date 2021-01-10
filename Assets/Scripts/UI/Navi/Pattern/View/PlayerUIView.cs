@@ -15,6 +15,8 @@ public class PlayerUIView : View
     [SerializeField] private Button _skillCButton;
     [SerializeField] private TextMeshProUGUI _masteryText;
     [SerializeField] private TextMeshProUGUI _weaponText;
+    [SerializeField] private Image _hpSlider;
+    [SerializeField] private Image _steminaSlider;
 
     private void Start()
     {
@@ -46,6 +48,7 @@ public class PlayerUIView : View
         base.UIUpdate();
 
         SetMyStatusText();
+        SetHpStemina();
     }
 
     /// <summary>
@@ -55,5 +58,11 @@ public class PlayerUIView : View
     {
         _masteryText.text = MasteryManager.Instance.currentMastery.currentMasteryLevel.ToString();
         _weaponText.text = WeaponManager.Instance.GetWeapon().masteryLevel.ToString();
+    }
+
+    public void SetHpStemina()
+    {
+        _hpSlider.fillAmount = StatusManager.Instance.GetCurrentHpPercent();
+        _steminaSlider.fillAmount = StatusManager.Instance.GetCurrentSteminaPercent();
     }
 }
