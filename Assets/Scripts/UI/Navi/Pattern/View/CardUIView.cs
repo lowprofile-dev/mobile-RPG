@@ -97,11 +97,6 @@ public class CardUIView : View
     {
         if (!isRerollingAnimationPlaying) // 리롤 애니메이션 재생 중이 아니면
         {
-            for (int i = 0; i < _roomAreaImg.Length; i++)
-            {
-                _roomAreaImg[i].cntCard.CardStart(); // 해당 카드의 효과들을 발동시킨다.
-            }
-
             UINaviationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
 
             if(CardManager.Instance._cntDungeon == null)

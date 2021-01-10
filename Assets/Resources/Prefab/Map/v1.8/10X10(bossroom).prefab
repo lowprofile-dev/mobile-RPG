@@ -742,6 +742,36 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 816c3e077fd0d4681b92cc85a4a7d460, type: 3}
+--- !u!1 &303976146054060947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 708923809744629478}
+  m_Layer: 0
+  m_Name: BossSpawnPoint (1)
+  m_TagString: MonsterSpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &708923809744629478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303976146054060947}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 35, y: 0, z: -4.25}
+  m_LocalScale: {x: 6, y: 1, z: 6}
+  m_Children: []
+  m_Father: {fileID: 1187939321965900604}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &396463359936622105
 GameObject:
   m_ObjectHideFlags: 0
@@ -13917,7 +13947,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1187939321965900600}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -13936,6 +13966,7 @@ Transform:
   - {fileID: 1736302343907487612}
   - {fileID: 2399330575759816603}
   - {fileID: 3881603447880548822}
+  - {fileID: 708923809744629478}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -13967,12 +13998,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowImmediateRepeats: 1
   AllowRotation: 1
-  RepeatMode: 0
+  RepeatMode: 2
   OverrideAutomaticTileBounds: 0
   TileBoundsOverride:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0.5}
-  Entrance: {fileID: 0}
+  Entrance: {fileID: 2450056758594772223}
   Exit: {fileID: 0}
   OverrideConnectionChance: 1
   ConnectionChance: 1
@@ -14027,8 +14058,7 @@ MonoBehaviour:
   hasPlayer: 0
   isBossRoom: 1
   monsterSpawnPoints: []
-  monsterPrefabs:
-  - {fileID: 0}
+  monsterPrefabs: []
   monsterSpawnInterval: 2
   nMonsterPerSpawn: 1
   nMonsterToSpawn: 1
@@ -15825,69 +15855,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: d7bd45ea9184f4cd2b62f3f8af62a1ed, type: 3}
---- !u!1 &1789790120962926497
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7442754924972749889}
-  - component: {fileID: 746079419029636610}
-  m_Layer: 0
-  m_Name: North (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7442754924972749889
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1789790120962926497}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: -1}
-  m_LocalPosition: {x: -18, y: 0, z: 37.700012}
-  m_LocalScale: {x: 2, y: 2, z: 2}
-  m_Children: []
-  m_Father: {fileID: 8595948438866973710}
-  m_RootOrder: 17
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &746079419029636610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1789790120962926497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32a188f8ee195cf4cb8b2fdccd193b79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DoorPrefabPriority: 0
-  ConnectorPrefabWeights: []
-  BlockerPrefabWeights:
-  - GameObject: {fileID: 6061927268512707900, guid: 0c7d9c6485d038a4fb703792271787bb,
-      type: 3}
-    Weight: 1
-  AvoidRotatingDoorPrefab: 0
-  AvoidRotatingBlockerPrefab: 0
-  ConnectorSceneObjects: []
-  BlockerSceneObjects: []
-  socketGroup_obsolete: -1
-  doorPrefabs_obsolete: []
-  blockerPrefabs_obsolete: []
-  socket: {fileID: 11400000, guid: 6123088d90272ee449945cb8d7c81e04, type: 2}
-  doorPrefabInstance: {fileID: 0}
-  doorComponent: {fileID: 0}
-  tile: {fileID: 0}
-  connectedDoorway: {fileID: 0}
-  hideConditionalObjects: 0
-  fileVersion: 1
 --- !u!1 &1925001086469911374
 GameObject:
   m_ObjectHideFlags: 0
@@ -21749,6 +21716,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: 816c3e077fd0d4681b92cc85a4a7d460, type: 3}
+--- !u!65 &1532067397427316895
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3878961866075514840}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 13.15, y: 3.45, z: -22.44}
+  m_Center: {x: 0, y: 0, z: 0.00000023841858}
+--- !u!114 &1480430032237509468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3878961866075514840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 294ee5ef4528c2d47af6a957979a3300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3881715619248313206
 GameObject:
   m_ObjectHideFlags: 0
@@ -29464,6 +29456,7 @@ GameObject:
   - component: {fileID: 6520361492743472305}
   - component: {fileID: 6511255068980049651}
   - component: {fileID: 6582786986071899285}
+  - component: {fileID: 73458272913220156}
   m_Layer: 0
   m_Name: circle_plinth_01_mobile
   m_TagString: Untagged
@@ -29551,6 +29544,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!64 &73458272913220156
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6489045568490828465}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 03f22848a648e455fa54027094c05435, type: 3}
 --- !u!1 &6523758886323483000
 GameObject:
   m_ObjectHideFlags: 0
@@ -40807,7 +40814,6 @@ Transform:
   - {fileID: 8266027815959126278}
   - {fileID: 3332203968489087109}
   - {fileID: 3139544952788623685}
-  - {fileID: 7442754924972749889}
   m_Father: {fileID: 1187939321965900604}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -43900,6 +43906,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: exit_mobile
       objectReference: {fileID: 0}
+    - target: {fileID: 1188234704729740, guid: a34864171c8e3450cbdcb32b8c30bd67, type: 3}
+      propertyPath: m_TagString
+      value: DungeonExit
+      objectReference: {fileID: 0}
     - target: {fileID: 4176184104554626, guid: a34864171c8e3450cbdcb32b8c30bd67, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -43962,6 +43972,12 @@ PrefabInstance:
 --- !u!4 &3881603447880548822 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4176184104554626, guid: a34864171c8e3450cbdcb32b8c30bd67,
+    type: 3}
+  m_PrefabInstance: {fileID: 3877863104239604052}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3878961866075514840 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1188234704729740, guid: a34864171c8e3450cbdcb32b8c30bd67,
     type: 3}
   m_PrefabInstance: {fileID: 3877863104239604052}
   m_PrefabAsset: {fileID: 0}

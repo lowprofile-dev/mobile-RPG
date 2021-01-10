@@ -21,7 +21,8 @@ public class CardEffect
 
     public virtual void StartEffect()
     {
-
+        Debug.Log("시작 : " + effectData.effectName);
+        CardManager.Instance.activeEffects.Add(this);
     }
 
     public virtual void UpdateEffect()
@@ -31,7 +32,8 @@ public class CardEffect
 
     public virtual void EndEffect()
     {
-
+        Debug.Log("종료 : " + effectData.effectName);
+        CardManager.Instance.activeEffects.Remove(this);
     }
 
     public string GetDescription(Card card)

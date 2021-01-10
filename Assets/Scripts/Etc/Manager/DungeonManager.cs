@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.AI;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -22,14 +23,19 @@ public class DungeonManager : MonoBehaviour
     public int nRoomCleared = 0;
     public float nMonsterCoef;
     public bool isStageCleared = false;
+    public bool bossCleared = false;
+
+    public int playerCurrentArea;
 
     private GameObject stageExit;
+    bool isPlayerSpawned = false;
 
     //디버깅용
     GameObject plane;
 
     private void Start()
     {
+        playerCurrentArea = -1;
         CardManager.Instance._cntDungeon = this;
         hasPlane = false;
     }
@@ -42,6 +48,8 @@ public class DungeonManager : MonoBehaviour
         }
         InitDungeon();
         SetStageInfo();
+        //Invoke("ChangeAreaCheck", 5f);
+        ChangeAreaCheck();
         if (isStageCleared)
         {
             ClearStage();
@@ -105,6 +113,9 @@ public class DungeonManager : MonoBehaviour
         player = Instantiate(playerPrefab);
         player.transform.position = playerSpawnPoint.transform.TransformPoint(0, 1, 0);
         player.transform.SetParent(null);
+        player.GetComponent<Player>().currentDungeonArea = transform.GetChild(0).gameObject.GetComponent<DungeonRoom>().areaCode;
+        playerCurrentArea = player.GetComponent<Player>().currentDungeonArea;
+        isPlayerSpawned = true;
     }
 
     /// <summary>
@@ -113,9 +124,11 @@ public class DungeonManager : MonoBehaviour
     public GameObject SpawnBoss()
     {
         GameObject bossSpawnPoint = GameObject.FindGameObjectWithTag("BossSpawnPoint");
-        GameObject boss = BossPrefabs[dungeonStage-1];
-        boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 1, 0);
+        GameObject boss = Instantiate(BossPrefabs[dungeonStage-1]);
+        boss.GetComponent<NavMeshAgent>().enabled = false;
+        boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);
         boss.transform.SetParent(null);
+        boss.GetComponent<NavMeshAgent>().enabled = true;
         return boss;
     }
 
@@ -139,10 +152,24 @@ public class DungeonManager : MonoBehaviour
     {
         var runtimeDungeon = FindObjectOfType<DunGen.RuntimeDungeon>();
         runtimeDungeon.Generate();
+        isPlayerSpawned = false;
         SpawnPlayer();
         isStageCleared = false;
         hasPlane = false;
         dungeonStage++;
         nRoomCleared = 0;
+    }
+
+    public void ChangeAreaCheck()
+    {
+        if (!isPlayerSpawned) return;
+        Debug.Log("current Dungeon : " + playerCurrentArea + "// player Current Dungeon : " + Player.Instance.currentDungeonArea);
+        if(playerCurrentArea != Player.Instance.currentDungeonArea)
+        {
+            if (playerCurrentArea != -1) CardManager.Instance.ExitEffectCards(playerCurrentArea);
+            CardManager.Instance.EnterEffectCards(Player.Instance.currentDungeonArea);
+            playerCurrentArea = Player.Instance.currentDungeonArea;
+            UIManager.Instance.playerUIView.SetEffectList();
+        }
     }
 }

@@ -9,10 +9,10 @@ public enum MONSTER_STATE
 
 public class LivingEntity : Unit
 {
-    [SerializeField] protected float _initHp; public float initHp { get { return _initHp; } set { _initHp = value; } }
-    [SerializeField] protected float _initMp; public float initMp { get { return _initMp; } set { _initMp = value; } }
+    
     [SerializeField] protected float _hp; public float Hp { get { return _hp; } set { _hp = value; } }
     [SerializeField] protected float _stemina; public float Stemina { get { return _stemina; } set { _stemina = value; } }
+
     [SerializeField] protected GameObject _DamageText; public GameObject DamageText { get { return _DamageText; } }
     protected DebuffManager _DebuffManager; public DebuffManager DebuffManager { get { return _DebuffManager; } }
     [SerializeField] protected float _speed; public float speed { get { return _speed; } set { _speed = value; } }
@@ -42,8 +42,6 @@ public class LivingEntity : Unit
     // 오브젝트에서 필요한 초기화들을 실시한다.
     protected virtual void InitObject()
     {
-        _hp = initHp;
-        _stemina = initMp;
         gameObject.GetComponent<Collider>().enabled = true;
     }
 

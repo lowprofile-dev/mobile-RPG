@@ -414,8 +414,8 @@ public class ItemManager : SingletonBase<ItemManager>
 
     private void EquipItems()
     {
-        statusManager.itemMultiplicationStatus = new MultiplicationStatus();
-        statusManager.itemAdditionStatus = new AdditionStatus();
+        statusManager.multiplicationStatus = new MultiplicationStatus();
+        statusManager.additionStatus = new AdditionStatus();
         EquipArmor(currentItemKeys.ArmorKey);
         EquipBottom(currentItemKeys.BottomKey);
         EquipHelmet(currentItemKeys.HelmetKey);
@@ -427,37 +427,37 @@ public class ItemManager : SingletonBase<ItemManager>
 
     private void EquipBoot(int bootKey)
     {
-        statusManager.itemMultiplicationStatus.moveSpeed += itemDictionary[bootKey].moveSpeed;
-        statusManager.itemMultiplicationStatus.dashCooldown +=  itemDictionary[bootKey].dashCooldown;
-        statusManager.itemMultiplicationStatus.dashStamina += itemDictionary[bootKey].dashStamina;
+        statusManager.multiplicationStatus.moveSpeed += itemDictionary[bootKey].moveSpeed;
+        statusManager.multiplicationStatus.dashCooldown +=  itemDictionary[bootKey].dashCooldown;
+        statusManager.multiplicationStatus.dashStamina += itemDictionary[bootKey].dashStamina;
     }
 
     private void EquipGloves(int glovesKey)
     {
-        statusManager.itemAdditionStatus.attackDamage += itemDictionary[glovesKey].attackDamage;
-        statusManager.itemMultiplicationStatus.attackSpeed += itemDictionary[glovesKey].attackSpeed;
-        statusManager.itemMultiplicationStatus.attackCooldown += itemDictionary[glovesKey].attackCooldown;
+        statusManager.additionStatus.attackDamage += itemDictionary[glovesKey].attackDamage;
+        statusManager.multiplicationStatus.attackSpeed += itemDictionary[glovesKey].attackSpeed;
+        statusManager.multiplicationStatus.attackCooldown += itemDictionary[glovesKey].attackCooldown;
     }
 
     private void EquipHelmet(int helmetKey)
     {
-        statusManager.itemAdditionStatus.rigidresistance += itemDictionary[helmetKey].rigidresistance;
-        statusManager.itemAdditionStatus.stunresistance += itemDictionary[helmetKey].stunresistance;
-        statusManager.itemAdditionStatus.fallresistance += itemDictionary[helmetKey].fallresistance;
+        statusManager.additionStatus.rigidresistance += itemDictionary[helmetKey].rigidresistance;
+        statusManager.additionStatus.stunresistance += itemDictionary[helmetKey].stunresistance;
+        statusManager.additionStatus.fallresistance += itemDictionary[helmetKey].fallresistance;
     }
 
     private void EquipBottom(int bottomKey)
     {
-        statusManager.itemAdditionStatus.stamina += itemDictionary[bottomKey].stamina;
-        statusManager.itemAdditionStatus.staminaRecovery += (1 + itemDictionary[bottomKey].staminaRecovery);
-        statusManager.itemAdditionStatus.hp += itemDictionary[bottomKey].hp;
-        statusManager.itemAdditionStatus.hpRecovery += itemDictionary[bottomKey].hpRecovery;
+        statusManager.additionStatus.stamina += itemDictionary[bottomKey].stamina;
+        statusManager.additionStatus.staminaRecovery += (1 + itemDictionary[bottomKey].staminaRecovery);
+        statusManager.additionStatus.hp += itemDictionary[bottomKey].hp;
+        statusManager.additionStatus.hpRecovery += itemDictionary[bottomKey].hpRecovery;
     }
 
     private void EquipArmor(int armorKey)
     {
-        statusManager.itemAdditionStatus.hp += itemDictionary[armorKey].hpIncreaseRate;
-        statusManager.itemAdditionStatus.armor += itemDictionary[armorKey].armor;
-        statusManager.itemAdditionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
+        statusManager.additionStatus.hp += itemDictionary[armorKey].hpIncreaseRate;
+        statusManager.additionStatus.armor += itemDictionary[armorKey].armor;
+        statusManager.additionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
     }
 }

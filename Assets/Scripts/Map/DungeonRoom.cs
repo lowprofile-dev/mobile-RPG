@@ -39,6 +39,11 @@ public class DungeonRoom : MonoBehaviour
         dungeonManager = transform.parent.gameObject.GetComponent<DungeonManager>();
         //StartCoroutine(roomSetAreaCodeCoroutine());
         GetMonsterSpawnPoints(transform);
+        if (dungeonManager.hasPlane && !isSetArea)
+        {
+            SetArea();
+            //this.enabled = false;
+        }
     }
 
     private void CloseDoors()
@@ -46,10 +51,11 @@ public class DungeonRoom : MonoBehaviour
         GetDoorways(transform);
         for (int i = 0; i < doorways.Count; i++)
         {
-            GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
+            //GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
+            GameObject door = Instantiate(doorPrefab);
             door.transform.position = doorways[i].transform.TransformPoint(0, 0, 0);
             door.transform.rotation = doorways[i].transform.rotation;
-            door.transform.SetParent(null);
+            //door.transform.SetParent(null);
             doors.Add(door);
         }
     }
@@ -58,9 +64,9 @@ public class DungeonRoom : MonoBehaviour
     {
         for (int i = 0; i < doors.Count; i++)
         {
-            doors[i].SetActive(false);
+            doors[i].gameObject.SetActive(false);
         }
-        doors.Clear();
+        //doors.Clear();
     }
 
     private void GetDoorways(Transform parent)
@@ -115,12 +121,23 @@ public class DungeonRoom : MonoBehaviour
             {
                 isSpawning = true;
                 Invoke("CloseDoors", 2f);
+                if (isBossRoom)
+                {
+                    monsters.Add(dungeonManager.SpawnBoss());
+                    nMonsterSpawned++;
+                }
                 StartCoroutine(SpawnMonsterCoroutine());
             }
         }
         else
         {
             hasPlayer = false;
+            if (isSpawning)
+            {
+                isSpawning = false;
+                OpenDoors();
+                StopCoroutine(SpawnMonsterCoroutine());
+            }
         }
     }
 
@@ -152,6 +169,10 @@ public class DungeonRoom : MonoBehaviour
     {
         isCleared = true;
         ++dungeonManager.nRoomCleared;
+        if (isBossRoom)
+        {
+            dungeonManager.bossCleared = true;
+        }
         Invoke("OpenDoors", 2);
     }
 
@@ -190,11 +211,6 @@ public class DungeonRoom : MonoBehaviour
         if (nMonsterSpawned >= nMonsterToSpawn)
         {
             return;
-        }
-        if (isBossRoom)
-        {
-            monsters.Add(dungeonManager.SpawnBoss());
-            nMonsterSpawned++;
         }
         for (int i = 0; i < nMonsters; i++)
         {

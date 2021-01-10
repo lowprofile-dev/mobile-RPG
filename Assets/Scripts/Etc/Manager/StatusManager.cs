@@ -1,10 +1,7 @@
-﻿using System.Collections;
+﻿using CSVReader;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using Newtonsoft.Json;
-using System;
-using CSVReader;
+using UnityEngine;
 
 public class AdditionStatus
 {
@@ -64,8 +61,8 @@ public class StatusManager : SingletonBase<StatusManager>
     [SerializeField] Player player;
     [SerializeField] Dictionary<int, StatusData> statusDictionary;
     public CurrentStatus playerStatus;
-    public AdditionStatus itemAdditionStatus;
-    public MultiplicationStatus itemMultiplicationStatus;
+    public AdditionStatus additionStatus;
+    public MultiplicationStatus multiplicationStatus;
     public CurrentStatus itemAppliedStatus;
     public CurrentStatus finalStatus;
 
@@ -82,16 +79,18 @@ public class StatusManager : SingletonBase<StatusManager>
         cardRerollCoin = 10000;
         needToCardRerollCoin = 0;
         rerollCount = 0;
+
         player = Player.Instance;
         playerStatus = new CurrentStatus();
-        itemAdditionStatus = new AdditionStatus();
-        itemMultiplicationStatus = new MultiplicationStatus();
+        additionStatus = new AdditionStatus();
+        multiplicationStatus = new MultiplicationStatus();
         itemAppliedStatus = new CurrentStatus();
         finalStatus = new CurrentStatus();
         Table statusTable = CSVReader.Reader.ReadCSVToTable("CSVData/StatusDatabase");
         statusDictionary = statusTable.TableToDictionary<int, StatusData>();
         LoadCurrentStatus();
     }
+
 
     void Start()
     {
@@ -114,10 +113,17 @@ public class StatusManager : SingletonBase<StatusManager>
         }
     }
 
+
+
     public void UpdateFinalStatus()
     {
         AddCurrentStatus();
         MultiplyCurrentStatus();
+        SetFinalStatus();
+    }
+
+    private void SetFinalStatus()
+    {
         finalStatus = itemAppliedStatus;
     }
 
@@ -133,24 +139,24 @@ public class StatusManager : SingletonBase<StatusManager>
         //rigidresistance = 0;       //경직 cc 저항
         //stunresistance = 0;        //스턴 cc 저항
         //fallresistance = 0;        //넘어짐 cc 저항 
-        itemAppliedStatus.maxHp = playerStatus.maxHp + itemAdditionStatus.hp;
-        itemAppliedStatus.hpRecovery = playerStatus.hpRecovery + itemAdditionStatus.hpRecovery;
-        itemAppliedStatus.maxStamina = playerStatus.maxStamina + itemAdditionStatus.stamina;
-        itemAppliedStatus.staminaRecovery = playerStatus.staminaRecovery + itemAdditionStatus.staminaRecovery;
-        itemAppliedStatus.attackDamage = playerStatus.attackDamage + itemAdditionStatus.attackDamage;
-        itemAppliedStatus.armor = playerStatus.armor + itemAdditionStatus.armor;
-        itemAppliedStatus.magicResistance = playerStatus.magicResistance + itemAdditionStatus.magicResistance;
-        itemAppliedStatus.rigidresistance = playerStatus.rigidresistance + itemAdditionStatus.rigidresistance;
-        itemAppliedStatus.stunresistance = playerStatus.stunresistance + itemAdditionStatus.stunresistance;
-        itemAppliedStatus.fallresistance = playerStatus.fallresistance + itemAdditionStatus.fallresistance;
+        itemAppliedStatus.maxHp = playerStatus.maxHp + additionStatus.hp;
+        itemAppliedStatus.hpRecovery = playerStatus.hpRecovery + additionStatus.hpRecovery;
+        itemAppliedStatus.maxStamina = playerStatus.maxStamina + additionStatus.stamina;
+        itemAppliedStatus.staminaRecovery = playerStatus.staminaRecovery + additionStatus.staminaRecovery;
+        itemAppliedStatus.attackDamage = playerStatus.attackDamage + additionStatus.attackDamage;
+        itemAppliedStatus.armor = playerStatus.armor + additionStatus.armor;
+        itemAppliedStatus.magicResistance = playerStatus.magicResistance + additionStatus.magicResistance;
+        itemAppliedStatus.rigidresistance = playerStatus.rigidresistance + additionStatus.rigidresistance;
+        itemAppliedStatus.stunresistance = playerStatus.stunresistance + additionStatus.stunresistance;
+        itemAppliedStatus.fallresistance = playerStatus.fallresistance + additionStatus.fallresistance;
     }
 
     private void MultiplyCurrentStatus()
     {
-        itemAppliedStatus.armor = itemAppliedStatus.armor * (1 + itemMultiplicationStatus.armorIncreaseRate/100.0f);
-        itemAppliedStatus.attackCooldown = itemAppliedStatus.attackCooldown - (itemMultiplicationStatus.armorIncreaseRate / 100.0f);
-        itemAppliedStatus.dashCooldown = itemAppliedStatus.dashCooldown - (itemMultiplicationStatus.dashCooldown / 100.0f);
-        itemAppliedStatus.dashStamina = itemAppliedStatus.dashStamina * (1 - itemMultiplicationStatus.dashStamina / 100f);
+        itemAppliedStatus.armor = itemAppliedStatus.armor * (1 + multiplicationStatus.armorIncreaseRate / 100.0f);
+        itemAppliedStatus.attackCooldown = itemAppliedStatus.attackCooldown - (multiplicationStatus.armorIncreaseRate / 100.0f);
+        itemAppliedStatus.dashCooldown = itemAppliedStatus.dashCooldown - (multiplicationStatus.dashCooldown / 100.0f);
+        itemAppliedStatus.dashStamina = itemAppliedStatus.dashStamina * (1 - multiplicationStatus.dashStamina / 100f);
     }
 
     private void LoadCurrentStatus()
@@ -174,5 +180,21 @@ public class StatusManager : SingletonBase<StatusManager>
         string jsonData = JsonUtility.ToJson(playerStatus, true);
         string path = Path.Combine(Application.persistentDataPath, "playerCurrentStatus.json");
         File.WriteAllText(path, jsonData);
+    }
+
+
+
+
+
+    /////////////////// 기타 기능 ////////////////////
+
+    public float GetCurrentHpPercent()
+    {
+        return Player.Instance.Hp / finalStatus.maxHp;
+    }
+
+    public float GetCurrentSteminaPercent()
+    {
+        return Player.Instance.Stemina / finalStatus.maxStamina;
     }
 }
