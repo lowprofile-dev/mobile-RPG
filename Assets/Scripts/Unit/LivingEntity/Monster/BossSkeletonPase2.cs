@@ -91,7 +91,8 @@ public class BossSkeletonPase2 : MonsterAction
 
     private void JumpAttackEffect()
     {
-        SkeletonBaseJumpAttack atk = ObjectPoolManager.Instance.GetObject(JumpSkillEffect).GetComponent<SkeletonBaseJumpAttack>();
+        
+        BossAttack atk = ObjectPoolManager.Instance.GetObject(JumpSkillEffect).GetComponent<BossAttack>();
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(1f);
         atk.OnLoad(currentTarget, currentTarget);

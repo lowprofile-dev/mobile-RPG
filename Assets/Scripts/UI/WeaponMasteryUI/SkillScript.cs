@@ -27,7 +27,7 @@ public class SkillScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(isLock)
+        if (isLock)
         {
             skillLevelText.gameObject.SetActive(false);
             skillLockImage.gameObject.SetActive(true);
@@ -42,8 +42,8 @@ public class SkillScript : MonoBehaviour
         }
         window = Instantiate(upgradeWindow, parent.transform);
         upGradeContents = window.GetComponent<UpGradeContents>();
-        ok = window.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(0).GetComponent<Button>();
-        cancle = window.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(1).GetComponent<Button>();
+        ok = window.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(0).GetChild(0).GetComponent<Button>();
+        cancle = window.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(0).GetChild(1).GetComponent<Button>();
 
         outofWindow.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate { testoff(); });
         ok.onClick.AddListener(delegate { testok(); });

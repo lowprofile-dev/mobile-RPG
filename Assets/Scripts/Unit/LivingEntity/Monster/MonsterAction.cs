@@ -506,7 +506,7 @@ public class MonsterAction : MonoBehaviour
         _monster.myAnimator.SetTrigger("Walk");
     }
 
-    private void TraceUpdate()
+    protected virtual void TraceUpdate()
     {
         MoveToTarget();
         CheckLimitPlayerDistance();
@@ -845,24 +845,6 @@ public class MonsterAction : MonoBehaviour
         return 0;
     }
 
-
-    // 사용하지 않음
-    /*
-    protected virtual void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("PlayerAttack"))
-        {
-            if (GetCanDamageCheck())
-            {
-                Debug.Log("Player -> " + gameObject.name);
-                Damaged(WeaponManager.Instance.GetWeapon().attackDamage);
-                ProductionDamaged();
-                _isImmune = true;
-            }
-        }
-    }
-    */
-
     /// <summary>
     /// 데미지를 받을 조건을 체크한다.
     /// </summary>
@@ -870,9 +852,6 @@ public class MonsterAction : MonoBehaviour
     {
         return !_isImmune && !DeathCheck();
     }
-
-
-
 
     /////////// 사망 관련////////////
 
@@ -1023,9 +1002,6 @@ public class MonsterAction : MonoBehaviour
         _navMeshAgent.isStopped = true;
         Debug.Log("스턴걸림");
         StopAllCoroutines();
-        //StopCoroutine(_attackCoroutine);
-        //StopCoroutine(_idleCoroutine);
-        //StopCoroutine(_castCoroutine);
         _monster.myAnimator.SetTrigger("Stun");
     }
 
@@ -1034,9 +1010,6 @@ public class MonsterAction : MonoBehaviour
         _navMeshAgent.isStopped = true;
         Debug.Log("넘어짐걸림");
         StopAllCoroutines();
-        //StopCoroutine(_attackCoroutine);
-        //StopCoroutine(_idleCoroutine);
-        //StopCoroutine(_castCoroutine);
         _monster.myAnimator.SetTrigger("Fall");
     }
 
