@@ -783,25 +783,11 @@ public class MonsterAction : MonoBehaviour
         _bar.HpUpdate();
 
         bool isDeath = DeathCheck();
-
-        //if (SetAnimation)
-        //{
-        //    SetHitAnimation(isDeath);
-        //}
+        
 
         if (isDeath) CheckDeathAndChange();
     }
-
-    /// <summary>
-    /// 죽음 여부에 따라 몬스터의 hit 애니메이션을 설정 / 해제한다.
-    /// </summary>
-    /// 
-    //protected virtual void SetHitAnimation(bool isDeath)
-    //{
-    //    if (isDeath) _monster.myAnimator.ResetTrigger("Hit");
-    //    else _monster.myAnimator.SetTrigger("Hit");
-    //}
-
+    
     /// <summary>
     /// 데미지를 받았을때의 연출 목록
     /// </summary>

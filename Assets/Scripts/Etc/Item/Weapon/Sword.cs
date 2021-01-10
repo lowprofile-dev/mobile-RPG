@@ -23,7 +23,7 @@ public class Sword : Weapon
         skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[0].skillBLevel;
         skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[0].skillCLevel;
 
-        attackDamage= 1;
+        attackDamage = 1;
         magicDamage = 0;
         skillSpeed = 0;
 
@@ -33,9 +33,9 @@ public class Sword : Weapon
         skillBCoef = 0;
         skillCCoef = 0;
                   
-        skillACool = 0;
-        skillBCool = 0;
-        skillCCool = 0;
+        skillACool = 5;
+        skillBCool = 6;
+        skillCCool = 7;
 
         AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 1");
         AttackEffect2 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 2");
