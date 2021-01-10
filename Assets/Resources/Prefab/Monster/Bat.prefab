@@ -443,6 +443,8 @@ MonoBehaviour:
   _stemina: 0
   _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
     type: 3}
+  _speed: 0
+  _MAXspeed: 0
   myAnimator: {fileID: 0}
   _monsterName: 
   _grade: 0
@@ -452,8 +454,6 @@ MonoBehaviour:
   _attackType: 0
   _attackPattern: 0
   _description: 
-  _speed: 0
-  _MAXspeed: 0
   _attackTime: 0
   _attackDamage: 10
   _dissolveMaterial: {fileID: 2100000, guid: a84536e1e888d10429796579a2126d46, type: 2}
@@ -1604,6 +1604,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.14428812
       objectReference: {fileID: 0}
+    - target: {fileID: 137000013119706864, guid: 397387cfc96faaf46bf7d5c0a7bd5cd8,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a84536e1e888d10429796579a2126d46, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 397387cfc96faaf46bf7d5c0a7bd5cd8, type: 3}
 --- !u!137 &5667096328574984942 stripped

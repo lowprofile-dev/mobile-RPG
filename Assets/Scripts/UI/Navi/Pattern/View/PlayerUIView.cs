@@ -7,7 +7,6 @@ using TMPro;
 public class PlayerUIView : View
 {
     [SerializeField] private Button _cardTestBtn;
-    [SerializeField] private Button _talkTestBtn;
     [SerializeField] private Button _shopTestBtn;
     [SerializeField] private Button _atkBtn;
     [SerializeField] private Button _invincibleBtn;
@@ -18,7 +17,6 @@ public class PlayerUIView : View
     private void Start()
     {
         _cardTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleCardUIView(); });
-        _talkTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleTalkView(); });
         _shopTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleShopView(); });
         _atkBtn.onClick.AddListener(delegate { Player.Instance.CheckInteractObject(); });
         _invincibleBtn.onClick.AddListener(delegate { Player.Instance.EvadeBtnClicked(); });

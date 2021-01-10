@@ -675,6 +675,8 @@ MonoBehaviour:
   _stemina: 0
   _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
     type: 3}
+  _speed: 2
+  _MAXspeed: 0
   myAnimator: {fileID: 0}
   _monsterName: "\uAF2C\uB9C8 \uB358\uC804 \uB4DC\uB798\uACE4"
   _grade: 0
@@ -684,8 +686,6 @@ MonoBehaviour:
   _attackType: 0
   _attackPattern: 0
   _description: 
-  _speed: 2
-  _MAXspeed: 0
   _attackTime: 1
   _attackDamage: 10
   _dissolveMaterial: {fileID: 2100000, guid: 619dfddba20f4e84da177cdb2ad04d32, type: 2}
@@ -1104,6 +1104,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 137313491352152096, guid: 23d8a5a9305a2254487a6e2888e2f604,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 619dfddba20f4e84da177cdb2ad04d32, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23d8a5a9305a2254487a6e2888e2f604, type: 3}
 --- !u!137 &3303218804016732030 stripped

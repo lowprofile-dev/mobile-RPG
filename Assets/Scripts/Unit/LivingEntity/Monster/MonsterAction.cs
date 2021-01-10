@@ -306,7 +306,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void SpawnStart()
     {
         _isImmune = true; // 스폰 중 무적
-        _monster.myAnimator.SetTrigger("Spawn");
+        //_monster.myAnimator.SetTrigger("Spawn");
         AddSpawnEffect();
     }
 
@@ -326,27 +326,21 @@ public class MonsterAction : MonoBehaviour
     }
 
     /// <summary>
-    /// 생성할때 디졸브 머테리얼을 재생한다.
+    /// Spawn Dissolve -> Spawn FadeIn
     /// </summary>
     protected virtual IEnumerator SpawnDissolve()
     {
-        _monster.avatarObject.GetComponent<Renderer>().material = _monster.dissolveMaterial; // 디졸브 Material로 변경
+        _monster.avatarObject.GetComponent<Renderer>().material = _monster.nonDissolveMaterial;
+
         Material mat = _monster.avatarObject.GetComponent<Renderer>().material;
+        mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0);
 
-        float height = 0;
+        mat.DOFade(0.5f, 1.5f);
+        yield return new WaitForSeconds(1.5f);
 
-        DOTween.To(() => height, x => height = x, 10, 3).SetEase(Ease.InSine);
+        mat.DOFade(1, 0.5f);
+        yield return new WaitForSeconds(0.5f);
 
-        while (true)
-        {
-            mat.SetFloat("_CutoffHeight", height);
-
-            yield return null;
-
-            if (height >= 10) break;
-        }
-
-        _monster.avatarObject.GetComponent<Renderer>().material = _monster.nonDissolveMaterial; // 기본 Material로 변경
         ChangeState(MONSTER_STATE.STATE_IDLE);
     }
 
