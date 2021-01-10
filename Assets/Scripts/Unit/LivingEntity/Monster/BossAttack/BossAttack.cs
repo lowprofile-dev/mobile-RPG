@@ -5,7 +5,7 @@ using UnityEngine;
 public class BossAttack : MonoBehaviour
 {
     [SerializeField] protected Collider _collider;
-    [SerializeField] protected GameObject _particleEffectPrefab;
+    [SerializeField] protected GameObject _particleEffectPrefab = null;
     [SerializeField] private int targetNumber;
     protected HashSet<GameObject> _attackedTarget;
     protected GameObject _baseParent;
@@ -29,14 +29,19 @@ public class BossAttack : MonoBehaviour
 
     public virtual void OnLoad(GameObject start , GameObject target)
     {
-        GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
 
-        //Effect.transform.position = start.transform.position;
-        Effect.transform.SetParent(gameObject.transform);
-        Effect.transform.localPosition = Vector3.zero;
-        //Effect.transform.rotation = Quaternion.identity;
-        //Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
+
         SetLocalRotation(start, target);
+        //Effect.transform.position = start.transform.position;
+        if (_particleEffectPrefab != null)
+        {
+            GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
+            Effect.transform.SetParent(gameObject.transform);
+            Effect.transform.localPosition = Vector3.zero;
+            Effect.transform.rotation = Quaternion.identity;
+        }
+        //Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
+
 
         if (_attackedTarget != null)
         {
