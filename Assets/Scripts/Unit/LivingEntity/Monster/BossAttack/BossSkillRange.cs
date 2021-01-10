@@ -14,7 +14,6 @@ public class BossSkillRange : MonoBehaviour
     private void OnEnable()
     {
         fillArea.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-        //Boss = GameObject.Find("BossSkeletonPase2").GetComponent<BossSkeletonPase2>();
     }
 
     public void RemovedRange(GameObject target , float speed)
@@ -28,7 +27,6 @@ public class BossSkillRange : MonoBehaviour
     {
         yield return new WaitForSeconds(speed);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
-        //target.GetComponent<BossSkeletonPase2>().ChangeState(MONSTER_STATE.STATE_TRACE);
     }
     void Update()
     {
@@ -46,10 +44,7 @@ public class BossSkillRange : MonoBehaviour
             float pos = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
             angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, pos, ref velocity, 0.001f);
      
-
             transform.rotation = Quaternion.Euler(90f, angle + 90f, 0f);
-
-
 
         }
     }
