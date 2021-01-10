@@ -1639,8 +1639,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190124673457746352}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.14, y: 0, z: 12.33}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 190124673574450400}
@@ -1742,6 +1742,7 @@ MonoBehaviour:
   isCleared: 0
   isSetArea: 0
   hasPlayer: 0
+  isBossRoom: 0
   monsterSpawnPoints: []
   monsterPrefabs:
   - {fileID: 5711455880128171077, guid: b15fb212ab8e20b48978202886a9bfdc, type: 3}
@@ -1751,6 +1752,8 @@ MonoBehaviour:
   nMonsterToSpawn: 6
   nMonsterSpawned: 0
   isSpawning: 0
+  doorPrefab: {fileID: 6061927268512707900, guid: 0c7d9c6485d038a4fb703792271787bb,
+    type: 3}
 --- !u!1 &190124673533336642
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.AI;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class DungeonManager : MonoBehaviour
     public int nRoomCleared = 0;
     public float nMonsterCoef;
     public bool isStageCleared = false;
+    public bool bossCleared = false;
 
     public int playerCurrentArea;
 
@@ -117,9 +119,11 @@ public class DungeonManager : MonoBehaviour
     public GameObject SpawnBoss()
     {
         GameObject bossSpawnPoint = GameObject.FindGameObjectWithTag("BossSpawnPoint");
-        GameObject boss = BossPrefabs[dungeonStage-1];
-        boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 1, 0);
+        GameObject boss = Instantiate(BossPrefabs[dungeonStage-1]);
+        boss.GetComponent<NavMeshAgent>().enabled = false;
+        boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);
         boss.transform.SetParent(null);
+        boss.GetComponent<NavMeshAgent>().enabled = true;
         return boss;
     }
 
