@@ -29,6 +29,7 @@ public class DungeonRoom : MonoBehaviour
     private List<GameObject> doorways = new List<GameObject>();
     private List<GameObject> doors = new List<GameObject>();
     private List<GameObject> monsters = new List<GameObject>();
+    private List<GameObject> lights = new List<GameObject>();
     System.Random random = new System.Random();
 
     int spawnPointIndex;
@@ -43,6 +44,49 @@ public class DungeonRoom : MonoBehaviour
         {
             SetArea();
             //this.enabled = false;
+        }
+    }
+
+    private void ChangeLights()
+    {
+        GetLights(transform);
+        for (int i = 0; i < lights.Count; i++)
+        {
+            //lights[i].GetComponent<Light>().color
+            Color color;
+            switch(this.areaCode-1)
+            {
+                case 0:
+                    lights[i].GetComponent<Light>().color = Color.red;
+                    break;
+                case 1:
+                    ColorUtility.TryParseHtmlString("#ff7f00", out color);
+                    lights[i].GetComponent<Light>().color = color;
+                    break;
+                case 2:
+                    lights[i].GetComponent<Light>().color = Color.yellow;
+                    break;
+                case 3:
+                    lights[i].GetComponent<Light>().color = Color.green;
+                    break;
+                case 4:
+                    lights[i].GetComponent<Light>().color = Color.blue;
+                    break;
+                case 5:
+                    lights[i].GetComponent<Light>().color = Color.cyan;
+                    break;
+                case 6:
+                    ColorUtility.TryParseHtmlString("#8b00ff", out color);
+                    lights[i].GetComponent<Light>().color = color;
+                    break;
+                case 7:
+                    lights[i].GetComponent<Light>().color = Color.white;
+                    break;
+                case 8:
+                    lights[i].GetComponent<Light>().color = Color.black;
+                    break;
+            }
+            lights[i].GetComponent<Light>().intensity = 60;
         }
     }
 
@@ -85,6 +129,22 @@ public class DungeonRoom : MonoBehaviour
         }
     }
 
+    private void GetLights(Transform parent)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.gameObject.GetComponent<Light>() != null)
+            {
+                lights.Add(child.gameObject);
+            }
+            if (child.childCount > 0)
+            {
+                GetLights(child);
+            }
+        }
+    }
+
     private void GetMonsterSpawnPoints(Transform parent)
     {
         for (int i = 0; i < parent.childCount; i++)
@@ -107,6 +167,7 @@ public class DungeonRoom : MonoBehaviour
         {
             SetArea();
             //this.enabled = false;
+            ChangeLights();
         }
         CheckPlayerInRoom();
     }
