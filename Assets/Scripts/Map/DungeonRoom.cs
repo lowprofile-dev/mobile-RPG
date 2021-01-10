@@ -39,6 +39,11 @@ public class DungeonRoom : MonoBehaviour
         dungeonManager = transform.parent.gameObject.GetComponent<DungeonManager>();
         //StartCoroutine(roomSetAreaCodeCoroutine());
         GetMonsterSpawnPoints(transform);
+        if (dungeonManager.hasPlane && !isSetArea)
+        {
+            SetArea();
+            //this.enabled = false;
+        }
     }
 
     private void CloseDoors()

@@ -28,6 +28,7 @@ public class DungeonManager : MonoBehaviour
     public int playerCurrentArea;
 
     private GameObject stageExit;
+    bool isPlayerSpawned = false;
 
     //디버깅용
     GameObject plane;
@@ -47,6 +48,7 @@ public class DungeonManager : MonoBehaviour
         }
         InitDungeon();
         SetStageInfo();
+        //Invoke("ChangeAreaCheck", 5f);
         ChangeAreaCheck();
         if (isStageCleared)
         {
@@ -111,6 +113,9 @@ public class DungeonManager : MonoBehaviour
         player = Instantiate(playerPrefab);
         player.transform.position = playerSpawnPoint.transform.TransformPoint(0, 1, 0);
         player.transform.SetParent(null);
+        player.GetComponent<Player>().currentDungeonArea = transform.GetChild(0).gameObject.GetComponent<DungeonRoom>().areaCode;
+        playerCurrentArea = player.GetComponent<Player>().currentDungeonArea;
+        isPlayerSpawned = true;
     }
 
     /// <summary>
@@ -147,6 +152,7 @@ public class DungeonManager : MonoBehaviour
     {
         var runtimeDungeon = FindObjectOfType<DunGen.RuntimeDungeon>();
         runtimeDungeon.Generate();
+        isPlayerSpawned = false;
         SpawnPlayer();
         isStageCleared = false;
         hasPlane = false;
@@ -156,6 +162,7 @@ public class DungeonManager : MonoBehaviour
 
     public void ChangeAreaCheck()
     {
+        if (!isPlayerSpawned) return;
         Debug.Log("current Dungeon : " + playerCurrentArea + "// player Current Dungeon : " + Player.Instance.currentDungeonArea);
         if(playerCurrentArea != Player.Instance.currentDungeonArea)
         {
