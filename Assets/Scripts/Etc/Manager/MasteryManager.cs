@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
+using CSVReader;
 
 [System.Serializable]
 public class WeaponSkillLevel : ICloneable
@@ -39,7 +41,7 @@ public class CurrentMastery : ICloneable
 
     [Header("무기별 경험치 획득 상황")]
     public int currentSwordMasteryExp;
-    public int currentDaggerMasterExp;
+    public int currentDaggerMasteryExp;
     public int currentBluntMasteryExp;
     public int currentStaffMasteryExp;
     public int currentWandMasteryExp;
@@ -68,7 +70,7 @@ public class CurrentMastery : ICloneable
         currentWandMasteryLevel = 1;
 
         currentSwordMasteryExp = 0;
-        currentDaggerMasterExp = 0;
+        currentDaggerMasteryExp = 0;
         currentBluntMasteryExp = 0;
         currentStaffMasteryExp = 0;
         currentWandMasteryExp = 0;
@@ -101,7 +103,6 @@ public class PlayerMasteryData
     public int level;
     public string masteryName;
     public string masteryDescription;
-    public string detailedDescription;
 }
 
 public class MasteryManager : SingletonBase<MasteryManager>
@@ -113,10 +114,13 @@ public class MasteryManager : SingletonBase<MasteryManager>
     //public WeaponSkillLevel bluntSkillLevel;
     //public WeaponSkillLevel wandSkillLevel;
     //public WeaponSkillLevel staffSkillLevel;
+    public Dictionary<int,PlayerMasteryData> masteryDictionary;
 
     public void InitMasteryManager()
     {
         weaponSkillLevel = new WeaponSkillLevel[5];
+        Table masteryTable = CSVReader.Reader.ReadCSVToTable("CSVData/MasteryDatabase");
+        masteryDictionary = masteryTable.TableToDictionary<int, PlayerMasteryData>();
         LoadCurrentMastery();
         LoadSkillLevel();
     }
@@ -308,6 +312,46 @@ public class MasteryManager : SingletonBase<MasteryManager>
                 break;
         }
         SaveSkillLevel();
+    }
+    public void UpdateCurrentExp()
+    {
+        if (WeaponManager.Instance != null)
+        {
+            switch (WeaponManager.Instance.GetWeapon().name)
+            {
+                case "sword":
+                    if (WeaponManager.Instance.GetWeapon().exp != currentMastery.currentSwordMasteryExp)
+                    {
+                        WeaponManager.Instance.GetWeapon().exp = currentMastery.currentSwordMasteryExp;
+                    }
+                    break;
+                case "wand":
+                    if (WeaponManager.Instance.GetWeapon().exp != currentMastery.currentWandMasteryExp)
+                    {
+                        WeaponManager.Instance.GetWeapon().exp = currentMastery.currentWandMasteryExp;
+                    }
+                    break;
+                case "dagger":
+                    if (WeaponManager.Instance.GetWeapon().exp != currentMastery.currentDaggerMasteryExp)
+                    {
+                        WeaponManager.Instance.GetWeapon().exp = currentMastery.currentWandMasteryExp;
+                    }
+                    break;
+                case "blunt":
+                    if (WeaponManager.Instance.GetWeapon().exp != currentMastery.currentBluntMasteryExp)
+                    {
+                        WeaponManager.Instance.GetWeapon().exp = currentMastery.currentBluntMasteryExp;
+                    }
+                    break;
+                case "staff":
+                    if (WeaponManager.Instance.GetWeapon().exp != currentMastery.currentStaffMasteryExp)
+                    {
+                        WeaponManager.Instance.GetWeapon().exp = currentMastery.currentStaffMasteryExp;
+                    }
+                    break;
+            }
+            SaveCurrentMastery();
+        }
     }
 
     public void SetMastery(int choice)

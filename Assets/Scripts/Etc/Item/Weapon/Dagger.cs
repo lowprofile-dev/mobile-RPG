@@ -22,7 +22,7 @@ public class Dagger : Weapon
         skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[1].skillBLevel;
         skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[1].skillCLevel;
 
-        exp = MasteryManager.Instance.currentMastery.currentDaggerMasterExp;
+        exp = MasteryManager.Instance.currentMastery.currentDaggerMasteryExp;
 
         attackDamage = 1;
         magicDamage = 0;
