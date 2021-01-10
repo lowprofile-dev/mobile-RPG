@@ -12,7 +12,6 @@ public class CurrentStatus : ICloneable
     //public string name;
 
     [Header("체력 스텟")]
-    public float hp;                    //현재 체력량
     public float maxHp;                 //최대 체력
     public float hpRecovery;            //체력 회복량
 
@@ -38,7 +37,6 @@ public class CurrentStatus : ICloneable
 
     public CurrentStatus()
     {
-        hp = 150;
         maxHp = 150;
         hpRecovery = 1f;
         maxStamina = 100;

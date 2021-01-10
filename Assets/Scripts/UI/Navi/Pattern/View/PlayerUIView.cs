@@ -13,6 +13,10 @@ public class PlayerUIView : View
     [SerializeField] private Button _skillAButton;
     [SerializeField] private Button _skillBButton;
     [SerializeField] private Button _skillCButton;
+    [SerializeField] private TextMeshProUGUI _masteryText;
+    [SerializeField] private TextMeshProUGUI _weaponText;
+    [SerializeField] private Image _hpSlider;
+    [SerializeField] private Image _steminaSlider;
 
     private void Start()
     {
@@ -42,5 +46,23 @@ public class PlayerUIView : View
     public override void UIUpdate()
     {
         base.UIUpdate();
+
+        SetMyStatusText();
+        SetHpStemina();
+    }
+
+    /// <summary>
+    /// 마스터리와 숙련도 레벨을 설정한다.
+    /// </summary>
+    public void SetMyStatusText()
+    {
+        _masteryText.text = MasteryManager.Instance.currentMastery.currentMasteryLevel.ToString();
+        _weaponText.text = WeaponManager.Instance.GetWeapon().masteryLevel.ToString();
+    }
+
+    public void SetHpStemina()
+    {
+        _hpSlider.fillAmount = StatusManager.Instance.GetCurrentHpPercent();
+        _steminaSlider.fillAmount = StatusManager.Instance.GetCurrentSteminaPercent();
     }
 }

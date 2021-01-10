@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+/*
 public class HealthBar : MonoBehaviour
 {
     Image Bar;
@@ -39,3 +41,4 @@ public class HealthBar : MonoBehaviour
         }
     }
 }
+*/

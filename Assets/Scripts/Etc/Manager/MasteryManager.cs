@@ -1,9 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using System;
-using CSVReader;
+using UnityEngine;
 
 [System.Serializable]
 public class WeaponSkillLevel : ICloneable
@@ -23,7 +21,7 @@ public class WeaponSkillLevel : ICloneable
 
     public object Clone()
     {
-        WeaponSkillLevel copy = this.MemberwiseClone() as WeaponSkillLevel;
+        WeaponSkillLevel copy = MemberwiseClone() as WeaponSkillLevel;
         return copy;
     }
 }
@@ -85,11 +83,11 @@ public class CurrentMastery : ICloneable
         currentWandSkillCReleased = false;
         currentStaffSkillBReleased = false;
         currentStaffSkillCReleased = false;
-}
+    }
 
     public object Clone()
     {
-        CurrentMastery copy = this.MemberwiseClone() as CurrentMastery;
+        CurrentMastery copy = MemberwiseClone() as CurrentMastery;
         copy.currentMasteryChoices = new List<int>();
         copy.currentMasteryChoices.AddRange(currentMasteryChoices);
         return copy;
@@ -151,7 +149,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
 
     public void SaveSkillLevel()
     {
-        for(int i =0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
             if (weaponSkillLevel[i] == null) weaponSkillLevel[i] = new WeaponSkillLevel();
             string jsonData = JsonUtility.ToJson(weaponSkillLevel[i], true);
@@ -174,9 +172,9 @@ public class MasteryManager : SingletonBase<MasteryManager>
             SaveSkillLevel();
             PlayerPrefs.Save();
         }
-        for(int i =0; i <5; i++)
+        for (int i = 0; i < 5; i++)
         {
-            string path = Path.Combine(Application.persistentDataPath, "weaponSKillLevel" + i +".json");
+            string path = Path.Combine(Application.persistentDataPath, "weaponSKillLevel" + i + ".json");
             string jsonData = File.ReadAllText(path);
             if (jsonData == null) return;
             weaponSkillLevel[i] = JsonUtility.FromJson<WeaponSkillLevel>(jsonData);
@@ -218,7 +216,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
         }
         SaveCurrentMastery();
     }
-    
+
     public void incrementSkillLevel(string weapon, string skillName)
     {
         switch (weapon)

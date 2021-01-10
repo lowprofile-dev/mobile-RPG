@@ -10,6 +10,8 @@ public class CardManager : SingletonBase<CardManager>
     private Dictionary<int, CardEffectData> _csvEffectData; public Dictionary<int, CardEffectData> csvEffectData { get { return _csvEffectData; } }
     private Dictionary<int, CardEffect> _effectData; public Dictionary<int, CardEffect> effectData { get { return _effectData; } }
 
+    public DungeonManager _cntDungeon; 
+
     List<Card> currentCards;
 
     public Card[,] dungeonCardData;
@@ -20,6 +22,7 @@ public class CardManager : SingletonBase<CardManager>
     /// </summary>
     public void InitCardManager()
     {
+        _cntDungeon = null;
         currentCards = new List<Card>();
         dungeonCardData = new Card[4, 9];
 

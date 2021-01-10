@@ -112,9 +112,10 @@ public class Player : LivingEntity
 
     protected override void InitObject()
     {
-        initHp = statusManager.finalStatus.maxHp;
-        initMp = statusManager.finalStatus.maxStamina;
         base.InitObject();
+
+        _hp = StatusManager.Instance.finalStatus.maxHp;
+        _stemina = StatusManager.Instance.finalStatus.maxStamina;
 
         selection = GetComponent<PartSelection>();
         selection.Start();
@@ -1134,7 +1135,7 @@ public class Player : LivingEntity
     {
         Debug.Log("체력을 " + restoreHp + "만큼 회복.");
         _hp += restoreHp;
-        if (_hp > _initHp) _hp = _initHp;
+        if (_hp > StatusManager.Instance.finalStatus.maxHp) _hp = StatusManager.Instance.finalStatus.maxHp;
     }
 
 
