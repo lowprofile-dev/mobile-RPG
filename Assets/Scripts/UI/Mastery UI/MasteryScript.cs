@@ -11,7 +11,8 @@ public class MasteryScript : MonoBehaviour
     [SerializeField] Toggle upSkill; 
     [SerializeField] Toggle downSkill;
     [SerializeField] GameObject masteryInfo;
-   
+    [SerializeField] GameObject upPanel;
+    [SerializeField] GameObject downPanel;
     GameObject[] infoWindow;
     PlayerMasteryData[] masteryData;
     private bool isInit = false;
@@ -21,7 +22,8 @@ public class MasteryScript : MonoBehaviour
         upSkill = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Toggle>();
         downSkill = transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Toggle>();
         masteryData = new PlayerMasteryData[2];
-
+        upPanel.SetActive(false);
+        downPanel.SetActive(false);
         //infoWindow = new GameObject[2];
         //infoWindow[0] = Instantiate(masteryInfo);
         //infoWindow[0].transform.SetParent(parent.transform);
@@ -63,23 +65,38 @@ public class MasteryScript : MonoBehaviour
 
     public void ToggleCheck()
     {
-        if(upSkill.isOn == true)
+ /*
+        if(upSkill.isOn == true && downSkill.isOn == false)
+        {
+            downSkill.enabled = false;
+            downSkill.isOn = false;
+        }
+        else if (upSkill.isOn == false && downSkill.isOn == true)
         {
             upSkill.enabled = false;
-            downSkill.enabled = false;
+            upSkill.isOn = false;
         }
         else
         {
-            //downSkill.enabled = true;
+            downSkill.enabled = true;
+            upSkill.enabled = true;
+            downSkill.isOn = false;
+            upSkill.isOn = false;
+        
         }
-        if(downSkill.isOn == true)
+   */
+        if(upSkill.isOn)
         {
-            upSkill.enabled = false;
-            downSkill.enabled = false;
+            downPanel.SetActive(true);
+        }
+        else if(downSkill.isOn)
+        {
+            upPanel.SetActive(true);
         }
         else
         {
-            //upSkill.enabled = true;
+            upPanel.SetActive(false);
+            downPanel.SetActive(false);
         }
 
     }
