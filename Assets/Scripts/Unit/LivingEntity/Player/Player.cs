@@ -85,6 +85,9 @@ public class Player : LivingEntity
     public WeaponManager weaponManager;
     ItemManager itemManager;
     StatusManager statusManager;
+
+    public int currentDungeonArea;
+
     private void Awake()
     {
         Instance = this;
