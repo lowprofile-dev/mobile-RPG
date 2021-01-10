@@ -29,6 +29,7 @@ public class DungeonManager : MonoBehaviour
 
     private void Start()
     {
+        CardManager.Instance._cntDungeon = this;
         hasPlane = false;
     }
 
@@ -111,8 +112,18 @@ public class DungeonManager : MonoBehaviour
         {
             UILoaderManager.Instance.AddScene("VillageScene");
             UILoaderManager.Instance.CloseScene("DungeonScene");
+
+            CardManager.Instance._cntDungeon = null;
+            CardManager.Instance.currentStage = 0;
             return;
         }
+
+        CardManager.Instance.currentStage = dungeonStage + 1;
+        UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
+    }
+
+    public void ToNextStage()
+    {
         var runtimeDungeon = FindObjectOfType<DunGen.RuntimeDungeon>();
         runtimeDungeon.Generate();
         SpawnPlayer();

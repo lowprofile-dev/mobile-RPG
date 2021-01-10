@@ -4841,7 +4841,6 @@ GameObject:
   - component: {fileID: 3363263977812283743}
   - component: {fileID: 3198460907923054769}
   - component: {fileID: 3199327136699971945}
-  - component: {fileID: 126734106262834595}
   m_Layer: 0
   m_Name: Ice
   m_TagString: PlayerAttack
@@ -4856,17 +4855,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3359875756334392325}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 4, y: 0, z: 0.03}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 2.5768757, y: 0.26351136, z: -2.6466668}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3365112508680095333}
   - {fileID: 3364780644832399539}
   - {fileID: 3363509634494708191}
   - {fileID: 3363161930181555247}
   - {fileID: 3365261834877102145}
-  m_Father: {fileID: 5791043133700246105}
-  m_RootOrder: 3
+  m_Father: {fileID: 6137751979079456524}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!198 &3198460907923054769
 ParticleSystem:
@@ -9720,19 +9719,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &126734106262834595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3359875756334392325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cf677000a6d1cb4d8fb192c730bccb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deleteParent: 0
 --- !u!1 &3361280899354844097
 GameObject:
   m_ObjectHideFlags: 0
@@ -29103,11 +29089,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6137751979079456524}
-  - {fileID: 4840515964514454499}
-  - {fileID: 4938371039525561750}
-  - {fileID: 3363263977812283743}
-  - {fileID: 170621571050170435}
-  - {fileID: 615547339503647567}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -33952,7 +33933,6 @@ GameObject:
   - component: {fileID: 4840515964514454499}
   - component: {fileID: 4747768608302152205}
   - component: {fileID: 4748494193245512661}
-  - component: {fileID: 7800936749841684255}
   m_Layer: 0
   m_Name: Ice
   m_TagString: PlayerAttack
@@ -33967,17 +33947,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4837125939418742457}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -4, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -2.7564578, y: 0.26351136, z: -2.6666667}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4842221326942493913}
   - {fileID: 4842033087371790863}
   - {fileID: 4840762025758597987}
   - {fileID: 4840270843503521427}
   - {fileID: 4842370790880244477}
-  m_Father: {fileID: 5791043133700246105}
-  m_RootOrder: 1
+  m_Father: {fileID: 6137751979079456524}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!198 &4747768608302152205
 ParticleSystem:
@@ -38831,19 +38811,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &7800936749841684255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4837125939418742457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cf677000a6d1cb4d8fb192c730bccb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deleteParent: 0
 --- !u!1 &4838531142870778237
 GameObject:
   m_ObjectHideFlags: 0
@@ -77539,7 +77506,6 @@ GameObject:
   - component: {fileID: 4938371039525561750}
   - component: {fileID: 5064051150603097208}
   - component: {fileID: 5062718450634706336}
-  - component: {fileID: 7774927578788804970}
   m_Layer: 0
   m_Name: Ice
   m_TagString: PlayerAttack
@@ -77555,16 +77521,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4937218142350020812}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.13468647, y: -0.395267, z: -4}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0, z: -5.3333335}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4942541644461830828}
   - {fileID: 4942193322299581562}
   - {fileID: 4938688190212476182}
   - {fileID: 4938321768436170982}
   - {fileID: 4942673378472778888}
-  m_Father: {fileID: 5791043133700246105}
-  m_RootOrder: 2
+  m_Father: {fileID: 6137751979079456524}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &5064051150603097208
 ParticleSystem:
@@ -82418,19 +82384,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &7774927578788804970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4937218142350020812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cf677000a6d1cb4d8fb192c730bccb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deleteParent: 0
 --- !u!1 &4937254361263276934
 GameObject:
   m_ObjectHideFlags: 0
@@ -87287,11 +87240,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5250769199760619154}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.089790985, y: 0.26351136, z: -2.6000001}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_Children: []
-  m_Father: {fileID: 5791043133700246105}
-  m_RootOrder: 5
+  m_Father: {fileID: 6137751979079456524}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 180}
 --- !u!198 &8808585539489703827
 ParticleSystem:
@@ -96682,6 +96635,11 @@ Transform:
   - {fileID: 6137434403175677836}
   - {fileID: 6137636460854227580}
   - {fileID: 6139204452976061970}
+  - {fileID: 4840515964514454499}
+  - {fileID: 4938371039525561750}
+  - {fileID: 3363263977812283743}
+  - {fileID: 170621571050170435}
+  - {fileID: 615547339503647567}
   m_Father: {fileID: 5791043133700246105}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -101549,7 +101507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf677000a6d1cb4d8fb192c730bccb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deleteParent: 0
+  deleteParent: 1
 --- !u!1 &6135223240697372050
 GameObject:
   m_ObjectHideFlags: 0
@@ -120918,11 +120876,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7976577203126149230}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.089790985, y: 0.26351136, z: -2.6000001}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_Children: []
-  m_Father: {fileID: 5791043133700246105}
-  m_RootOrder: 4
+  m_Father: {fileID: 6137751979079456524}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 180}
 --- !u!198 &5245699087999036832
 ParticleSystem:

@@ -1,11 +1,9 @@
-﻿using System;
-using Coffee.UIEffects;
+﻿using Coffee.UIEffects;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
 
 /// <summary>
 /// 방 구역에 대한 카드 UI.
@@ -28,7 +26,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     [SerializeField] private Sprite _level3Sprite;
 
     private Vector3 _initCardPos;
-    public int pos;
+    public int roomNumber;
     public Card cntCard;
 
     string iconPath = "Image/TonityEden/Skill Icons Megapack/";
@@ -58,9 +56,12 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         _cardBtn.GetComponent<UIDissolve>().Stop(true);
         _cardBtn.GetComponent<UIDissolve>().effectFactor = 0;
 
+        AlphaAllRoomCardData();
+        for (int i = 0; i < CardManager.Instance.currentStage; i++) SetRoomCardData(CardManager.Instance.dungeonCardData[i, roomNumber], i);
+
         SetCurrentCardData(card);
     }
-    
+
     /// <summary>
     /// 해당 방의 카드 데이터를 갱신한다.
     /// </summary>
@@ -68,6 +69,41 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     {
         _isSetImg.gameObject.SetActive(cntCard.isSet);
         SetCurrentCardData(cntCard);
+    }
+
+    private void AlphaAllRoomCardData()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            _roomIconsImg[i].color = new Color(_roomIconsImg[i].color.r, _roomIconsImg[i].color.g, _roomIconsImg[i].color.b, 0);
+            _roomFramesImg[i].color = new Color(_roomFramesImg[i].color.r, _roomFramesImg[i].color.g, _roomFramesImg[i].color.b, 0);
+        }
+    }
+
+    /// <summary>
+    /// 카드 방 데이터를 업데이트한다.
+    /// </summary>
+    private void SetRoomCardData(Card card, int floor)
+    {
+        if(card != null)
+        {
+            _roomIconsImg[floor].color = new Color(_roomIconsImg[floor].color.r, _roomIconsImg[floor].color.g, _roomIconsImg[floor].color.b, 1);
+            _roomIconsImg[floor].sprite = Resources.Load<Sprite>(iconPath + card.cardData.iconImg);
+
+            _roomFramesImg[floor].color = new Color(_roomFramesImg[floor].color.r, _roomFramesImg[floor].color.g, _roomFramesImg[floor].color.b, 1);
+            switch (card.level)
+            {
+                case 1: _roomFramesImg[floor].sprite = _level1Sprite; break;
+                case 2: _roomFramesImg[floor].sprite = _level2Sprite; break;
+                case 3: _roomFramesImg[floor].sprite = _level3Sprite; break;
+            } // 카드 액자 (Level에 따라)
+        }
+
+        else
+        {
+            _roomIconsImg[floor].color = new Color(_roomIconsImg[floor].color.r, _roomIconsImg[floor].color.g, _roomIconsImg[floor].color.b, 0);
+            _roomFramesImg[floor].color = new Color(_roomFramesImg[floor].color.r, _roomFramesImg[floor].color.g, _roomFramesImg[floor].color.b, 0);
+        }
     }
 
     /// <summary>
@@ -121,9 +157,9 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     /// </summary>
     public void ClearCardData()
     {
-        if(_rerollICONImg.gameObject.activeSelf)
+        if (_rerollICONImg.gameObject.activeSelf)
         {
-            CardManager.Instance.dungeonCardData[CardManager.Instance.currentStage, pos] = null;
+            CardManager.Instance.dungeonCardData[CardManager.Instance.currentStage, roomNumber] = null;
         }
     }
 
@@ -171,8 +207,8 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
 
         _cardBtn.gameObject.SetActive(true);
 
-        CardManager.Instance.SetNewCard(pos); // 해당 위치를 새로운 카드로 설정해준다.
-        InitCardRoomData(CardManager.Instance.GetCardCntStage(pos)); // 해당 방의 카드 데이터를 새롭게 초기화한다.
+        CardManager.Instance.SetNewCard(roomNumber); // 해당 위치를 새로운 카드로 설정해준다.
+        InitCardRoomData(CardManager.Instance.GetCardCntStage(roomNumber)); // 해당 방의 카드 데이터를 새롭게 초기화한다.
         ReloadCardData(); // 카드 데이터를 갱신한다.
         dissolveEffect.Reverse = true;
         dissolveEffect.effectFactor = 1;
