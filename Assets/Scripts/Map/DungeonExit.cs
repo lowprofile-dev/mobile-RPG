@@ -11,7 +11,8 @@ public class DungeonExit : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        Debug.Log("출구 충돌!");
+        if (other.tag == "Player" && dungeonManager.bossCleared)
         {
             dungeonManager.ClearStage();
         }
