@@ -72,7 +72,6 @@ public class GoblinAction : MonsterAction
 
     protected override void DoReturn()
     {
-        Debug.Log("RETURN DO");
         base.DoReturn();
         _isDamaged = false;
     }
@@ -111,14 +110,26 @@ public class GoblinAction : MonsterAction
 
     /////////// 피격 관련 /////////////
 
-    //protected override void SetHitAnimation(bool isDeath)
-    //{
-    //    if (isDeath) _monster.myAnimator.ResetTrigger("Hit");
-    //    else
-    //    {
-    //        _isDamaged = true;
-    //        _monster.myAnimator.SetTrigger("Hit");
-    //        if (_currentState == MONSTER_STATE.STATE_IDLE || _currentState == MONSTER_STATE.STATE_STIRR) ChangeState(MONSTER_STATE.STATE_TRACE);
-    //    }
-    //}
+    /// <summary>
+    /// 데미지를 받았을때 진행할 알고리즘 목록
+    /// </summary>
+    protected override void DamagedProcess(float dmg, bool SetAnimation = true)
+    {
+        _monster.Damaged(dmg);
+        _bar.HpUpdate();
+
+        DamagedChangeState();
+        bool isDeath = DeathCheck();
+
+        if (isDeath) CheckDeathAndChange();
+    }
+
+    /// <summary>
+    /// 직접적인 데미지를 받으면 플레이어를 인식한다.
+    /// </summary>
+    protected void DamagedChangeState()
+    {
+        _isDamaged = true;
+        if (_currentState == MONSTER_STATE.STATE_IDLE || _currentState == MONSTER_STATE.STATE_STIRR) ChangeState(MONSTER_STATE.STATE_TRACE);
+    }
 }

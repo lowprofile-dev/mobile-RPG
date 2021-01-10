@@ -31,7 +31,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     public int pos;
     public Card cntCard;
 
-    string iconPath = "Image/Icons/150 Fantasy Skill Icons/";
+    string iconPath = "Image/TonityEden/Skill Icons Megapack/";
 
     public void Start()
     {

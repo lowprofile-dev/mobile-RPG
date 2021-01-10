@@ -39,7 +39,8 @@ public class CardUIView : View
     [HideInInspector] public CardUIRoomArea cntPointerArea;
     [HideInInspector] public bool isRerollingAnimationPlaying;
 
-    string iconPath = "Image/Icons/150 Fantasy Skill Icons/";
+    string iconPath = "Image/TonityEden/Skill Icons Megapack/";
+
 
     private void Start()
     {
