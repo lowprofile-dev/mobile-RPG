@@ -905,18 +905,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 80}
   m_Constraint: 1
   m_ConstraintCount: 1
---- !u!114 &191540174 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7508163542562462670, guid: cea3a0e0ad8e1144b80f702a37a809a4,
-    type: 3}
-  m_PrefabInstance: {fileID: 2103415312826035529}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &194314947
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1022,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1972585434}
   m_HandleRect: {fileID: 1972585433}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7486,6 +7474,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SubUI_CardUIView
       objectReference: {fileID: 0}
+    - target: {fileID: 1799623980296434726, guid: 7dc8a54bb7b842b4dadc0f90f0061256,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dc8a54bb7b842b4dadc0f90f0061256, type: 3}
 --- !u!224 &900101424 stripped
@@ -12246,7 +12239,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13090,21 +13083,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1997511847}
     m_Modifications:
-    - target: {fileID: 1789491245534936085, guid: cea3a0e0ad8e1144b80f702a37a809a4,
-        type: 3}
-      propertyPath: m_RaycastTarget
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3130015463357819843, guid: cea3a0e0ad8e1144b80f702a37a809a4,
-        type: 3}
-      propertyPath: m_RaycastTarget
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5200852706350638691, guid: cea3a0e0ad8e1144b80f702a37a809a4,
-        type: 3}
-      propertyPath: m_TargetGraphic
-      value: 
-      objectReference: {fileID: 191540174}
     - target: {fileID: 7188074285598163777, guid: cea3a0e0ad8e1144b80f702a37a809a4,
         type: 3}
       propertyPath: _npcFaceCam
@@ -13230,19 +13208,7 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7508163542562462670, guid: cea3a0e0ad8e1144b80f702a37a809a4,
-        type: 3}
-      propertyPath: m_RaycastTarget
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7546648227325042613, guid: cea3a0e0ad8e1144b80f702a37a809a4,
-        type: 3}
-      propertyPath: m_TargetGraphic
-      value: 
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2851870377426943759, guid: cea3a0e0ad8e1144b80f702a37a809a4, type: 3}
-    - {fileID: 2811880943213490577, guid: cea3a0e0ad8e1144b80f702a37a809a4, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cea3a0e0ad8e1144b80f702a37a809a4, type: 3}
 --- !u!224 &3229362480543437795 stripped
 RectTransform:
