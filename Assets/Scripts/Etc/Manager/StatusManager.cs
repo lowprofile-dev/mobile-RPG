@@ -82,10 +82,6 @@ public class StatusManager : SingletonBase<StatusManager>
         cardRerollCoin = 10000;
         needToCardRerollCoin = 0;
         rerollCount = 0;
-    }
-
-    void Start()
-    {
         player = Player.Instance;
         playerStatus = new CurrentStatus();
         itemAdditionStatus = new AdditionStatus();
@@ -95,6 +91,19 @@ public class StatusManager : SingletonBase<StatusManager>
         Table statusTable = CSVReader.Reader.ReadCSVToTable("CSVData/StatusDatabase");
         statusDictionary = statusTable.TableToDictionary<int, StatusData>();
         LoadCurrentStatus();
+    }
+
+    void Start()
+    {
+        //player = Player.Instance;
+        //playerStatus = new CurrentStatus();
+        //itemAdditionStatus = new AdditionStatus();
+        //itemMultiplicationStatus = new MultiplicationStatus();
+        //itemAppliedStatus = new CurrentStatus();
+        //finalStatus = new CurrentStatus();
+        //Table statusTable = CSVReader.Reader.ReadCSVToTable("CSVData/StatusDatabase");
+        //statusDictionary = statusTable.TableToDictionary<int, StatusData>();
+        //LoadCurrentStatus();
     }
 
     void Update()

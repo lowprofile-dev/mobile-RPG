@@ -70,6 +70,8 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         soundManager.InitSoundManager();
         uiNavationManager.InitUINavigationManager();
         uiManager.InitUIManager();
+        statusManager.InitStatusManager();
+        itemManager.InitItemManager();
     }
 
     private void Update()
