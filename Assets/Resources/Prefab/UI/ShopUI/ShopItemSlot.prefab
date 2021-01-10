@@ -95,6 +95,7 @@ MonoBehaviour:
   itemQuantity: {fileID: 2978465899106895003}
   itemGrade: {fileID: 4031658235378292634}
   ItemButton: {fileID: 8166646182727111923}
+  shopItemCardIndex: 0
 --- !u!114 &8166646182727111923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,8 +139,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8064616714402775315}
-        m_MethodName: 
+      - m_Target: {fileID: 1372325237862760532}
+        m_MethodName: OnClickItemSlot
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

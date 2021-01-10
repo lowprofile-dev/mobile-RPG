@@ -11,6 +11,7 @@ public class DungeonRoom : MonoBehaviour
     [SerializeField] bool isCleared = false;
     [SerializeField] bool isSetArea = false;
     [SerializeField] bool hasPlayer = false;
+    [SerializeField] bool isBossRoom = false;
 
     Bounds bounds;
     Vector2 center;
@@ -109,6 +110,7 @@ public class DungeonRoom : MonoBehaviour
         if (bounds.Contains(dungeonManager.player.GetComponent<CapsuleCollider>().bounds.center))
         {
             hasPlayer = true;
+            dungeonManager.player.GetComponent<Player>().currentDungeonArea = areaCode;
             if (!isCleared && !isSpawning)
             {
                 isSpawning = true;
@@ -188,6 +190,11 @@ public class DungeonRoom : MonoBehaviour
         if (nMonsterSpawned >= nMonsterToSpawn)
         {
             return;
+        }
+        if (isBossRoom)
+        {
+            monsters.Add(dungeonManager.SpawnBoss());
+            nMonsterSpawned++;
         }
         for (int i = 0; i < nMonsters; i++)
         {

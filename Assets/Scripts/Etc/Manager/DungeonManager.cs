@@ -11,6 +11,7 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] DunGen.Dungeon dungeon;
     [SerializeField] int dungeonStage = 1;
     [SerializeField] TextMeshProUGUI stageInfo;
+    [SerializeField] GameObject[] BossPrefabs;
 
     public GameObject player;
     public bool hasPlane;
@@ -104,6 +105,18 @@ public class DungeonManager : MonoBehaviour
         player = Instantiate(playerPrefab);
         player.transform.position = playerSpawnPoint.transform.TransformPoint(0, 1, 0);
         player.transform.SetParent(null);
+    }
+
+    /// <summary>
+    /// 스테이지 별 보스 스폰
+    /// </summary>
+    public GameObject SpawnBoss()
+    {
+        GameObject bossSpawnPoint = GameObject.FindGameObjectWithTag("BossSpawnPoint");
+        GameObject boss = BossPrefabs[dungeonStage-1];
+        boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 1, 0);
+        boss.transform.SetParent(null);
+        return boss;
     }
 
     public void ClearStage()

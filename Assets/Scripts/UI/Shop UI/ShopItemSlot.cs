@@ -12,11 +12,11 @@ public class ShopItemSlot : MonoBehaviour
     [SerializeField] GameObject itemQuantity;
     [SerializeField] GameObject itemGrade;
     [SerializeField] Button ItemButton;
+    public int shopItemCardIndex;
     ItemData itemData;
     ItemManager itemManager;
     GameObject itemBag;
     GameObject ShopUI;
-    int itemquantity;
 
     private void Awake()
     {
@@ -26,40 +26,20 @@ public class ShopItemSlot : MonoBehaviour
         ItemButton = gameObject.GetComponent<Button>();
         itemManager = ItemManager.Instance;
         itemBag = transform.parent.parent.parent.parent.gameObject;
-        ShopUI = itemBag.transform.parent.gameObject;
-        ItemButton.onClick.AddListener(delegate { OnClickItemSlot(); });
+        ShopUI = transform.parent.parent.parent.parent.parent.gameObject;
+        shopItemCardIndex = ShopUI.GetComponent<ShopUIView>().currentCardIndex;
+        //ItemButton.onClick.AddListener(delegate { OnClickItemSlot(); });
     }
 
-    private void OnClickItemSlot()
+    public void OnClickItemSlot()
     {
-        if (itemquantity == 0)
-        {
-            itemBag.SetActive(false);
-            return;
-        }
-        //if (itemquantity == 1)
-        //{
-
-        //    if (itemManager.currentItemKeys.ArmorKey == itemData.id ||
-        //        itemManager.currentItemKeys.BottomKey == itemData.id ||
-        //        itemManager.currentItemKeys.HelmetKey == itemData.id ||
-        //        itemManager.currentItemKeys.GlovesKey == itemData.id ||
-        //        itemManager.currentItemKeys.BootKey == itemData.id)
-        //    {
-        //        itemBag.SetActive(false);
-        //        return;
-        //    }
-        //}
-        if (ShopUI == null)
-            ShopUI = transform.parent.parent.parent.parent.parent.gameObject;
-        ShopUI.GetComponent<ShopUIView>().shopItemCard.itemData = itemData;
-        ShopUI.GetComponent<ShopUIView>().shopItemCard.itemImage.sprite = itemIcon.GetComponent<Image>().sprite;
-        ShopUI.GetComponent<ShopUIView>().shopItemCard.itemPrice.text = itemData.sellprice.ToString();
-        ShopUI.GetComponent<ShopUIView>().totalPrice += itemData.sellprice;
+        if (itemManager == null) itemManager = ItemManager.Instance;
+        itemManager.AddToCart(shopItemCardIndex, this.itemData);
+        Debug.Log("아이템 ID: " + this.itemData.id);
+        ShopUI.GetComponent<ShopUIView>().LoadPlayerInventory();
+        ShopUI.GetComponent<ShopUIView>().LoadItemCards();
         ShopUI.GetComponent<ShopUIView>().SetTotalPrice();
-        ShopUI.GetComponent<ShopUIView>().bucketList.Add(itemData);
-        itemquantity--;
-        SetQuantity(itemquantity);
+
         itemBag.SetActive(false);
     }
 
@@ -78,7 +58,6 @@ public class ShopItemSlot : MonoBehaviour
     public void SetQuantity(int quantity)
     {
         itemQuantity.GetComponent<TextMeshProUGUI>().SetText(quantity.ToString());
-        itemquantity = quantity;
     }
 
     public void SetItemData(ItemData id)

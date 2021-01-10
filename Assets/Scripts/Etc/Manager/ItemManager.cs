@@ -14,33 +14,52 @@ public class ItemManager : SingletonBase<ItemManager>
     //Dictionary<ItemData, int> playerInventory;
     public Dictionary<int, int> playerInventory;
     public Dictionary<int, ItemData> itemDictionary;
-    public List<ItemData> itemList = new List<ItemData>();
+    public List<ItemData> itemCart = new List<ItemData>();
     Player player;
     PartSelection playerPartSelection;
     StatusManager statusManager;
 
     public int inventorySize;
+    public int dictionarySize;
 
     private void Start()
     {
         //아이템 데이터 초기화를 원할시 주석 풀것!
         PlayerPrefs.DeleteAll();
-        statusManager = StatusManager.Instance;
-        currentItems = new CurrentItems();
-        currentItemKeys = new CurrentItemKeys();
-        itemDictionary = new Dictionary<int, ItemData>();
-        playerInventory = new Dictionary<int, int>(); //ID,개수
-        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
-        itemDictionary = itemTable.TableToDictionary<int, ItemData>();
-        itemList = itemTable.TableToList<ItemData>();
-        LoadCurrentItems();
-        LoadInventoryData();
-        EquipItems();
+        //statusManager = StatusManager.Instance;
+        //currentItems = new CurrentItems();
+        //currentItemKeys = new CurrentItemKeys();
+        //itemDictionary = new Dictionary<int, ItemData>();
+        //playerInventory = new Dictionary<int, int>(); //ID,개수
+        //Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
+        //itemDictionary = itemTable.TableToDictionary<int, ItemData>();
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //LoadCurrentItems();
+        //LoadInventoryData();
+        //EquipItems();
     }
+    
 
     private void Update()
     {
-        inventorySize = playerInventory.Count;
+        if (itemCart.Count == 0)
+        {
+            itemCart.Add(null);
+            itemCart.Add(null);
+            itemCart.Add(null);
+            itemCart.Add(null);
+        }
+        //inventorySize = playerInventory.Count;
+        //playerInventory.Remove(0);
+        inventorySize = 0;
+        foreach (var item in playerInventory)
+        {
+            inventorySize += item.Value;
+        }
+        dictionarySize = itemDictionary.Count;
         if (player == null)
         {
             player = Player.Instance;
@@ -80,6 +99,24 @@ public class ItemManager : SingletonBase<ItemManager>
         currentItems = JsonUtility.FromJson<CurrentItems>(jsonData);
     }
 
+    internal void InitItemManager()
+    {
+        statusManager = StatusManager.Instance;
+        currentItems = new CurrentItems();
+        currentItemKeys = new CurrentItemKeys();
+        itemDictionary = new Dictionary<int, ItemData>();
+        playerInventory = new Dictionary<int, int>(); //ID,개수
+        Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
+        itemDictionary = itemTable.TableToDictionary<int, ItemData>();
+        itemCart.Add(null);
+        itemCart.Add(null);
+        itemCart.Add(null);
+        itemCart.Add(null);
+        LoadCurrentItems();
+        LoadInventoryData();
+        EquipItems();
+    }
+
     private void SaveCurrentItemKeys()
     {
         string jsonData = JsonUtility.ToJson(currentItemKeys, true);
@@ -103,10 +140,78 @@ public class ItemManager : SingletonBase<ItemManager>
         currentItemKeys = JsonUtility.FromJson<CurrentItemKeys>(jsonData);
     }
 
-    public void SellItem(ItemData itemdata)
+    public void AddToCart(int index, ItemData itemData)
     {
-        playerInventory[itemdata.id] -= 1;
-        currentItems.gold += (int)itemdata.sellprice;
+        //if (playerInventory)
+        if (itemCart[index] != null && itemCart[index].id != 0)
+        {
+            AddItem(itemCart[index]);
+        }
+        if (playerInventory[itemData.id] == 1)
+        {
+            if (currentItemKeys.ArmorKey == itemData.id ||
+                currentItemKeys.BottomKey == itemData.id ||
+                currentItemKeys.HelmetKey == itemData.id ||
+                currentItemKeys.GlovesKey == itemData.id ||
+                currentItemKeys.BootKey == itemData.id)
+                return;
+        }
+        playerInventory[itemData.id] -= 1;
+        if (playerInventory[itemData.id] == 0)
+            playerInventory.Remove(itemData.id);
+        itemCart[index] = (itemData);
+        SaveInventoryData();
+        LoadInventoryData();
+    }
+
+    public void ResetCart()
+    {
+        //foreach (var itemData in itemCart)
+        //{
+        //    if (itemData.id == 0) continue;
+        //    //if (itemData != null)
+        //    if (itemData.id != 0)
+        //        AddItem(itemData);
+        //    itemData = null;
+        //}
+        for (int i = 0; i < itemCart.Count; i++)
+        {
+            if (itemCart[i] != null)
+                AddItem(itemCart[i]);
+            itemCart[i] = null;
+        }
+        //itemCart.Clear();
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        //itemCart.Add(null);
+        playerInventory.Remove(0);
+        SaveInventoryData();
+    }
+
+    public int GetTotalCartPrice()
+    {
+        int totalPrice = 0;
+        foreach (var itemData in itemCart)
+        {
+            if (itemData == null) continue;
+            totalPrice += (int)itemData.sellprice;
+        }
+        return totalPrice;
+    }
+
+    public void SellItem()
+    {
+        foreach (var itemdata in itemCart) {
+            if (itemdata == null) continue;
+            currentItems.gold += (int)itemdata.sellprice;
+        }
+        itemCart.Clear();
+        itemCart.Add(null);
+        itemCart.Add(null);
+        itemCart.Add(null);
+        itemCart.Add(null);
+        ResetCart();
         SaveInventoryData();
         SaveCurrentItems();
     }
@@ -124,6 +229,20 @@ public class ItemManager : SingletonBase<ItemManager>
         else
         {
             playerInventory.Add(item.itemData.id, 1);
+        }
+        SaveInventoryData();
+    }
+
+    public void AddItem(ItemData itemData)
+    {
+        if (itemData.id == 0) return;
+        if (playerInventory.ContainsKey(itemData.id))
+        {
+            playerInventory[itemData.id] += 1;
+        }
+        else
+        {
+            playerInventory.Add(itemData.id, 1);
         }
         SaveInventoryData();
     }
