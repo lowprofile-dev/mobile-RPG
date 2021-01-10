@@ -691,7 +691,7 @@ Animator:
   m_GameObject: {fileID: 6800657164168880451}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 36aab113a9265f346aef5d3dcab2e590, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -719,7 +719,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &-1362427502114699504
@@ -753,7 +753,7 @@ MonoBehaviour:
   _attackPattern: 0
   _description: 
   _attackTime: 0
-  _attackDamage: 50
+  _attackDamage: 20
   _dissolveMaterial: {fileID: 2100000, guid: 227eb001616234c29a55a2900ab916d0, type: 2}
   _nonDissolveMaterial: {fileID: 2100000, guid: 227eb001616234c29a55a2900ab916d0,
     type: 2}
@@ -798,6 +798,10 @@ MonoBehaviour:
     type: 3}
   BlackHoleEffect: {fileID: 2402420000895302182, guid: a0d11a9f0a03dc144bcc71d3fecbbdd8,
     type: 3}
+  defalutAtkCastingTime: 0.5
+  blackHoleCastingTime: 7
+  summonCastingTime: 2
+  AirSkillCastingTime: 3
 --- !u!1 &7500166089733464365
 GameObject:
   m_ObjectHideFlags: 0

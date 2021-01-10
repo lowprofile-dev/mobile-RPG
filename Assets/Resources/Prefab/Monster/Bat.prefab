@@ -411,7 +411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cntCastTime: 0
   _findRange: 9
-  _attackRange: 2
+  _attackRange: 2.3
   _limitTraceRange: 15
   _moveSpeed: 3
   _attackSpeed: 2
@@ -437,8 +437,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 1
-  _initHp: 1000
-  _initMp: 0
   _hp: 0
   _stemina: 0
   _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
@@ -446,6 +444,8 @@ MonoBehaviour:
   _speed: 0
   _MAXspeed: 0
   myAnimator: {fileID: 0}
+  _initHp: 1000
+  _initStemina: 0
   _monsterName: 
   _grade: 0
   _race: 0
@@ -455,7 +455,7 @@ MonoBehaviour:
   _attackPattern: 0
   _description: 
   _attackTime: 0
-  _attackDamage: 10
+  _attackDamage: 0
   _dissolveMaterial: {fileID: 2100000, guid: a84536e1e888d10429796579a2126d46, type: 2}
   _nonDissolveMaterial: {fileID: 2100000, guid: 052201055f6bd9d4fa0de7db3bb66c02,
     type: 2}

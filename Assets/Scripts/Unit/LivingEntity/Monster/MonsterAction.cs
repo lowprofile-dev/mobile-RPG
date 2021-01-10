@@ -204,6 +204,8 @@ public class MonsterAction : MonoBehaviour
     public virtual void UpdateState()
     {
         // 반드시 실행되는 업데이트 내용
+
+        Debug.Log(_currentState);
         UpdateMonster();
 
         // 스테이트별 업데이트 내용
@@ -497,8 +499,6 @@ public class MonsterAction : MonoBehaviour
 
     }
 
-
-
     /////////// 이동 관련////////////
 
     protected virtual void TraceStart()
@@ -608,16 +608,16 @@ public class MonsterAction : MonoBehaviour
 
                 ResetAttackAnimation();
                 _monster.myAnimator.ResetTrigger("Attack"); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
-               
+
+                _attackType = 0;
                 _readyCast = false;
                 if(!_readyCast && ToCast()) break;
             }
-
-            else
-            {
-                ChangeState(MONSTER_STATE.STATE_TRACE);
-                break;
-            }
+            //else
+            //{
+            //    ChangeState(MONSTER_STATE.STATE_TRACE);
+            //    break;
+            //}
         }
     }
 
