@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class PlayerUIView : View
 {
+    string iconPath = "Image/TonityEden/Skill Icons Megapack/";
+
     [SerializeField] private Button _cardTestBtn;
     [SerializeField] private Button _shopTestBtn;
     [SerializeField] private Button _atkBtn;
@@ -17,6 +17,8 @@ public class PlayerUIView : View
     [SerializeField] private TextMeshProUGUI _weaponText;
     [SerializeField] private Image _hpSlider;
     [SerializeField] private Image _steminaSlider;
+    [SerializeField] private GameObject _buffFrame;
+    [SerializeField] private GameObject _buffImgPrefab;
 
     private void Start()
     {
@@ -68,6 +70,24 @@ public class PlayerUIView : View
 
     public void SetEffectList()
     {
-        Debug.Log("EFFECT LIST INVOKED");
+        int count = 0;
+        while (_buffFrame.transform.childCount > 0)
+        {
+            ObjectPoolManager.Instance.ReturnObject(_buffFrame.transform.GetChild(0).gameObject);
+            if (count > 100) break;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            Card cardData = CardManager.Instance.dungeonCardData[i, Player.Instance.currentDungeonArea];
+
+            if (cardData != null)
+            {
+                GameObject buffImgObj = ObjectPoolManager.Instance.GetObject(_buffImgPrefab);
+                buffImgObj.transform.SetParent(_buffFrame.transform);
+                buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>(iconPath + cardData.cardData.iconImg);
+                buffImgObj.GetComponent<RectTransform>().localScale = Vector3.one;
+            }
+        }
     }
 }
