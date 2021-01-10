@@ -10,14 +10,24 @@ public class EnemySliderBar : MonoBehaviour
     [SerializeField] protected Slider HPSlider;
     [SerializeField] protected Slider CastSlider;
     [SerializeField] protected Monster parent;
-    
+
+    float angle;
+    float velocity;
+
     private void Start()
     {
         cam = GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineFreeLook>();
     }
     private void Update()
     {
-        transform.rotation = Quaternion.LookRotation(cam.transform.position);
+        // transform.rotation = Quaternion.LookRotation(cam.transform.position);
+
+        Vector3 dir = (cam.transform.forward + cam.transform.up);
+
+        float pos = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+
+        angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, pos, ref velocity, 0.0001f);
+        transform.rotation = Quaternion.Euler(transform.rotation.x , angle , transform.rotation.z);
     }
 
     public void HpUpdate()

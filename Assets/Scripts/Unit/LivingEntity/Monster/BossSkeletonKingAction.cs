@@ -24,6 +24,12 @@ public class BossSkeletonKingAction : MonsterAction
     [SerializeField] private GameObject BlackHoleRange;
     [SerializeField] private GameObject BlackHoleEffect;
 
+    [SerializeField] float defalutAtkCastingTime;
+    [SerializeField] float blackHoleCastingTime;
+    [SerializeField] float summonCastingTime;
+    [SerializeField] float AirSkillCastingTime;
+    
+
     List<Transform> ProjectileList = new List<Transform>();
 
     private GameObject currentTarget;
@@ -78,7 +84,7 @@ public class BossSkeletonKingAction : MonsterAction
         transform.LookAt(_target.transform.position);
         BossAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<BossAttack>();
         atk.SetParent(gameObject , attackPos.transform);
-        atk.PlayAttackTimer(1f);
+        atk.PlayAttackTimer(0.5f);
         atk.OnLoad(gameObject, attackPos);
 
     }
@@ -87,7 +93,7 @@ public class BossSkeletonKingAction : MonsterAction
     {
         BossAttack atk = ObjectPoolManager.Instance.GetObject(AirSkillEffect).GetComponent<BossAttack>();
         atk.SetParent(gameObject , target);
-        atk.PlayAttackTimer(1f);
+        atk.PlayAttackTimer(0.5f);
         atk.OnLoad(currentTarget, currentTarget);
     }
 
@@ -95,7 +101,7 @@ public class BossSkeletonKingAction : MonsterAction
     {
         BossAttack atk = ObjectPoolManager.Instance.GetObject(BlackHoleEffect).GetComponent<BossAttack>();
         atk.SetParent(gameObject, target);
-        atk.PlayAttackTimer(1f);
+        atk.PlayAttackTimer(4.5f);
         atk.OnLoad(currentTarget, currentTarget);
 
     }
@@ -153,45 +159,56 @@ public class BossSkeletonKingAction : MonsterAction
 
         //if (_attackCoroutine != null) Invoke("AttackCorotineInit", 1.5f);
 
+        
+
         if(Vector3.Distance(transform.position , _target.transform.position) <= _navMeshAgent.stoppingDistance)
         {
+            _navMeshAgent.isStopped = true;
             _monster.myAnimator.SetTrigger("Idle");
         }
         else
         {
-        _monster.myAnimator.SetTrigger("Walk");
+            _navMeshAgent.isStopped = false;
+            _navMeshAgent.SetDestination(_target.transform.position);
+            _monster.myAnimator.SetTrigger("Walk");
         }
        
         int proc = UnityEngine.Random.Range(0, 100);
 
         if (proc <= 25)
         {
-            _castTime = 0f;
+            _castTime = defalutAtkCastingTime;
             attackType = AttackType.ATTACK1;
         }
         else if (proc <= 50)
         {
-            _castTime = 0f;
+            _castTime = defalutAtkCastingTime;
             attackType = AttackType.ATTACK2;
         }
         else if (proc <= 75)
         {
-            _castTime = 2f;
+            _castTime = AirSkillCastingTime;
             attackType = AttackType.AIR_ATTACK;
         }
         else if (proc <= 100)
         {
-            _castTime = 2f;
+            _castTime = blackHoleCastingTime;
             attackType = AttackType.BLACKHOLE;
         }
 
-        Debug.Log("캐스팅" + attackType.ToString());
     }
 
     protected override void DoCastingAction()
     {
         _cntCastTime += Time.deltaTime;
         _bar.CastUpdate();
+
+        if (attackType != AttackType.ATTACK2 && attackType != AttackType.ATTACK1)
+        {
+            _navMeshAgent.isStopped = true;
+            if (!_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("HoldAttack"))
+                _monster.myAnimator.SetTrigger("HoldAttack");
+        }
 
         if (_cntCastTime >= _castTime)
         {
@@ -425,4 +442,14 @@ public class BossSkeletonKingAction : MonsterAction
     }
     protected override void FallExit() { }
 
+    protected override void KillStart()
+    {
+        _monster.myAnimator.SetTrigger("Laugh");
+        transform.LookAt(_target.transform.position);
+    }
+
+    protected override void KillUpdate()
+    {       
+        
+    }
 }

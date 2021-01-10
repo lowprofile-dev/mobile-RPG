@@ -1396,8 +1396,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 0
-  _initHp: 1000
-  _initMp: 0
   _hp: 0
   _stemina: 0
   _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
@@ -1405,6 +1403,8 @@ MonoBehaviour:
   _speed: 0
   _MAXspeed: 0
   myAnimator: {fileID: 0}
+  _initHp: 10000
+  _initStemina: 0
   _monsterName: BossSkeleton
   _grade: 1
   _race: 1
@@ -1414,7 +1414,7 @@ MonoBehaviour:
   _attackPattern: 0
   _description: 
   _attackTime: 0
-  _attackDamage: 0
+  _attackDamage: 25
   _dissolveMaterial: {fileID: 2100000, guid: 619dfddba20f4e84da177cdb2ad04d32, type: 2}
   _nonDissolveMaterial: {fileID: 2100000, guid: 85c9036657772d04fbe356f55127a3d8,
     type: 2}
