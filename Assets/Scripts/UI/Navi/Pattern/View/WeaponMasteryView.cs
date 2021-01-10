@@ -27,6 +27,8 @@ public class WeaponMasteryView : View
     private int wandLevel;
     private int staffLevel;
 
+    [SerializeField] Button exitButton;
+
     [SerializeField] TextMeshProUGUI swordLevelText;
     [SerializeField] TextMeshProUGUI daggerLevelText;
     [SerializeField] TextMeshProUGUI bluntLevelText;
@@ -54,8 +56,13 @@ public class WeaponMasteryView : View
         _bluntScript = new SkillScript[4];
         _wandScript = new SkillScript[4];
         _staffScript = new SkillScript[4];
-
+        exitButton.onClick.AddListener(delegate { ExitButtonClick(); });
         ScriptInit();
+    }
+
+    private void ExitButtonClick()
+    {
+        UINaviationManager.Instance.PopToNav("SubUI_WeaponMasteryView");
     }
 
     private void ScriptInit()
