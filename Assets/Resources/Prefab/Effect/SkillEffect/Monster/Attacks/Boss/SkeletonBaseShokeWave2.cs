@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class SkeletonBaseShokeWave2 : BossAttack
 {
+
+    public override void SetParent(GameObject parent, Transform target)
+    {
+        _baseParent = parent;
+        transform.SetParent(target);
+        transform.localPosition = Vector3.zero;
+
+    }
     protected override void SetLocalRotation(GameObject eft, GameObject _target)
     {
         Vector3 dir = transform.forward + _target.transform.right;

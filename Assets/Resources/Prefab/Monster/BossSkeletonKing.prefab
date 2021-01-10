@@ -691,7 +691,7 @@ Animator:
   m_GameObject: {fileID: 6800657164168880451}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5573ad169b9d814439ad934007ff21f6, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -735,8 +735,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 0
-  _initHp: 20000
-  _initMp: 0
   _hp: 0
   _stemina: 0
   _DamageText: {fileID: 3060821752410861587, guid: ead82611ce214b64eb748613cb5805e9,
@@ -744,6 +742,8 @@ MonoBehaviour:
   _speed: 6
   _MAXspeed: 6
   myAnimator: {fileID: 0}
+  _initHp: 20000
+  _initStemina: 0
   _monsterName: Skeleton King
   _grade: 2
   _race: 1
@@ -753,7 +753,7 @@ MonoBehaviour:
   _attackPattern: 0
   _description: 
   _attackTime: 0
-  _attackDamage: 0
+  _attackDamage: 50
   _dissolveMaterial: {fileID: 2100000, guid: 227eb001616234c29a55a2900ab916d0, type: 2}
   _nonDissolveMaterial: {fileID: 2100000, guid: 227eb001616234c29a55a2900ab916d0,
     type: 2}
@@ -792,7 +792,7 @@ MonoBehaviour:
     type: 3}
   AirSkillRange: {fileID: 6887708075749539812, guid: 2a9168d6fb5cb77428c4c4663aca38a1,
     type: 3}
-  AirSkillEffect: {fileID: 2402420000895302182, guid: f79d5c3c6f0016d4a8c14047fbe503bc,
+  AirSkillEffect: {fileID: 2402420000895302182, guid: 82daba1caa352dc4087ecf3333b0ef9b,
     type: 3}
   BlackHoleRange: {fileID: 6887708075749539812, guid: 44f7869f44ea5aa4a8bd3d8e1c5f8db9,
     type: 3}

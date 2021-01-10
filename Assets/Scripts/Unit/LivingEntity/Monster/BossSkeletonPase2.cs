@@ -100,8 +100,9 @@ public class BossSkeletonPase2 : MonsterAction
 
     private void ShockWave2Effect()
     {
+
         BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect2).GetComponent<BossAttack>();
-        atk.SetParent(_ShokeWavePoint.gameObject);
+        atk.SetParent(gameObject,_ShokeWavePoint);
         atk.PlayAttackTimer(1f);
         atk.OnLoad(_ShokeWavePoint.gameObject, currentTarget);
 
@@ -159,12 +160,18 @@ public class BossSkeletonPase2 : MonsterAction
     }
     protected override void SpawnStart()
     {
-        ChangeState(MONSTER_STATE.STATE_IDLE);
+        base.SpawnStart();
+        
+    }
+    protected override void AddSpawnEffect()
+    {
+        base.AddSpawnEffect();
     }
 
     protected override void SpawnExit()
     {
         base.SpawnExit();
+        ChangeState(MONSTER_STATE.STATE_IDLE);
     }
     private void AttackCorotineInit()
     {
@@ -251,23 +258,11 @@ public class BossSkeletonPase2 : MonsterAction
     }
 
     protected override void AttackExit()
-    {
-        //_monster.myAnimator.ResetTrigger(currentAnimation);
-        //if (_attackCoroutine != null)
-        //{
-        //    StopCoroutine(_attackCoroutine);
-        //    _attackCoroutine = null;
-        //}
-            
+    {          
     }
 
     public override void MoveToTarget()
     {
-
-        //if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        //{
-        //    _monster.myAnimator.SetTrigger("Walk");
-        //}
         _navMeshAgent.SetDestination(currentTarget.transform.position);
 
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
@@ -442,4 +437,21 @@ public class BossSkeletonPase2 : MonsterAction
         _attackCoroutine = null;
     }
 
+    protected override void IdleStart()
+    {
+        //ChangeState(MONSTER_STATE.STATE_TRACE);
+    }
+
+    //protected override void IdleUpdate()
+    //{
+
+    //}
+    //protected override void IdleExit()
+    //{
+
+    //}
+    protected override void KillStart()
+    {
+        _monster.myAnimator.SetTrigger("Laugh");
+    }
 }
