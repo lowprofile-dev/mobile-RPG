@@ -15,7 +15,8 @@ public class PlayerUIView : View
     [SerializeField] private Button _skillCButton;
     [SerializeField] private TextMeshProUGUI _masteryText;
     [SerializeField] private TextMeshProUGUI _weaponText;
-
+    [SerializeField] private Button _masteryButton;
+    [SerializeField] private Button _weaponButton;
     private void Start()
     {
         _cardTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleCardUIView(); });
@@ -29,6 +30,9 @@ public class PlayerUIView : View
         _skillBButton.onClick.AddListener(delegate { _skillBButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
         _skillCButton.onClick.AddListener(delegate { Player.Instance.SkillCBtnClicked(); });
         _skillCButton.onClick.AddListener(delegate { _skillCButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
+        _masteryButton.onClick.AddListener(delegate { _masteryButton.GetComponent<MasteryButton>().onButtonClick(); });
+        _weaponButton.onClick.AddListener(delegate { _weaponButton.GetComponent<WeaponButton>().onButtonClick(); });
+
     }
 
     public override void UIExit()

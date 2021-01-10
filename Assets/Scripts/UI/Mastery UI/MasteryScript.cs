@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class MasterUIView : View
+public class MasteryScript : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI masteryLevelText;
-
+    [SerializeField] Toggle upSkill; 
+    [SerializeField] Toggle downSkill; 
     // Start is called before the first frame update
     void Start()
     {
@@ -17,11 +17,5 @@ public class MasterUIView : View
     void Update()
     {
         
-    }
-
-    public void LevelPrint()
-    {
-
-        masteryLevelText.text = "Lv." + MasteryManager.Instance.currentMastery.currentMasteryLevel;
     }
 }
