@@ -62666,6 +62666,7 @@ GameObject:
   m_Component:
   - component: {fileID: 408204}
   - component: {fileID: 11445614}
+  - component: {fileID: 5387623916698978546}
   m_Layer: 0
   m_Name: TD Tile Exit 02
   m_TagString: Untagged
@@ -62903,6 +62904,7 @@ Transform:
   - {fileID: 484052}
   - {fileID: 411842}
   - {fileID: 421776}
+  - {fileID: 2317432626069571647}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -62962,6 +62964,31 @@ MonoBehaviour:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 1}
   fileVersion: 1
+--- !u!114 &5387623916698978546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02523247c91109b47b057e03324345ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  areaCode: 0
+  isCleared: 0
+  isSetArea: 0
+  hasPlayer: 0
+  isBossRoom: 0
+  monsterSpawnPoints: []
+  monsterPrefabs: []
+  monsterSpawnInterval: 2
+  nMonsterPerSpawn: 1
+  nMonsterToSpawn: 4
+  nMonsterSpawned: 0
+  isSpawning: 0
+  doorPrefab: {fileID: 145190, guid: fb41b397ae98ccd49b54ad4b2a69a48e, type: 3}
 --- !u!1 &132618
 GameObject:
   m_ObjectHideFlags: 0
@@ -162853,3 +162880,33 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &2954354586942708875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2317432626069571647}
+  m_Layer: 0
+  m_Name: PlayerSpawnPoint
+  m_TagString: PlayerSpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2317432626069571647
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2954354586942708875}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 408204}
+  m_RootOrder: 219
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
