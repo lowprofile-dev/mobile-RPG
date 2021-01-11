@@ -87,6 +87,7 @@ public class Player : LivingEntity
     // 사운드 관련
     private float _cntFootStepSound = 0f;
     private float _footstepSoundTime = 0.3f;
+    private float _rushSoundTime = 0.24f;
 
     private void Awake()
     {
@@ -839,6 +840,7 @@ public class Player : LivingEntity
         OnTrailparticles();
         _isRushing = true;
         _rushTime = 2;
+        _cntFootStepSound = _rushSoundTime / 2;
     }
 
     /// <summary>
@@ -848,15 +850,17 @@ public class Player : LivingEntity
     {
         if (_isRushing) // 돌진상태일때
         {
+            RushSound();
+
             characterController.Move(transform.forward * speed * 5 * Time.deltaTime);
 
             RaycastHit hit = new RaycastHit();
 
-            for(int i=0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
-                for(int j=0; j<14; j++)
+                for (int j = 0; j < 14; j++)
                 {
-                    if(Physics.Raycast(transform.position + new Vector3((i-2) * 0.6f, (j-4) * 0.6f, 0), transform.forward, out hit, 2, LayerMask.GetMask("Monster")))
+                    if (Physics.Raycast(transform.position + new Vector3((i - 2) * 0.6f, (j - 4) * 0.6f, 0), transform.forward, out hit, 2, LayerMask.GetMask("Monster")))
                     {
                         RushExit();
                         return;
@@ -875,6 +879,18 @@ public class Player : LivingEntity
         }
     }
 
+    private void RushSound()
+    {
+        // 사운드 관련
+        _cntFootStepSound -= Time.deltaTime;
+        if (_cntFootStepSound < 0)
+        {
+            _cntFootStepSound = _rushSoundTime;
+            AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Footsteps/Heavy Armor Running " + UnityEngine.Random.Range(1, 5), 0.65f);
+            SoundManager.Instance.SetAudioReverbEffect(source, AudioReverbPreset.Hallway);
+        }
+    }
+
     /// <summary>
     /// 돌진이 끝나며 일어나는 일들
     /// </summary>
@@ -888,6 +904,7 @@ public class Player : LivingEntity
         {
             myAnimator.SetTrigger("SkillBAttack");
             myAnimator.ResetTrigger("SkillB");
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 2 Shock", 0.6f);
         }
     }
 
