@@ -34,12 +34,13 @@ public class DamageText : MonoBehaviour
         //alpha.a = Mathf.Lerp(alpha.a, 0, Time.deltaTime * alphaSpeed);
         //text.color = alpha;
 
-        Vector3 dir = (cam.transform.forward + cam.transform.up);
+        transform.LookAt(2 * transform.position - cam.transform.position);
+        //Vector3 dir = (cam.transform.forward + cam.transform.up);
 
-        float pos = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+        //float pos = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
 
-        angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, pos, ref velocity, 0.0001f);
-        transform.rotation = Quaternion.Euler(0, angle + 180f, transform.rotation.z);
+        //angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, pos, ref velocity, 0.0001f);
+        //transform.rotation = Quaternion.Euler(0, angle + 180f, transform.rotation.z);
 
     }
 
