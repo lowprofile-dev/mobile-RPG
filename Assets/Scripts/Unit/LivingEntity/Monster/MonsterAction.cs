@@ -775,7 +775,15 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void DamagedProcess(float dmg, bool SetAnimation = true)
     {
-        _monster.Damaged(dmg);
+        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[5] == -1)
+        {
+            _monster.Damaged(dmg * 1.1f);
+
+        }
+        else
+        {
+            _monster.Damaged(dmg);
+        }
         _bar.HpUpdate();
 
         bool isDeath = DeathCheck();
