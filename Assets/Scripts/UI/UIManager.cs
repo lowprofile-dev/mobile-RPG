@@ -48,6 +48,7 @@ public class UIManager : SingletonBase<UIManager>
     void Start()
     {
         UILoaderManager.Instance.AddScene("VillageScene");
+        SoundManager.Instance.PlayBGM("VillageBGM", 0.6f);
     }
 
     public void OptionClick()
