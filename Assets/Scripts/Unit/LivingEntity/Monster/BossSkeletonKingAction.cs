@@ -444,12 +444,16 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void KillStart()
     {
+        StopAllCoroutines();
         _monster.myAnimator.SetTrigger("Laugh");
         transform.LookAt(_target.transform.position);
     }
 
     protected override void KillUpdate()
-    {       
-        
+    {
+        if (!_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Laugh"))
+        {
+            _monster.myAnimator.SetTrigger("Laugh");
+        }
     }
 }
