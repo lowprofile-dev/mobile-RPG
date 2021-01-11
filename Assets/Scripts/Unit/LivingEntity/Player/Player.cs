@@ -83,6 +83,10 @@ public class Player : LivingEntity
 
     public int currentDungeonArea;
 
+    // 사운드 관련
+    private float _cntFootStepSound = 0f;
+    private float _footstepSoundTime = 0.3f;
+
     private void Awake()
     {
         Instance = this;
@@ -137,6 +141,69 @@ public class Player : LivingEntity
         TestCode();
         UpdateAll();
         UpdateState();
+        MasteryApply();
+    }
+
+    //마스터리 강화 관련 
+    private void MasteryApply()
+    {
+        //보스 처치 시 더 많은 코인 획득 미구현 -> 아이템 드랍 확률 증가
+
+        //방어력 증가 부분
+        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
+        {
+            
+            statusManager.finalStatus.armor *= 1.1f;
+            statusManager.finalStatus.magicResistance *= 1.1f;
+        }
+        // 체력 증가
+        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == -1)
+        {
+            statusManager.finalStatus.hpRecovery *= 1.2f;
+        }
+        //기력 증가
+
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
+        {
+            statusManager.finalStatus.staminaRecovery *= 1.2f;
+
+        }
+        //이속 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == -1)
+        {
+            statusManager.finalStatus.moveSpeed *= 1.2f;
+
+        }
+        //공속 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
+        {
+            statusManager.finalStatus.attackSpeed *= 1.2f;
+        }
+
+        //골드 획득량 증가 미구현
+
+        //아이템 증가
+
+        //모든 몬스터 피해량 10%
+
+        //보스 피해량 20%
+
+        //회피시 무적
+
+        //회피 사용 기력 감소
+
+        //기본공격 10% 강화, hp 2% 흡수
+
+        //스킬 쿨타임 1초 감소
+
+        // 단일 스킬 총 피해량 40% 증가
+
+        // 광역 스킬 총 피해량 20% 증가
+
+        // HP 10% 이하 물리/마법 공격력 30% 증가
+
+        //부활
+
     }
 
 
@@ -410,12 +477,29 @@ public class Player : LivingEntity
 
     private void MoveEnter()
     {
+        _cntFootStepSound = _footstepSoundTime / 2;
         myAnimator.SetTrigger("Move");
     }
 
     public void MoveUpdate()
     {
         PlayerMove();
+        FootstepSound();
+    }
+
+    /// <summary>
+    /// 발자국 소리, 던전일 시 울림 효과
+    /// </summary>
+    private void FootstepSound()
+    {
+        _cntFootStepSound -= Time.deltaTime;
+        if(_cntFootStepSound < 0)
+        {
+            _cntFootStepSound = _footstepSoundTime;
+
+            AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Footsteps/LightArmorRun" + UnityEngine.Random.Range(1, 7), 0.2f);
+            if (UILoaderManager.Instance.IsSceneDungeon()) SoundManager.Instance.SetAudioReverbEffect(source, AudioReverbPreset.Cave);
+        }
     }
 
     /// <summary>
@@ -554,6 +638,7 @@ public class Player : LivingEntity
         OnTrailparticles();
         UseStemina(2);
         myAnimator.SetTrigger("Avoid");
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Player/Dash", 0.5f);
     }
 
     public void EvadeUpdate()
