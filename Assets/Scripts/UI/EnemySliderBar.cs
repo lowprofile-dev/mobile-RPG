@@ -21,13 +21,15 @@ public class EnemySliderBar : MonoBehaviour
     private void Update()
     {
         // transform.rotation = Quaternion.LookRotation(cam.transform.position);
+        //transform.eulerAngles = new Vector3(0f, cam.transform.rotation.eulerAngles.y, 0f);
+        transform.LookAt(cam.transform);
 
-        Vector3 dir = (cam.transform.forward + cam.transform.up);
+        //Vector3 dir = (cam.transform.forward + cam.transform.forward);
 
-        float pos = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+        //float pos = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
 
-        angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, pos, ref velocity, 0.0001f);
-        transform.rotation = Quaternion.Euler(transform.rotation.x , angle , transform.rotation.z);
+        //angle = Mathf.SmoothDampAngle(transform.eulerAngles.z, pos, ref velocity, 0.0001f);
+        //transform.rotation = Quaternion.Euler(transform.rotation.x , transform.rotation.y , angle);
     }
 
     public void HpUpdate()

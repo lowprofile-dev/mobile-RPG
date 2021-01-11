@@ -128,7 +128,8 @@ public class Player : LivingEntity
         EnterState();
 
         weaponManager = WeaponManager.Instance;
-        weaponManager.SetWeapon("SWORD");
+        if (weaponManager.GetWeaponName() == null) weaponManager.SetWeapon("SWORD");
+        else weaponManager.SetWeapon(weaponManager.GetWeaponName());
 
         SetUpPlayerCamera();
     }
@@ -296,7 +297,7 @@ public class Player : LivingEntity
                     MasteryManager.Instance.currentMastery.currentSwordMasteryExp = weaponManager.GetWeapon().exp;
                     break;
                 case "dagger":
-                    MasteryManager.Instance.currentMastery.currentDaggerMasterExp = weaponManager.GetWeapon().exp;
+                    MasteryManager.Instance.currentMastery.currentDaggerMasteryExp = weaponManager.GetWeapon().exp;
                     break;
                 case "blunt":
                     MasteryManager.Instance.currentMastery.currentBluntMasteryExp = weaponManager.GetWeapon().exp;
