@@ -336,18 +336,29 @@ public class DungeonRoom : MonoBehaviour
         {
             return;
         }
-        for (int i = 0; i < nMonsters; i++)
-        {
-            spawnPointIndex = random.Next(monsterSpawnPoints.Count);
-            monsterIndex = random.Next(monsterPrefabs.Count);
-            var monster = Instantiate(monsterPrefabs[monsterIndex]);
-            monster.GetComponent<NavMeshAgent>().enabled = false;
-            monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
-            //monster.transform.SetParent(null);
-            monster.GetComponent<NavMeshAgent>().enabled = true;
-            nMonsterSpawned += nMonsters;
-            monsters.Add(monster);
-        }
+        spawnPointIndex = random.Next(monsterSpawnPoints.Count);
+        //spawnPointIndex = i;
+        monsterIndex = random.Next(monsterPrefabs.Count);
+        var monster = Instantiate(monsterPrefabs[monsterIndex]);
+        monster.GetComponent<NavMeshAgent>().enabled = false;
+        monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
+        //monster.transform.SetParent(null);
+        monster.GetComponent<NavMeshAgent>().enabled = true;
+        nMonsterSpawned += 1;
+        monsters.Add(monster);
+        //for (int i = 0; i < nMonsters; i++)
+        //{
+        //    spawnPointIndex = random.Next(monsterSpawnPoints.Count);
+        //    //spawnPointIndex = i;
+        //    monsterIndex = random.Next(monsterPrefabs.Count);
+        //    var monster = Instantiate(monsterPrefabs[monsterIndex]);
+        //    monster.GetComponent<NavMeshAgent>().enabled = false;
+        //    monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
+        //    //monster.transform.SetParent(null);
+        //    monster.GetComponent<NavMeshAgent>().enabled = true;
+        //    nMonsterSpawned += 1;
+        //    monsters.Add(monster);
+        //}
     }
 
     IEnumerator SpawnMonsterCoroutine()
