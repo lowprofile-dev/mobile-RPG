@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5923635851822016044}
   - component: {fileID: 8087985300775963697}
   - component: {fileID: -8801817754507004624}
+  - component: {fileID: 6679913739785092677}
   m_Layer: 0
   m_Name: SkeletonKingAttackBase
   m_TagString: BossAttack
@@ -65,3 +66,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 7, y: 10, z: 5}
   m_Center: {x: -1, y: 0, z: 3.5}
+--- !u!114 &6679913739785092677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2402420000895302182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78af85c0608b28149970e78d3f985a59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debuffDuration: 5
+  proc: 100
