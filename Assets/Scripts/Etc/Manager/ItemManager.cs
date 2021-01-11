@@ -15,12 +15,26 @@ public class ItemManager : SingletonBase<ItemManager>
     public Dictionary<int, int> playerInventory;
     public Dictionary<int, ItemData> itemDictionary;
     public List<ItemData> itemCart = new List<ItemData>();
+    public GameObject dropItemPrefab;
     Player player;
     PartSelection playerPartSelection;
     StatusManager statusManager;
 
     public int inventorySize;
     public int dictionarySize;
+
+    List<ItemData> lowClassItems = new List<ItemData>();
+    List<ItemData> highClassItems = new List<ItemData>();
+    List<ItemData> rareClassItems = new List<ItemData>();
+    List<ItemData> heroicClassItems = new List<ItemData>();
+    List<ItemData> legendaryClassItems = new List<ItemData>();
+    List<List<ItemData>> allClassItems = new List<List<ItemData>>();
+
+    public float[] itemDropProbability = { 5, 3, 1.5f, 0.5f, 0};
+
+    public float[] stage1Probability = { 5, 3, 1.5f, 0.5f, 0 };
+    public float[] stage2Probability = { 2, 4, 2, 1.5f, 0.5f };
+    public float[] bossProbability = { 0, 0, 60, 25, 15 };
 
     private void Start()
     {
@@ -108,6 +122,7 @@ public class ItemManager : SingletonBase<ItemManager>
         playerInventory = new Dictionary<int, int>(); //ID,개수
         Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
         itemDictionary = itemTable.TableToDictionary<int, ItemData>();
+        LoadItemsPerCategory();
         itemCart.Add(null);
         itemCart.Add(null);
         itemCart.Add(null);
@@ -115,6 +130,37 @@ public class ItemManager : SingletonBase<ItemManager>
         LoadCurrentItems();
         LoadInventoryData();
         EquipItems();
+        dropItemPrefab = Resources.Load<GameObject>("Prefab/Items/Item Prefab");
+    }
+
+    void LoadItemsPerCategory()
+    {
+        foreach (var item in itemDictionary)
+        {
+            switch (item.Value.itemgrade)
+            {
+                case 1:
+                    lowClassItems.Add(item.Value);
+                    break;
+                case 2:
+                    highClassItems.Add(item.Value);
+                    break;
+                case 3:
+                    rareClassItems.Add(item.Value);
+                    break;
+                case 4:
+                    heroicClassItems.Add(item.Value);
+                    break;
+                case 5:
+                    legendaryClassItems.Add(item.Value);
+                    break;
+            }
+        }
+        allClassItems.Add(lowClassItems);
+        allClassItems.Add(highClassItems);
+        allClassItems.Add(rareClassItems);
+        allClassItems.Add(heroicClassItems);
+        allClassItems.Add(legendaryClassItems);
     }
 
     private void SaveCurrentItemKeys()
@@ -459,5 +505,24 @@ public class ItemManager : SingletonBase<ItemManager>
         statusManager.additionStatus.hp += itemDictionary[armorKey].hpIncreaseRate;
         statusManager.additionStatus.armor += itemDictionary[armorKey].armor;
         statusManager.additionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
+    }
+
+    public void DropItem(Transform monsterTransform)
+    {
+        var roll = UnityEngine.Random.Range(0, 100.0f);
+        Debug.Log("아이템 드랍 주사위 : " + roll);
+        for (int i = 0; i < 5; i++)
+        {
+            if (roll <= itemDropProbability[i])
+            {
+                GameObject dropItem = ObjectPoolManager.Instance.GetObject(dropItemPrefab);
+                dropItem.GetComponent<Item>().id = allClassItems[i][UnityEngine.Random.Range(0, allClassItems[i].Count)].id;
+                dropItem.GetComponent<Item>().LoadItemData();
+                //dropItem.transform.position = monsterTransform.TransformPoint(0, 1, 0);
+                dropItem.transform.position = monsterTransform.position;
+                dropItem.transform.rotation = monsterTransform.rotation;
+                dropItem.transform.SetParent(null);
+            }
+        }
     }
 }

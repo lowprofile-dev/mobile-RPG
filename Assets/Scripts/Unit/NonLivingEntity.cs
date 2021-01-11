@@ -10,16 +10,16 @@ public class NonLivingEntity : Unit
     private TalkManager _talkManager;   // 토크매니저 캐싱
     private TalkChecker _myTalkChecker; // 해당 NPC의 토크체커 캐싱
 
-    [SerializeField] private GameObject canQuestSquare;
-    [SerializeField] private GameObject canEndSquare;
+    public GameObject canQuestSquare;
+    public GameObject canEndSquare;
 
-    private void Start()
+    protected virtual void Start()
     {
         _talkManager = TalkManager.Instance;
         _myTalkChecker = _talkManager.talkCheckers[_id];
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (_myTalkChecker.canFinishQuest)
         {

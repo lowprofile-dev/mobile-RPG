@@ -86,7 +86,7 @@ public class DungeonRoom : MonoBehaviour
                     lights[i].GetComponent<Light>().color = Color.black;
                     break;
             }
-            lights[i].GetComponent<Light>().intensity = 60;
+            lights[i].GetComponent<Light>().intensity = 30;
         }
     }
 
@@ -180,6 +180,19 @@ public class DungeonRoom : MonoBehaviour
             dungeonManager.player.GetComponent<Player>().currentDungeonArea = areaCode;
             if (!isCleared && !isSpawning)
             {
+                ItemManager itemManager = ItemManager.Instance;
+                if (isBossRoom)
+                {
+                    itemManager.itemDropProbability = itemManager.bossProbability;
+                }
+                else if (dungeonManager.dungeonStage == 1)
+                {
+                    itemManager.itemDropProbability = itemManager.stage1Probability;
+                }
+                else
+                {
+                    itemManager.itemDropProbability = itemManager.stage2Probability;
+                }
                 isSpawning = true;
                 Invoke("CloseDoors", 2f);
                 if (isBossRoom)

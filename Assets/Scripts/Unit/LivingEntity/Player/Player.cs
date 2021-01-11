@@ -804,11 +804,13 @@ public class Player : LivingEntity
     /// </summary>
     public void CheckInteractObject()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 1.9f);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 3.0f);
         for (int i = 0; i < colliders.Length; i++)
         {
+            Debug.Log(colliders[i].name);
             if (colliders[i].GetComponent<NonLivingEntity>())
             {
+                transform.LookAt(colliders[i].transform);
                 colliders[i].GetComponent<NonLivingEntity>().Interaction();
                 break;
             }
@@ -1177,7 +1179,7 @@ public class Player : LivingEntity
             Item itemInfo = other.gameObject.GetComponent<Item>();
             itemManager.AddItem(itemInfo);
             Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
-            Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
         }
     }
 }

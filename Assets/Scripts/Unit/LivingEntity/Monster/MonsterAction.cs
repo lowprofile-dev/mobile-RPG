@@ -180,6 +180,8 @@ public class MonsterAction : MonoBehaviour
                 break;
             case MONSTER_STATE.STATE_DIE:
                 DeathStart();
+                ItemManager.Instance.DropItem(transform);
+                Debug.Log("아이템 드롭!");
                 break;
             case MONSTER_STATE.STATE_CAST:
                 CastStart();
