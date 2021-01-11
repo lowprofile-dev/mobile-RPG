@@ -5,6 +5,20 @@ public class SkillSword01 : PlayerAttack
 {
     private float _restoreHp = 0;
 
+    public override void OnLoad()
+    {
+        base.OnLoad();
+
+        StartCoroutine(SkillASound());    
+    }
+
+    private IEnumerator SkillASound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 1 Swing", 0.6f);
+        yield return new WaitForSeconds(0.5f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 1 Heal", 0.6f);
+    }
+
     protected override void SetLocalRotation(GameObject Effect)
     {
         Effect.transform.Rotate(new Vector3(0, 0, 0));
