@@ -8,20 +8,27 @@ public class Quest
 {
     private TalkManager _talkManager; // 토크매니저 캐싱
 
-    private QuestData _questData; public QuestData questData { get { return _questData; } } // CSV를 통해 읽어온 퀘스트 데이터
+    private QuestData _questData; public QuestData questData { get { return _questData; } }     // CSV를 통해 읽어온 퀘스트 데이터
 
     // 퀘스트 진행여부 관련
-    private int _currentIndex; public int currentIndex { get { return _currentIndex; } } // 현재 퀘스트의 몇번째 진행상황인지
+    private int _currentIndex; public int currentIndex { get { return _currentIndex; } }        // 현재 퀘스트의 몇번째 진행상황인지
     public bool canStart;   // 퀘스트를 시작할 수 있는지.
     public bool canEnd;     // 퀘스트 종료 조건이 채워졌는지.
     public bool isOn;       // 퀘스트가 진행 중인지.
     public bool isEnd;      // 퀘스트가 종료되었는지.
 
     // 정제한 데이터
-    private List<int> _npcList; public List<int> npcList { get { return _npcList; } }                           // 상호작용 NPC가 순서대로 되어있다.
-    private List<string> _convList; public List<string> convList { get { return _convList; } }                        // 대화 번호가 순서대로 되어있다.
-    private List<string> _afterQuestList; public List<string> afterQuestList { get { return _afterQuestList; } }      // 클리어시 새롭게 열리는 퀘스트 목록
-    private List<string> _neededQuestList; public List<string> neededQuestList { get { return _neededQuestList; } }   // 열리기 위해 필요한 선행 퀘스트 목록
+    private List<int> _npcList; public List<int> npcList { get { return _npcList; } }                                       // 상호작용 NPC가 순서대로 되어있다.
+    private List<string> _convList; public List<string> convList { get { return _convList; } }                              // 대화 번호가 순서대로 되어있다.
+    private List<string> _afterQuestList; public List<string> afterQuestList { get { return _afterQuestList; } }            // 클리어시 새롭게 열리는 퀘스트 목록
+    private List<string> _quitQuestList; public List<string> quitQuestList { get { return _quitQuestList; } }               // 클리어시 닫는 퀘스트 목록
+    private List<string> _neededQuestList; public List<string> neededQuestList { get { return _neededQuestList; } }         // 열리기 위해 필요한 선행 퀘스트 목록
+    private List<int> _rewardList; public List<int> rewardList { get { return _rewardList; } }                              // 보상 리스트
+    private List<int> _rewardIdList; public List<int> rewardIdList { get { return _rewardIdList; } }                        // 보상 아이디 리스트
+    private List<int> _rewardAmountList; public List<int> rewardAmountList { get { return _rewardAmountList; } }            // 보상 개수 리스트    
+    private List<int> _conditionIdList; public List<int> conditionIdList { get { return _conditionIdList; } }               // 조건 아이디 리스트
+    private List<int> _conditionAmountList; public List<int> conditionAmountList { get { return _conditionAmountList; } }   // 조건 개수 리스트
+
 
     public Quest()
     {
@@ -30,7 +37,13 @@ public class Quest
         _npcList = new List<int>();
         _convList = new List<string>();
         _afterQuestList = new List<string>();
+        _quitQuestList = new List<string>();
         _neededQuestList = new List<string>();
+        _rewardList = new List<int>();
+        _rewardIdList = new List<int>();
+        _rewardAmountList = new List<int>();
+        _conditionIdList = new List<int>();
+        _conditionAmountList = new List<int>();
 
         _currentIndex = 0;
 
@@ -72,8 +85,8 @@ public class Quest
         isOn = false;
         isEnd = true;
 
-        // -1 = 이어지는 퀘스트가 없다.
-        if(_afterQuestList[0] != "-1")
+        // - = 이어지는 퀘스트가 없다.
+        if (_afterQuestList[0] != "-")
         {
             // 이어지는 퀘스트 리스트의 추가 가능 여부를 보고 퀘스트의 추가를 결정한다.
             for (int i = 0; i < _afterQuestList.Count; i++)
@@ -107,33 +120,43 @@ public class Quest
     {
         _questData = targetQuestData;
 
-        // npcID를 리스트로 변환
         string[] split = _questData.npcId.Split(' ');
-        for (int j = 0; j < split.Length; j++)
-        {
-            _npcList.Add(int.Parse(split[j]));
-        }
+        for (int j = 0; j < split.Length; j++) _npcList.Add(int.Parse(split[j]));
 
-        // 대화ID를 리스트로 변환
         split = _questData.convId.Split(' ');
-        for (int j = 0; j < split.Length; j++)
-        {
-            _convList.Add(split[j]);
-        }
+        for (int j = 0; j < split.Length; j++) _convList.Add(split[j]);
 
-        // 다음 퀘스트 정보들을 리스트로 변환
         split = _questData.afterQuestsId.Split(' ');
-        for (int j = 0; j < split.Length; j++)
+        for (int j = 0; j < split.Length; j++) _afterQuestList.Add(split[j]);
+
+        split = _questData.quitQuestId.Split(' ');
+        for (int j = 0; j < split.Length; j++) _quitQuestList.Add(split[j]);
+
+        split = _questData.neededQuestsId.Split(' ');
+        for (int j = 0; j < split.Length; j++) _neededQuestList.Add(split[j]);
+
+        try
         {
-            _afterQuestList.Add(split[j]);
+            split = _questData.reward.Split(' ');
+            for (int j = 0; j < split.Length; j++) _rewardList.Add(int.Parse(split[j]));
+
+        }
+        catch
+        {
+            Debug.Log("WQKJEKL");
         }
 
-        // 해금되기 위해 필요한 퀘스트 클리어 정보들을 리스트로 변환
-        split = _questData.neededQuestsId.Split(' ');
-        for (int j = 0; j < split.Length; j++)
-        {
-            _neededQuestList.Add(split[j]);
-        }
+        split = _questData.rewardId.Split(' ');
+        for (int j = 0; j < split.Length; j++) _rewardIdList.Add(int.Parse(split[j]));
+
+        split = _questData.rewardAmount.Split(' ');
+        for (int j = 0; j < split.Length; j++) _rewardAmountList.Add(int.Parse(split[j]));
+
+        split = _questData.conditionId.Split(' ');
+        for (int j = 0; j < split.Length; j++) _conditionIdList.Add(int.Parse(split[j]));
+
+        split = _questData.conditionAmount.Split(' ');
+        for (int j = 0; j < split.Length; j++) _conditionAmountList.Add(int.Parse(split[j]));
     }
 
     /// <summary>
@@ -156,7 +179,7 @@ public class Quest
         if (startFlag)
         {
             _talkManager.startAbleQuests.Add(this);
-            this.canStart = true;
+            canStart = true;
         }
     }
 

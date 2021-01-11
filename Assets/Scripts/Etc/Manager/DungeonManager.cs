@@ -166,8 +166,8 @@ public class DungeonManager : MonoBehaviour
         Debug.Log("current Dungeon : " + playerCurrentArea + "// player Current Dungeon : " + Player.Instance.currentDungeonArea);
         if(playerCurrentArea != Player.Instance.currentDungeonArea)
         {
-            if (playerCurrentArea != -1) CardManager.Instance.ExitEffectCards(playerCurrentArea);
-            CardManager.Instance.EnterEffectCards(Player.Instance.currentDungeonArea);
+            if (playerCurrentArea > 0) CardManager.Instance.ExitEffectCards(playerCurrentArea - 1);
+            CardManager.Instance.EnterEffectCards(Player.Instance.currentDungeonArea - 1);
             playerCurrentArea = Player.Instance.currentDungeonArea;
             UIManager.Instance.playerUIView.SetEffectList();
         }

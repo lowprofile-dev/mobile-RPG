@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using System;
 using System.Text.RegularExpressions;
-using System;
+using UnityEngine;
 
 namespace CSVReader
 {
@@ -21,7 +18,7 @@ namespace CSVReader
             // {{ FileName ~ 
             string fileName = "";
             string[] arraySplitFilePath = Regex.Split(filePath, FileSplit);
-            if(arraySplitFilePath != null)
+            if (arraySplitFilePath != null)
             {
                 fileName = arraySplitFilePath[arraySplitFilePath.Length - 1];
             }
@@ -32,18 +29,12 @@ namespace CSVReader
             //전체 데이터를 줄단위로 나누자
             string[] arrayLineData = Regex.Split(textAsset.text, LineSplit);
 
-            // CSV의 \a를 ,로 바꿔준다.
-            for (int i=0; i<arrayLineData.Length; i++)
-            {
-                Regex.Replace(arrayLineData[i], @"\\a", ",");
-            }
-
             //데이터는 Header + value + 공란줄(마지막) 로 되어 있으므로 최소 2줄이상 있어야 정상적인 파일임
-            if(arrayLineData != null && arrayLineData.Length >= 3)
+            if (arrayLineData != null && arrayLineData.Length >= 3)
             {
                 //헤더 데이터 불러온다. (데이터 타입은 1행에 정의)
                 string[] arrayHeader = Regex.Split(arrayLineData[0], WordSplit);
-                if(arrayHeader != null && arrayHeader.Length > 0)
+                if (arrayHeader != null && arrayHeader.Length > 0)
                 {
                     //행에 있는 총 데이터 수
                     int rowCount = arrayLineData.Length - 2;
@@ -56,22 +47,26 @@ namespace CSVReader
                         //해당 라인 데이터 배열로 분리
                         string[] tempLine = Regex.Split(arrayLineData[row], WordSplit);
                         //데이터 세팅
-                        for(int column = 0; column < tempLine.Length; ++column)
+                        for (int column = 0; column < tempLine.Length; ++column)
                         {
                             try
                             {
                                 arrayData[row - 1, column] = tempLine[column];
+
+                                // CSV의 \a를 ,로 바꿔준다.
+                                arrayData[row - 1, column] = arrayData[row - 1, column].Replace("#", ",");
                             }
-                            catch(Exception e)
+                            catch (Exception)
                             {
                                 Debug.Log("EXCEPTION 발생");
                             }
                         }
                     }
                     //테이블 생성
-                    result = new Table(fileName, arrayData,arrayHeader, rowCount, columnCount);
+                    result = new Table(fileName, arrayData, arrayHeader, rowCount, columnCount);
                 }
             }
+
 
             return result;
         }

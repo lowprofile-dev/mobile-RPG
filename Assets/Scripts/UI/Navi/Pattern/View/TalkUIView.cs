@@ -87,7 +87,7 @@ public class TalkUIView : View
         if (_npcCamGameObject.GetComponent<Unit>() == null || _npcCamGameObject.GetComponent<Unit>().id != npcData.id)
         {
             DestroyImmediate(_npcCamGameObject);
-            _npcCamGameObject = npcData.id == 1 ? Instantiate(Player.Instance.playerAvater, new Vector3(1050, 1050, 1050), Quaternion.Euler(-10, 170, 0)) : ResourceManager.Instance.Instantiate("Prefab/NPC/" + npcData.prefabPath, new Vector3(1050, 1050, 1050), Quaternion.Euler(-10, 170, 0));
+            _npcCamGameObject = npcData.id == 998 ? Instantiate(Player.Instance.playerAvater, new Vector3(1050, 1050, 1050), Quaternion.Euler(-10, 170, 0)) : ResourceManager.Instance.Instantiate("Prefab/NPC/" + npcData.prefabPath, new Vector3(1050, 1050, 1050), Quaternion.Euler(-10, 170, 0));
             _npcFaceCam.GetComponent<FaceCam>().SetTarget(_npcCamGameObject);
         }
     }

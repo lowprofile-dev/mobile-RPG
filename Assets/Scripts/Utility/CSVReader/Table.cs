@@ -110,24 +110,33 @@ namespace CSVReader
 
                 for (int j = 0; j < arrayFieldInfo.Length; ++j)
                 {
-                    System.Type fieldType = arrayFieldInfo[j].FieldType;
-                    arrayFieldInfo[j].SetValue(newData, CSVReader.TypeConverter.ConvertType(mArrayData[i, j], fieldType));
-                    //DataAttribute를 사용해서 명시적으로 KeyName을 설정하였다면
-                    if (string.IsNullOrEmpty(keyName) == false)
+                    try
                     {
-                        if (keyName == arrayFieldInfo[j].Name)
+                        System.Type fieldType = arrayFieldInfo[j].FieldType;
+                        arrayFieldInfo[j].SetValue(newData, CSVReader.TypeConverter.ConvertType(mArrayData[i, j], fieldType));
+                        //DataAttribute를 사용해서 명시적으로 KeyName을 설정하였다면
+                        if (string.IsNullOrEmpty(keyName) == false)
                         {
-                            key = Convert.ChangeType(mArrayData[i, j], fieldType);
+                            if (keyName == arrayFieldInfo[j].Name)
+                            {
+                                key = Convert.ChangeType(mArrayData[i, j], fieldType);
+                            }
+                        }
+                        //KeyName을 설정을 안했다면 첫번째 Field를 KeyName으로
+                        else
+                        {
+                            if (j == 0)
+                            {
+                                keyName = arrayFieldInfo[j].Name;
+                            }
                         }
                     }
-                    //KeyName을 설정을 안했다면 첫번째 Field를 KeyName으로
-                    else
+
+                    catch
                     {
-                        if(j == 0)
-                        {
-                            keyName = arrayFieldInfo[j].Name;
-                        }
+                        Debug.Log("버그 발새애애애애애앵애앵애애앵");
                     }
+                 
                 }
                 result.Add((TKey)key, newData);
             }

@@ -36,9 +36,19 @@ public class TalkManager : SingletonBase<TalkManager>
 
         GetData();
         SetTalkCheckers();
-        questDatas["0"].canStart = true;
-        questDatas["4"].canStart = true;
+        FindInitStartQuest();
         CheckQuestIsOn();
+    }
+
+    /// <summary>
+    /// 처음부터 시작이 가능한 퀘스트 리스트들을 받아온다.
+    /// </summary>
+    public void FindInitStartQuest()
+    {
+        foreach(Quest quest in questDatas.Values)
+        {
+            if(quest.neededQuestList[0].Equals("-")) quest.canStart = true;
+        }
     }
 
     /// <summary>
@@ -80,6 +90,18 @@ public class TalkManager : SingletonBase<TalkManager>
         talkCheckers[101] = new TalkChecker(101);
         talkCheckers[102] = new TalkChecker(102);
         talkCheckers[103] = new TalkChecker(103);
+        talkCheckers[104] = new TalkChecker(104);
+        talkCheckers[105] = new TalkChecker(105);
+        talkCheckers[106] = new TalkChecker(106);
+        talkCheckers[107] = new TalkChecker(107);
+        talkCheckers[108] = new TalkChecker(108);
+        talkCheckers[110] = new TalkChecker(110);
+        talkCheckers[111] = new TalkChecker(111);
+        talkCheckers[112] = new TalkChecker(112);
+        talkCheckers[113] = new TalkChecker(113);
+        talkCheckers[114] = new TalkChecker(114);
+        talkCheckers[998] = new TalkChecker(998);
+        talkCheckers[999] = new TalkChecker(999);
     }
 
     /// <summary>
