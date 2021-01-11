@@ -22,11 +22,6 @@ public class Player : LivingEntity
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
     private PLAYERSTATE _cntState;
 
-    [Header("상태이상")]
-    private bool isStun = false;
-    private bool isFall = false;
-    private bool isRigid = false;
-
     [Header("버튼 입력")]
     private bool AttackButtonClick = false;
     private bool SkillA_ButtonClick = false;
@@ -88,6 +83,10 @@ public class Player : LivingEntity
 
     public int currentDungeonArea;
 
+    // 사운드 관련
+    private float _cntFootStepSound = 0f;
+    private float _footstepSoundTime = 0.3f;
+
     private void Awake()
     {
         Instance = this;
@@ -136,6 +135,7 @@ public class Player : LivingEntity
 
     protected override void Update()
     {
+        base.Update();
         _CCManager.Update();
         SetUpPlayerCamera();
         TestCode();
@@ -477,12 +477,29 @@ public class Player : LivingEntity
 
     private void MoveEnter()
     {
+        _cntFootStepSound = _footstepSoundTime / 2;
         myAnimator.SetTrigger("Move");
     }
 
     public void MoveUpdate()
     {
         PlayerMove();
+        FootstepSound();
+    }
+
+    /// <summary>
+    /// 발자국 소리, 던전일 시 울림 효과
+    /// </summary>
+    private void FootstepSound()
+    {
+        _cntFootStepSound -= Time.deltaTime;
+        if(_cntFootStepSound < 0)
+        {
+            _cntFootStepSound = _footstepSoundTime;
+
+            AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Footsteps/LightArmorRun" + UnityEngine.Random.Range(1, 7), 0.2f);
+            if (UILoaderManager.Instance.IsSceneDungeon()) SoundManager.Instance.SetAudioReverbEffect(source, AudioReverbPreset.Cave);
+        }
     }
 
     /// <summary>
@@ -621,6 +638,7 @@ public class Player : LivingEntity
         OnTrailparticles();
         UseStemina(2);
         myAnimator.SetTrigger("Avoid");
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Player/Dash", 0.5f);
     }
 
     public void EvadeUpdate()
@@ -1157,7 +1175,8 @@ public class Player : LivingEntity
         if (faceCam != null)
             return;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
-        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
+        //faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
+        faceCam.InitFaceCam(_playerAvatar);
     }
 
     /// <summary>

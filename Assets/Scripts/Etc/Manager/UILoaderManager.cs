@@ -14,26 +14,12 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            AddScene("DungeonScene");
-        }
 
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            CloseScene("DungeonScene");
-        }
+    }
 
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            AddScene("VillageScene");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            CloseScene("VillageScene");
-        }
-        
+    public bool IsSceneDungeon()
+    {
+        return SceneManager.GetActiveScene().name == "DungeonScene";
     }
 
     public void AddScene(string name) // 현재 씬에 다른 씬을 추가하는 함수 ADD 

@@ -8,7 +8,7 @@ public class SoundManager : SingletonBase<SoundManager>
     private const string    _bgmPath            = "Sound/BGM/";
     private const string    _effectPath         = "Sound/Effect/";
 
-    private const int       _audioCount         = 30; // 최대 동시재생 오디오 개수.
+    private const int       _audioCount         = 40; // 최대 동시재생 오디오 개수.
 
     // 사운드 컨테이너
     private GameObject      _bgmContainer1;
@@ -212,6 +212,23 @@ public class SoundManager : SingletonBase<SoundManager>
         }
 
         return targetPos;
+    }
+
+    /// <summary>
+    /// 해당 이름의 사운드를 정지한다.
+    /// </summary>
+    public void StopEffect(string name)
+    {
+        for(int i=0; i<_effectContainer.Length; i++)
+        {
+            if(_effectContainer[i].GetComponent<AudioSource>().isPlaying)
+            {
+                if(_effectContainer[i].GetComponent<AudioSource>().clip.name.Equals(name))
+                {
+                    _effectContainer[i].GetComponent<AudioSource>().Stop();
+                }
+            }
+        }
     }
 
     // Effect / UI 사운드를 재생하도록 한다.
