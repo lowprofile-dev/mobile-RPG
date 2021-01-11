@@ -638,9 +638,9 @@ public class Player : LivingEntity
     {
         switch (currentCombo)
         {
-            case 1: Debug.Log("1"); weaponManager.GetWeapon().Attack(); break;
-            case 2: Debug.Log("2"); weaponManager.GetWeapon().Attack2(); break;
-            case 3: Debug.Log("3"); weaponManager.GetWeapon().Attack3(); break;
+            case 1: weaponManager.GetWeapon().Attack(); break;
+            case 2: weaponManager.GetWeapon().Attack2(); break;
+            case 3: weaponManager.GetWeapon().Attack3(); break;
         }
     }
 
@@ -947,7 +947,6 @@ public class Player : LivingEntity
         Collider[] colliders = Physics.OverlapSphere(transform.position, 3.0f);
         for (int i = 0; i < colliders.Length; i++)
         {
-            Debug.Log(colliders[i].name);
             if (colliders[i].GetComponent<NonLivingEntity>())
             {
                 transform.LookAt(colliders[i].transform);
