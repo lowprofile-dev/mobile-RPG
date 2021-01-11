@@ -141,6 +141,8 @@ public class DungeonManager : MonoBehaviour
             UILoaderManager.Instance.AddScene("VillageScene");
             UILoaderManager.Instance.CloseScene("DungeonScene");
 
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Fire Loop", 0.40f, 0, true);
+            SoundManager.Instance.StopEffect("Cave 1 Loop");
             SoundManager.Instance.PlayBGM("WinBGM", 0.6f);
             StartCoroutine(VillageMusicPlay());
 
@@ -157,6 +159,7 @@ public class DungeonManager : MonoBehaviour
     {
         yield return new WaitForSeconds(15);
         SoundManager.Instance.PlayBGM("VillageBGM", 0.6f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Fire Loop", 0.40f, 0, true);
     }
 
     public void ToNextStage()

@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000004, guid: 7fc7750f230b15c44ba7268420fefff8,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1230,6 +1230,26 @@ RectTransform:
   m_AnchoredPosition: {x: 410.8, y: -54.999992}
   m_SizeDelta: {x: 230, y: 265.86517}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &260720995 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7801683766239133490, guid: 8294df661063fe047b6a19076212de98,
+    type: 3}
+  m_PrefabInstance: {fileID: 6444043812966881670}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &260720999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260720995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 576788387103c7942b6d6397606dd4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyAvata: {fileID: 0}
+  rotateSpeed: 10
 --- !u!1 &293019589
 GameObject:
   m_ObjectHideFlags: 0
@@ -5652,6 +5672,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 7204991951050804718, guid: 53b7fa749ce63094c84e7c843230a994,
+        type: 3}
+      propertyPath: bodycam
+      value: 
+      objectReference: {fileID: 6444043812966881671}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53b7fa749ce63094c84e7c843230a994, type: 3}
 --- !u!1 &893877178
@@ -8899,7 +8924,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 6444043812966881670}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 260720995}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 319d2fe34a804e245819465c9505ea59, type: 3}

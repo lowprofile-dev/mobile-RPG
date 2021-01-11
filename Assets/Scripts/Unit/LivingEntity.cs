@@ -14,7 +14,7 @@ public class LivingEntity : Unit
     [SerializeField] protected float _stemina; public float Stemina { get { return _stemina; } set { _stemina = value; } }
 
     [SerializeField] protected GameObject _DamageText; public GameObject DamageText { get { return _DamageText; } }
-    protected DebuffManager _DebuffManager; public DebuffManager DebuffManager { get { return _DebuffManager; } }
+    protected DebuffManager _DebuffManager = new DebuffManager(); public DebuffManager DebuffManager { get { return _DebuffManager; } }
     [SerializeField] protected float _speed; public float speed { get { return _speed; } set { _speed = value; } }
     [SerializeField] protected float _MAXspeed; public float MAXspeed { get { return _MAXspeed; } set { _MAXspeed = value; } }
     private StateMachine _myStateMachine; public StateMachine MyStateMachine { get { return _myStateMachine; } }
@@ -29,7 +29,6 @@ public class LivingEntity : Unit
     protected virtual void Start()
     {
         InitObject();
-        _DebuffManager = new DebuffManager();
         
     }
 
