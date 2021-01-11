@@ -860,6 +860,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void DeathStart()
     {
+        DeathSound();
         StopAllCoroutines();
         StartCoroutine(DoDeathAction());
     }
@@ -996,6 +997,14 @@ public class MonsterAction : MonoBehaviour
     public void DamagedSound()
     {
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.75f);
+    }
+
+    /// <summary>
+    /// 죽었을 때 나오는 사운드 (공용)
+    /// </summary>
+    public void DeathSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Die " + UnityEngine.Random.Range(1, 3), 0.75f);
     }
 
     /// <summary>
