@@ -22,11 +22,6 @@ public class Player : LivingEntity
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
     private PLAYERSTATE _cntState;
 
-    [Header("상태이상")]
-    private bool isStun = false;
-    private bool isFall = false;
-    private bool isRigid = false;
-
     [Header("버튼 입력")]
     private bool AttackButtonClick = false;
     private bool SkillA_ButtonClick = false;
@@ -136,6 +131,7 @@ public class Player : LivingEntity
 
     protected override void Update()
     {
+        base.Update();
         _CCManager.Update();
         SetUpPlayerCamera();
         TestCode();
@@ -1094,7 +1090,8 @@ public class Player : LivingEntity
         if (faceCam != null)
             return;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
-        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
+        //faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
+        faceCam.InitFaceCam(_playerAvatar);
     }
 
     /// <summary>
