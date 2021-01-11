@@ -184,18 +184,36 @@ public class CardManager : SingletonBase<CardManager>
     public void RandomLevelToCard(Card card)
     {
         int levelRandom = Random.Range(0, 100);
-
-        if (levelRandom >= 80)
+        //카드 리롤 확률 증가
+        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[0] == -1)
         {
-            card.level = 3;
-        }
-        else if (levelRandom >= 50)
-        {
-            card.level = 2;
+            if (levelRandom >= 75)
+            {
+                card.level = 3;
+            }
+            else if (levelRandom >= 40)
+            {
+                card.level = 2;
+            }
+            else
+            {
+                card.level = 1;
+            }
         }
         else
         {
-            card.level = 1;
+            if (levelRandom >= 80)
+            {
+                card.level = 3;
+            }
+            else if (levelRandom >= 50)
+            {
+                card.level = 2;
+            }
+            else
+            {
+                card.level = 1;
+            }
         }
     }
 

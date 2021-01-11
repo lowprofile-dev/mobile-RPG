@@ -24,6 +24,9 @@ public class BossSkeletonKingAction : MonsterAction
     [SerializeField] private GameObject BlackHoleRange;
     [SerializeField] private GameObject BlackHoleEffect;
 
+    [SerializeField] private GameObject skeleton_grunt;
+    [SerializeField] private GameObject skeleton_sword;
+
     [SerializeField] float defalutAtkCastingTime;
     [SerializeField] float blackHoleCastingTime;
     [SerializeField] float summonCastingTime;

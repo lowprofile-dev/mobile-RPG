@@ -38,11 +38,17 @@ public class Attack : MonoBehaviour
     {
         if (CanCollision(other))
         {
+            //마스터리 공격 증가 부분
+            if(MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == -1)
+            {
+                StatusManager.Instance.finalStatus.attackDamage *= 1.1f;
+                StatusManager.Instance.finalStatus.magicDamage *= 1.1f;
+            }
             _attackedTarget.Add(other.gameObject);
             if (_useFixedDmg) other.GetComponent<LivingEntity>().Damaged(_damage);
             else
             {
-                if (_isParentPlayer) other.GetComponent<LivingEntity>().Damaged((_useMeleeDmg ? StatusManager.Instance.playerStatus.attackDamage : StatusManager.Instance.playerStatus.magicDamage) * _damage);
+                if (_isParentPlayer) other.GetComponent<LivingEntity>().Damaged((_useMeleeDmg ? StatusManager.Instance.finalStatus.attackDamage : StatusManager.Instance.finalStatus.magicDamage) * _damage);
                 else other.GetComponent<LivingEntity>().Damaged(_baseParent.GetComponent<Monster>().attackDamage * _damage);
             }
         }

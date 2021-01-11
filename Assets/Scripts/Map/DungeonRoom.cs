@@ -183,15 +183,51 @@ public class DungeonRoom : MonoBehaviour
                 ItemManager itemManager = ItemManager.Instance;
                 if (isBossRoom)
                 {
-                    itemManager.itemDropProbability = itemManager.bossProbability;
+                    //마스터리 스킬 보스 처치시 드랍율 향상
+                    if(MasteryManager.Instance.currentMastery.currentMasteryChoices[0] == 1)
+                    {
+                        for(int i =0; i < itemManager.bossProbability.Length; i++)
+                        {
+                            itemManager.itemDropProbability[i] = itemManager.bossProbability[i] + 30;
+                        }
+                        
+                    }
+                    else
+                    {
+                        itemManager.itemDropProbability = itemManager.bossProbability;
+                    }
                 }
                 else if (dungeonManager.dungeonStage == 1)
                 {
-                    itemManager.itemDropProbability = itemManager.stage1Probability;
+                    //마스터리 스킬 골드, 아이템 획득량 증가
+                    if(MasteryManager.Instance.currentMastery.currentMasteryChoices[4]== -1 
+                        || MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == 1)
+                    {
+                        for (int i = 0; i < itemManager.itemDropProbability.Length; i++)
+                        {
+                            itemManager.itemDropProbability[i] = itemManager.stage1Probability[i]*1.1f;
+                        }
+                    }
+                    else
+                    {
+                        itemManager.itemDropProbability = itemManager.stage1Probability;
+                    }
                 }
                 else
                 {
-                    itemManager.itemDropProbability = itemManager.stage2Probability;
+                    //마스터리 스킬 골드, 아이템 획득량 증가
+                    if (MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == -1
+                        || MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == 1)
+                    {
+                        for (int i = 0; i < itemManager.itemDropProbability.Length; i++)
+                        {
+                            itemManager.itemDropProbability[i] = itemManager.stage2Probability[i] * 1.1f;
+                        }
+                    }
+                    else
+                    {
+                        itemManager.itemDropProbability = itemManager.stage2Probability;
+                    }
                 }
                 isSpawning = true;
                 Invoke("CloseDoors", 2f);
