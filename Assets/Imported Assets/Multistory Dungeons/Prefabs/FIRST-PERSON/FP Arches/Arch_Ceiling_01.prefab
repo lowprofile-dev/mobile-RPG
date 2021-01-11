@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 436674}
   - component: {fileID: 3336674}
   - component: {fileID: 2336674}
-  - component: {fileID: 6436674}
+  - component: {fileID: 1120244325773686449}
+  - component: {fileID: 9103298495827492798}
+  - component: {fileID: 2833143717109169813}
   m_Layer: 0
   m_Name: Arch_Ceiling_01
   m_TagString: Untagged
@@ -80,8 +82,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &6436674
-MeshCollider:
+--- !u!65 &1120244325773686449
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +92,32 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 77fbcce1051bede46b1f1b4dde9acdca, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.5153389, y: 1.57, z: 6.266405}
+  m_Center: {x: 0.25766563, y: 2.88, z: -0.00000667572}
+--- !u!65 &9103298495827492798
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136674}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.51, y: 3.6584358, z: 1.29}
+  m_Center: {x: 0.25, y: 1.8292198, z: -2.52}
+--- !u!65 &2833143717109169813
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136674}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 3.6584358, z: 1.29}
+  m_Center: {x: 0.25, y: 1.8292198, z: 2.52}

@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 407534}
   - component: {fileID: 3307534}
   - component: {fileID: 2307534}
-  - component: {fileID: 6407534}
+  - component: {fileID: 7645562455821128378}
+  - component: {fileID: 8937012677166329324}
   m_Layer: 0
   m_Name: Bricks_03
   m_TagString: Untagged
@@ -80,8 +81,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &6407534
-MeshCollider:
+--- !u!65 &7645562455821128378
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +91,19 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 8fea078b9c1176346bf5afdb4c11d728, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 3.687305, y: 0.9, z: 2.971322}
+  m_Center: {x: 0.0053564906, y: 0.45, z: -0.256414}
+--- !u!65 &8937012677166329324
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107534}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.4, y: 0.9, z: 2}
+  m_Center: {x: -0.5, y: 1.2, z: -0.256414}

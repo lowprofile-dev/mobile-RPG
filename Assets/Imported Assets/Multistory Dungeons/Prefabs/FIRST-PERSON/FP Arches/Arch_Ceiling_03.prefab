@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 467718}
   - component: {fileID: 3367718}
   - component: {fileID: 2367718}
-  - component: {fileID: 6467718}
+  - component: {fileID: 722942368218307692}
+  - component: {fileID: 4121124186734289406}
   m_Layer: 0
   m_Name: Arch_Ceiling_03
   m_TagString: Untagged
@@ -80,8 +81,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &6467718
-MeshCollider:
+--- !u!65 &722942368218307692
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +91,19 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 774a120e5e0d57643af9bb2699a6951c, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.5153351, y: 2.83, z: 1.34}
+  m_Center: {x: 0.25766754, y: 1.38, z: -0.49}
+--- !u!65 &4121124186734289406
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167718}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5153351, y: 1.64, z: 2.17}
+  m_Center: {x: 0.25766754, y: 2.75, z: -1.96}

@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 404820}
   - component: {fileID: 3313106}
-  - component: {fileID: 6404822}
   - component: {fileID: 2313106}
+  - component: {fileID: 8721397258219410997}
+  - component: {fileID: 6038147186880774939}
+  - component: {fileID: 2301167814548168939}
   m_Layer: 0
   m_Name: Stair_Bottom_Decor_01_Mirrored
   m_TagString: Untagged
@@ -41,20 +43,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 104820}
   m_Mesh: {fileID: 4300000, guid: f9f82b088b259434bb29b97ec0819bdb, type: 3}
---- !u!64 &6404822
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 104820}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: a2b99ef14b89b2d479c10f6d3f50f5eb, type: 3}
 --- !u!23 &2313106
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -94,3 +82,42 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &8721397258219410997
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 104820}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.1385598, y: 2, z: 0.8553457}
+  m_Center: {x: 0.4307201, y: 0, z: 2.5723271}
+--- !u!65 &6038147186880774939
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 104820}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.92687464, y: 2, z: 2.8051295}
+  m_Center: {x: -3.0614245, y: 0, z: -0.2941444}
+--- !u!65 &2301167814548168939
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 104820}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7708073, y: 2, z: 1.5537753}
+  m_Center: {x: -1.6500158, y: 0, z: 1.4955809}

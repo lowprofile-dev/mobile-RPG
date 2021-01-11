@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 415072}
   - component: {fileID: 3315072}
   - component: {fileID: 2315072}
-  - component: {fileID: 6415072}
+  - component: {fileID: 4798524129920330513}
+  - component: {fileID: 5962842210968419564}
   m_Layer: 0
   m_Name: Wall_Bottom_Decor_Corner_05
   m_TagString: Untagged
@@ -80,8 +81,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &6415072
-MeshCollider:
+--- !u!65 &4798524129920330513
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +91,19 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 6bd428c833a5c4540b9a15b502d7fe14, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 5.000001, y: 2, z: 0.5424943}
+  m_Center: {x: 0.49999952, y: 0, z: 0.2702453}
+--- !u!65 &5962842210968419564
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115072}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.43350267, y: 2, z: 5.0010056}
+  m_Center: {x: -1.7832496, y: 0, z: 2.499501}

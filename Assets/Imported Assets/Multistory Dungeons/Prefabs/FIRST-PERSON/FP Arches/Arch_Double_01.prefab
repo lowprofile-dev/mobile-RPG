@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 466242}
   - component: {fileID: 3366242}
   - component: {fileID: 2366242}
-  - component: {fileID: 6466242}
+  - component: {fileID: 923656880371031612}
+  - component: {fileID: 3055546906403425705}
   m_Layer: 0
   m_Name: Arch_Double_01
   m_TagString: Untagged
@@ -80,8 +81,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &6466242
-MeshCollider:
+--- !u!65 &923656880371031612
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +91,19 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 104023d31dbb8074ea69fc7f276eb3ae, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 1.0785828, y: 7.7602463, z: 0.99}
+  m_Center: {x: 0.00033569336, y: 3.3501549, z: 0}
+--- !u!65 &3055546906403425705
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166242}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0785828, y: 3.25, z: 5.2858124}
+  m_Center: {x: 0.00033569336, y: 5.49, z: 0}

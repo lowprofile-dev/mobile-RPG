@@ -25,7 +25,6 @@ public class TalkChecker
         AddRelevantQuests();
         AddRelevantTalks();
         _talkIndex = 0;
-        Debug.Log(id + " " + _relevantTalks.Count + " " + _relevantQuests.Count);
     }
 
     /// <summary>
