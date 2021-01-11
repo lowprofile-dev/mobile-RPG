@@ -79,18 +79,18 @@ public class CameraManager : SingletonBase<CameraManager>
                 }
 #endif
 
-#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
-                else if (Input.GetTouch(0).phase == TouchPhase.Began)
-                {
+//#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
+//                else if (Input.GetTouch(0).phase == TouchPhase.Began)
+//                {
                 
-                    if(!joystick.getHold())
-                    {
-                         Debug.Log("이거다");
-                       if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false)
-                           return Input.GetAxis("Mouse X");
-                    }
-                }
-#endif
+//                    if(!joystick.getHold())
+//                    {
+//                         Debug.Log("이거다");
+//                       if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false)
+//                           return Input.GetAxis("Mouse X");
+//                    }
+//                }
+//#endif
 
                 break;
             default:
