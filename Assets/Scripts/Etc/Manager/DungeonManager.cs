@@ -2,6 +2,8 @@
 using TMPro;
 using System;
 using UnityEngine.AI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class DungeonManager : MonoBehaviour
 {
@@ -139,6 +141,9 @@ public class DungeonManager : MonoBehaviour
             UILoaderManager.Instance.AddScene("VillageScene");
             UILoaderManager.Instance.CloseScene("DungeonScene");
 
+            SoundManager.Instance.PlayBGM("WinBGM", 0.6f);
+            StartCoroutine(VillageMusicPlay());
+
             CardManager.Instance._cntDungeon = null;
             CardManager.Instance.currentStage = 0;
             return;
@@ -146,6 +151,12 @@ public class DungeonManager : MonoBehaviour
 
         CardManager.Instance.currentStage = dungeonStage + 1;
         UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
+    }
+
+    IEnumerator VillageMusicPlay()
+    {
+        yield return new WaitForSeconds(15);
+        SoundManager.Instance.PlayBGM("VillageBGM", 0.6f);
     }
 
     public void ToNextStage()

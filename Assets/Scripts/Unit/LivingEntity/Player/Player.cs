@@ -846,6 +846,7 @@ public class Player : LivingEntity
         myAnimator.SetTrigger("Die");
         _CCManager.Release();
         _DebuffManager.Release();
+        SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
     }
 
     public void DieUpdate()

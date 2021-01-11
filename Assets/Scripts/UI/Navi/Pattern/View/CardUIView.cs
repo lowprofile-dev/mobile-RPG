@@ -103,6 +103,7 @@ public class CardUIView : View
             {
                 UILoaderManager.Instance.CloseScene("VillageScene");
                 UILoaderManager.Instance.AddScene("DungeonScene");
+                SoundManager.Instance.PlayBGM("DungeonBGM", 0.6f);
             } // 던전으로 가는것이면 던전으로 가도록
 
             else
