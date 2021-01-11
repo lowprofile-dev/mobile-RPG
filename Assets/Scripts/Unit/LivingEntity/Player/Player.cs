@@ -88,6 +88,10 @@ public class Player : LivingEntity
 
     public int currentDungeonArea;
 
+    // 사운드 관련
+    private float _cntFootStepSound = 0f;
+    private float _footstepSoundTime = 0.3f;
+
     private void Awake()
     {
         Instance = this;
@@ -414,12 +418,29 @@ public class Player : LivingEntity
 
     private void MoveEnter()
     {
+        _cntFootStepSound = _footstepSoundTime / 2;
         myAnimator.SetTrigger("Move");
     }
 
     public void MoveUpdate()
     {
         PlayerMove();
+        FootstepSound();
+    }
+
+    /// <summary>
+    /// 발자국 소리, 던전일 시 울림 효과
+    /// </summary>
+    private void FootstepSound()
+    {
+        _cntFootStepSound -= Time.deltaTime;
+        if(_cntFootStepSound < 0)
+        {
+            _cntFootStepSound = _footstepSoundTime;
+
+            AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Footsteps/LightArmorRun" + UnityEngine.Random.Range(1, 7), 0.2f);
+            if (UILoaderManager.Instance.IsSceneDungeon()) SoundManager.Instance.SetAudioReverbEffect(source, AudioReverbPreset.Cave);
+        }
     }
 
     /// <summary>
@@ -558,6 +579,7 @@ public class Player : LivingEntity
         OnTrailparticles();
         UseStemina(2);
         myAnimator.SetTrigger("Avoid");
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Player/Dash", 0.5f);
     }
 
     public void EvadeUpdate()
