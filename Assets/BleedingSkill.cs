@@ -17,14 +17,18 @@ public class BleedingSkill : Debuffer
     public override Debuff GetDebuff(LivingEntity unit)
     {
         //웨폰마스터리에서 디버프 능력치 구하기?
-        return new BleedingDebuff(3, 1, 3, unit);
+        return new BleedingDebuff(3, 1, 5, unit);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Monster"))
+        if(transform.tag == "BossAttack")
         {
-            ApplyDebuff(other.gameObject);
+            if (other.CompareTag("Player"))
+            {
+                ApplyDebuff(other.gameObject);
+            }
         }
+        
     }
 }
