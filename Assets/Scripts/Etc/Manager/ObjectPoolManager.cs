@@ -48,6 +48,16 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
             ReturnObject(obj, parent);
         }
     }
+    public void InitObject(GameObject obj , int cnt , Transform tr)
+    {
+        for (int i = 0; i < cnt; i++)
+        {
+            GameObject eft = Instantiate(obj);
+            eft.name = obj.name;
+            eft.transform.position = tr.position;
+            ReturnObject(eft);
+        }
+    }
     public GameObject GetObject(GameObject obj)
     {
         if (objectPool.TryGetValue(obj.name, out Queue<GameObject> objectList))
