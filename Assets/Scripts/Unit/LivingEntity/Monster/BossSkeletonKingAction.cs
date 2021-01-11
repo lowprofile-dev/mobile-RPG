@@ -423,7 +423,15 @@ public class BossSkeletonKingAction : MonsterAction
 
     public override void Damaged(float dmg, bool SetAnimation = false)
     {
-        base.Damaged(dmg, false);
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[5] == 1)
+        {
+            base.Damaged(dmg * 1.2f, false);
+
+        }
+        else
+        {
+            base.Damaged(dmg, false);
+        }
     }
 
     protected override void AttackUpdate() { }

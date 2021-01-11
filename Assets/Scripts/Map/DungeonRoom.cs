@@ -186,9 +186,13 @@ public class DungeonRoom : MonoBehaviour
                     //마스터리 스킬 보스 처치시 드랍율 향상
                     if(MasteryManager.Instance.currentMastery.currentMasteryChoices[0] == 1)
                     {
-                        for(int i =0; i < itemManager.bossProbability.Length; i++)
+                        if (Player.Instance.masterySet[0] == false)
                         {
-                            itemManager.itemDropProbability[i] = itemManager.bossProbability[i] + 30;
+                            for (int i = 0; i < itemManager.bossProbability.Length; i++)
+                            {
+                                itemManager.itemDropProbability[i] = itemManager.bossProbability[i] + 30;
+                            }
+                            Player.Instance.masterySet[0] = true;
                         }
                         
                     }
@@ -203,9 +207,13 @@ public class DungeonRoom : MonoBehaviour
                     if(MasteryManager.Instance.currentMastery.currentMasteryChoices[4]== -1 
                         || MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == 1)
                     {
-                        for (int i = 0; i < itemManager.itemDropProbability.Length; i++)
+                        if (Player.Instance.masterySet[4] == false)
                         {
-                            itemManager.itemDropProbability[i] = itemManager.stage1Probability[i]*1.1f;
+                            for (int i = 0; i < itemManager.itemDropProbability.Length; i++)
+                            {
+                                itemManager.itemDropProbability[i] = itemManager.stage1Probability[i] * 1.1f;
+                            }
+                            Player.Instance.masterySet[4] = true;
                         }
                     }
                     else
@@ -219,9 +227,13 @@ public class DungeonRoom : MonoBehaviour
                     if (MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == -1
                         || MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == 1)
                     {
-                        for (int i = 0; i < itemManager.itemDropProbability.Length; i++)
+                        if (Player.Instance.masterySet[4] == false)
                         {
-                            itemManager.itemDropProbability[i] = itemManager.stage2Probability[i] * 1.1f;
+                            for (int i = 0; i < itemManager.itemDropProbability.Length; i++)
+                            {
+                                itemManager.itemDropProbability[i] = itemManager.stage2Probability[i] * 1.1f;
+                            }
+                            Player.Instance.masterySet[4] = true;
                         }
                     }
                     else

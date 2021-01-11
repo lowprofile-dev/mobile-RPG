@@ -71,4 +71,14 @@ public class WeaponManager : SingletonBase<WeaponManager>
     {
         return _currentWeapon;
     } 
+
+    public void WeaponCoolTimeReduce()
+    {
+        foreach (string key in _weaponDic.Keys)
+        {
+            _weaponDic[key].skillACool -= 1;
+            _weaponDic[key].skillBCool -= 1;
+            _weaponDic[key].skillCCool -= 1;
+        }
+    }
 }

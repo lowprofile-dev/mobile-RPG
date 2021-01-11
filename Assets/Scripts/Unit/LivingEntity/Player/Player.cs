@@ -28,6 +28,7 @@ public class Player : LivingEntity
     private bool SkillB_ButtonClick = false;
     private bool SkillC_ButtonClick = false;
 
+    public bool[] masterySet = new bool[10]; 
 
     private float skillA_Counter = 0f;
     private float skillB_Counter = 0f;
@@ -147,55 +148,96 @@ public class Player : LivingEntity
     //마스터리 강화 관련 
     private void MasteryApply()
     {
+
+        //카드 리롤 확률 증가
+        //CardManager.cs 187
+
         //보스 처치 시 더 많은 코인 획득 미구현 -> 아이템 드랍 확률 증가
+        //DungeonRoom.cs 186
+
+        //공격 증가 부분
+        //Attack.cs 47
 
         //방어력 증가 부분
         if(MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
         {
-            
-            statusManager.finalStatus.armor *= 1.1f;
-            statusManager.finalStatus.magicResistance *= 1.1f;
+            if(masterySet[1] == false)
+            {
+                statusManager.finalStatus.armor *= 1.1f;
+                statusManager.finalStatus.magicResistance *= 1.1f;
+                masterySet[1] = true;
+            }
         }
         // 체력 증가
         if(MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == -1)
         {
-            statusManager.finalStatus.hpRecovery *= 1.2f;
+            if(masterySet[2] == false)
+            {
+                statusManager.finalStatus.hpRecovery *= 1.2f;
+                masterySet[2] = true;
+            }
+            
         }
         //기력 증가
 
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
         {
-            statusManager.finalStatus.staminaRecovery *= 1.2f;
+            if(masterySet[2] == false)
+            {
+                statusManager.finalStatus.staminaRecovery *= 1.2f;
+                masterySet[2] = true;
+            }
 
         }
         //이속 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == -1)
         {
-            statusManager.finalStatus.moveSpeed *= 1.2f;
-
+            if (masterySet[3] == false)
+            {
+                statusManager.finalStatus.moveSpeed *= 1.2f;
+                masterySet[3] = true;
+            }
         }
         //공속 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
         {
-            statusManager.finalStatus.attackSpeed *= 1.2f;
+            if (masterySet[3] == false)
+            {
+                statusManager.finalStatus.attackSpeed *= 1.2f;
+                masterySet[3] = true;
+            }
         }
 
-        //골드 획득량 증가 미구현
-
-        //아이템 증가
+        //골드 획득량 증가 미구현 && 아이템 확률 증가 통합
+        //DungeonRoom.cs 207
 
         //모든 몬스터 피해량 10%
+        //MonsterAction.cs 778
 
         //보스 피해량 20%
+        //BossSkeltonKingAction.cs 426
+        //BossSkeltonPase2.cs 416
 
         //회피시 무적
 
         //회피 사용 기력 감소
-
+        
         //기본공격 10% 강화, hp 2% 흡수
 
-        //스킬 쿨타임 1초 감소
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)
+        {
 
+        }
+        //스킬 쿨타임 1초 감소
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == 1)
+        {
+            if(masterySet[7] == false)
+            {
+                weaponManager.WeaponCoolTimeReduce();
+                masterySet[7] = true;
+            }
+
+        }
         // 단일 스킬 총 피해량 40% 증가
 
         // 광역 스킬 총 피해량 20% 증가
