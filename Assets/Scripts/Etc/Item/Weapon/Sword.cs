@@ -60,6 +60,7 @@ public class Sword : Weapon
 
     public override GameObject SkillA()
     {
+        
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillAEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
@@ -67,6 +68,8 @@ public class Sword : Weapon
         
         return SkillAEffect;
     }
+
+  
 
     public override GameObject SkillB()
     {
@@ -77,6 +80,7 @@ public class Sword : Weapon
 
     public override GameObject SkillB2()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 2 Swing", 0.6f);
         CameraManager.Instance.ShakeCamera(10, 3, 0.25f); // 카메라 흔들기 연출
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillBEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
@@ -88,6 +92,9 @@ public class Sword : Weapon
 
     public override GameObject SkillC()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 3 Swing", 0.6f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 3 Holy", 0.6f);
+
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillCEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
@@ -98,6 +105,7 @@ public class Sword : Weapon
 
     public override GameObject Attack3()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 3", 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect3).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
@@ -108,6 +116,7 @@ public class Sword : Weapon
 
     public override GameObject Attack2()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 2", 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect2).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
@@ -118,6 +127,7 @@ public class Sword : Weapon
 
     public override GameObject Attack()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 1", 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);

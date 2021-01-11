@@ -840,6 +840,7 @@ public class MonsterAction : MonoBehaviour
             Damaged(damage);
             ProductionDamaged();
             _isImmune = true;
+            DamagedSound();
 
             return damage;
         }
@@ -988,6 +989,14 @@ public class MonsterAction : MonoBehaviour
 
 
     /////////// 기타 ////////////
+
+    /// <summary>
+    /// 데미지를 받았을때 맞는 사운드 (공용)
+    /// </summary>
+    public void DamagedSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.75f);
+    }
 
     /// <summary>
     /// 현재 진행중인 애니메이션이 time보다 더 많이 진행됐는지 여부를 체크한다.
