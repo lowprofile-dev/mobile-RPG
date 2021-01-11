@@ -86,7 +86,7 @@ public class DungeonRoom : MonoBehaviour
                     lights[i].GetComponent<Light>().color = Color.black;
                     break;
             }
-            lights[i].GetComponent<Light>().intensity = 30;
+            lights[i].GetComponent<Light>().intensity = 15;
         }
     }
 
@@ -183,7 +183,8 @@ public class DungeonRoom : MonoBehaviour
             if (monsters[i] == null) continue;
             if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center))
             {
-                monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 1, 0);
+                monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 7, 0);
+
             }
         }
     }
