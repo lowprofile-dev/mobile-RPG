@@ -170,6 +170,22 @@ public class DungeonRoom : MonoBehaviour
             ChangeLights();
         }
         CheckPlayerInRoom();
+        //CheckMonstersInRoom();
+    }
+
+    /// <summary>
+    /// 방 밖에 생성된 몬스터는 방에 강제 스폰처리!
+    /// </summary>
+    private void CheckMonstersInRoom()
+    {
+        for (int i = monsters.Count -1; i >= 0; i--)
+        {
+            if (monsters[i] == null) continue;
+            if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center))
+            {
+                monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 1, 0);
+            }
+        }
     }
 
     private void CheckPlayerInRoom()
@@ -334,18 +350,29 @@ public class DungeonRoom : MonoBehaviour
         }
         if (nMonsterSpawned >= nMonsterToSpawn)
         {
+            CheckMonstersInRoom();
             return;
         }
+        //spawnPointIndex = random.Next(monsterSpawnPoints.Count);
+        //monsterIndex = random.Next(monsterPrefabs.Count);
+        //var monster = Instantiate(monsterPrefabs[monsterIndex]);
+        //monster.GetComponent<NavMeshAgent>().enabled = false;
+        //monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
+        //monster.transform.SetParent(null);
+        //monster.GetComponent<NavMeshAgent>().enabled = true;
+        //nMonsterSpawned += 1;
+        //monsters.Add(monster);
         for (int i = 0; i < nMonsters; i++)
         {
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
+            //spawnPointIndex = i;
             monsterIndex = random.Next(monsterPrefabs.Count);
             var monster = Instantiate(monsterPrefabs[monsterIndex]);
             monster.GetComponent<NavMeshAgent>().enabled = false;
-            monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
+            monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
             //monster.transform.SetParent(null);
             monster.GetComponent<NavMeshAgent>().enabled = true;
-            nMonsterSpawned += nMonsters;
+            nMonsterSpawned += 1;
             monsters.Add(monster);
         }
     }
