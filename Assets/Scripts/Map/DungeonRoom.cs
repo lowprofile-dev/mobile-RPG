@@ -197,6 +197,7 @@ public class DungeonRoom : MonoBehaviour
                 Invoke("CloseDoors", 2f);
                 if (isBossRoom)
                 {
+                    SoundManager.Instance.PlayBGM("BossBGM", 0.6f);
                     monsters.Add(dungeonManager.SpawnBoss());
                     nMonsterSpawned++;
                 }
@@ -246,6 +247,7 @@ public class DungeonRoom : MonoBehaviour
         if (isBossRoom)
         {
             dungeonManager.bossCleared = true;
+            SoundManager.Instance.PlayBGM("DungeonBGM", 0.6f);
         }
         Invoke("OpenDoors", 2);
     }
