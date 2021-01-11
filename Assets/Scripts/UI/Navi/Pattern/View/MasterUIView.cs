@@ -23,12 +23,11 @@ public class MasterUIView : View
     // Update is called once per frame
     void Update()
     {
-        
+        LevelPrint();
     }
 
     public void LevelPrint()
     {
-
         masteryLevelText.text = "Lv." + MasteryManager.Instance.currentMastery.currentMasteryLevel;
     }
 }
