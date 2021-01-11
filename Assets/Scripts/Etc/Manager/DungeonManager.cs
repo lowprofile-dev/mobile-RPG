@@ -10,7 +10,7 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] GameObject playerSpawnPoint;
     [SerializeField] GameObject areaPrefab;
     [SerializeField] DunGen.Dungeon dungeon;
-    [SerializeField] int dungeonStage = 1;
+    public int dungeonStage = 1;
     [SerializeField] TextMeshProUGUI stageInfo;
     [SerializeField] GameObject[] BossPrefabs;
 

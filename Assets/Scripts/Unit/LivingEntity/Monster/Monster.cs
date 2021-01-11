@@ -75,4 +75,9 @@ public class Monster : LivingEntity
         _monsterAction = GetComponent<MonsterAction>();
         _monsterAction.InitObject();
     }
+
+    //private void OnDestroy()
+    //{
+        
+    //}
 }

@@ -5,8 +5,9 @@ using System.IO;
 
 public class Item : MonoBehaviour
 {
-    [SerializeField] int id;
+    public int id;
     public ItemData itemData;
+    public bool isDrop;
     ItemManager itemManager;
     //Transform itemModel;
 
@@ -15,6 +16,11 @@ public class Item : MonoBehaviour
         //itemModel = transform.GetChild(0);
         itemManager = ItemManager.Instance;
         LoadItemData();
+    }
+
+    private void OnEnable()
+    {
+        Invoke("DisableItem", 10f);
     }
 
     [ContextMenu("Load item data")]
@@ -47,4 +53,8 @@ public class Item : MonoBehaviour
     //    }
     //    Instantiate(prefabPath, itemModel);
     //}
+    private void DisableItem()
+    {
+        gameObject.SetActive(false);
+    }
 }

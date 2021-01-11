@@ -1179,7 +1179,7 @@ public class Player : LivingEntity
             Item itemInfo = other.gameObject.GetComponent<Item>();
             itemManager.AddItem(itemInfo);
             Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
-            Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
         }
     }
 }
