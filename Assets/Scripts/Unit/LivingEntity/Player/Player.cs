@@ -1124,10 +1124,8 @@ public class Player : LivingEntity
     /// </summary>
     public void ChangeFaceCamera()
     {
-        faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
+        faceCam.InitFaceCam(_playerAvatar);
     }
-
-
 
     ///////////////// 기타 캐릭터 기능들 //////////////////
 
