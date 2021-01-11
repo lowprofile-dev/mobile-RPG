@@ -85,6 +85,7 @@ public class CurrentMastery : ICloneable
         currentWandSkillCReleased = false;
         currentStaffSkillBReleased = false;
         currentStaffSkillCReleased = false;
+        currentMasteryChoices = new List<int>(new int[10]);
     }
 
     public object Clone()
