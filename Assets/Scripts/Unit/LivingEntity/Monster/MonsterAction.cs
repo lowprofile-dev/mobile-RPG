@@ -180,7 +180,7 @@ public class MonsterAction : MonoBehaviour
             case MONSTER_STATE.STATE_DIE:
                 DeathStart();
                 ItemManager.Instance.DropItem(transform);
-                Debug.Log("아이템 드롭!");
+         //       Debug.Log("아이템 드롭!");
                 break;
             case MONSTER_STATE.STATE_CAST:
                 CastStart();
@@ -206,7 +206,7 @@ public class MonsterAction : MonoBehaviour
     {
         // 반드시 실행되는 업데이트 내용
 
-        Debug.Log(_currentState);
+     //   Debug.Log(_currentState);
         UpdateMonster();
 
         // 스테이트별 업데이트 내용
@@ -845,7 +845,7 @@ public class MonsterAction : MonoBehaviour
     {
         if (GetCanDamageCheck())
         {
-            Debug.Log("Player -> " + gameObject.name);
+          //  Debug.Log("Player -> " + gameObject.name);
             Damaged(damage);
             ProductionDamaged();
             _isImmune = true;
@@ -932,7 +932,7 @@ public class MonsterAction : MonoBehaviour
                     break;
             }
         
-            Debug.Log(name + " Exp + 10");
+        //    Debug.Log(name + " Exp + 10");
             MasteryManager.Instance.UpdateCurrentExp();
 
             ChangeState(MONSTER_STATE.STATE_DIE);
@@ -1044,14 +1044,14 @@ public class MonsterAction : MonoBehaviour
     protected virtual void RigidStart()
     {
         _navMeshAgent.isStopped = true;
-        Debug.Log("경직걸림");
+   //     Debug.Log("경직걸림");
         _monster.myAnimator.SetTrigger("Rigid");
     }
 
     protected virtual void StunStart()
     {
         _navMeshAgent.isStopped = true;
-        Debug.Log("스턴걸림");
+    //    Debug.Log("스턴걸림");
         StopAllCoroutines();
         _monster.myAnimator.SetTrigger("Stun");
     }
@@ -1059,7 +1059,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void FallStart()
     {
         _navMeshAgent.isStopped = true;
-        Debug.Log("넘어짐걸림");
+   //     Debug.Log("넘어짐걸림");
         StopAllCoroutines();
         _monster.myAnimator.SetTrigger("Fall");
     }

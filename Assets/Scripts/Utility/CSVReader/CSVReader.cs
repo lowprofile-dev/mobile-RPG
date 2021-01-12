@@ -58,7 +58,7 @@ namespace CSVReader
                             }
                             catch (Exception)
                             {
-                                Debug.Log("EXCEPTION 발생");
+                                //Debug.log("EXCEPTION 발생");
                             }
                         }
                     }

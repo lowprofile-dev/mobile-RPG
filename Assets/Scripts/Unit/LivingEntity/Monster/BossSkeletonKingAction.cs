@@ -449,7 +449,7 @@ public class BossSkeletonKingAction : MonsterAction
     }
     protected override void FallStart()
     {
-        Debug.Log("넘어짐 면역");
+     //   Debug.Log("넘어짐 면역");
     }
     protected override void FallExit() { }
 

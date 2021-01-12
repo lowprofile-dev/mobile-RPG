@@ -16,7 +16,7 @@ public class EquipWeapon : MonoBehaviour
 
     public void onbuttonClick()
     {
-        Debug.Log(name + "착용 !");
+      //  Debug.Log(name + "착용 !");
         WeaponManager.Instance.SetWeapon(name);
     }
 }

@@ -41,7 +41,7 @@ namespace CSVReader
                 }
                 catch
                 {
-                    Debug.Log("버그 발생");
+               //     Debug.Log("버그 발생");
                     return null; 
                 }
 

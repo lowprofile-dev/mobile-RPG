@@ -52,14 +52,14 @@ public class CameraManager : SingletonBase<CameraManager>
                 {
                     if (!joystick.getHold() && (IsPointerOverGameObject(0) == false && Input.touches[0].phase == TouchPhase.Moved))//(!joystick.getHold())
                     {
-                        Debug.Log("asd");
+                 //       Debug.Log("asd");
                          return Input.touches[0].deltaPosition.x / TouchSensitivity_x;
                     }
                     
                 }
                 else if (Input.touchCount > 0)
                 {
-                    Debug.Log("이거 하는중 ㅎ");
+               //     Debug.Log("이거 하는중 ㅎ");
                     Touch[] touch = Input.touches;
 
                     for (int i = 0; i < touch.Length; i++)

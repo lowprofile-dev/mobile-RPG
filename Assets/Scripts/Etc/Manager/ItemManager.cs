@@ -101,7 +101,7 @@ public class ItemManager : SingletonBase<ItemManager>
         PlayerPrefs.SetInt("LoadCurrentItemCount", PlayerPrefs.GetInt("LoadCurrentItemCount", 0));
         if (PlayerPrefs.GetInt("LoadCurrentItemCount") == 0)
         {
-            Debug.Log("최초 아이템 데이터 로드 실행입니다.");
+      //      Debug.Log("최초 아이템 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadCurrentItemCount", 1);
             SaveCurrentItems();
             PlayerPrefs.Save();
@@ -175,7 +175,7 @@ public class ItemManager : SingletonBase<ItemManager>
         PlayerPrefs.SetInt("LoadCurrentItemKeys", PlayerPrefs.GetInt("LoadCurrentItemKeys", 0));
         if (PlayerPrefs.GetInt("LoadCurrentItemKeys") == 0)
         {
-            Debug.Log("최초 스테이터스 데이터 로드 실행입니다.");
+     //       Debug.Log("최초 스테이터스 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadCurrentItemKeys", 1);
             SaveCurrentItemKeys();
             PlayerPrefs.Save();
@@ -428,7 +428,7 @@ public class ItemManager : SingletonBase<ItemManager>
     {
         if (PlayerPrefs.GetInt("LoadInventoryDataCount") == 0)
         {
-            Debug.Log("최초 인벤토리 데이터 로드 실행입니다.");
+     //       Debug.Log("최초 인벤토리 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadInventoryDataCount", 1);
             InitInventoryData();
             SaveInventoryData();
@@ -468,7 +468,7 @@ public class ItemManager : SingletonBase<ItemManager>
         EquipGloves(currentItemKeys.GlovesKey);
         EquipBoot(currentItemKeys.BootKey);
         statusManager.UpdateFinalStatus();
-        Debug.Log("curreunt status : " + statusManager.finalStatus);
+   //     Debug.Log("curreunt status : " + statusManager.finalStatus);
     }
 
     private void EquipBoot(int bootKey)
@@ -510,7 +510,7 @@ public class ItemManager : SingletonBase<ItemManager>
     public void DropItem(Transform monsterTransform)
     {
         var roll = UnityEngine.Random.Range(0, 100.0f);
-        Debug.Log("아이템 드랍 주사위 : " + roll);
+       // Debug.Log("아이템 드랍 주사위 : " + roll);
         for (int i = 0; i < 5; i++)
         {
             if (roll <= itemDropProbability[i])

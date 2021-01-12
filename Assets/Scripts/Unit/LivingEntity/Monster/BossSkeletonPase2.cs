@@ -220,7 +220,7 @@ public class BossSkeletonPase2 : MonsterAction
             attackType = AttackType.DASH_ATTACK;
         }
 
-        Debug.Log("캐스팅" + attackType.ToString());
+   //     Debug.Log("캐스팅" + attackType.ToString());
     }
 
     protected override void DoCastingAction()

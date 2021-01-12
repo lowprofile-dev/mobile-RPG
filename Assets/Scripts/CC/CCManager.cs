@@ -45,7 +45,7 @@ public class CCManager : MonoBehaviour
     {
         if(type == "fall")
         {
-            Debug.Log("CCMANAGER 넘어짐");
+         //   Debug.Log("CCMANAGER 넘어짐");
             ccControl.Clear();
             ccControl.Add(type, cc);
             currentCC = type;
@@ -59,7 +59,7 @@ public class CCManager : MonoBehaviour
             
                 if (currentCC != "fall")
                 {
-                    Debug.Log("CCMANAGER 스턴");
+             //       Debug.Log("CCMANAGER 스턴");
                     ccControl.Clear();
                     ccControl.Add(type, cc);
                     currentCC = type;
@@ -70,7 +70,7 @@ public class CCManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("넘어짐 상태라 스턴안걸림");
+           //         Debug.Log("넘어짐 상태라 스턴안걸림");
                 }
             
         }
@@ -79,7 +79,7 @@ public class CCManager : MonoBehaviour
             
                 if (currentCC != "fall" && currentCC != "stun")
                 {
-                    Debug.Log("CCMANAGER 경직");
+               //     Debug.Log("CCMANAGER 경직");
                     ccControl.Clear();
                     ccControl.Add(type, cc);
                     currentCC = type;
@@ -90,7 +90,7 @@ public class CCManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("넘어짐 상태 혹은 스턴 상태라 경직 안걸림");
+           //         Debug.Log("넘어짐 상태 혹은 스턴 상태라 경직 안걸림");
                 }
             
         }

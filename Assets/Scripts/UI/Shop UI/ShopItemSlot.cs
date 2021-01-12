@@ -35,7 +35,7 @@ public class ShopItemSlot : MonoBehaviour
     {
         if (itemManager == null) itemManager = ItemManager.Instance;
         itemManager.AddToCart(shopItemCardIndex, this.itemData);
-        Debug.Log("아이템 ID: " + this.itemData.id);
+       // Debug.Log("아이템 ID: " + this.itemData.id);
         ShopUI.GetComponent<ShopUIView>().LoadPlayerInventory();
         ShopUI.GetComponent<ShopUIView>().LoadItemCards();
         ShopUI.GetComponent<ShopUIView>().SetTotalPrice();

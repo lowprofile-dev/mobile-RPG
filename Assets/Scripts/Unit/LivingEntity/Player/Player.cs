@@ -1060,7 +1060,7 @@ public class Player : LivingEntity
 
     private void DieEnter()
     {
-        Debug.Log("죽음!");
+        //Debug.log("죽음!");
 
         _isdead = true;
 
@@ -1076,7 +1076,7 @@ public class Player : LivingEntity
         if (resurrection == true)
         {
             _isdead = false;
-            Debug.Log("마스터리 특성 부활!");
+            //Debug.log("마스터리 특성 부활!");
             _hp = statusManager.finalStatus.maxHp;
             ChangeState(PLAYERSTATE.PS_IDLE);
         }
@@ -1421,7 +1421,7 @@ public class Player : LivingEntity
         {
             Item itemInfo = other.gameObject.GetComponent<Item>();
             itemManager.AddItem(itemInfo);
-            Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
+            //Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
             other.gameObject.SetActive(false);
         }
     }

@@ -140,7 +140,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
         PlayerPrefs.SetInt("LoadCurrentMasteryCount", PlayerPrefs.GetInt("LoadCurrentMasteryCount", 0));
         if (PlayerPrefs.GetInt("LoadCurrentMasteryCount") == 0)
         {
-            Debug.Log("최초 마스터리 데이터 로드 실행입니다.");
+            //Debug.log("최초 마스터리 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadCurrentMasteryCount", 1);
             SaveCurrentMastery();
             PlayerPrefs.Save();
@@ -172,7 +172,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
         PlayerPrefs.SetInt("LoadWeaponSkillCount", PlayerPrefs.GetInt("LoadWeaponSkillCount", 0));
         if (PlayerPrefs.GetInt("LoadWeaponSkillCount") == 0)
         {
-            Debug.Log("최초 스킬 레벨 데이터 로드 실행입니다.");
+            //Debug.log("최초 스킬 레벨 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadWeaponSkillCount", 1);
             SaveSkillLevel();
             PlayerPrefs.Save();

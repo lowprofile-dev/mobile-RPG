@@ -41,13 +41,13 @@ public class UIManager : SingletonBase<UIManager>
 
     void InventoryClick()
     {
-        Debug.Log("인벤토리");
+        //Debug.log("인벤토리");
         UINaviationManager.Instance.PushToNav("SubUI_Inventory");
     }
 
     public void OptionClick()
     {
-        Debug.Log("옵션");
+        //Debug.log("옵션");
 
         if (Time.timeScale != 0)
         {
@@ -62,12 +62,12 @@ public class UIManager : SingletonBase<UIManager>
     }
     public void InvincibleClick() //회피
     {
-        Debug.Log("회피");
+        //Debug.log("회피");
         if (!Player.Instance.isdead) Player.Instance.SetAvoidButton(true);
     }
     public void PlayerInfoClick()
     {
-        Debug.Log("플레이어 정보창");
+        //Debug.log("플레이어 정보창");
         UINaviationManager.Instance.PushToNav("SubUI_Info");
     }
 

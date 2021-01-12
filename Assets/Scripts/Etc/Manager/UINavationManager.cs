@@ -53,12 +53,12 @@ public class UINaviationManager : SingletonBase<UINaviationManager>
     {
         if (FindTargetIsInNav("PlayerUI_TalkUIView"))
         {
-            Debug.Log("HELLO");
+      //      Debug.Log("HELLO");
             PopToNav("PlayerUI_TalkUIView");
         }
         else
         {
-            Debug.Log("NO HELLO");
+     //       Debug.Log("NO HELLO");
             PushToNav("PlayerUI_TalkUIView");
         }
     }

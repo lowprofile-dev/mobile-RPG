@@ -134,7 +134,7 @@ namespace CSVReader
 
                     catch
                     {
-                        Debug.Log("버그 발새애애애애애앵애앵애애앵");
+            //            Debug.Log("버그 발새애애애애애앵애앵애애앵");
                     }
                  
                 }

@@ -7,7 +7,7 @@ public class PlayerInfoButton : MonoBehaviour
     
     public void onCilckInfo()
     {
-        Debug.Log("정보창클릭");
+     //   Debug.Log("정보창클릭");
         UIManager.Instance.PlayerInfoClick();
     }
 }

@@ -46,7 +46,7 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         //itemDetail.SetActive(true);
-        Debug.Log("장비템 로드");
+ //      Debug.Log("장비템 로드");
         //itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
         itemDetail.GetComponent<EquipDetail>().LoadData(itemData);
     }
