@@ -10,39 +10,53 @@ public class FaceCam : MonoBehaviour
     GameObject followAvatar = null;
     GameObject bodyAvatar = null;
 
-
+    private void OnEnable()
+    {
+        faceCam = gameObject.GetComponent<CinemachineFreeLook>();
+    }
     public void InitFaceCam(GameObject avatar)
     {
-        OnDisable();
-        SetTargetWithGenerate(avatar);
+        ResetAvata();
+        StartCoroutine(SetTargetWithGenerate(avatar));
+        //SetTargetWithGenerate(avatar);
+    }
+
+    private void ResetAvata()
+    {
+        if (followAvatar != null)
+            Destroy(followAvatar);
+        //ObjectPoolManager.Instance.ReturnObject(followAvatar);
+        if (bodyAvatar != null)
+            Destroy(bodyAvatar);
+            //ObjectPoolManager.Instance.ReturnObject(bodyAvatar);
     }
 
     private void OnDisable()
     {
-        if (followAvatar != null)
-            Destroy(followAvatar.gameObject);
-            //ObjectPoolManager.Instance.ReturnObject(followAvatar);
-        if (bodyAvatar != null)
-            ObjectPoolManager.Instance.ReturnObject(bodyAvatar);
+        ResetAvata();
     }
 
-    public void SetTargetWithGenerate(GameObject target)
+    public IEnumerator SetTargetWithGenerate(GameObject target)
     {
-        faceCam = GetComponent<CinemachineFreeLook>();
+
+        yield return new WaitForSeconds(1f);
         followAvatar = Instantiate(target);
-        //followAvatar = ObjectPoolManager.Instance.GetObject(target);
-        followAvatar.transform.position = new Vector3(950, 1000, -15);
+        bodyAvatar = ObjectPoolManager.Instance.GetObject(target);
+        
+        followAvatar.transform.position = new Vector3(0, 1000, -15);
         followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
+        bodyAvatar.transform.position = new Vector3(0, 2000, -15);
+        bodyAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         followAvatar.tag = "FaceCamAvata";
+        bodyAvatar.tag = "BodyCamAvata";
+
         followAvatar.GetComponent<Animator>().enabled = true;
+        bodyAvatar.GetComponent<Animator>().enabled = true;
+
+        yield return new WaitForSeconds(1f);
         faceCam.m_Follow = followAvatar.transform;
         faceCam.m_LookAt = followAvatar.transform;
 
-        bodyAvatar = ObjectPoolManager.Instance.GetObject(target);
-        bodyAvatar.transform.position = new Vector3(2000, 2000, -15);
-        bodyAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
-        bodyAvatar.tag = "BodyCamAvata";
-        bodyAvatar.GetComponent<Animator>().enabled = true;
         bodycam.m_Follow = bodyAvatar.transform;
         bodycam.m_LookAt = bodyAvatar.transform;
         

@@ -15,9 +15,10 @@ public class BodyCamController : MonoBehaviour , IPointerDownHandler , IPointerU
     private void OnEnable()
     {
         bodyAvata = GameObject.FindGameObjectWithTag("BodyCamAvata");
-        bodyAvata.transform.position = new Vector3(2000, 2000, -15);
-        bodyAvata.transform.rotation = Quaternion.Euler(-10, 170, 0);
+        //bodyAvata.transform.position = new Vector3(2000, 2000, -15);
+        //bodyAvata.transform.rotation = Quaternion.Euler(-10, 170, 0);
     }
+
     private void Update()
     {
         if (isButtonDown)
