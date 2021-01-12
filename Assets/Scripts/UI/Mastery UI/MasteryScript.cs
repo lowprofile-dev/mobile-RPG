@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class MasteryScript : MonoBehaviour
 {
@@ -159,32 +160,38 @@ public class MasteryScript : MonoBehaviour
 
     public void ToggleCheck()
     {
-        if(levelLimit <= MasteryManager.Instance.currentMastery.currentMasteryLevel)
-        {
-            if (upSkill.isOn)
-            {
-                upPanel.SetActive(true);
-                downPanel.SetActive(true);
-                masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = -1;
-            }
-            else if (downSkill.isOn)
-            {
-                upPanel.SetActive(true);
-                downPanel.SetActive(true);
-                masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 1;
-            }
-            else
-            {
-                upPanel.SetActive(false);
-                downPanel.SetActive(false);
-                masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 0;
-            }
-            masteryManager.SaveCurrentMastery();
-        }
-        else
+        if(SceneManager.GetActiveScene().name == "DungeonScene")
         {
             upPanel.SetActive(true);
             downPanel.SetActive(true);
+        }
+        else
+        {
+            if (levelLimit <= MasteryManager.Instance.currentMastery.currentMasteryLevel)
+            {
+                if (upSkill.isOn)
+                {
+                    downPanel.SetActive(true);
+                    masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = -1;
+                }
+                else if (downSkill.isOn)
+                {
+                    upPanel.SetActive(true);
+                    masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 1;
+                }
+                else
+                {
+                    upPanel.SetActive(false);
+                    downPanel.SetActive(false);
+                    masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 0;
+                }
+                masteryManager.SaveCurrentMastery();
+            }
+            else
+            {
+                upPanel.SetActive(true);
+                downPanel.SetActive(true);
+            }
         }
 
     }

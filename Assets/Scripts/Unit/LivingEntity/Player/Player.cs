@@ -221,7 +221,7 @@ public class Player : LivingEntity
         {
             if (masterySet[3] == false)
             {
-                statusManager.finalStatus.moveSpeed *= 1.2f;
+                statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed * 2f;
                 masterySet[3] = true;
             }
         }

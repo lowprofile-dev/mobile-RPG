@@ -17,8 +17,8 @@ public class WeaponSkillLevel : ICloneable
     {
         autoAttackLevel = 1;
         skillALevel = 1;
-        skillBLevel = 0;
-        skillCLevel = 0;
+        skillBLevel = 1;
+        skillCLevel = 1;
     }
 
     public object Clone()
