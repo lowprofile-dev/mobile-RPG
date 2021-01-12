@@ -86,7 +86,7 @@ public class DungeonRoom : MonoBehaviour
                     lights[i].GetComponent<Light>().color = Color.black;
                     break;
             }
-            lights[i].GetComponent<Light>().intensity = 10;
+            lights[i].GetComponent<Light>().intensity = 9;
         }
     }
 

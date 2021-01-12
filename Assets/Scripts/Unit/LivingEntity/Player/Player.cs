@@ -149,7 +149,7 @@ public class Player : LivingEntity
 
     private void ApplyGravity()
     {
-        if (transform.position.y < -50)
+        if (transform.position.y < -50 && !_isdead)
             DieEnter();
         if (characterController.isGrounded)
         {
@@ -989,6 +989,7 @@ public class Player : LivingEntity
 
     private void DieEnter()
     {
+        Debug.Log("죽음!");
         _isdead = true;
         myAnimator.SetTrigger("Die");
         _CCManager.Release();
@@ -1232,7 +1233,10 @@ public class Player : LivingEntity
         SetMinimapFreeLook();
         if (cam != null)
             return;
-        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
+        if (SceneManager.GetActiveScene().name == "DungeonScene")
+            cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
+        else
+            cam = GameObject.FindGameObjectWithTag("PlayerFollowCamera").transform;
     }
 
     /// <summary>
