@@ -153,7 +153,9 @@ public class Player : LivingEntity
     private void ApplyGravity()
     {
         if (transform.position.y < -50 && !_isdead)
-            DieEnter();
+        {
+            ChangeState(PLAYERSTATE.PS_DIE);
+        }
         if (characterController.isGrounded)
         {
             vSpeed = 0;
@@ -1072,7 +1074,11 @@ public class Player : LivingEntity
         _CCManager.Release();
         _DebuffManager.Release();
 
-        if(resurrection == false) SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
+        if (resurrection == false)
+        {
+            SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
+            Invoke("DieExit", 3f);
+        }
     }
 
     public void DieUpdate()
@@ -1084,22 +1090,18 @@ public class Player : LivingEntity
             _hp = statusManager.finalStatus.maxHp;
             ChangeState(PLAYERSTATE.PS_IDLE);
         }
-
         else Invoke("DieExit", 3f);
     }
 
     public void DieExit()
     {
-        if(_isdead != false) // 최초로 죽는다면
+        _isdead = false;
+        myAnimator.ResetTrigger("Die");
+        if (resurrection == true)
         {
-            _isdead = false;
-            myAnimator.ResetTrigger("Die");
-            if (resurrection == true)
-            {
-                resurrection = false;
-            }
-            else UILoaderManager.Instance.LoadVillage();
+            resurrection = false;
         }
+        else UILoaderManager.Instance.LoadVillage();
     }
 
     ///////////////// 전환 관련 //////////////////
