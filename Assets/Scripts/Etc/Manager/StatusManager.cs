@@ -38,6 +38,7 @@ public class MultiplicationStatus
     public float attackCooldown;        //공격스킬 쿨타임 % 감소
     public float armorIncreaseRate;     //방어력 % 증가
     public float moveSpeed;             //이동 속도 % 증가
+    public float maxSpeed;
     public float dashCooldown;          //대쉬 스킬 쿨타임 % 감소
     public float dashStamina;           //대쉬 스킬 스태미너 % 감소
 
@@ -48,6 +49,7 @@ public class MultiplicationStatus
         attackCooldown = 0;        //공격스킬 쿨타임 % 감소
         armorIncreaseRate = 0;     //방어력 % 증가
         moveSpeed = 0;             //이동 속도 % 증가
+        maxSpeed = moveSpeed;
         dashCooldown = 0;          //대쉬 스킬 쿨타임 % 감소
         dashStamina = 0;           //대쉬 스킬 스태미너 % 감소
     }
