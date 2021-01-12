@@ -2,13 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 {
     private Dictionary<string, Queue<GameObject>> objectPool = new Dictionary<string, Queue<GameObject>>();
 
+    /// <summary>
+    /// 시작과 동시에 온갖 미리 풀 할 친구들을 풀해둔다.
+    /// </summary>
     public void InitObjectPoolManager()
     {
-        
+         ObjectFastPoolList myFastPoolList = ResourceManager.Instance.Instantiate("Prefab/Etc/Pool/ObjectFastPoolList", transform).GetComponent<ObjectFastPoolList>();
+
+        for(int i=0; i< myFastPoolList.effectList.Length; i++)
+        {
+            InitObject(myFastPoolList.effectList[i], 2, transform);
+        }
+    }
+
+    public void PoolBigObjects()
+    {
+
     }
 
     private void Start()

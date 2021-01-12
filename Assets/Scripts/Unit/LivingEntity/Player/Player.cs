@@ -60,7 +60,7 @@ public class Player : LivingEntity
     float horizontal;
     float vertical;
     float vSpeed;
-    bool _isdead = false; public bool isdead { get { return _isdead; } }
+    bool _isdead = false; public bool isdead { get { return _isdead; } set { _isdead = value; } }
     private int _cntSkillType;
 
     public float dashSpeed; // 대쉬 스피드
@@ -1080,19 +1080,22 @@ public class Player : LivingEntity
             _hp = statusManager.finalStatus.maxHp;
             ChangeState(PLAYERSTATE.PS_IDLE);
         }
+
         else Invoke("DieExit", 3f);
     }
 
     public void DieExit()
     {
-
-        _isdead = false;
-        myAnimator.ResetTrigger("Die");
-        if (resurrection == true)
+        if(_isdead != false) // 최초로 죽는다면
         {
-            resurrection = false;
+            _isdead = false;
+            myAnimator.ResetTrigger("Die");
+            if (resurrection == true)
+            {
+                resurrection = false;
+            }
+            else UILoaderManager.Instance.LoadVillage();
         }
-        else UILoaderManager.Instance.LoadVillage();
     }
 
     ///////////////// 전환 관련 //////////////////
