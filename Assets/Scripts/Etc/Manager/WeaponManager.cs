@@ -59,7 +59,8 @@ public class WeaponManager : SingletonBase<WeaponManager>
         _currentWeapon = _weaponDic[_currentWeaponName];
         Player.Instance.myAnimator.runtimeAnimatorController = _currentWeapon.WeaponAnimation;
         _weaponDic[weaponName].attackDamage += statusManager.finalStatus.attackDamage;
-        _weaponDic[weaponName].magicDamage += statusManager.finalStatus.magicDamage; 
+        _weaponDic[weaponName].magicDamage += statusManager.finalStatus.magicDamage;
+        UIManager.Instance.playerUIView.SetWeaponSkillIcon();
     }
 
     public string GetWeaponName()

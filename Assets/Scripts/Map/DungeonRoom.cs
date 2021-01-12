@@ -86,7 +86,7 @@ public class DungeonRoom : MonoBehaviour
                     lights[i].GetComponent<Light>().color = Color.black;
                     break;
             }
-            lights[i].GetComponent<Light>().intensity = 9;
+            lights[i].GetComponent<Light>().intensity = 7;
         }
     }
 
@@ -259,7 +259,7 @@ public class DungeonRoom : MonoBehaviour
                     }
                 }
                 isSpawning = true;
-                Invoke("CloseDoors", 2f);
+                Invoke("CloseDoors", 1f);
                 if (isBossRoom)
                 {
                     SoundManager.Instance.PlayBGM("BossBGM", 0.6f);
@@ -272,12 +272,7 @@ public class DungeonRoom : MonoBehaviour
         else
         {
             hasPlayer = false;
-            if (isSpawning)
-            {
-                isSpawning = false;
-                OpenDoors();
-                StopCoroutine(SpawnMonsterCoroutine());
-            }
+            Invoke("OpenDoors", 1f);
         }
     }
 
@@ -314,11 +309,12 @@ public class DungeonRoom : MonoBehaviour
             dungeonManager.bossCleared = true;
             SoundManager.Instance.PlayBGM("DungeonBGM", 0.6f);
         }
-        Invoke("OpenDoors", 2);
+        OpenDoors();
     }
 
     private bool KilledAllMonster()
     {
+        if (monsters.Count == 0) return true;
         for (int i = monsters.Count - 1; i > -1; i--)
         {
             if (monsters[i] == null)
@@ -326,13 +322,9 @@ public class DungeonRoom : MonoBehaviour
         }
         for (int i = 0; i < monsters.Count; i++)
         {
-            if (monsters[i].GetComponent<MonsterAction>().currentState != MONSTER_STATE.STATE_DIE)
+            if (monsters[i] != null)
             {
                 return false;
-            }
-            if (monsters[i] == null)
-            {
-                continue;
             }
         }
         return true;
@@ -344,7 +336,7 @@ public class DungeonRoom : MonoBehaviour
     /// <param name="nMonsters">스폰할 몬스터 개수</param>
     void SpawnMonster(int nMonsters = 1)
     {
-        if (nMonsterSpawned >= nMonsterToSpawn && KilledAllMonster())
+        if (nMonsterSpawned >= nMonsterToSpawn && KilledAllMonster() == true)
         {
             ClearRoom();
             return;
