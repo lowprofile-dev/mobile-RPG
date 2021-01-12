@@ -144,8 +144,8 @@ public class DungeonManager : MonoBehaviour
     {
         if (dungeonStage == 4)
         {
-            UILoaderManager.Instance.AddScene("VillageScene");
-            UILoaderManager.Instance.CloseScene("DungeonScene");
+
+            LoadingSceneManager.LoadScene("VillageScene", "DungeonScene");
 
             SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Fire Loop", 0.40f, 0, true);
             SoundManager.Instance.StopEffect("Cave 1 Loop");

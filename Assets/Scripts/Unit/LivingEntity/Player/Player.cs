@@ -96,6 +96,7 @@ public class Player : LivingEntity
 
     protected override void Start()
     {
+        UILoaderManager.Instance.LoadUI();
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
         var _player = this;
@@ -1006,13 +1007,8 @@ public class Player : LivingEntity
     {
         _isdead = false;
         myAnimator.ResetTrigger("Die");
-        UILoaderManager.Instance.LoadScene("DungeonScene", "UIScene");
-        //UILoaderManager.Instance.AddScene("VillageScene");
-        //UILoaderManager.Instance.CloseScene("DungeonScene");
+        LoadingSceneManager.LoadScene("DungeonScene", "VillageScene");
     }
-
-
-
 
     ///////////////// 전환 관련 //////////////////
 
@@ -1219,9 +1215,6 @@ public class Player : LivingEntity
         trailParticle1.Play();
         trailParticle2.Play();
     }
-
-
-
     ///////////////// 카메라 관련 //////////////////
 
     /// <summary>
@@ -1234,7 +1227,10 @@ public class Player : LivingEntity
         SetMinimapFreeLook();
         if (cam != null)
             return;
-        cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
+        if (SceneManager.GetActiveScene().name == "DungeonScene")
+            cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
+        else
+            cam = GameObject.FindGameObjectWithTag("PlayerFollowCamera").transform;
     }
 
     /// <summary>

@@ -7,7 +7,7 @@ public class StartsceneUI : MonoBehaviour
 {
     public void GoToUIScene()
     {
-        LoadingSceneManager.LoadScene("UIScene");
+        LoadingSceneManager.LoadScene("VillageScene");
         //UILoaderManager.Instance.LoadScene("StartScene", "UIScene");
     }
 }
