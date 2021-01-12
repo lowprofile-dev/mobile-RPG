@@ -144,6 +144,20 @@ public class Player : LivingEntity
         UpdateAll();
         UpdateState();
         MasteryApply();
+        ApplyGravity();
+    }
+
+    private void ApplyGravity()
+    {
+        if (transform.position.y < -50)
+            DieEnter();
+        if (characterController.isGrounded)
+        {
+            vSpeed = 0;
+        }
+
+        vSpeed = vSpeed - Time.deltaTime * 9.8f;
+        characterController.Move(Vector3.up * vSpeed * Time.deltaTime);
     }
 
     //마스터리 강화 관련 
@@ -561,13 +575,7 @@ public class Player : LivingEntity
             characterController.Move(moveDir.normalized * speed * Time.deltaTime);
         }
 
-        if (characterController.isGrounded)
-        {
-            vSpeed = 0;
-        }
-
-        vSpeed = vSpeed - Time.deltaTime * 9.8f;
-        characterController.Move(Vector3.up * vSpeed * Time.deltaTime);
+        
         //_myStateMachine.UpdateState();
     }
 
@@ -986,6 +994,7 @@ public class Player : LivingEntity
         _CCManager.Release();
         _DebuffManager.Release();
         SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
+        Invoke("DieExit", 5f);
     }
 
     public void DieUpdate()
@@ -997,6 +1006,9 @@ public class Player : LivingEntity
     {
         _isdead = false;
         myAnimator.ResetTrigger("Die");
+        //UILoaderManager.Instance.LoadScene("DungeonScene", "VillageScene");
+        UILoaderManager.Instance.AddScene("VillageScene");
+        UILoaderManager.Instance.CloseScene("DungeonScene");
     }
 
 
