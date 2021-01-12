@@ -2590,8 +2590,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 268.8, y: 229.4}
-  m_SizeDelta: {x: 537.65875, y: 458.88153}
+  m_AnchoredPosition: {x: 200, y: 200}
+  m_SizeDelta: {x: 420, y: 420}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &448702858330346775
 CanvasRenderer:
@@ -2871,6 +2871,7 @@ GameObject:
   - component: {fileID: 448702858551638249}
   - component: {fileID: 448702858551638248}
   - component: {fileID: 448702858551638255}
+  - component: {fileID: 1415471862}
   m_Layer: 5
   m_Name: PlayerUI_View
   m_TagString: Untagged
@@ -2919,7 +2920,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 448702858551638260}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -2950,7 +2951,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1600, y: 900}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2985,13 +2986,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _viewName: 
+  _atkSprite: {fileID: 21300000, guid: 90f916ccb0445244cbc3600f90d16147, type: 3}
+  _talkSprite: {fileID: 21300000, guid: 6f83754d1cbb0eb42ad3a6a0c9cfa223, type: 3}
   _cardTestBtn: {fileID: 448702858662977910}
   _shopTestBtn: {fileID: 448702858562633733}
   _atkBtn: {fileID: 448702857747432949}
+  _atkImg: {fileID: 448702858698678368}
   _invincibleBtn: {fileID: 448702858133952427}
   _skillAButton: {fileID: 448702857515001572}
+  _skillAImg: {fileID: 448702857619450060}
   _skillBButton: {fileID: 448702858796842780}
+  _skillBImg: {fileID: 448702858082613579}
   _skillCButton: {fileID: 448702857959140028}
+  _skillCImg: {fileID: 448702858436734809}
   _masteryText: {fileID: 448702858580626294}
   _weaponText: {fileID: 448702857694409569}
   _masteryButton: {fileID: 2668148012747199794}
@@ -3001,6 +3008,14 @@ MonoBehaviour:
   _buffFrame: {fileID: 3897958913980298380}
   _buffImgPrefab: {fileID: 1178066090166967396, guid: 63d5ed2bca5184149bf94c51229f18b9,
     type: 3}
+--- !u!222 &1415471862
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448702858551638260}
+  m_CullTransparentMesh: 0
 --- !u!1 &448702858562633735
 GameObject:
   m_ObjectHideFlags: 0
@@ -3037,8 +3052,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.7, y: 1}
   m_AnchorMax: {x: 0.7, y: 1}
-  m_AnchoredPosition: {x: 80, y: -50}
-  m_SizeDelta: {x: 60, y: 60}
+  m_AnchoredPosition: {x: 160, y: -30}
+  m_SizeDelta: {x: 100.002716, y: 100.00003}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &448702858562633979
 CanvasRenderer:
@@ -3272,7 +3287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &448702858662977905
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3433,7 +3448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4334,7 +4349,7 @@ PrefabInstance:
     - target: {fileID: 114282555968907678, guid: e0815e227ed46e445b99930271e8942c,
         type: 3}
       propertyPath: movementAreaRadius
-      value: 500
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 114592483299003616, guid: e0815e227ed46e445b99930271e8942c,
         type: 3}

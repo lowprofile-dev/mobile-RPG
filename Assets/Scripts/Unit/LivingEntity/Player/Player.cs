@@ -1018,6 +1018,11 @@ public class Player : LivingEntity
 
     }
 
+    public bool CheckThereisObject()
+    {
+        return Physics.OverlapSphere(transform.position, 3.0f, LayerMask.GetMask("NPC")).Length > 0;
+    }
+
     /// <summary>
     /// 눌렀을 시 주변의 NPC와 상호작용한다.
     /// </summary>
@@ -1028,7 +1033,6 @@ public class Player : LivingEntity
         {
             if (colliders[i].GetComponent<NonLivingEntity>())
             {
-                transform.LookAt(colliders[i].transform);
                 colliders[i].GetComponent<NonLivingEntity>().Interaction();
                 break;
             }

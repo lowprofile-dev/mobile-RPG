@@ -6,13 +6,20 @@ public class PlayerUIView : View
 {
     string iconPath = "Image/TonityEden/Skill Icons Megapack/";
 
+    [SerializeField] private Sprite _atkSprite;
+    [SerializeField] private Sprite _talkSprite;
+
     [SerializeField] private Button _cardTestBtn;
     [SerializeField] private Button _shopTestBtn;
     [SerializeField] private Button _atkBtn;
+    [SerializeField] private Image _atkImg;
     [SerializeField] private Button _invincibleBtn;
     [SerializeField] private Button _skillAButton;
+    [SerializeField] private Image _skillAImg;
     [SerializeField] private Button _skillBButton;
+    [SerializeField] private Image _skillBImg;
     [SerializeField] private Button _skillCButton;
+    [SerializeField] private Image _skillCImg;
     [SerializeField] private TextMeshProUGUI _masteryText;
     [SerializeField] private TextMeshProUGUI _weaponText;
     [SerializeField] private Button _masteryButton;
@@ -37,7 +44,6 @@ public class PlayerUIView : View
         _skillCButton.onClick.AddListener(delegate { _skillCButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
         _masteryButton.onClick.AddListener(delegate { _masteryButton.GetComponent<MasteryButton>().onButtonClick(); });
         _weaponButton.onClick.AddListener(delegate { _weaponButton.GetComponent<WeaponButton>().onButtonClick(); });
-
     }
 
     public override void UIExit()
@@ -56,6 +62,19 @@ public class PlayerUIView : View
 
         SetMyStatusText();
         SetHpStemina();
+        SetTalkOrAttackSprite();
+    }
+
+
+
+    /// <summary>
+    /// 대화 혹은 공격으로 스프라이트를 적용한다.
+    /// </summary>
+    public void SetTalkOrAttackSprite()
+    {
+        Debug.Log((Player.Instance != null) + " " + Player.Instance.CheckThereisObject());
+        if (Player.Instance != null && Player.Instance.CheckThereisObject()) _atkImg.sprite = _talkSprite;
+        else _atkImg.sprite = _atkSprite;
     }
 
     /// <summary>
