@@ -45,11 +45,6 @@ public class UIManager : SingletonBase<UIManager>
         UINaviationManager.Instance.PushToNav("SubUI_Inventory");
     }
 
-    void Start()
-    {
-        UILoaderManager.Instance.LoadVillage();
-    }
-
     public void OptionClick()
     {
         Debug.Log("옵션");

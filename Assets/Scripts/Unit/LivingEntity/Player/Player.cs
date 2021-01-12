@@ -96,6 +96,7 @@ public class Player : LivingEntity
 
     protected override void Start()
     {
+        UILoaderManager.Instance.LoadUI();
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
         var _player = this;
@@ -1018,9 +1019,6 @@ public class Player : LivingEntity
         UILoaderManager.Instance.LoadVillage();
     }
 
-
-
-
     ///////////////// 전환 관련 //////////////////
 
     /// <summary>
@@ -1226,9 +1224,6 @@ public class Player : LivingEntity
         trailParticle1.Play();
         trailParticle2.Play();
     }
-
-
-
     ///////////////// 카메라 관련 //////////////////
 
     /// <summary>

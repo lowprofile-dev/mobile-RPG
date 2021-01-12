@@ -16,6 +16,6 @@ public class TESTButton : MonoBehaviour
     }
     void fClick()
     {
-        UILoaderManager.Instance.LoadScene("TEST1", map);
+        //UILoaderManager.Instance.LoadScene("TEST1", map);
     }
 }

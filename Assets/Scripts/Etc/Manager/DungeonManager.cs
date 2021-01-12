@@ -143,8 +143,7 @@ public class DungeonManager : MonoBehaviour
     public void ClearStage()
     {
         if (dungeonStage == 4)
-        {
-            SoundManager.Instance.PlayBGM("WinBGM", 0.6f);
+        {          
             UILoaderManager.Instance.LoadVillage();
             CardManager.Instance._cntDungeon = null;
             CardManager.Instance.currentStage = 0;

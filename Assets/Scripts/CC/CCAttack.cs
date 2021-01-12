@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class CCAttack : MonoBehaviour
 {
-  
-    [SerializeField]
-    private float debuffDuration;   //디버프 지속시간
-    [SerializeField]
-    private float proc;             //CC가 걸릴 확률
-
-    public float DebuffDuration { get { return debuffDuration; } set { debuffDuration = value; } }
-    public float Proc { get { return proc; } set { proc = value; } }
 
     public void ApplyCC(GameObject unit , float fstun , float ffall , float frig) // CC 적용시키는 코드
     {
