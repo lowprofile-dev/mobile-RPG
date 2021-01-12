@@ -1292,9 +1292,12 @@ public class Player : LivingEntity
 
     public void RestoreHP(float restoreHp)
     {
-        Debug.Log("체력을 " + restoreHp + "만큼 회복.");
-        _hp += restoreHp;
-        if (_hp > StatusManager.Instance.finalStatus.maxHp) _hp = StatusManager.Instance.finalStatus.maxHp;
+        if(_cntState != PLAYERSTATE.PS_DIE)
+        {
+            _hp += restoreHp;
+            if (_hp > StatusManager.Instance.finalStatus.maxHp) _hp = StatusManager.Instance.finalStatus.maxHp;
+            ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayRestore(restoreHp);
+        }
     }
 
 

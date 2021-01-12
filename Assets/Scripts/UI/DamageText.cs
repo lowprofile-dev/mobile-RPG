@@ -27,6 +27,11 @@ public class DamageText : MonoBehaviour
         transform.LookAt(2 * transform.position - cam.transform.position);
     }
 
+    public void PlayRestore(float restore)
+    {
+        txt.text = "<color=#00ff00>" + "+" + restore + "</color>";
+    }
+
     public void PlayDamage(float damage , bool IsCritical)
     { 
         if (IsCritical)
