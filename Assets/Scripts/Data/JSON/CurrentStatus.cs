@@ -32,6 +32,7 @@ public class CurrentStatus : ICloneable
     public float stunresistance;        //스턴 cc 저항
     public float fallresistance;        //넘어짐 cc 저항
     public float moveSpeed;             //이동 속도
+    public float maxSpeed;
     public float dashCooldown;          //대쉬 스킬 쿨타임 % 감소
     public float dashStamina;           //대쉬 스킬 스태미너 % 감소
 
@@ -50,6 +51,7 @@ public class CurrentStatus : ICloneable
         stunresistance = 40;
         fallresistance = 40;
         moveSpeed = 6;
+        maxSpeed = moveSpeed;
         dashCooldown = 1;
         dashStamina = 1;
     }
