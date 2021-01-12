@@ -47,6 +47,7 @@ public class Wand : Weapon
 
     public override GameObject SkillA()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Skill 1", 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillAEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(1.4f);
@@ -67,6 +68,9 @@ public class Wand : Weapon
 
     public override GameObject SkillC()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Skill 3 Ground", 0.6f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Skill 3 Ice", 0.6f);
+
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillCEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
@@ -77,6 +81,7 @@ public class Wand : Weapon
 
     public override GameObject Attack3()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Attack " + UnityEngine.Random.Range(1, 6), 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect3).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
@@ -87,6 +92,7 @@ public class Wand : Weapon
 
     public override GameObject Attack2()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Attack " + UnityEngine.Random.Range(1, 6), 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect2).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
@@ -97,6 +103,7 @@ public class Wand : Weapon
 
     public override GameObject Attack()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Attack " + UnityEngine.Random.Range(1, 6), 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
