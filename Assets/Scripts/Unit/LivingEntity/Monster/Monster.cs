@@ -55,8 +55,6 @@ public class Monster : LivingEntity
     {
         base.Start();
         myAnimator = GetComponent<Animator>();
-        _MAXspeed = speed;
-        setSpeed(speed);
         _hp = _initHp;
         _stemina = _initStemina;
     }
