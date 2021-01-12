@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000004, guid: 7fc7750f230b15c44ba7268420fefff8,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -8583,6 +8583,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1997511847}
     m_Modifications:
+    - target: {fileID: 448702857554638349, guid: f4a6a68d6a1920244a74fe99f6f93c63,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -13.19989
+      objectReference: {fileID: 0}
     - target: {fileID: 448702857751228096, guid: f4a6a68d6a1920244a74fe99f6f93c63,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -8602,6 +8607,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 448702858330346769, guid: f4a6a68d6a1920244a74fe99f6f93c63,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 420
+      objectReference: {fileID: 0}
+    - target: {fileID: 448702858330346769, guid: f4a6a68d6a1920244a74fe99f6f93c63,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 420
+      objectReference: {fileID: 0}
+    - target: {fileID: 448702858330346769, guid: f4a6a68d6a1920244a74fe99f6f93c63,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 448702858330346769, guid: f4a6a68d6a1920244a74fe99f6f93c63,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 448702858551638260, guid: f4a6a68d6a1920244a74fe99f6f93c63,
         type: 3}
@@ -8737,6 +8762,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 448702858698678368, guid: f4a6a68d6a1920244a74fe99f6f93c63,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 552851756383482313, guid: f4a6a68d6a1920244a74fe99f6f93c63,
+        type: 3}
+      propertyPath: movementAreaRadius
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4a6a68d6a1920244a74fe99f6f93c63, type: 3}
