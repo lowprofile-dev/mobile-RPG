@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7772480141173017991}
   - component: {fileID: 6271706095669065753}
   - component: {fileID: 1545887994538155459}
+  - component: {fileID: 859880772304778509}
   m_Layer: 0
   m_Name: Sword Skill 1 Heal
   m_TagString: PlayerAttack
@@ -48,7 +49,6 @@ MonoBehaviour:
   _particleEffectPrefab: {fileID: 1513423241279212, guid: 5d8a8ce81cd6d9449891f4ae946a3684,
     type: 3}
   targetNumber: 5
-  _particlePosition: {fileID: 0}
   _useFixedDmg: 0
   _useMeleeDmg: 1
   _damage: 0.2
@@ -66,3 +66,15 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &859880772304778509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7772480141173017988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88e5a41edc2361469e196a6cb25cfb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
