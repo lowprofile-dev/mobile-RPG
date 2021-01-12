@@ -12,7 +12,7 @@ public class SkillWand01 : PlayerAttack
             yield return new WaitForSeconds(0.2f);
         }
 
-        GetComponent<CCAttack>().ApplyCC(monster.gameObject, 0, 0, 0.2f);
+        //GetComponent<CCAttack>().ApplyCC(monster.gameObject, 0, 0, 0.2f);
     }
 
     // 사라지면 바로 코루틴을 끄기위함
