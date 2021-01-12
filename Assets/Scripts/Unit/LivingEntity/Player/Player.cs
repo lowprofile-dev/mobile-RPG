@@ -704,7 +704,6 @@ public class Player : LivingEntity
     private void PlayerAvoidance()
     {
         _evadeTime -= Time.deltaTime;
-
         if (direction == Vector3.zero) characterController.Move(moveDir * dashSpeed * Time.deltaTime * (_evadeTime / _initEvadeTime));
         else characterController.Move(moveDir * dashSpeed * Time.deltaTime * (_evadeTime / _initEvadeTime));
     }
