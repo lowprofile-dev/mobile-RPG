@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿4using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.AI;
@@ -143,15 +143,8 @@ public class DungeonManager : MonoBehaviour
     public void ClearStage()
     {
         if (dungeonStage == 4)
-        {
-
-            LoadingSceneManager.LoadScene("VillageScene", "DungeonScene");
-
-            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Fire Loop", 0.40f, 0, true);
-            SoundManager.Instance.StopEffect("Cave 1 Loop");
-            SoundManager.Instance.PlayBGM("WinBGM", 0.6f);
-            StartCoroutine(VillageMusicPlay());
-
+        {          
+            UILoaderManager.Instance.LoadVillage();
             CardManager.Instance._cntDungeon = null;
             CardManager.Instance.currentStage = 0;
             return;
@@ -161,12 +154,6 @@ public class DungeonManager : MonoBehaviour
         UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
     }
 
-    IEnumerator VillageMusicPlay()
-    {
-        yield return new WaitForSeconds(15);
-        SoundManager.Instance.PlayBGM("VillageBGM", 0.6f);
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Fire Loop", 0.40f, 0, true);
-    }
 
     public void ToNextStage()
     {

@@ -18,6 +18,32 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
          _playerUI.GetComponent<Canvas>().enabled = true;
     }
 
+    public void LoadVillage()
+    {
+        UILoaderManager.Instance.AddScene("VillageScene");
+        UILoaderManager.Instance.CloseScene("DungeonScene");
+        SoundManager.Instance.StopEffect("Fire Loop");
+        SoundManager.Instance.StopEffect("Cave 1 Loop");
+        StartCoroutine(VillageMusicPlay());
+    }
+
+    IEnumerator VillageMusicPlay()
+    {
+        yield return new WaitForSeconds(2);
+        SoundManager.Instance.PlayBGM("VillageBGM", 0.55f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Fire Loop", 0.15f, 0, true);
+    }
+
+    public void LoadDungeon()
+    {
+        UILoaderManager.Instance.CloseScene("VillageScene");
+        UILoaderManager.Instance.AddScene("DungeonScene");
+        SoundManager.Instance.StopEffect("Cave 1 Loop");
+        SoundManager.Instance.StopEffect("Fire Loop");
+        SoundManager.Instance.PlayBGM("DungeonBGM", 0.6f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Cave 1 Loop", 0.25f, 0, true);
+    }
+
     public bool IsSceneDungeon()
     {
         return SceneManager.GetActiveScene().name == "DungeonScene";

@@ -150,7 +150,7 @@ public class Player : LivingEntity
 
     private void ApplyGravity()
     {
-        if (transform.position.y < -50)
+        if (transform.position.y < -50 && !_isdead)
             DieEnter();
         if (characterController.isGrounded)
         {
@@ -705,7 +705,6 @@ public class Player : LivingEntity
     private void PlayerAvoidance()
     {
         _evadeTime -= Time.deltaTime;
-
         if (direction == Vector3.zero) characterController.Move(moveDir * dashSpeed * Time.deltaTime * (_evadeTime / _initEvadeTime));
         else characterController.Move(moveDir * dashSpeed * Time.deltaTime * (_evadeTime / _initEvadeTime));
     }
@@ -990,6 +989,7 @@ public class Player : LivingEntity
 
     private void DieEnter()
     {
+        Debug.Log("죽음!");
         _isdead = true;
         myAnimator.SetTrigger("Die");
         _CCManager.Release();
@@ -1007,7 +1007,7 @@ public class Player : LivingEntity
     {
         _isdead = false;
         myAnimator.ResetTrigger("Die");
-        LoadingSceneManager.LoadScene("DungeonScene", "VillageScene");
+        UILoaderManager.Instance.LoadVillage();
     }
 
     ///////////////// 전환 관련 //////////////////
