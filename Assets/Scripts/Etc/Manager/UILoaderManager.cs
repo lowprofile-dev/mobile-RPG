@@ -7,6 +7,11 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
 {
     private GameObject _playerUI = null; public GameObject PlayerUI { get { return _playerUI; } }
 
+    public void Start()
+    {
+        StartCoroutine(VillageMusicPlay());
+    }
+
     public void InitUILoaderManager()
     {
         _playerUI = GameObject.Find("PlayerUI_View");
@@ -20,7 +25,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
 
     public void LoadVillage()
     {
-        LoadingSceneManager.LoadScene("VillageScene", "DungeonScene");
+        LoadingSceneManager.LoadScene("DungeonScene", "VillageScene");
         SoundManager.Instance.StopEffect("Fire Loop");
         SoundManager.Instance.StopEffect("Cave 1 Loop");
         StartCoroutine(VillageMusicPlay());
@@ -36,7 +41,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
     public void LoadDungeon()
     {
 
-        LoadingSceneManager.LoadScene("DungeonScene", "VillageScene");
+        LoadingSceneManager.LoadScene("VillageScene", "DungeonScene");
         SoundManager.Instance.StopEffect("Cave 1 Loop");
         SoundManager.Instance.StopEffect("Fire Loop");
         SoundManager.Instance.PlayBGM("DungeonBGM", 0.6f);

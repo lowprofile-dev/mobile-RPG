@@ -117,7 +117,7 @@ public class BossSkeletonPase2 : MonsterAction
         _attackCoroutine = null;
         _readyCast = false;
 
-        _navMeshAgent.speed = _moveSpeed;
+        _navMeshAgent.speed = _monster.speed;
         _navMeshAgent.acceleration = 8f;
         CameraManager.Instance.ShakeCamera(3, 1, 0.5f);
         currentTarget = _target;
@@ -252,7 +252,7 @@ public class BossSkeletonPase2 : MonsterAction
         _currentState = MONSTER_STATE.STATE_NULL;
         ChangeState(MONSTER_STATE.STATE_IDLE);
         _navMeshAgent.enabled = true;
-        _navMeshAgent.speed = _moveSpeed;
+        _navMeshAgent.speed = _monster.speed;
         currentTarget = _target;
 
     }
@@ -330,7 +330,7 @@ public class BossSkeletonPase2 : MonsterAction
         currentTarget = _target;
         _navMeshAgent.SetDestination(_target.transform.position);
         _navMeshAgent.isStopped = false;
-        _navMeshAgent.speed = _moveSpeed * 1.5f;
+        _navMeshAgent.speed = _monster.speed * 1.5f;
         _navMeshAgent.acceleration = 500f;
         transform.LookAt(_target.transform.position);
 
@@ -347,7 +347,7 @@ public class BossSkeletonPase2 : MonsterAction
 
         yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         _navMeshAgent.acceleration = 8f;
-        _navMeshAgent.speed = _moveSpeed;
+        _navMeshAgent.speed = _monster.speed;
         _navMeshAgent.stoppingDistance = 3f;
     }
 
@@ -380,7 +380,7 @@ public class BossSkeletonPase2 : MonsterAction
     {
         yield return null;
         //_navMeshAgent.isStopped = true;
-        _navMeshAgent.speed = _moveSpeed / 2f;
+        _navMeshAgent.speed = _monster.speed / 2f;
         _navMeshAgent.SetDestination(_target.transform.position);
         transform.LookAt(_target.transform.position);
 
@@ -396,7 +396,7 @@ public class BossSkeletonPase2 : MonsterAction
         StopCoroutine(_attackCoroutine);
         _monster.myAnimator.ResetTrigger("Walk");
         _monster.myAnimator.SetTrigger("Walk");
-        _navMeshAgent.speed = _moveSpeed * 2f;
+        _navMeshAgent.speed = _monster.speed * 2f;
         _navMeshAgent.isStopped = false;
     }
 

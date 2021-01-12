@@ -16,15 +16,10 @@ public class LivingEntity : Unit
     [SerializeField] protected GameObject _DamageText; public GameObject DamageText { get { return _DamageText; } }
     protected DebuffManager _DebuffManager = new DebuffManager(); public DebuffManager DebuffManager { get { return _DebuffManager; } }
     [SerializeField] protected float _speed; public float speed { get { return _speed; } set { _speed = value; } }
-    [SerializeField] protected float _MAXspeed; public float MAXspeed { get { return _MAXspeed; } set { _MAXspeed = value; } }
+    protected float _MAXspeed; public float MAXspeed { get { return _MAXspeed; } set { _MAXspeed = value; } }
     private StateMachine _myStateMachine; public StateMachine MyStateMachine { get { return _myStateMachine; } }
     protected CCManager _CCManager; public CCManager CCManager { get { return _CCManager; } set { _CCManager = value; } }
     public Animator myAnimator;
-
-    [Header("상태이상")]
-    protected bool isStun = false; public bool Stun { get { return isStun; } set { isStun = value; } }
-    protected bool isFall = false; public bool Fall { get {return isFall; } set { isFall = value; } }
-    protected bool isRigid = false; public bool Rigid { get {return isRigid; } set { isRigid = value; } }
 
     protected virtual void Start()
     {
@@ -54,4 +49,6 @@ public class LivingEntity : Unit
     {
         _stemina -= skillmp;
     }
+
+    public virtual void setSpeed(float speed) { }
 }
