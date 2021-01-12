@@ -14,7 +14,7 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
     ItemData itemData;
     //WeaponData weaponData;
     ItemManager itemManager;
-
+    Sprite icon;
     private void Awake()
     {
         itemIcon = gameObject.transform.GetChild(0).gameObject;
@@ -26,8 +26,7 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
     {
         Texture2D texture = RuntimePreviewGenerator.GenerateModelPreview(model);
         Rect rect = new Rect(0, 0, texture.width, texture.height);
-        itemIcon.GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
-        itemDetail.GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+        icon = itemIcon.GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
     }
 
     public void SetItemDetail(GameObject obj)
@@ -58,7 +57,7 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
         itemDetail.SetActive(true);
         //Debug.Log("장비템 로드");
         //itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
-        itemDetail.GetComponent<EquipDetail>().LoadData(itemData);
+        itemDetail.GetComponent<EquipDetail>().LoadData(itemData, icon);
         itemDetail.transform.position = transform.position + new Vector3(80f,0f,0f);
     }
 

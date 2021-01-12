@@ -9,10 +9,10 @@ public class EquipDetail : MonoBehaviour
    [SerializeField] TextMeshProUGUI nameText;
    [SerializeField] TextMeshProUGUI typeText;
 
-    public Image icon;
+    public Image icon = null;
 
     
-    public void LoadData(ItemData itemData)
+    public void LoadData(ItemData itemData, Sprite sprite)
     {
         string allData = "";
 
@@ -45,5 +45,6 @@ public class EquipDetail : MonoBehaviour
 
         allData = allData.Remove(allData.Length - 1, 1);
         descriptionText.text = allData;
+        icon.sprite = sprite;
     }
 }
