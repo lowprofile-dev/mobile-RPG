@@ -81,13 +81,13 @@ public class SoundManager : SingletonBase<SoundManager>
 
             // 재생할 BGM 즉시 FadeIn
             StopCoroutine("FadeInBGM");
-            StartCoroutine(FadeInBGM(startSource, 2));
+            StartCoroutine(FadeInBGM(startSource, 2, vol));
         }
 
         else // 현재 재생중인 음악 FadeOut으로 정지 후, 재생할 음악 FadeIn으로 재생
         {
             StopCoroutine("FadeOutBGM");
-            StartCoroutine(FadeOutBGM(endSource, 2, startSource, true));
+            StartCoroutine(FadeOutBGM(endSource, 2, vol, startSource, true));
         }
 
         startSource.pitch = 1;
@@ -101,7 +101,7 @@ public class SoundManager : SingletonBase<SoundManager>
     }
 
     // BGM을 정지시킨다. 별도의 입력이 없으면 fadeOut으로 정지시킨다.
-    public void PauseBGM(bool stopImmediatly = false)
+    public void PauseBGM(float volume = 1.0f, bool stopImmediatly = false)
     {
         AudioSource sourceA = _bgmContainer1.GetComponent<AudioSource>();
         AudioSource sourceB = _bgmContainer2.GetComponent<AudioSource>();
@@ -112,7 +112,7 @@ public class SoundManager : SingletonBase<SoundManager>
             else
             {
                 StopCoroutine("FadeOutBGM");
-                StopCoroutine(FadeOutBGM(sourceA, 2));
+                StopCoroutine(FadeOutBGM(sourceA, 2, volume));
             }
         }
 
@@ -122,13 +122,13 @@ public class SoundManager : SingletonBase<SoundManager>
             else
             {
                 StopCoroutine("FadeOutBGM");
-                StopCoroutine(FadeOutBGM(sourceB, 2));
+                StopCoroutine(FadeOutBGM(sourceB, 2, volume));
             }
         }
     }
 
     // BGM을 서서히 재생시킨다.
-    private IEnumerator FadeInBGM(AudioSource fadeInTarget, float period)
+    private IEnumerator FadeInBGM(AudioSource fadeInTarget, float period, float volume)
     {
         fadeInTarget.Play();
         fadeInTarget.volume = 0;
@@ -138,7 +138,7 @@ public class SoundManager : SingletonBase<SoundManager>
         {
             curTime += Time.deltaTime;
 
-            fadeInTarget.volume = _masterVolume * _bgmVolume * Mathf.Lerp(0, 1, curTime / period);
+            fadeInTarget.volume = _masterVolume * _bgmVolume * Mathf.Lerp(0, volume, curTime / period);
 
             if (curTime >= period)
             {
@@ -150,15 +150,16 @@ public class SoundManager : SingletonBase<SoundManager>
     }
 
     // BGM을 서서히 정지시킨다. isChange가 true일 경우, 정지 후에 타겟 BGM을 서서히 재생시킨다.
-    private IEnumerator FadeOutBGM(AudioSource fadeOutTarget, float period, AudioSource fadeInTarget = null, bool isChange = false)
+    private IEnumerator FadeOutBGM(AudioSource fadeOutTarget, float period, float volume, AudioSource fadeInTarget = null, bool isChange = false)
     {
         float curTime = 0;
+        float fadeOutTargetVolume = fadeOutTarget.volume;
 
         while (true)
         {
             curTime += Time.deltaTime;
 
-            fadeOutTarget.volume = _masterVolume * _bgmVolume * Mathf.Lerp(1, 0, curTime / period);
+            fadeOutTarget.volume = _masterVolume * _bgmVolume * Mathf.Lerp(fadeOutTargetVolume, 0, curTime / period);
 
             if (curTime >= period)
             {
@@ -174,7 +175,7 @@ public class SoundManager : SingletonBase<SoundManager>
         if(isChange && fadeInTarget != null)
         {
             StopCoroutine("FadeInBGM");
-            StartCoroutine(FadeInBGM(fadeInTarget, period));
+            StartCoroutine(FadeInBGM(fadeInTarget, period, volume));
         }
     }
 
