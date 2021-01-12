@@ -51,7 +51,7 @@ public class CurrentStatus : ICloneable
         fallresistance = 40;
         moveSpeed = 6;
         dashCooldown = 1;
-        dashStamina = 1;
+        dashStamina = 2;
     }
 
     /// <summary>

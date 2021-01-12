@@ -18,7 +18,7 @@ public class MonsterAction : MonoBehaviour
 
     // 캐싱 대상
     protected Monster _monster; public Monster monster { get { return _monster; } }
-    protected NavMeshAgent _navMeshAgent;
+    protected NavMeshAgent _navMeshAgent; public NavMeshAgent NavMeshAgent { get { return _navMeshAgent; } }
     protected Rigidbody _rigidBody;
     protected Outlinable _outlinable;
 
@@ -50,7 +50,6 @@ public class MonsterAction : MonoBehaviour
     [SerializeField] protected float _limitTraceRange;  // 최대 쫓아오는 범위
 
     [Header("속도")]
-    [SerializeField] protected float _moveSpeed;        // 이동속도
     [SerializeField] protected float _attackSpeed;      // 공격속도
 
     [Header("타겟 체크")]
@@ -784,6 +783,8 @@ public class MonsterAction : MonoBehaviour
         {
             _monster.Damaged(dmg);
         }
+
+
         _bar.HpUpdate();
 
         bool isDeath = DeathCheck();
