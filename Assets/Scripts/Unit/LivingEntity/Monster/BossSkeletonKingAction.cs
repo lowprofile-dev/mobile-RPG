@@ -237,7 +237,7 @@ public class BossSkeletonKingAction : MonsterAction
         _currentState = MONSTER_STATE.STATE_NULL;
         ChangeState(MONSTER_STATE.STATE_IDLE);
         _navMeshAgent.enabled = true;
-        _navMeshAgent.speed = _moveSpeed;
+        _navMeshAgent.speed = _monster.speed;
         currentTarget = _target;
 
     }
@@ -317,7 +317,7 @@ public class BossSkeletonKingAction : MonsterAction
         currentTarget = _target;
         _navMeshAgent.SetDestination(_target.transform.position);
         _navMeshAgent.isStopped = false;
-        _navMeshAgent.speed = _moveSpeed * 1.5f;
+        _navMeshAgent.speed = _monster.speed * 1.5f;
         _navMeshAgent.acceleration = 500f;
         transform.LookAt(_target.transform.position);
 
@@ -326,7 +326,7 @@ public class BossSkeletonKingAction : MonsterAction
 
         yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         _navMeshAgent.acceleration = 8f;
-        _navMeshAgent.speed = _moveSpeed;
+        _navMeshAgent.speed = _monster.speed;
         _navMeshAgent.stoppingDistance = 3f;
     }
 
@@ -400,7 +400,7 @@ public class BossSkeletonKingAction : MonsterAction
         {
         _monster.myAnimator.SetTrigger("Walk");
         }
-        _navMeshAgent.speed = _moveSpeed * 1.5f;
+        _navMeshAgent.speed = _monster.speed * 1.5f;
         _navMeshAgent.isStopped = false;
     }
     protected override void TraceUpdate()
