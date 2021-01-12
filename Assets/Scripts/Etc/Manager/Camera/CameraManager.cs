@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class CameraManager : SingletonBase<CameraManager>
 {
 
+    [SerializeField] private float Max_Speed = 200f;
     [SerializeField] private float TouchSensitivity_x = 10f;
     [SerializeField] CinemachineFreeLook CinemachineCamera;
     SimpleInputNamespace.Joystick joystick;
@@ -49,49 +50,25 @@ public class CameraManager : SingletonBase<CameraManager>
             case "rotationX":
                 if(Input.touchCount == 1)
                 {
-                    if (!joystick.getHold())
+                    if (!joystick.getHold() && (IsPointerOverGameObject(0) == false && Input.touches[0].phase == TouchPhase.Moved))//(!joystick.getHold())
                     {
-                        if (EventSystem.current.IsPointerOverGameObject() == false)
-                            return Input.touches[0].deltaPosition.x / TouchSensitivity_x;
+                        Debug.Log("asd");
+                         return Input.touches[0].deltaPosition.x / TouchSensitivity_x;
                     }
                     
                 }
                 else if (Input.touchCount > 0)
                 {
+                    Debug.Log("이거 하는중 ㅎ");
                     Touch[] touch = Input.touches;
-                    //Is mobile touch
+
                     for (int i = 0; i < touch.Length; i++)
-                    {                    
-                        if ((touch[i].phase == TouchPhase.Moved || touch[i].phase == TouchPhase.Stationary) && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(i).fingerId) == false)
-                            return Input.touches[i].deltaPosition.x / TouchSensitivity_x;
+                    {
+                       
+                        if ((touch[i].phase == TouchPhase.Moved || touch[i].phase == TouchPhase.Stationary) && IsPointerOverGameObject(i) == false)
+                            return -Input.touches[i].deltaPosition.x / TouchSensitivity_x;
                     }           
                 }
-#if UNITY_EDITOR
-                else if (Input.GetMouseButton(0))
-                {
-                    // is mouse click
-                    if (!joystick.getHold())
-                    {
-                        
-                        if (EventSystem.current.IsPointerOverGameObject() == false)
-                            return Input.GetAxis("Mouse X");
-                    }
-                }
-#endif
-
-//#if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
-//                else if (Input.GetTouch(0).phase == TouchPhase.Began)
-//                {
-                
-//                    if(!joystick.getHold())
-//                    {
-//                         Debug.Log("이거다");
-//                       if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false)
-//                           return Input.GetAxis("Mouse X");
-//                    }
-//                }
-//#endif
-
                 break;
             default:
 #if UNITY_EDITOR
@@ -110,7 +87,7 @@ public class CameraManager : SingletonBase<CameraManager>
         if (!joystick.getHold() && Input.touchCount == 2 && (Input.touches[0].phase == TouchPhase.Moved || Input.touches[1].phase == TouchPhase.Moved))
         {
             
-            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) == false && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(1).fingerId) == false)
+            if (!IsPointerOverGameObject(0) && !IsPointerOverGameObject(1))
             {
                 m_fToucDis = (Input.touches[0].position - Input.touches[1].position).sqrMagnitude;
 
@@ -141,4 +118,9 @@ public class CameraManager : SingletonBase<CameraManager>
         shakeTimer = time;
     }
 
+    public static bool IsPointerOverGameObject(int idx)
+    {
+      if (EventSystem.current.IsPointerOverGameObject(Input.touches[idx].fingerId)) return true;
+        return false;
+    }
 }
