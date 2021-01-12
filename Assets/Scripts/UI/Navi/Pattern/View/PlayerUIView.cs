@@ -29,6 +29,13 @@ public class PlayerUIView : View
     [SerializeField] private GameObject _buffFrame;
     [SerializeField] private GameObject _buffImgPrefab;
 
+    [SerializeField] private Sprite[] _swordSkiilsImg;
+    [SerializeField] private Sprite[] _staffSkillsImg;
+    [SerializeField] private Sprite[] _daggerSkillImg;
+    [SerializeField] private Sprite[] _wandSkillImg;
+    [SerializeField] private Sprite[] _bluntSkillImg;
+
+
     private void Start()
     {
         _cardTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleCardUIView(); });
@@ -66,6 +73,49 @@ public class PlayerUIView : View
     }
 
 
+    public void SetWeaponSkillIcon()
+    {
+        _skillAImg.type = Image.Type.Filled;
+        _skillAImg.fillMethod = Image.FillMethod.Radial360;
+        _skillAImg.fillClockwise = true;
+        _skillBImg.type = Image.Type.Filled;
+        _skillBImg.fillMethod = Image.FillMethod.Radial360;
+        _skillBImg.fillClockwise = true;
+        _skillCImg.type = Image.Type.Filled;
+        _skillCImg.fillMethod = Image.FillMethod.Radial360;
+        _skillCImg.fillClockwise = true;
+
+        switch (WeaponManager.Instance.GetWeaponName())
+        {
+            case "SWORD":
+                _skillAImg.sprite = _swordSkiilsImg[0];
+                _skillBImg.sprite = _swordSkiilsImg[1];
+                _skillCImg.sprite = _swordSkiilsImg[2];
+                break;
+            case "STAFF":
+                _skillAImg.sprite = _staffSkillsImg[0];
+                _skillBImg.sprite = _staffSkillsImg[1];
+                _skillCImg.sprite = _staffSkillsImg[2];
+                break;
+            case "DAGGER":
+                _skillAImg.sprite = _daggerSkillImg[0];
+                _skillBImg.sprite = _daggerSkillImg[1];
+                _skillCImg.sprite = _daggerSkillImg[2];
+                break;
+
+            case "BLUNT":
+                _skillAImg.sprite = _bluntSkillImg[0];
+                _skillBImg.sprite = _bluntSkillImg[1];
+                _skillCImg.sprite = _bluntSkillImg[2];
+                break;
+
+            case "WAND":
+                _skillAImg.sprite = _wandSkillImg[0];
+                _skillBImg.sprite = _wandSkillImg[1];
+                _skillCImg.sprite = _wandSkillImg[2];
+                break;
+        }
+    }
 
     /// <summary>
     /// 대화 혹은 공격으로 스프라이트를 적용한다.
