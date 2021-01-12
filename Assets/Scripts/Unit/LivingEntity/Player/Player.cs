@@ -1067,7 +1067,8 @@ public class Player : LivingEntity
         myAnimator.SetTrigger("Die");
         _CCManager.Release();
         _DebuffManager.Release();
-        SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
+
+        if(resurrection == false) SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
     }
 
     public void DieUpdate()
@@ -1375,9 +1376,12 @@ public class Player : LivingEntity
 
     public void RestoreHP(float restoreHp)
     {
-        Debug.Log("체력을 " + restoreHp + "만큼 회복.");
-        _hp += restoreHp;
-        if (_hp > StatusManager.Instance.finalStatus.maxHp) _hp = StatusManager.Instance.finalStatus.maxHp;
+        if(_cntState != PLAYERSTATE.PS_DIE)
+        {
+            _hp += restoreHp;
+            if (_hp > StatusManager.Instance.finalStatus.maxHp) _hp = StatusManager.Instance.finalStatus.maxHp;
+            ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayRestore((int)restoreHp);
+        }
     }
 
 

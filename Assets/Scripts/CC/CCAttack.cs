@@ -41,15 +41,5 @@ public class CCAttack : MonoBehaviour
         {
             Debug.Log("안걸림");
         }
-
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Monster"))
-        {
-            ApplyCC(other.gameObject, 0.5f, 0.1f, 0.5f);
-        }
     }
 }

@@ -42,7 +42,7 @@ public class LivingEntity : Unit
     public virtual void Damaged(float damage)
     {
         _hp -= damage;
-        ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayDamage(damage, true);
+        ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayDamage((int)damage, true);
     }
 
     public virtual void UseStemina(float skillmp)
