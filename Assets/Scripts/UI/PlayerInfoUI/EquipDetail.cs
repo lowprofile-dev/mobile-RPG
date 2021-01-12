@@ -9,7 +9,7 @@ public class EquipDetail : MonoBehaviour
    [SerializeField] TextMeshProUGUI nameText;
    [SerializeField] TextMeshProUGUI typeText;
 
-    Image icon;
+    public Image icon;
 
     
     public void LoadData(ItemData itemData)
@@ -28,7 +28,7 @@ public class EquipDetail : MonoBehaviour
         nameText.text = UIManager.Instance.AddFontData(itemData.itemName, "white", 24);
         typeText.text = UIManager.Instance.AddFontData(itemData.itemType, "white", 16);
 
-
+        if (itemData.itemDescription != null) allData += UIManager.Instance.AddFontData(itemData.itemDescription, "white", 18) + "\n";
         if (itemData.hpIncreaseRate != 0) allData += UIManager.Instance.AddFontData("최대 HP \t\t +" + itemData.hpIncreaseRate + "%", "white", 18) + "\n";
         if (itemData.hp != 0) allData += UIManager.Instance.AddFontData("최대 HP \t\t +" + itemData.hp, "white", 18) + "\n";
         if (itemData.hpRecovery != 0) allData += UIManager.Instance.AddFontData("HP 회복 \t\t +" + itemData.hpRecovery, "white", 18) + "\n";

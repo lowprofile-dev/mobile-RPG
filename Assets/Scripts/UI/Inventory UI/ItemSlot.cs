@@ -56,7 +56,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void EquipItem()
     {
         itemManager.SetItemToPlayer(itemData);
-      //  Debug.Log(itemData.itemName + " 장착!");
+        Debug.Log(itemData.itemName + " 장착!");
     }
 
     public void OnPointerUp(PointerEventData eventData)

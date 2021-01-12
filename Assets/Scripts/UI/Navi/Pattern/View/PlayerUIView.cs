@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class PlayerUIView : View
 {
     string iconPath = "Image/TonityEden/Skill Icons Megapack/";
+    string masteryIconPath = "Image/MasteryIcon/";
 
     [SerializeField] private Sprite _atkSprite;
     [SerializeField] private Sprite _talkSprite;
@@ -70,6 +71,7 @@ public class PlayerUIView : View
         SetMyStatusText();
         SetHpStemina();
         SetTalkOrAttackSprite();
+        SetEffectList();
     }
 
 
@@ -160,6 +162,19 @@ public class PlayerUIView : View
                 GameObject buffImgObj = ObjectPoolManager.Instance.GetObject(_buffImgPrefab);
                 buffImgObj.transform.SetParent(_buffFrame.transform);
                 buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>(iconPath + cardData.cardData.iconImg);
+                buffImgObj.GetComponent<RectTransform>().localScale = Vector3.one;
+            }
+        }
+
+
+        for (int i = 0; i < 10; i++)
+        {
+            if (MasteryManager.Instance.currentMastery.currentMasteryChoices[i] != 0)
+            {
+                GameObject buffImgObj = ObjectPoolManager.Instance.GetObject(_buffImgPrefab);
+                buffImgObj.transform.SetParent(_buffFrame.transform);
+                string path = masteryIconPath + "MasteryIcon" + i.ToString() + (MasteryManager.Instance.currentMastery.currentMasteryChoices[i] + 1).ToString();
+                buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
                 buffImgObj.GetComponent<RectTransform>().localScale = Vector3.one;
             }
         }

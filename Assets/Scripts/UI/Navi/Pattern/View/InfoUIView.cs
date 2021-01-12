@@ -22,6 +22,10 @@ public class InfoUIView : View
     public override void UIStart()
     {
         base.UIStart();
+
+        FindIconList();
+        LoadCurrentEquip();
+
     }
 
     public override void UIUpdate()
@@ -36,7 +40,7 @@ public class InfoUIView : View
 
     private void OnEnable()
     {
-        LoadCurrentEquip();
+        //LoadCurrentEquip();
     }
 
     private void Awake()
@@ -60,20 +64,79 @@ public class InfoUIView : View
     {
         //Hat_Slot.GetComponent<EquipSlot>().SetIcon(ItemManager.Instance.currentItemKeys.HelmetKey)
 
-        Hat_Slot.GetComponent<EquipSlot>().SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.HelmetKey]);
-        Hat_Slot.GetComponent<EquipSlot>().SetItemDetail(itemDetail);
+        EquipSlot hat = Hat_Slot.GetComponent<EquipSlot>();
+        hat.SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.HelmetKey]);
+        hat.SetItemDetail(itemDetail);
+        //itemDetail.transform.position = Hat_Slot.transform.position + new Vector3(20f, 0f, 0f);
+        hat.SetIcon(iconList[itemManager.currentItemKeys.HelmetKey-1]);
 
-        Armor_Slot.GetComponent<EquipSlot>().SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.ArmorKey]);
-        Armor_Slot.GetComponent<EquipSlot>().SetItemDetail(itemDetail);
+        EquipSlot armor = Armor_Slot.GetComponent<EquipSlot>();
+        armor.SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.ArmorKey]);
+        armor.SetItemDetail(itemDetail);
+        //itemDetail.transform.position = Armor_Slot.transform.position + new Vector3(30f, 0f, 0f);
+        armor.SetIcon(iconList[itemManager.currentItemKeys.ArmorKey - 1]);
 
-        Glove_Slot.GetComponent<EquipSlot>().SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.GlovesKey]);
-        Glove_Slot.GetComponent<EquipSlot>().SetItemDetail(itemDetail);
+        EquipSlot glove = Glove_Slot.GetComponent<EquipSlot>();
+        glove.SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.GlovesKey]);
+        glove.SetItemDetail(itemDetail);
+        //itemDetail.transform.position = Glove_Slot.transform.position + new Vector3(40f, 0f, 0f);
+        glove.SetIcon(iconList[itemManager.currentItemKeys.GlovesKey - 1]);
 
-        Pant_Slot.GetComponent<EquipSlot>().SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.BottomKey]);
-        Pant_Slot.GetComponent<EquipSlot>().SetItemDetail(itemDetail);
+        EquipSlot pant = Pant_Slot.GetComponent<EquipSlot>();
+        pant.SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.BottomKey]);
+        pant.SetItemDetail(itemDetail);
+        //itemDetail.transform.position = Pant_Slot.transform.position + new Vector3(50f, 0f, 0f);
+        pant.SetIcon(iconList[itemManager.currentItemKeys.BottomKey - 1]);
 
-        Shoes_Slot.GetComponent<EquipSlot>().SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.BootKey]);
-        Shoes_Slot.GetComponent<EquipSlot>().SetItemDetail(itemDetail);
+        EquipSlot shoes = Shoes_Slot.GetComponent<EquipSlot>();
+        shoes.SetItemData(itemManager.itemDictionary[itemManager.currentItemKeys.BootKey]);
+        shoes.SetItemDetail(itemDetail);
+        //itemDetail.transform.position = Shoes_Slot.transform.position + new Vector3(60f, 0f, 0f);
+        shoes.SetIcon(iconList[itemManager.currentItemKeys.BootKey - 1]);
+    }
 
+    private void FindIconList()
+    {
+        int i = 0;
+        string[] strarr = new string[5];
+        strarr[0] = "Armors";
+        strarr[1] = "Boots";
+        strarr[2] = "Bottoms";
+        strarr[3] = "Gloves";
+        strarr[4] = "Helmets";
+        iconList = new Transform[80];
+        while (i < 80)
+        {
+            GameObject temp = null;
+            if (i < 9)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+
+                    temp = Resources.Load<GameObject>("Prefab/Items/" + strarr[j] + "/id0" + (i + 1).ToString());
+                    if (temp != null)
+                    {
+                        iconList[i] = temp.transform;
+                        i++;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int j = 0; j < 5; j++)
+                {
+
+                    temp = Resources.Load<GameObject>("Prefab/Items/" + strarr[j] + "/id" + (i + 1).ToString());
+                    if (temp != null)
+                    {
+                        iconList[i] = temp.transform;
+                        i++;
+                        break;
+                    }
+                }
+            }
+
+        }
     }
 }
