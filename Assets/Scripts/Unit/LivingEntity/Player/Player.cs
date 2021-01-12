@@ -1006,9 +1006,9 @@ public class Player : LivingEntity
     {
         _isdead = false;
         myAnimator.ResetTrigger("Die");
-        //UILoaderManager.Instance.LoadScene("DungeonScene", "VillageScene");
-        UILoaderManager.Instance.AddScene("VillageScene");
-        UILoaderManager.Instance.CloseScene("DungeonScene");
+        UILoaderManager.Instance.LoadScene("DungeonScene", "UIScene");
+        //UILoaderManager.Instance.AddScene("VillageScene");
+        //UILoaderManager.Instance.CloseScene("DungeonScene");
     }
 
 
