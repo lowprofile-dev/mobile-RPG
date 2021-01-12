@@ -86,6 +86,11 @@ public class BossAttack : MonoBehaviour
     {
         for (int i = 0; i < _damageCount; i++)
         {
+            //마스터리 스킬 회피 무적 적용
+            if (Player.Instance.GetState() == PLAYERSTATE.PS_EVADE && MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
+            {
+                yield return new WaitForSeconds(0.05f);
+            }
             thisSkillsDamage += _baseParent.GetComponent<Monster>().attackDamage * _damage;
             player.Damaged(_baseParent.GetComponent<Monster>().attackDamage * _damage);
             yield return new WaitForSeconds(0.05f);

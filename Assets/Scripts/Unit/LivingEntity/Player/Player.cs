@@ -78,6 +78,8 @@ public class Player : LivingEntity
     public PartSelection selection;
     FaceCam faceCam;
 
+    private bool resurrection = false;
+
     public WeaponManager weaponManager;
     ItemManager itemManager;
     StatusManager statusManager;
@@ -170,11 +172,20 @@ public class Player : LivingEntity
         //보스 처치 시 더 많은 코인 획득 미구현 -> 아이템 드랍 확률 증가
         //DungeonRoom.cs 186
 
-        //공격 증가 부분
-        //Attack.cs 47
+        //마스터리 공격 증가 부분
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == -1)
+        {
+            if(masterySet[1] == false)
+            {
+                StatusManager.Instance.finalStatus.attackDamage *= 1.1f;
+                StatusManager.Instance.finalStatus.magicDamage *= 1.1f;
+                masterySet[1] = true;
+            }
 
+            
+        }
         //방어력 증가 부분
-        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
         {
             if(masterySet[1] == false)
             {
@@ -234,15 +245,27 @@ public class Player : LivingEntity
         //BossSkeltonPase2.cs 416
 
         //회피시 무적
-
-        //회피 사용 기력 감소
-        
-        //기본공격 10% 강화, hp 2% 흡수
-
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)
+        //BossAttack.cs 87
+        //MonsterAction.cs 778
+        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
         {
-
+            if(masterySet[6] == false)
+            {
+                masterySet[6] = true;
+            }
         }
+        //회피 사용 기력 감소
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
+        {
+            if(masterySet[6] == false)
+            {
+                statusManager.playerStatus.dashStamina *= 0.8f;
+                masterySet[6] = true;
+            }
+        }
+        //기본공격 10% 강화, hp 2% 흡수
+        // PlayerAttack.cs 76;
+
         //스킬 쿨타임 1초 감소
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == 1)
         {
@@ -253,13 +276,52 @@ public class Player : LivingEntity
             }
 
         }
-        // 단일 스킬 총 피해량 40% 증가
-
-        // 광역 스킬 총 피해량 20% 증가
+        // 물리 스킬 총 피해량 40% 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == -1)
+        {
+            if (masterySet[8] == false)
+            {
+                statusManager.finalStatus.attackDamage *= 1.4f;
+                masterySet[8] = true;
+            }
+        }
+        // 마법 스킬 총 피해량 20% 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == 1)
+        {
+            if (masterySet[8] == false)
+            {
+                if (masterySet[8] == false)
+                {
+                    statusManager.finalStatus.magicDamage *= 1.4f;
+                    masterySet[8] = true;
+                }
+            }
+        }
 
         // HP 10% 이하 물리/마법 공격력 30% 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == -1)
+        {
+            if(masterySet[9] == false)
+            {
+                if (statusManager.GetCurrentHpPercent() <= 0.2f)
+                {
+                    statusManager.finalStatus.attackDamage *= 1.3f;
+                    statusManager.finalStatus.magicDamage *= 1.3f;
+                }
+                masterySet[9] = true;
+            }
+        }
 
         //부활
+        //Player.cs 1043
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == 1)
+        {
+            if (masterySet[9] == false)
+            {
+                resurrection = true;
+                masterySet[9] = true;
+            }
+        }
 
     }
 
@@ -572,7 +634,7 @@ public class Player : LivingEntity
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            characterController.Move(moveDir.normalized * speed * Time.deltaTime);
+            characterController.Move(moveDir.normalized * statusManager.finalStatus.moveSpeed * Time.deltaTime);
         }
 
         
@@ -584,7 +646,7 @@ public class Player : LivingEntity
         myAnimator.ResetTrigger("Move");
     }
 
-
+    
 
 
 
@@ -687,7 +749,7 @@ public class Player : LivingEntity
     private void EvadeEnter()
     {
         OnTrailparticles();
-        UseStemina(2);
+        UseStemina(statusManager.playerStatus.dashStamina);
         myAnimator.SetTrigger("Avoid");
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Player/Dash", 0.5f);
     }
@@ -859,8 +921,8 @@ public class Player : LivingEntity
         {
             RushSound();
 
-            characterController.Move(transform.forward * speed * 5 * Time.deltaTime);
-
+            characterController.Move(transform.forward * statusManager.finalStatus.moveSpeed * 5 * Time.deltaTime);
+            speed = statusManager.finalStatus.moveSpeed;
             RaycastHit hit = new RaycastHit();
 
             for (int i = 0; i < 10; i++)
@@ -989,24 +1051,37 @@ public class Player : LivingEntity
     private void DieEnter()
     {
         Debug.Log("죽음!");
+
         _isdead = true;
+
         myAnimator.SetTrigger("Die");
         _CCManager.Release();
         _DebuffManager.Release();
         SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
-        Invoke("DieExit", 5f);
     }
 
     public void DieUpdate()
     {
-
+        if (resurrection == true)
+        {
+            _isdead = false;
+            Debug.Log("마스터리 특성 부활!");
+            _hp = statusManager.finalStatus.maxHp;
+            ChangeState(PLAYERSTATE.PS_IDLE);
+        }
+        else Invoke("DieExit", 3f);
     }
 
     public void DieExit()
     {
+
         _isdead = false;
         myAnimator.ResetTrigger("Die");
-        UILoaderManager.Instance.LoadVillage();
+        if (resurrection == true)
+        {
+            resurrection = false;
+        }
+        else UILoaderManager.Instance.LoadVillage();
     }
 
 
@@ -1171,6 +1246,14 @@ public class Player : LivingEntity
         }
     }
 
+    /// <summary>
+    ///  현재 스테이트 리턴
+    /// </summary>
+    /// <returns></returns>
+    public PLAYERSTATE GetState()
+    {
+        return _cntState;
+    }
 
 
     ///////////////// 기타 //////////////////

@@ -784,6 +784,8 @@ public class MonsterAction : MonoBehaviour
         {
             _monster.Damaged(dmg);
         }
+
+
         _bar.HpUpdate();
 
         bool isDeath = DeathCheck();
