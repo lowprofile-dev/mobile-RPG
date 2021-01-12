@@ -53,7 +53,7 @@ public class CurrentStatus : ICloneable
         moveSpeed = 6;
         maxSpeed = moveSpeed;
         dashCooldown = 1;
-        dashStamina = 1;
+        dashStamina = 2;
     }
 
     /// <summary>

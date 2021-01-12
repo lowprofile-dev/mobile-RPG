@@ -27,6 +27,12 @@ public class SoundManager : SingletonBase<SoundManager>
     public void InitSoundManager()
     {
         InitSound();
+        GameStartBGM();
+    }
+
+    public void GameStartBGM()
+    {
+        PlayBGM("BGM/Title", 0.7f);
     }
 
     public void UpdateSoundManager()
