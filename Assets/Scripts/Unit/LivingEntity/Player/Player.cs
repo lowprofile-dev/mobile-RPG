@@ -733,6 +733,15 @@ public class Player : LivingEntity
     private void SkillEnter()
     {
         SetSkillAnimation();
+        SkillStartSoundPlay();
+    }
+
+    /// <summary>
+    /// 스킬 시전 즉시 애니메이션과 별도로 재생되어야 하는 사운드들을 넣는다.
+    /// </summary>
+    public void SkillStartSoundPlay()
+    {
+        if (weaponManager.GetWeaponName() == "WAND" && _cntSkillType == 2) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 3 Holy", 0.6f);
     }
 
     /// <summary>
