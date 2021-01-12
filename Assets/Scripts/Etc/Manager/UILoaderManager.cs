@@ -33,7 +33,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
 
     IEnumerator VillageMusicPlay()
     {
-        yield return new WaitForSeconds(2);
+        yield return null;
         SoundManager.Instance.PlayBGM("VillageBGM", 0.55f);
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Fire Loop", 0.15f, 0, true);
     }
