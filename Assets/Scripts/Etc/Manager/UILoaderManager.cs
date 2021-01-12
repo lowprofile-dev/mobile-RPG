@@ -20,8 +20,6 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
 
     public void LoadVillage()
     {
-        UILoaderManager.Instance.AddScene("VillageScene");
-        UILoaderManager.Instance.CloseScene("DungeonScene");
         SoundManager.Instance.StopEffect("Fire Loop");
         SoundManager.Instance.StopEffect("Cave 1 Loop");
         StartCoroutine(VillageMusicPlay());
@@ -36,8 +34,6 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
 
     public void LoadDungeon()
     {
-        UILoaderManager.Instance.CloseScene("VillageScene");
-        UILoaderManager.Instance.AddScene("DungeonScene");
         SoundManager.Instance.StopEffect("Cave 1 Loop");
         SoundManager.Instance.StopEffect("Fire Loop");
         SoundManager.Instance.PlayBGM("DungeonBGM", 0.6f);
