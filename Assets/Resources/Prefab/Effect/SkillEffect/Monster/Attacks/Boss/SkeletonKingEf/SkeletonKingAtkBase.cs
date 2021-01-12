@@ -9,9 +9,6 @@ public class SkeletonKingAtkBase : BossAttack
         GameObject effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
 
         effect.transform.position = new Vector3(target.transform.position.x, start.transform.position.y, target.transform.position.z);
-        //effect.transform.SetParent(gameObject.transform);
-        //effect.transform.localPosition = Vector3.zero;
-        //effect.transform.rotation = Quaternion.identity;
 
     }
     public override void SetParent(GameObject parent, Transform target)

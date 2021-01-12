@@ -52,13 +52,6 @@ public class BossSkeletonPase2 : MonsterAction
 
     private void MakeEffect()
     {
-        //GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        //obj.transform.SetParent(this.transform);
-        //obj.transform.position = _baseMeleeAttackPos.position;
-
-        //Attack atk = obj.GetComponent<Attack>();
-        //atk.SetParent(gameObject);
-        //atk.PlayAttackTimer(1);
 
         switch (attackType)
         {
@@ -83,9 +76,9 @@ public class BossSkeletonPase2 : MonsterAction
     private void ShockWave1Effect()
     {
         BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect1).GetComponent<BossAttack>();
-        atk.SetParent(gameObject);
-        atk.PlayAttackTimer(1f);
-        atk.OnLoad(gameObject, currentTarget);
+        atk.SetParent(gameObject, _ShokeWavePoint);
+        atk.PlayAttackTimer(0.5f);
+        atk.OnLoad(gameObject , _ShokeWavePoint.gameObject);
 
     }
 
@@ -94,7 +87,7 @@ public class BossSkeletonPase2 : MonsterAction
         
         BossAttack atk = ObjectPoolManager.Instance.GetObject(JumpSkillEffect).GetComponent<BossAttack>();
         atk.SetParent(gameObject);
-        atk.PlayAttackTimer(1f);
+        atk.PlayAttackTimer(0.5f);
         atk.OnLoad(currentTarget, currentTarget);
     }
 
@@ -103,7 +96,7 @@ public class BossSkeletonPase2 : MonsterAction
 
         BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect2).GetComponent<BossAttack>();
         atk.SetParent(gameObject,_ShokeWavePoint);
-        atk.PlayAttackTimer(1f);
+        atk.PlayAttackTimer(0.5f);
         atk.OnLoad(_ShokeWavePoint.gameObject, currentTarget);
 
     }
