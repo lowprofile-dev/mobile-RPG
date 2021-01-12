@@ -60,7 +60,7 @@ public class Player : LivingEntity
     float horizontal;
     float vertical;
     float vSpeed;
-    bool _isdead = false; public bool isdead { get { return _isdead; } }
+    bool _isdead = false; public bool isdead { get { return _isdead; } set { _isdead = value; } }
     private int _cntSkillType;
 
     public float dashSpeed; // 대쉬 스피드
@@ -153,7 +153,9 @@ public class Player : LivingEntity
     private void ApplyGravity()
     {
         if (transform.position.y < -50 && !_isdead)
-            DieEnter();
+        {
+            ChangeState(PLAYERSTATE.PS_DIE);
+        }
         if (characterController.isGrounded)
         {
             vSpeed = 0;
@@ -1018,6 +1020,11 @@ public class Player : LivingEntity
 
     }
 
+    public bool CheckThereisObject()
+    {
+        return Physics.OverlapSphere(transform.position, 3.0f, LayerMask.GetMask("NPC")).Length > 0;
+    }
+
     /// <summary>
     /// 눌렀을 시 주변의 NPC와 상호작용한다.
     /// </summary>
@@ -1028,7 +1035,6 @@ public class Player : LivingEntity
         {
             if (colliders[i].GetComponent<NonLivingEntity>())
             {
-                transform.LookAt(colliders[i].transform);
                 colliders[i].GetComponent<NonLivingEntity>().Interaction();
                 break;
             }
@@ -1068,7 +1074,11 @@ public class Player : LivingEntity
         _CCManager.Release();
         _DebuffManager.Release();
 
-        if(resurrection == false) SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
+        if (resurrection == false)
+        {
+            SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
+            Invoke("DieExit", 3f);
+        }
     }
 
     public void DieUpdate()
@@ -1085,7 +1095,6 @@ public class Player : LivingEntity
 
     public void DieExit()
     {
-
         _isdead = false;
         myAnimator.ResetTrigger("Die");
         if (resurrection == true)

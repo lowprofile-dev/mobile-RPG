@@ -16,8 +16,6 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI stageInfo;
     [SerializeField] GameObject[] BossPrefabs;
 
-    [SerializeField] GameObject[] BossEffects;
-
     public GameObject player;
     public bool hasPlane;
     public Vector2 dungeonCenter;
@@ -128,10 +126,6 @@ public class DungeonManager : MonoBehaviour
     public GameObject SpawnBoss()
     {
         GameObject bossSpawnPoint = GameObject.FindGameObjectWithTag("BossSpawnPoint");
-        for (int i = 0; i < BossEffects.Length; i++)
-        {
-            ObjectPoolManager.Instance.InitObject(BossEffects[i], 2, bossSpawnPoint.transform);
-        }
         GameObject boss = Instantiate(BossPrefabs[dungeonStage-1]);
         boss.GetComponent<NavMeshAgent>().enabled = false;
         boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);

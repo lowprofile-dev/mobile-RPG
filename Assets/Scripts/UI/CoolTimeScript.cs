@@ -7,6 +7,8 @@ public class CoolTimeScript : MonoBehaviour
 {
     public Image image;
     public Image lockImage;
+    public Image skillImage;
+
     public Button button;
     public bool isClicked = false;
     float leftTime = 0f;
@@ -67,8 +69,7 @@ public class CoolTimeScript : MonoBehaviour
                 }
 
                 float ratio = (leftTime / coolTime);
-                if (image)
-                    image.fillAmount = ratio;
+                if (skillImage) skillImage.fillAmount = ratio;
             }
     }
 
