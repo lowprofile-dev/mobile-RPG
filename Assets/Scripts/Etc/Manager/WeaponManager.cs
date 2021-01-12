@@ -55,7 +55,6 @@ public class WeaponManager : SingletonBase<WeaponManager>
 
     public void SetWeapon(string weaponName)
     {
-        if (_currentWeapon == _weaponDic[weaponName]) return;
         _currentWeaponName = weaponName;
         _currentWeapon = _weaponDic[_currentWeaponName];
         Player.Instance.myAnimator.runtimeAnimatorController = _currentWeapon.WeaponAnimation;
