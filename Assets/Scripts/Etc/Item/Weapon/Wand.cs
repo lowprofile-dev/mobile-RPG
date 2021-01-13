@@ -30,9 +30,9 @@ public class Wand : Weapon
         skillBCoef = 0;
         skillCCoef = 0;
 
-        skillACool = 4;
-        skillBCool = 6;
-        skillCCool = 9;
+        skillACool = 5;
+        skillBCool = 7;
+        skillCCool = 11;
 
         AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Attack Effect 1");
         AttackEffect2 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Attack Effect 2");

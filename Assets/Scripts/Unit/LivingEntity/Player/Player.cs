@@ -1125,7 +1125,6 @@ public class Player : LivingEntity
     private void DieEnter()
     {
         if (_isdead) return;
-        Debug.Log("죽음!");
 
         _isdead = true;
 
@@ -1443,7 +1442,7 @@ public class Player : LivingEntity
 
     public void RestoreHP(float restoreHp)
     {
-        if(_cntState != PLAYERSTATE.PS_DIE)
+        if(_cntState != PLAYERSTATE.PS_DIE && restoreHp != 0)
         {
             _hp += restoreHp;
             if (_hp > StatusManager.Instance.finalStatus.maxHp) _hp = StatusManager.Instance.finalStatus.maxHp;

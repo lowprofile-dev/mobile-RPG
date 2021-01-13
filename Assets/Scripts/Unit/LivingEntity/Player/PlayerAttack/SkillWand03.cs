@@ -9,10 +9,9 @@ public class SkillWand03 : PlayerAttack
         for (int i = 0; i < _damageCount; i++)
         {
             thisSkillsDamage += monster.DamageCheck(_useFixedDmg ? _damage : _damage * StatusManager.Instance.finalStatus.attackDamage);
+            DoRestoreFromDamage();
             yield return new WaitForSeconds(0.2f);
         }
-
-        //GetComponent<CCAttack>().ApplyCC(monster.gameObject, 0, 1, 0);
     }
 
     // 사라지면 바로 코루틴을 끄기위함
@@ -23,7 +22,6 @@ public class SkillWand03 : PlayerAttack
         _collider.enabled = false;
 
         // 여유를 주고 삭제한다.
-        //StopAllCoroutines();
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }

@@ -9,10 +9,9 @@ public class SkillWand01 : PlayerAttack
         for (int i = 0; i < _damageCount; i++)
         {
             thisSkillsDamage += monster.DamageCheck(_useFixedDmg ? _damage : _damage * StatusManager.Instance.finalStatus.attackDamage);
+            DoRestoreFromDamage();
             yield return new WaitForSeconds(0.2f);
         }
-
-        //GetComponent<CCAttack>().ApplyCC(monster.gameObject, 0, 0, 0.2f);
     }
 
     // 사라지면 바로 코루틴을 끄기위함

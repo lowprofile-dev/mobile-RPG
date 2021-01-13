@@ -28,19 +28,19 @@ public class CCAttack : MonoBehaviour
         {
             //넘어짐
             //Debug.log("상태이상 넘어짐");
-            unit.GetComponent<LivingEntity>().CCManager.AddCC("fall", new Fall(3, unit.GetComponent<LivingEntity>(), "fall") , unit);
+            unit.GetComponent<LivingEntity>().CCManager.AddCC("fall", new Fall(2, unit.GetComponent<LivingEntity>(), "fall") , unit);
         }
         else if (roll <= stunRate + fallRate)
         {
             //스턴
             //Debug.log("상태이상 스턴");
-            unit.GetComponent<LivingEntity>().CCManager.AddCC("stun", new Stun(3, unit.GetComponent<LivingEntity>(), "stun") , unit);
+            unit.GetComponent<LivingEntity>().CCManager.AddCC("stun", new Stun(2, unit.GetComponent<LivingEntity>(), "stun") , unit);
         }
         else if (roll <= frigRate + fallRate + frigRate)
         {
             //경직
             //Debug.log("상태이상 경직");
-            unit.GetComponent<LivingEntity>().CCManager.AddCC("rigid", new Rigid(3, unit.GetComponent<LivingEntity>(), "rigid") , unit);
+            unit.GetComponent<LivingEntity>().CCManager.AddCC("rigid", new Rigid(1, unit.GetComponent<LivingEntity>(), "rigid") , unit);
         }
         else
         {

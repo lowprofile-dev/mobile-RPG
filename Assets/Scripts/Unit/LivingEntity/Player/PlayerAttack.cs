@@ -72,17 +72,21 @@ public class PlayerAttack: MonoBehaviour
 
     public virtual IEnumerator DoMultiDamage(MonsterAction monster)
     {
-        //GetComponent<CCAttack>().ApplyCC(monster.gameObject, 0, 0, 0.15f);
-
         for (int i=0; i<_damageCount; i++)
         {
             thisSkillsDamage += monster.DamageCheck(_useFixedDmg ? _damage : _damage * StatusManager.Instance.finalStatus.attackDamage);
-            if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)
-            {
-                thisSkillsDamage *= 1.1f;
-                Player.Instance.RestoreHP(thisSkillsDamage * 0.02f);
-            }
+            DoRestoreFromDamage();
+
             yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    public void DoRestoreFromDamage()
+    {
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)
+        {
+            thisSkillsDamage *= 1.1f;
+            Player.Instance.RestoreHP(thisSkillsDamage * 0.02f);
         }
     }
 

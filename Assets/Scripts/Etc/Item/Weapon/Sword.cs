@@ -33,9 +33,9 @@ public class Sword : Weapon
         skillBCoef = 0;
         skillCCoef = 0;
                   
-        skillACool = 5;
-        skillBCool = 6;
-        skillCCool = 7;
+        skillACool = 6;
+        skillBCool = 8;
+        skillCCool = 10;
 
         AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 1");
         AttackEffect2 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 2");
@@ -47,15 +47,9 @@ public class Sword : Weapon
         WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Sword Animator");
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
-
-        //if(Input.GetKeyDown(KeyCode.P))
-        //{
-        //    masteryLevel++;
-        //}
     }
 
     public override GameObject SkillA()
