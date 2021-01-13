@@ -310,7 +310,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void SpawnStart()
     {
         _isImmune = true; // 스폰 중 무적
-        _bar.enabled = false;
+        _bar.gameObject.SetActive(false);
         //_monster.myAnimator.SetTrigger("Spawn");
         AddSpawnEffect();
     }
@@ -351,7 +351,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void SpawnExit()
     {
-        _bar.enabled = true;
+        _bar.gameObject.SetActive(true);
         _isImmune = false; // 스폰 끝날 시 무적 해제
         _monster.myAnimator.ResetTrigger("Spawn");
     }
@@ -872,7 +872,8 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void DeathStart()
     {
-        _bar.enabled = false;
+        _bar.gameObject.SetActive(false);
+
         _monster.CCManager.Release();
         _monster.DebuffManager.Release();
         if (parentRoom != null)
@@ -887,7 +888,8 @@ public class MonsterAction : MonoBehaviour
     }
     private void DestroyMonster()
     {
-        _bar.enabled = true;
+        _bar.gameObject.SetActive(true);
+
         DestroyImmediate(gameObject);
     }
     /// <summary>
