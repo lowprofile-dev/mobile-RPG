@@ -22,7 +22,7 @@ public class Player : LivingEntity
     [SerializeField] private float _initEvadeTime;
     private float _evadeTime;
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
-    private PLAYERSTATE _cntState;
+    private PLAYERSTATE _cntState; public PLAYERSTATE cntState { get { return _cntState; } }
 
     [Header("버튼 입력")]
     private bool AttackButtonClick = false;

@@ -10,9 +10,25 @@ public class CCAttack : MonoBehaviour
     [SerializeField] float StunProc;
     [Tooltip("경직 확률 0 ~ 1")]
     [SerializeField] float FirgProc;
+
+
+    /// <summary>
+    /// 대상이 CC를 받을 수 있는 상태인지 체크한다.
+    /// </summary>
+    public bool CheckCanApplyCC(GameObject unit)
+    {
+        MonsterAction monsterAction = unit.GetComponent<MonsterAction>();
+        Player playerAction = unit.GetComponent<Player>();
+
+        if (unit.GetComponent<LivingEntity>().Hp <= 0) return false;
+        if (monsterAction != null && (monsterAction.currentState == MONSTER_STATE.STATE_DIE || monsterAction.currentState == MONSTER_STATE.STATE_SPAWN)) return false;
+        else if (playerAction != null && playerAction.cntState == PLAYERSTATE.PS_DIE) return false;
+        else return true;
+    }
+
     public void ApplyCC(GameObject unit , float fstun , float ffall , float frig) // CC 적용시키는 코드
     {
-        if (unit.GetComponent<LivingEntity>().Hp <= 0) return;
+        if(CheckCanApplyCC(unit) == false) return;
 
         float roll = Random.Range(0, 100);
 
@@ -21,8 +37,6 @@ public class CCAttack : MonoBehaviour
         float frigRate = ((1 - ffall) * (1 - fstun) * frig) * 100f;
         float none = ((1 - fstun) * (1 - ffall) * (1 - frig)) * 100f;
 
-        //Debug.log(fallRate + " " + stunRate + " " + frigRate + " " + none);
-        
 
         if(roll <= fallRate)
         {
@@ -56,5 +70,4 @@ public class CCAttack : MonoBehaviour
             ApplyCC(other.gameObject, StunProc, FallProc, FirgProc);
         }
     }
-
 }
