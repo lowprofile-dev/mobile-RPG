@@ -25,7 +25,6 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
 
     public void LoadVillage()
     {
-        Player.Instance.isdead = false;
         LoadingSceneManager.LoadScene("DungeonScene", "VillageScene");
         SoundManager.Instance.StopEffect("Fire Loop");
         SoundManager.Instance.StopEffect("Cave 1 Loop");

@@ -90,7 +90,7 @@ public class MonsterAction : MonoBehaviour
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _rigidBody = GetComponent<Rigidbody>();
         _outlinable = GetComponent<Outlinable>();
-        _target = GameObject.FindGameObjectWithTag("Player");
+        _target = Player.Instance.GetPlayer;
     }
 
     /// <summary>
