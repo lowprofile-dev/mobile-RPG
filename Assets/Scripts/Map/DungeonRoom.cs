@@ -96,8 +96,8 @@ public class DungeonRoom : MonoBehaviour
         GetDoorways(transform);
         for (int i = 0; i < doorways.Count; i++)
         {
-            GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
-            //GameObject door = Instantiate(doorPrefab);
+            //GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
+            GameObject door = Instantiate(doorPrefab);
             door.transform.position = doorways[i].transform.TransformPoint(0, 0, 0);
             door.transform.rotation = doorways[i].transform.rotation;
             //door.transform.SetParent(null);
@@ -109,8 +109,8 @@ public class DungeonRoom : MonoBehaviour
     {
         for (int i = 0; i < doors.Count; i++)
         {
-            //doors[i].gameObject.SetActive(false);
-            ObjectPoolManager.Instance.ReturnObject(doors[i].gameObject);
+            doors[i].gameObject.SetActive(false);
+            //ObjectPoolManager.Instance.ReturnObject(doors[i].gameObject);
         }
         //doors.Clear();
     }
