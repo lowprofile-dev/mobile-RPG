@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7772480141173017991}
   - component: {fileID: 5136569399818692378}
-  - component: {fileID: -7680368436874260202}
   - component: {fileID: -4070716462252048102}
+  - component: {fileID: 972630779029332680}
   m_Layer: 0
   m_Name: Wand Skill A
   m_TagString: PlayerAttack
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd254f4fc7a7e3f46be891eecf6aa900, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collider: {fileID: -7680368436874260202}
+  _collider: {fileID: 972630779029332680}
   _particleEffectPrefab: {fileID: 2362557806976279575, guid: 46c29d492d4316846a18c78d02e6e134,
     type: 3}
   targetNumber: 2
@@ -53,19 +53,6 @@ MonoBehaviour:
   _useMeleeDmg: 0
   _damage: 0.6
   _damageCount: 4
---- !u!135 &-7680368436874260202
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7772480141173017988}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-4070716462252048102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,3 +65,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88e5a41edc2361469e196a6cb25cfb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &972630779029332680
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7772480141173017988}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 3
+  m_Height: 9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

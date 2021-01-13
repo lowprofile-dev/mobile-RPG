@@ -40,9 +40,9 @@ public class CurrentStatus : ICloneable
     {
         maxHp = 150;
         hpRecovery = 1f;
-        maxStamina = 100;
-        staminaRecovery = 3f;
-        attackDamage = 300;
+        maxStamina = 10;
+        staminaRecovery = 0.5f;
+        attackDamage = 250;
         attackSpeed = 0.5f;
         attackCooldown = 1;
         armor = 3;
