@@ -517,6 +517,8 @@ public class Player : LivingEntity
     /// </summary>
     private void ChangeMasteryLevelTest()
     {
+        //weaponManager.GetWeapon().MasteryLevelUp();
+
         if (Input.GetKeyDown(KeyCode.L))
         {
             weaponManager.GetWeapon().exp += 80;

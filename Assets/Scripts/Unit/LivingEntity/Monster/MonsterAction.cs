@@ -936,7 +936,7 @@ public class MonsterAction : MonoBehaviour
         
         //    Debug.Log(name + " Exp + 10");
             MasteryManager.Instance.UpdateCurrentExp();
-
+            WeaponManager.Instance.GetWeapon().MasteryLevelUp();
             ChangeState(MONSTER_STATE.STATE_DIE);
             return true;
         }

@@ -205,18 +205,23 @@ public class MasteryManager : SingletonBase<MasteryManager>
         {
             case "sword":
                 currentMastery.currentSwordMasteryLevel++;
+                currentMastery.currentSwordMasteryExp = 0;
                 break;
             case "dagger":
                 currentMastery.currentDaggerMasteryLevel++;
+                currentMastery.currentDaggerMasteryExp = 0;
                 break;
             case "blunt":
                 currentMastery.currentBluntMasteryLevel++;
+                currentMastery.currentBluntMasteryExp = 0 ;
                 break;
             case "staff":
                 currentMastery.currentStaffMasteryLevel++;
+                currentMastery.currentStaffMasteryExp = 0;
                 break;
             case "wand":
                 currentMastery.currentWandMasteryLevel++;
+                currentMastery.currentWandMasteryExp = 0;
                 break;
         }
         SaveCurrentMastery();
