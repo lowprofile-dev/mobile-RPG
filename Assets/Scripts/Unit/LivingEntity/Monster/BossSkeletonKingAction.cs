@@ -180,13 +180,13 @@ public class BossSkeletonKingAction : MonsterAction
        
         int proc = UnityEngine.Random.Range(0, 100);
 
-        //Debug.Log(monsterList.Count);
-        //if (monsterList.Count == 0)
-        //{
-        //    _castTime = summonCastingTime;
-        //    attackType = AttackType.SUMMON;
-        //    return;
-        //}
+        Debug.Log(monsterList.Count);
+        if (monsterList.Count == 0)
+        {
+            _castTime = summonCastingTime;
+            attackType = AttackType.SUMMON;
+            return;
+        }
 
         if (proc <= 25)
         {
@@ -331,10 +331,10 @@ public class BossSkeletonKingAction : MonsterAction
 
         for (int i = 0; i < SpawnPoints.Points.Length; i++)
         {
-            GameObject eft = ObjectPoolManager.Instance.GetObject(SpawnPoints.SpawnEffect , SpawnPoints.Points[i].position - Vector3.one , Quaternion.identity);           
+            GameObject eft = ObjectPoolManager.Instance.GetObject(SpawnPoints.SpawnEffect , SpawnPoints.Points[i].position , Quaternion.identity);           
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
         for (int i = 0; i < SpawnPoints.Points.Length; i++)
         {
