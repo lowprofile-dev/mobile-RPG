@@ -9,7 +9,6 @@ public class BossSkeletonAction : MonsterAction
 {
     [SerializeField] private Transform _baseMeleeAttackPos;
     [SerializeField] private GameObject _baseMeleeAttackPrefab;
-    [SerializeField] private GameObject _bossSkeletonPase2;
     string currentAnimation;
     private void OnDrawGizmos()
     {
@@ -135,23 +134,6 @@ public class BossSkeletonAction : MonsterAction
         {
             _attackType = 1;
         }
-    }
-
-    protected override bool DeathCheck()
-    {
-        return _monster.Hp <= _monster.initHp / 2;
-    }
-
-    protected override IEnumerator DoDeathAction()
-    {
-        yield return null;
- 
-        GameObject pase2 = ObjectPoolManager.Instance.GetObject(_bossSkeletonPase2);
-        pase2.GetComponent<MonsterAction>().parentRoom = parentRoom;
-        pase2.transform.position = transform.localPosition;
-        pase2.transform.LookAt(_target.transform.position);
-
-        ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 
     protected override void AttackExit()

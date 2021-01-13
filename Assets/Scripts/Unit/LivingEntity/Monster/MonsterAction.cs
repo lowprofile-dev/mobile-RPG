@@ -872,7 +872,7 @@ public class MonsterAction : MonoBehaviour
     {
         _monster.CCManager.Release();
         _monster.DebuffManager.Release();
-        parentRoom.MonsterDeathCheck();
+        //parentRoom.MonsterDeathCheck();
         DeathSound();
         StopAllCoroutines();
         StartCoroutine(DoDeathAction());

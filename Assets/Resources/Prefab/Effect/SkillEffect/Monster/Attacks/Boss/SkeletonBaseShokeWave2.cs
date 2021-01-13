@@ -18,5 +18,6 @@ public class SkeletonBaseShokeWave2 : BossAttack
         float pos = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
         angle = Mathf.SmoothDampAngle(eft.transform.eulerAngles.y, pos, ref velocity, 1f);
         transform.rotation = Quaternion.Euler(90f, angle, 0f);
+        transform.parent = null;
     }
 }
