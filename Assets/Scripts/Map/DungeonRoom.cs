@@ -24,6 +24,7 @@ public class DungeonRoom : MonoBehaviour
     [SerializeField] int nMonsterPerSpawn = 1;
     [SerializeField] int nMonsterToSpawn = 7;
     [SerializeField] int nMonsterSpawned = 0;
+    [SerializeField] int nMonsterAlive = 0;
     [SerializeField] bool isSpawning = false;
     [SerializeField] GameObject doorPrefab;
     private List<GameObject> doorways = new List<GameObject>();
@@ -34,6 +35,8 @@ public class DungeonRoom : MonoBehaviour
 
     int spawnPointIndex;
     int monsterIndex;
+
+    
 
     private void Start()
     {
@@ -170,7 +173,17 @@ public class DungeonRoom : MonoBehaviour
             ChangeLights();
         }
         CheckPlayerInRoom();
+        //CheckClear();
         //CheckMonstersInRoom();
+    }
+
+    public void CheckClear()
+    {
+        if (nMonsterSpawned >= nMonsterToSpawn && KilledAllMonster())
+        {
+            ClearRoom();
+            return;
+        }
     }
 
     /// <summary>
@@ -184,7 +197,6 @@ public class DungeonRoom : MonoBehaviour
             if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center))
             {
                 monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 7, 0);
-
             }
         }
     }
@@ -258,12 +270,17 @@ public class DungeonRoom : MonoBehaviour
                         itemManager.itemDropProbability = itemManager.stage2Probability;
                     }
                 }
+
                 isSpawning = true;
                 Invoke("CloseDoors", 1f);
                 if (isBossRoom)
                 {
                     SoundManager.Instance.PlayBGM("BossBGM", 0.6f);
-                    monsters.Add(dungeonManager.SpawnBoss());
+                    GameObject obj = dungeonManager.SpawnBoss();
+                    monsters.Add(obj);
+                    
+                    obj.GetComponent<MonsterAction>().parentRoom = this;
+
                     nMonsterSpawned++;
                 }
                 StartCoroutine(SpawnMonsterCoroutine());
@@ -272,7 +289,7 @@ public class DungeonRoom : MonoBehaviour
         else
         {
             hasPlayer = false;
-            Invoke("OpenDoors", 1f);
+            OpenDoors();
         }
     }
 
@@ -314,20 +331,9 @@ public class DungeonRoom : MonoBehaviour
 
     private bool KilledAllMonster()
     {
-        if (monsters.Count == 0) return true;
-        for (int i = monsters.Count - 1; i > -1; i--)
-        {
-            if (monsters[i] == null)
-                monsters.RemoveAt(i);
-        }
-        for (int i = 0; i < monsters.Count; i++)
-        {
-            if (monsters[i] != null)
-            {
-                return false;
-            }
-        }
-        return true;
+        if (nMonsterSpawned >= nMonsterToSpawn && nMonsterAlive <= 0)
+            return true;
+        return false;
     }
 
     /// <summary>
@@ -336,11 +342,6 @@ public class DungeonRoom : MonoBehaviour
     /// <param name="nMonsters">스폰할 몬스터 개수</param>
     void SpawnMonster(int nMonsters = 1)
     {
-        if (nMonsterSpawned >= nMonsterToSpawn && KilledAllMonster() == true)
-        {
-            ClearRoom();
-            return;
-        }
         if (nMonsterSpawned >= nMonsterToSpawn)
         {
             CheckMonstersInRoom();
@@ -357,6 +358,7 @@ public class DungeonRoom : MonoBehaviour
         //monsters.Add(monster);
         for (int i = 0; i < nMonsters; i++)
         {
+            nMonsterAlive++;
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
             //spawnPointIndex = i;
             monsterIndex = random.Next(monsterPrefabs.Count);
@@ -366,6 +368,7 @@ public class DungeonRoom : MonoBehaviour
             //monster.transform.SetParent(null);
             monster.GetComponent<NavMeshAgent>().enabled = true;
             nMonsterSpawned += 1;
+            monster.GetComponent<MonsterAction>().parentRoom = this;
             monsters.Add(monster);
         }
     }
@@ -393,5 +396,14 @@ public class DungeonRoom : MonoBehaviour
         }
         if (isSetArea)
             StopCoroutine(roomSetAreaCodeCoroutine());
+    }
+
+    /// <summary>
+    /// 몬스터가 사망했다는 것을 알림
+    /// </summary>
+    public void MonsterDeathCheck()
+    {
+        nMonsterAlive--;
+        CheckClear();
     }
 }
