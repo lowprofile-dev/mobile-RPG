@@ -5,15 +5,17 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.SceneManagement;
-
-public class MasteryScript : MonoBehaviour
+using UnityEngine.EventSystems;
+public class MasteryScript : MonoBehaviour 
 {
     [SerializeField] GameObject parent;
-    [SerializeField] Toggle upSkill; 
-    [SerializeField] Toggle downSkill;
+    [SerializeField] public Toggle upSkill; 
+    [SerializeField] public Toggle downSkill;
     [SerializeField] GameObject masteryInfo;
     [SerializeField] GameObject upPanel;
     [SerializeField] GameObject downPanel;
+    [SerializeField] ToggleGroup toggleGroup;
+
     MasteryManager masteryManager;
     GameObject[] infoWindow;
     PlayerMasteryData[] masteryData;
@@ -169,20 +171,30 @@ public class MasteryScript : MonoBehaviour
         {
             if (levelLimit <= MasteryManager.Instance.currentMastery.currentMasteryLevel)
             {
+                if(levelLimit >= 10 && masteryManager.currentMastery.currentMasteryChoices[((levelLimit - 1) / 5) -1] == 0)
+                {
+                    upPanel.SetActive(true);
+                    downPanel.SetActive(true);
+                }
+                else if(levelLimit >= 10 && masteryManager.currentMastery.currentMasteryChoices[((levelLimit - 1) / 5) - 1] != 0)
+                {
+                    upPanel.SetActive(false);
+                    downPanel.SetActive(false);
+                }
                 if (upSkill.isOn)
                 {
-                    downPanel.SetActive(true);
+                //    downPanel.SetActive(true);
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = -1;
                 }
                 else if (downSkill.isOn)
                 {
-                    upPanel.SetActive(true);
+                 //   upPanel.SetActive(true);
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 1;
                 }
                 else
                 {
-                    upPanel.SetActive(false);
-                    downPanel.SetActive(false);
+                 //   upPanel.SetActive(false);
+                 //   downPanel.SetActive(false);
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 0;
                 }
                 masteryManager.SaveCurrentMastery();
@@ -195,11 +207,13 @@ public class MasteryScript : MonoBehaviour
         }
 
     }
-    public void UpSkillMouseOn()
+
+    public void UpSkillOn()
     {
-        masteryInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = masteryData[0].masteryName;
-        masteryInfo.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = masteryData[0].masteryDescription;
-        masteryInfo.transform.position = upSkill.transform.position + new Vector3(0,-70);
+        masteryInfo.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = masteryData[0].masteryName;
+        masteryInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = masteryData[0].masteryDescription;
+        //masteryInfo.transform.position = upSkill.transform.position + new Vector3(0,-70);
+        masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = upSkill.transform.GetChild(0).GetComponent<Image>().sprite;
         masteryInfo.SetActive(true);
     }
     public void UpSkillMouseOff()
@@ -207,12 +221,13 @@ public class MasteryScript : MonoBehaviour
         masteryInfo.SetActive(false);
     }
 
-    public void DownSkillMouseOn()
+    public void DownSkillOn()
     {
-        masteryInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryName;
-        masteryInfo.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryDescription;
+        masteryInfo.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryName;
+        masteryInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryDescription;
+        masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = downSkill.transform.GetChild(0).GetComponent<Image>().sprite;
 
-        masteryInfo.transform.position = downSkill.transform.position + new Vector3(0, -70);
+        //masteryInfo.transform.position = downSkill.transform.position + new Vector3(0, -70);
         masteryInfo.SetActive(true);
 
     }
@@ -221,4 +236,14 @@ public class MasteryScript : MonoBehaviour
     {
         masteryInfo.SetActive(false);
     }
+
+    //public void OnPointerClick(PointerEventData eventData)
+    //{
+    //    ((IPointerClickHandler)upSkill).OnPointerClick(eventData);
+    //}
+    //
+    //public void OnPointerClick(PointerEventData eventData)
+    //{
+    //    ((IPointerClickHandler)downSkill).OnPointerClick(eventData);
+    //}
 }

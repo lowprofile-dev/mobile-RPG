@@ -45,15 +45,6 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //itemDetail.SetActive(true);
-        //Debug.Log("장비템 로드");
-        //itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
-        //itemDetail.GetComponent<EquipDetail>().LoadData(itemData);
-        //itemDetail.transform.position = transform.position;
-    }
-
-    public void OnMouseEnter()
-    {
         itemDetail.SetActive(true);
         //Debug.Log("장비템 로드");
         //itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
@@ -61,8 +52,17 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
         itemDetail.transform.position = transform.position + new Vector3(80f,0f,0f);
     }
 
-    public void OnMouseExit()
-    {
-        itemDetail.SetActive(false);
-    }
+    //public void OnMouseEnter()
+    //{
+    //    itemDetail.SetActive(true);
+    //    //Debug.Log("장비템 로드");
+    //    //itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
+    //    itemDetail.GetComponent<EquipDetail>().LoadData(itemData, icon);
+    //    itemDetail.transform.position = transform.position + new Vector3(80f,0f,0f);
+    //}
+    //
+    //public void OnMouseExit()
+    //{
+    //    itemDetail.SetActive(false);
+    //}
 }
