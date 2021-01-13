@@ -113,7 +113,7 @@ public class Player : LivingEntity
 
         _evadeTime = _initEvadeTime;
 
-        _rushTime = 1;
+        _rushTime = 0.6f;
         _prevRushPos = Vector3.zero;
         
         moveDir = Vector3.forward;
@@ -182,6 +182,8 @@ public class Player : LivingEntity
         UpdateState();
         MasteryApply();
         ApplyGravity();
+
+        Debug.Log(_cntState);
     }
 
     private void ApplyGravity()
@@ -954,7 +956,7 @@ public class Player : LivingEntity
     {
         OnTrailparticles();
         _isRushing = true;
-        _rushTime = 1;
+        _rushTime = 0.6f;
         _cntFootStepSound = _rushSoundTime / 2;
     }
 
@@ -1013,7 +1015,7 @@ public class Player : LivingEntity
     {
         OffTrailParticles();
         _isRushing = false;
-        _rushTime = 1;
+        _rushTime = 0.6f;
 
         if (weaponManager.GetWeaponName() == "SWORD" && _cntSkillType == 1)
         {
