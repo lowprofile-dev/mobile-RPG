@@ -12,10 +12,16 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] GameObject playerSpawnPoint;
     [SerializeField] GameObject areaPrefab;
     [SerializeField] DunGen.Dungeon dungeon;
-    public int dungeonStage = 1;
     [SerializeField] TextMeshProUGUI stageInfo;
     [SerializeField] GameObject[] BossPrefabs;
+    [SerializeField] List<GameObject> stage1MonsterPrefabs = new List<GameObject>();
+    [SerializeField] List<GameObject> stage2MonsterPrefabs = new List<GameObject>();
+    [SerializeField] List<GameObject> stage3MonsterPrefabs = new List<GameObject>();
+    [SerializeField] List<GameObject> stage4MonsterPrefabs = new List<GameObject>();
+    private List<List<GameObject>> stagesMonsterPrefabs = new List<List<GameObject>>();
+    public List<GameObject> currentStageMonsterPrefabs = new List<GameObject>();
 
+    public int dungeonStage = 1;
     public GameObject player;
     public bool hasPlane;
     public Vector2 dungeonCenter;
@@ -28,6 +34,7 @@ public class DungeonManager : MonoBehaviour
     public bool bossCleared = false;
 
     public int playerCurrentArea;
+    //public DungeonRoom playerCurrentRoom;
 
     private GameObject stageExit;
     bool isPlayerSpawned = false;
@@ -40,13 +47,18 @@ public class DungeonManager : MonoBehaviour
         playerCurrentArea = -1;
         CardManager.Instance._cntDungeon = this;
         hasPlane = false;
+        stagesMonsterPrefabs.Add(stage1MonsterPrefabs);
+        stagesMonsterPrefabs.Add(stage2MonsterPrefabs);
+        stagesMonsterPrefabs.Add(stage3MonsterPrefabs);
+        stagesMonsterPrefabs.Add(stage4MonsterPrefabs);
+        currentStageMonsterPrefabs = stagesMonsterPrefabs[0];
     }
 
     private void Update()
     {
         if (player == null)
         {
-            GameObject.FindGameObjectWithTag("Player");
+            player = GameObject.FindGameObjectWithTag("Player");
         }
         InitDungeon();
         SetStageInfo();
@@ -159,6 +171,7 @@ public class DungeonManager : MonoBehaviour
         hasPlane = false;
         dungeonStage++;
         nRoomCleared = 0;
+        currentStageMonsterPrefabs = stagesMonsterPrefabs[dungeonStage-1];
     }
 
     public void ChangeAreaCheck()
