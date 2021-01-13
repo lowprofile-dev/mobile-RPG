@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 98b36f75a3b9b7548844c36f1a60981d,
     type: 2}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -254,7 +254,7 @@ MonoBehaviour:
     Padding: 0
     DisallowOverhangs: 0
     Root: {fileID: 0}
-    DungeonFlow: {fileID: 11400000, guid: 674a1de53449260458202b0cf9224bec, type: 2}
+    DungeonFlow: {fileID: 11400000, guid: a200d5f879cdab24283be16087296b19, type: 2}
     fileVersion: 1
   GenerateOnStart: 1
   Root: {fileID: 1169230628}
@@ -1681,6 +1681,7 @@ MonoBehaviour:
   stage4MonsterPrefabs:
   - {fileID: 2386692087498796433, guid: d9d5279237bb680478efdec73a8b1a49, type: 3}
   - {fileID: 4389056476029205342, guid: d90f51c287aa8ff4296235294365cc00, type: 3}
+  currentStageMonsterPrefabs: []
   dungeonStage: 1
   player: {fileID: 0}
   hasPlane: 0
