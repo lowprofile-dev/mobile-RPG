@@ -64,6 +64,7 @@ public class MonsterAction : MonoBehaviour
     
     private float attackedTime = 0.1f;
     private float counter = 0f;
+    public DungeonRoom parentRoom = null;
 
     /////////// 기본 ////////////
 
@@ -869,6 +870,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void DeathStart()
     {
+        parentRoom.MonsterDeathCheck();
         DeathSound();
         StopAllCoroutines();
         StartCoroutine(DoDeathAction());

@@ -39,7 +39,7 @@ public class ItemManager : SingletonBase<ItemManager>
     private void Start()
     {
         //아이템 데이터 초기화를 원할시 주석 풀것!
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         //statusManager = StatusManager.Instance;
         //currentItems = new CurrentItems();
         //currentItemKeys = new CurrentItemKeys();
