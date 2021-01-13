@@ -1,6 +1,7 @@
 ﻿using Cinemachine;
 using SimpleInputNamespace;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -92,6 +93,10 @@ public class Player : LivingEntity
     private float _footstepSoundTime = 0.3f;
     private float _rushSoundTime = 0.24f;
 
+    //아웃라이너 관련
+    private EPOOutline.Outlinable playerOutlinable;
+    private List<Renderer> lRenderers = new List<Renderer>();
+
     private void Awake()
     {
         Instance = this;
@@ -113,6 +118,31 @@ public class Player : LivingEntity
         
         moveDir = Vector3.forward;
         OffTrailParticles();
+    }
+
+    private void InitOutline()
+    {
+        GetRenderers(transform);
+        for (int i = 0; i < lRenderers.Count; i++)
+        {
+            playerOutlinable.outlineTargets.Add(new EPOOutline.OutlineTarget(lRenderers[i], i));
+        }
+    }
+
+    private void GetRenderers(Transform parent)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.gameObject.GetComponent<Renderer>() != null)
+            {
+                lRenderers.Add(child.gameObject.GetComponent<Renderer>());
+            }
+            if (child.childCount > 0)
+            {
+                GetRenderers(child);
+            }
+        }
     }
 
     protected override void InitObject()
@@ -138,6 +168,9 @@ public class Player : LivingEntity
         else weaponManager.SetWeapon(weaponManager.GetWeaponName());
 
         SetUpPlayerCamera();
+
+        playerOutlinable = gameObject.GetComponent<EPOOutline.Outlinable>();
+        InitOutline();
     }
 
     protected override void Update()

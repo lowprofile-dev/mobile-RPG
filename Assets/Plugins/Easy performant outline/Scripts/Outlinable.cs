@@ -133,8 +133,8 @@ namespace EPOOutline
         [SerializeField]
         private int outlineLayer = 0;
 
-        [SerializeField]
-        private List<OutlineTarget> outlineTargets = new List<OutlineTarget>();
+        //[SerializeField]
+        public List<OutlineTarget> outlineTargets = new List<OutlineTarget>();
 
         [SerializeField]
         private RenderStyle renderStyle = RenderStyle.Single;
