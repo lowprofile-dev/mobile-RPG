@@ -16,6 +16,12 @@ public class BleedingDebuff : Debuff
     { //디버프
         this.tickDamage = tickDamage;
         this.tickTime = tickTime;
+
+        GameObject txt = ObjectPoolManager.Instance.GetObject("UI/DamageTEXT");
+        txt.transform.SetParent(target.gameObject.transform);
+        txt.transform.localPosition = Vector3.zero;
+        txt.transform.rotation = Quaternion.identity;
+        txt.GetComponent<DamageText>().PlayText("출혈!", "player");
     }
 
     public override void Update()

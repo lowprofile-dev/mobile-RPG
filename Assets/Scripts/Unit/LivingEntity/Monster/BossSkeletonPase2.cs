@@ -455,4 +455,19 @@ public class BossSkeletonPase2 : MonsterAction
     {
         _monster.myAnimator.SetTrigger("Laugh");
     }
+
+    protected override void DeathStart()
+    {
+        base.DeathStart();
+    }
+
+    protected override void DeathUpdate()
+    {
+        base.DeathUpdate();
+    }
+
+    protected override void DeathExit()
+    {
+        base.DeathExit();
+    }
 }

@@ -870,6 +870,8 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void DeathStart()
     {
+        _monster.CCManager.Release();
+        _monster.DebuffManager.Release();
         parentRoom.MonsterDeathCheck();
         DeathSound();
         StopAllCoroutines();
@@ -1045,25 +1047,40 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void RigidStart()
     {
-        _navMeshAgent.isStopped = true;
-   //     Debug.Log("경직걸림");
-        _monster.myAnimator.SetTrigger("Rigid");
+        if (!DeathCheck())
+        {
+            _navMeshAgent.isStopped = true;
+            //     Debug.Log("경직걸림");
+            _monster.myAnimator.SetTrigger("Rigid");
+        }
     }
 
     protected virtual void StunStart()
     {
+        if (!DeathCheck())
+        {
+
         _navMeshAgent.isStopped = true;
     //    Debug.Log("스턴걸림");
         StopAllCoroutines();
         _monster.myAnimator.SetTrigger("Stun");
+        }
     }
 
     protected virtual void FallStart()
     {
-        _navMeshAgent.isStopped = true;
-   //     Debug.Log("넘어짐걸림");
-        StopAllCoroutines();
-        _monster.myAnimator.SetTrigger("Fall");
+        if (!DeathCheck())
+        {
+            GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
+            txt.transform.SetParent(transform);
+            txt.transform.localPosition = Vector3.zero;
+            txt.transform.rotation = Quaternion.identity;
+            txt.GetComponent<DamageText>().PlayText("넘어짐!", "monster");
+
+            _navMeshAgent.isStopped = true;
+            StopAllCoroutines();
+            _monster.myAnimator.SetTrigger("Fall");
+        }
     }
 
     protected virtual void RigidUpdate()
@@ -1082,23 +1099,44 @@ public class MonsterAction : MonoBehaviour
     }
     protected virtual void RigidExit()
     {
-        _monster.myAnimator.ResetTrigger("rigid");
-        _navMeshAgent.isStopped = false;
-        _monster.myAnimator.SetTrigger("Idle");
+        if (!DeathCheck())
+        {
+            GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
+            txt.transform.SetParent(transform);
+            txt.transform.localPosition = Vector3.zero;
+            txt.transform.rotation = Quaternion.identity;
+            txt.GetComponent<DamageText>().PlayText("경직!", "monster");
+
+            _monster.myAnimator.ResetTrigger("rigid");
+            _navMeshAgent.isStopped = false;
+            _monster.myAnimator.SetTrigger("Idle");
+        }
     }
 
     protected virtual void StunExit()
     {
-        _monster.myAnimator.ResetTrigger("stun");
-        _navMeshAgent.isStopped = false;
-        _monster.myAnimator.SetTrigger("Idle");
+        if (!DeathCheck())
+        {
+            GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
+            txt.transform.SetParent(transform);
+            txt.transform.localPosition = Vector3.zero;
+            txt.transform.rotation = Quaternion.identity;
+            txt.GetComponent<DamageText>().PlayText("스턴!", "monster");
+
+            _monster.myAnimator.ResetTrigger("stun");
+            _navMeshAgent.isStopped = false;
+            _monster.myAnimator.SetTrigger("Idle");
+        }
     }
 
     protected virtual void FallExit()
     {
-        _monster.myAnimator.ResetTrigger("fall");
-        _navMeshAgent.isStopped = false;
-        _monster.myAnimator.SetTrigger("Idle");
+        if (!DeathCheck())
+        {
+            _monster.myAnimator.ResetTrigger("fall");
+            _navMeshAgent.isStopped = false;
+            _monster.myAnimator.SetTrigger("Idle");
+        }
     }
 
 }

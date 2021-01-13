@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class CCAttack : MonoBehaviour
 {
-
+    [Tooltip("넘어짐 확률 0 ~ 1")]
+    [SerializeField] float FallProc;
+    [Tooltip("스턴 확률 0 ~ 1")]
+    [SerializeField] float StunProc;
+    [Tooltip("경직 확률 0 ~ 1")]
+    [SerializeField] float FirgProc;
     public void ApplyCC(GameObject unit , float fstun , float ffall , float frig) // CC 적용시키는 코드
     {
         if (unit.GetComponent<LivingEntity>().Hp <= 0) return;
@@ -23,23 +28,33 @@ public class CCAttack : MonoBehaviour
         {
             //넘어짐
             //Debug.log("상태이상 넘어짐");
-            unit.GetComponent<LivingEntity>().CCManager.AddCC("fall", new Fall(3, unit.GetComponent<LivingEntity>(), "fall"));
+            unit.GetComponent<LivingEntity>().CCManager.AddCC("fall", new Fall(3, unit.GetComponent<LivingEntity>(), "fall") , unit);
         }
         else if (roll <= stunRate + fallRate)
         {
             //스턴
             //Debug.log("상태이상 스턴");
-            unit.GetComponent<LivingEntity>().CCManager.AddCC("stun", new Stun(3, unit.GetComponent<LivingEntity>(), "stun"));
+            unit.GetComponent<LivingEntity>().CCManager.AddCC("stun", new Stun(3, unit.GetComponent<LivingEntity>(), "stun") , unit);
         }
         else if (roll <= frigRate + fallRate + frigRate)
         {
             //경직
             //Debug.log("상태이상 경직");
-            unit.GetComponent<LivingEntity>().CCManager.AddCC("rigid", new Rigid(3, unit.GetComponent<LivingEntity>(), "rigid"));
+            unit.GetComponent<LivingEntity>().CCManager.AddCC("rigid", new Rigid(3, unit.GetComponent<LivingEntity>(), "rigid") , unit);
         }
         else
         {
             //Debug.log("안걸림");
         }
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Monster"))
+        {
+            ApplyCC(other.gameObject, StunProc, FallProc, FirgProc);
+        }
+    }
+
 }

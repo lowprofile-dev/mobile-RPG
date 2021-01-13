@@ -385,7 +385,6 @@ public class BossSkeletonKingAction : MonsterAction
         DoAttack();
     }
 
-
     protected override void TraceStart()
     {
         StopCoroutine(_attackCoroutine);
@@ -436,20 +435,31 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void AttackUpdate() { }
 
-    protected override void RigidExit()
+    protected override void RigidStart()
+    {       
+    }
+    protected override void StunStart()
     {
-        base.RigidExit();
-        _attackCoroutine = null;
+        GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
+        txt.transform.SetParent(transform);
+        txt.transform.localPosition = Vector3.zero;
+        txt.transform.rotation = Quaternion.identity;
+        txt.GetComponent<DamageText>().PlayText("CC 면역!", "monster");
+    }
+    protected override void RigidExit()
+    {       
     }
     protected override void StunExit()
-    {
-        base.StunExit();
-        _attackCoroutine = null;
-
+    {    
     }
     protected override void FallStart()
     {
-     //   Debug.Log("넘어짐 면역");
+        GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
+        txt.transform.SetParent(transform);
+        txt.transform.localPosition = Vector3.zero;
+        txt.transform.rotation = Quaternion.identity;
+        txt.GetComponent<DamageText>().PlayText("CC 면역!", "monster");
+        //   Debug.Log("넘어짐 면역");
     }
     protected override void FallExit() { }
 

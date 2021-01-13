@@ -72,7 +72,9 @@ public class PlayerAttack: MonoBehaviour
 
     public virtual IEnumerator DoMultiDamage(MonsterAction monster)
     {
-        for(int i=0; i<_damageCount; i++)
+        //GetComponent<CCAttack>().ApplyCC(monster.gameObject, 0, 0, 0.15f);
+
+        for (int i=0; i<_damageCount; i++)
         {
             thisSkillsDamage += monster.DamageCheck(_useFixedDmg ? _damage : _damage * StatusManager.Instance.finalStatus.attackDamage);
             if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)

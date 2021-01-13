@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CCManager : MonoBehaviour
 {
-
     private Dictionary<string, CwordControl> ccControl = new Dictionary<string, CwordControl>();
 
     private MonsterAction mons = null;
@@ -38,14 +37,23 @@ public class CCManager : MonoBehaviour
 
     public void Release()
     {
-        ccControl.Clear();       
+        ccControl.Clear();
+        currentCC = null;
     }
     
-    public void AddCC(string type, CwordControl cc)
+    public void AddCC(string type, CwordControl cc , GameObject obj)
     {
         if(type == "fall")
         {
-         //   Debug.Log("CCMANAGER 넘어짐");
+            Debug.Log("CCMANAGER 넘어짐");
+
+           
+
+            GameObject eft = ObjectPoolManager.Instance.GetObject("Effect/CCEffect/FallEffect");
+            eft.transform.SetParent(obj.transform);
+            eft.transform.localPosition = Vector3.zero;
+            eft.transform.rotation = Quaternion.identity;
+
             ccControl.Clear();
             ccControl.Add(type, cc);
             currentCC = type;
@@ -59,8 +67,20 @@ public class CCManager : MonoBehaviour
             
                 if (currentCC != "fall")
                 {
-             //       Debug.Log("CCMANAGER 스턴");
-                    ccControl.Clear();
+                       Debug.Log("CCMANAGER 스턴");
+
+                //GameObject txt = ObjectPoolManager.Instance.GetObject("UI/DamageTEXT");
+                //txt.transform.SetParent(obj.transform);
+                //txt.transform.localPosition = Vector3.zero;
+                //txt.transform.rotation = Quaternion.identity;
+                //txt.GetComponent<DamageText>().PlayText("스턴!", type);
+
+                GameObject eft = ObjectPoolManager.Instance.GetObject("Effect/CCEffect/StunEffect");
+                eft.transform.SetParent(obj.transform);
+                eft.transform.localPosition = new Vector3(0f, obj.transform.lossyScale.y, 0f);
+                eft.transform.rotation = Quaternion.identity;
+
+                ccControl.Clear();
                     ccControl.Add(type, cc);
                     currentCC = type;
                     if (currentType == "monster")
@@ -79,7 +99,8 @@ public class CCManager : MonoBehaviour
             
                 if (currentCC != "fall" && currentCC != "stun")
                 {
-               //     Debug.Log("CCMANAGER 경직");
+                   Debug.Log("CCMANAGER 경직");
+
                     ccControl.Clear();
                     ccControl.Add(type, cc);
                     currentCC = type;
@@ -90,7 +111,7 @@ public class CCManager : MonoBehaviour
                 }
                 else
                 {
-           //         Debug.Log("넘어짐 상태 혹은 스턴 상태라 경직 안걸림");
+                           // Debug.Log("넘어짐 상태 혹은 스턴 상태라 경직 안걸림");
                 }
             
         }

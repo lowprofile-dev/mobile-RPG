@@ -40,16 +40,19 @@ public class DebuffManager : MonoBehaviour
 
             newDebuffs.Clear(); //새로운 디버프 리스트 삭제 
         }
+
         foreach (Debuff debuff in debuffsToRemove) //디버프 삭제 리스트 순회
         {
             debuffs.Remove(debuff);
 
         }
+
         debuffsToRemove.Clear();
 
         foreach (Debuff debuff in debuffs) //디버프 리스트 순회
         {
             debuff.Update();
         }
+
     }
 }

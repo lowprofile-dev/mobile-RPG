@@ -8,6 +8,8 @@ public abstract class CwordControl
     private float duration;
     protected float elapsed;
     protected string type;
+    GameObject effect;
+
     public CwordControl(LivingEntity target, float duration, string type)
     {
         this.target = target;

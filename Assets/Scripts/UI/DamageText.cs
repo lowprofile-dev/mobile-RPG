@@ -44,6 +44,18 @@ public class DamageText : MonoBehaviour
         }
     }
 
+    public void PlayText(string text , string type)
+    {
+        if (type == "player")
+        {
+            txt.text = "<color=#00ff00>" + text + "</color>";
+        }
+        else
+        {
+            txt.text = "<color=#ff0000>" + text + "</color>";
+        }
+    }
+
     private IEnumerator DestroyObject()
     {
         yield return new WaitForSeconds(destoryTime);
