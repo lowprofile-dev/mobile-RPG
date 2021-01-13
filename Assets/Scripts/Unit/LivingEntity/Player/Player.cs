@@ -1,6 +1,7 @@
 ﻿using Cinemachine;
 using SimpleInputNamespace;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -92,6 +93,13 @@ public class Player : LivingEntity
     private float _footstepSoundTime = 0.3f;
     private float _rushSoundTime = 0.24f;
 
+    //아웃라이너 관련
+    private EPOOutline.Outlinable playerOutlinable;
+    private List<Renderer> lRenderers = new List<Renderer>();
+
+    //낙사 관련
+    public bool isFalling = false;
+
     private void Awake()
     {
         Instance = this;
@@ -108,11 +116,38 @@ public class Player : LivingEntity
 
         _evadeTime = _initEvadeTime;
 
-        _rushTime = 1;
+        _rushTime = 0.6f;
         _prevRushPos = Vector3.zero;
         
         moveDir = Vector3.forward;
         OffTrailParticles();
+    }
+
+    private void InitOutline()
+    {
+        GetRenderers(transform);
+        for (int i = 0; i < lRenderers.Count; i++)
+        {
+            EPOOutline.OutlineTarget outline = new EPOOutline.OutlineTarget(lRenderers[i], 0);
+            outline.CullMode = UnityEngine.Rendering.CullMode.Off;
+            playerOutlinable.outlineTargets.Add(outline);
+        }
+    }
+
+    private void GetRenderers(Transform parent)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.gameObject.GetComponent<Renderer>() != null)
+            {
+                lRenderers.Add(child.gameObject.GetComponent<Renderer>());
+            }
+            if (child.childCount > 0)
+            {
+                GetRenderers(child);
+            }
+        }
     }
 
     protected override void InitObject()
@@ -137,6 +172,9 @@ public class Player : LivingEntity
         else weaponManager.SetWeapon(weaponManager.GetWeaponName());
 
         SetUpPlayerCamera();
+
+        playerOutlinable = gameObject.GetComponent<EPOOutline.Outlinable>();
+        InitOutline();
     }
 
     protected override void Update()
@@ -149,13 +187,19 @@ public class Player : LivingEntity
         UpdateState();
         MasteryApply();
         ApplyGravity();
+
+        Debug.Log(_cntState);
     }
 
     private void ApplyGravity()
     {
+        //낙사
         if (transform.position.y < -50 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
         {
-            ChangeState(PLAYERSTATE.PS_DIE);
+            isFalling = true;
+            //ChangeState(PLAYERSTATE.PS_DIE);
+            Damaged(statusManager.finalStatus.maxHp*0.01f);
+            //ReturnToGround();
         }
         if (characterController.isGrounded)
         {
@@ -921,7 +965,7 @@ public class Player : LivingEntity
     {
         OnTrailparticles();
         _isRushing = true;
-        _rushTime = 1;
+        _rushTime = 0.6f;
         _cntFootStepSound = _rushSoundTime / 2;
     }
 
@@ -980,7 +1024,7 @@ public class Player : LivingEntity
     {
         OffTrailParticles();
         _isRushing = false;
-        _rushTime = 1;
+        _rushTime = 0.6f;
 
         if (weaponManager.GetWeaponName() == "SWORD" && _cntSkillType == 1)
         {
