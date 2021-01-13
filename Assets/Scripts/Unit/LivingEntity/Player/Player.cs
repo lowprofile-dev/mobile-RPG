@@ -97,6 +97,9 @@ public class Player : LivingEntity
     private EPOOutline.Outlinable playerOutlinable;
     private List<Renderer> lRenderers = new List<Renderer>();
 
+    //낙사 관련
+    public bool isFalling = false;
+
     private void Awake()
     {
         Instance = this;
@@ -125,7 +128,9 @@ public class Player : LivingEntity
         GetRenderers(transform);
         for (int i = 0; i < lRenderers.Count; i++)
         {
-            playerOutlinable.outlineTargets.Add(new EPOOutline.OutlineTarget(lRenderers[i], i));
+            EPOOutline.OutlineTarget outline = new EPOOutline.OutlineTarget(lRenderers[i], 0);
+            outline.CullMode = UnityEngine.Rendering.CullMode.Off;
+            playerOutlinable.outlineTargets.Add(outline);
         }
     }
 
@@ -188,9 +193,13 @@ public class Player : LivingEntity
 
     private void ApplyGravity()
     {
+        //낙사
         if (transform.position.y < -50 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
         {
-            ChangeState(PLAYERSTATE.PS_DIE);
+            isFalling = true;
+            //ChangeState(PLAYERSTATE.PS_DIE);
+            Damaged(statusManager.finalStatus.maxHp*0.01f);
+            //ReturnToGround();
         }
         if (characterController.isGrounded)
         {

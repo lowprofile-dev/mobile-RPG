@@ -33,10 +33,8 @@ public class DungeonRoom : MonoBehaviour
     private List<GameObject> lights = new List<GameObject>();
     System.Random random = new System.Random();
 
-    int spawnPointIndex;
+    int spawnPointIndex = 0;
     int monsterIndex;
-
-    
 
     private void Start()
     {
@@ -98,8 +96,8 @@ public class DungeonRoom : MonoBehaviour
         GetDoorways(transform);
         for (int i = 0; i < doorways.Count; i++)
         {
-            //GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
-            GameObject door = Instantiate(doorPrefab);
+            GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
+            //GameObject door = Instantiate(doorPrefab);
             door.transform.position = doorways[i].transform.TransformPoint(0, 0, 0);
             door.transform.rotation = doorways[i].transform.rotation;
             //door.transform.SetParent(null);
@@ -111,7 +109,8 @@ public class DungeonRoom : MonoBehaviour
     {
         for (int i = 0; i < doors.Count; i++)
         {
-            doors[i].gameObject.SetActive(false);
+            //doors[i].gameObject.SetActive(false);
+            ObjectPoolManager.Instance.ReturnObject(doors[i].gameObject);
         }
         //doors.Clear();
     }
@@ -361,8 +360,10 @@ public class DungeonRoom : MonoBehaviour
             nMonsterAlive++;
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
             //spawnPointIndex = i;
-            monsterIndex = random.Next(monsterPrefabs.Count);
-            var monster = Instantiate(monsterPrefabs[monsterIndex]);
+            //monsterIndex = random.Next(monsterPrefabs.Count);
+            //var monster = Instantiate(monsterPrefabs[monsterIndex]);
+            monsterIndex = random.Next(dungeonManager.currentStageMonsterPrefabs.Count);
+            var monster = Instantiate(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
             monster.GetComponent<NavMeshAgent>().enabled = false;
             monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
             //monster.transform.SetParent(null);
