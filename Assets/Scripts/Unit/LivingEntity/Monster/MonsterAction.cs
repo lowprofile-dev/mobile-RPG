@@ -872,12 +872,17 @@ public class MonsterAction : MonoBehaviour
     {
         _monster.CCManager.Release();
         _monster.DebuffManager.Release();
-        //parentRoom.MonsterDeathCheck();
+        parentRoom.MonsterDeathCheck();
         DeathSound();
         StopAllCoroutines();
         StartCoroutine(DoDeathAction());
-    }
 
+        Invoke("DestroyMonster", 3f);
+    }
+    private void DestroyMonster()
+    {
+        DestroyImmediate(gameObject);
+    }
     /// <summary>
     /// 죽었을 때, 타이머를 통해 죽는 연출 및 이벤트 발생을 할 수 있도록 한다.
     /// </summary>

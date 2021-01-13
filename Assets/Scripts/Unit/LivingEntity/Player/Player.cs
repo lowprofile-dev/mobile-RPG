@@ -188,8 +188,6 @@ public class Player : LivingEntity
         UpdateState();
         MasteryApply();
         ApplyGravity();
-
-        Debug.Log(_cntState);
     }
 
     private void ApplyGravity()

@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 98b36f75a3b9b7548844c36f1a60981d,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1661,9 +1661,9 @@ MonoBehaviour:
   dungeon: {fileID: 0}
   stageInfo: {fileID: 517214253}
   BossPrefabs:
-  - {fileID: 4206521029260089746, guid: 0753a3ce126970249b50f40fedf0390b, type: 3}
+  - {fileID: 147486, guid: d0a670402a14630499502399c0af67e2, type: 3}
   - {fileID: 6800657164168880451, guid: 7be857684d5c7b3438e38b113f7f192e, type: 3}
-  - {fileID: 6800657164168880451, guid: 7be857684d5c7b3438e38b113f7f192e, type: 3}
+  - {fileID: 147486, guid: d0a670402a14630499502399c0af67e2, type: 3}
   - {fileID: 6800657164168880451, guid: 7be857684d5c7b3438e38b113f7f192e, type: 3}
   stage1MonsterPrefabs:
   - {fileID: 5711455880128171077, guid: b15fb212ab8e20b48978202886a9bfdc, type: 3}
@@ -1672,15 +1672,19 @@ MonoBehaviour:
   stage2MonsterPrefabs:
   - {fileID: 2386692087498796433, guid: d9d5279237bb680478efdec73a8b1a49, type: 3}
   - {fileID: 4389056476029205342, guid: d90f51c287aa8ff4296235294365cc00, type: 3}
-  - {fileID: 5711455880128171077, guid: b15fb212ab8e20b48978202886a9bfdc, type: 3}
+  - {fileID: 4206521029260089746, guid: 0753a3ce126970249b50f40fedf0390b, type: 3}
   - {fileID: 3184240531697180170, guid: 59a6e3d3c78516e41b1101e20d3e0e25, type: 3}
   stage3MonsterPrefabs:
   - {fileID: 3184240531697180170, guid: 59a6e3d3c78516e41b1101e20d3e0e25, type: 3}
   - {fileID: 2386692087498796433, guid: d9d5279237bb680478efdec73a8b1a49, type: 3}
   - {fileID: 4389056476029205342, guid: d90f51c287aa8ff4296235294365cc00, type: 3}
+  - {fileID: 4206521029260089746, guid: 0753a3ce126970249b50f40fedf0390b, type: 3}
   stage4MonsterPrefabs:
   - {fileID: 2386692087498796433, guid: d9d5279237bb680478efdec73a8b1a49, type: 3}
   - {fileID: 4389056476029205342, guid: d90f51c287aa8ff4296235294365cc00, type: 3}
+  - {fileID: 5711455880128171077, guid: b15fb212ab8e20b48978202886a9bfdc, type: 3}
+  - {fileID: 4206521029260089746, guid: 0753a3ce126970249b50f40fedf0390b, type: 3}
+  - {fileID: 843597845067770288, guid: d0acb94d628ad654cbbb83c9a7043626, type: 3}
   currentStageMonsterPrefabs: []
   dungeonStage: 1
   player: {fileID: 0}

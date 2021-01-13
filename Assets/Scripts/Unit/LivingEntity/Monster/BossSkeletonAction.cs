@@ -28,7 +28,7 @@ public class BossSkeletonAction : MonsterAction
 
         Attack atk = obj.GetComponent<Attack>();
         atk.SetParent(gameObject);
-        atk.PlayAttackTimer(1);
+        atk.PlayAttackTimer(0.3f);
        
     }
     protected override IEnumerator AttackTarget()

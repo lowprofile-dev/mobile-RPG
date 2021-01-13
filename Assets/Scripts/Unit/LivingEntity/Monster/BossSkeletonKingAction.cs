@@ -31,10 +31,12 @@ public class BossSkeletonKingAction : MonsterAction
     [SerializeField] float blackHoleCastingTime;
     [SerializeField] float summonCastingTime;
     [SerializeField] float AirSkillCastingTime;
+
+    BossSpawnPoint SpawnPoints = null;
     
-
     List<Transform> ProjectileList = new List<Transform>();
-
+    List<GameObject> monsterList = new List<GameObject>();
+        
     private GameObject currentTarget;
 
     private float velocity;
@@ -50,7 +52,11 @@ public class BossSkeletonKingAction : MonsterAction
         Gizmos.DrawWireSphere(transform.position, _attackRange);
     }
 
-
+    public override void InitObject()
+    {
+        base.InitObject();
+        SpawnPoints = GameObject.FindWithTag("BossSpawnPoint").GetComponent<BossSpawnPoint>();
+    }
     protected override void DoAttack()
     {
      
@@ -87,7 +93,7 @@ public class BossSkeletonKingAction : MonsterAction
         transform.LookAt(_target.transform.position);
         BossAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<BossAttack>();
         atk.SetParent(gameObject , attackPos.transform);
-        atk.PlayAttackTimer(0.5f);
+        atk.PlayAttackTimer(0.2f);
         atk.OnLoad(gameObject, attackPos);
 
     }
@@ -96,7 +102,7 @@ public class BossSkeletonKingAction : MonsterAction
     {
         BossAttack atk = ObjectPoolManager.Instance.GetObject(AirSkillEffect).GetComponent<BossAttack>();
         atk.SetParent(gameObject , target);
-        atk.PlayAttackTimer(0.5f);
+        atk.PlayAttackTimer(0.2f);
         atk.OnLoad(currentTarget, currentTarget);
     }
 
@@ -128,10 +134,6 @@ public class BossSkeletonKingAction : MonsterAction
                 _monster.myAnimator.SetTrigger("Attack1");
                 currentAnimation = "Attack1";
                 break;                      
-            case AttackType.SUMMON:
-                _monster.myAnimator.SetTrigger("Summon");
-                currentAnimation = "Summon";
-                break;
             default:
                 break;
         }
@@ -177,6 +179,14 @@ public class BossSkeletonKingAction : MonsterAction
         }
        
         int proc = UnityEngine.Random.Range(0, 100);
+
+        //Debug.Log(monsterList.Count);
+        //if (monsterList.Count == 0)
+        //{
+        //    _castTime = summonCastingTime;
+        //    attackType = AttackType.SUMMON;
+        //    return;
+        //}
 
         if (proc <= 25)
         {
@@ -304,11 +314,40 @@ public class BossSkeletonKingAction : MonsterAction
                 StartCoroutine(JumpAttackAction());
                 break;
             case AttackType.SUMMON:
+                StartCoroutine(SummonAction());
                 break;
             default:
                 break;
         }
 
+    }
+
+    private IEnumerator SummonAction()
+    {
+        yield return null;
+
+        _monster.myAnimator.SetTrigger("Summon");
+        currentAnimation = "Summon";
+
+        for (int i = 0; i < SpawnPoints.Points.Length; i++)
+        {
+            GameObject eft = ObjectPoolManager.Instance.GetObject(SpawnPoints.SpawnEffect , SpawnPoints.Points[i].position - Vector3.one , Quaternion.identity);           
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        for (int i = 0; i < SpawnPoints.Points.Length; i++)
+        {
+            int rnd = UnityEngine.Random.Range(0, 1);
+            GameObject mon;
+            if (rnd == 0) mon = Instantiate(skeleton_grunt);
+            else mon = Instantiate(skeleton_sword);
+
+            mon.transform.SetParent(SpawnPoints.Points[i]);
+            mon.transform.localPosition = Vector3.zero;
+            monster.transform.localRotation = Quaternion.identity;
+            monsterList.Add(mon);
+        }
     }
 
     private IEnumerator JumpAttackAction()
@@ -433,7 +472,12 @@ public class BossSkeletonKingAction : MonsterAction
         }
     }
 
-    protected override void AttackUpdate() { }
+    protected override void AttackUpdate() {
+        foreach (var item in monsterList)
+        {
+            if (item == null) monsterList.Remove(item);
+        }
+    }
 
     protected override void RigidStart()
     {       
