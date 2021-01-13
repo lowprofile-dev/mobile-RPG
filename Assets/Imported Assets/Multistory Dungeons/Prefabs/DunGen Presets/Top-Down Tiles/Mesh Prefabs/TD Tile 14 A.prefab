@@ -9,8 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 418756}
-  - component: {fileID: 11428346}
-  - component: {fileID: 6199563043535492510}
   m_Layer: 0
   m_Name: TD Tile 14 A
   m_TagString: Untagged
@@ -33,91 +31,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &11428346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 238d443cf4b172f4989d5ce455c57c3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allowImmediateRepeats: 0
-  AllowRotation: 0
-  RepeatMode: 1
-  OverrideAutomaticTileBounds: 0
-  TileBoundsOverride:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.5, y: 0.5, z: 0.5}
-  Entrance: {fileID: 0}
-  Exit: {fileID: 0}
-  OverrideConnectionChance: 0
-  ConnectionChance: 0
-  AllDoorways: []
-  UsedDoorways: []
-  UnusedDoorways: []
-  placement:
-    pathDepth: 0
-    normalizedPathDepth: 0
-    branchDepth: 0
-    normalizedBranchDepth: 0
-    isOnMainPath: 0
-    localBounds:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    graphNode:
-      Graph: {fileID: 0}
-      TileSets: []
-      NodeType: 0
-      Position: 0
-      Label: 
-      Keys: []
-      Locks: []
-      LockPlacement: 0
-    graphLine:
-      Graph: {fileID: 0}
-      DungeonArchetypes: []
-      Position: 0
-      Length: 0
-      Keys: []
-      Locks: []
-    archetype: {fileID: 0}
-    tileSet: {fileID: 0}
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
-  fileVersion: 1
---- !u!114 &6199563043535492510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02523247c91109b47b057e03324345ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  areaCode: 0
-  isCleared: 0
-  isSetArea: 0
-  hasPlayer: 0
-  isBossRoom: 0
-  monsterSpawnPoints: []
-  monsterPrefabs:
-  - {fileID: 5711455880128171077, guid: b15fb212ab8e20b48978202886a9bfdc, type: 3}
-  - {fileID: 3184240531697180170, guid: 59a6e3d3c78516e41b1101e20d3e0e25, type: 3}
-  - {fileID: 1355095795314762, guid: 9f160afaef86a164ea4b662a1da64180, type: 3}
-  monsterSpawnInterval: 2
-  nMonsterPerSpawn: 1
-  nMonsterToSpawn: 4
-  nMonsterSpawned: 0
-  nMonsterAlive: 0
-  isSpawning: 0
-  doorPrefab: {fileID: 145190, guid: fb41b397ae98ccd49b54ad4b2a69a48e, type: 3}
 --- !u!1 &4544637787230337925
 GameObject:
   m_ObjectHideFlags: 0
