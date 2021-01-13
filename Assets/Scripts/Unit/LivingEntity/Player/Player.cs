@@ -150,7 +150,6 @@ public class Player : LivingEntity
         base.InitObject();
 
         _hp = StatusManager.Instance.finalStatus.maxHp;
-        Debug.Log(_hp);
         _stemina = StatusManager.Instance.finalStatus.maxStamina;
 
         selection = GetComponent<PartSelection>();

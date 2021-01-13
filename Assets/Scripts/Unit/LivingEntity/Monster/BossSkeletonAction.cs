@@ -147,6 +147,7 @@ public class BossSkeletonAction : MonsterAction
         yield return null;
  
         GameObject pase2 = ObjectPoolManager.Instance.GetObject(_bossSkeletonPase2);
+        pase2.GetComponent<MonsterAction>().parentRoom = parentRoom;
         pase2.transform.position = transform.localPosition;
         pase2.transform.LookAt(_target.transform.position);
 

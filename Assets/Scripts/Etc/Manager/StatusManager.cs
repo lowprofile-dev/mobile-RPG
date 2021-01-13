@@ -185,26 +185,26 @@ public class StatusManager : SingletonBase<StatusManager>
     }
 
 
-
-
-
     /////////////////// 기타 기능 ////////////////////
 
     public float GetCurrentHpPercent()
     {
-        if(Player.Instance != null)
+        if (Player.Instance != null)
         {
             return Player.Instance.Hp / finalStatus.maxHp;
         }
-        return 0;
+
+        return 0f;
     }
 
     public float GetCurrentSteminaPercent()
     {
-        if(Player.Instance != null)
+        if (Player.Instance != null)
         {
             return Player.Instance.Stemina / finalStatus.maxStamina;
         }
-        return 0;
+
+        return 0f;
+        
     }
 }
