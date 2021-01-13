@@ -166,8 +166,8 @@ public class StatusManager : SingletonBase<StatusManager>
         PlayerPrefs.SetInt("LoadCurrentStatusCount", PlayerPrefs.GetInt("LoadCurrentStatusCount", 0));
         if (PlayerPrefs.GetInt("LoadCurrentStatusCount") == 0)
         {
-            Debug.Log("최초 스테이터스 데이터 로드 실행입니다.");
-      //      PlayerPrefs.SetInt("LoadCurrentStatusCount", 1);
+           // Debug.Log("최초 스테이터스 데이터 로드 실행입니다.");
+            PlayerPrefs.SetInt("LoadCurrentStatusCount", 1);
             SaveCurrentStatus();
             PlayerPrefs.Save();
         }

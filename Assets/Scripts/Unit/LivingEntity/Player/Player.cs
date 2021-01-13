@@ -99,7 +99,7 @@ public class Player : LivingEntity
 
     //낙사 관련
     public bool isFalling = false;
-    public Transform lastRoomTransform;
+    public Vector3 lastRoomTransformPos;
 
     private void Awake()
     {
@@ -199,13 +199,14 @@ public class Player : LivingEntity
         {
             isFalling = true;
             //ChangeState(PLAYERSTATE.PS_DIE);
-            Damaged(statusManager.finalStatus.maxHp*0.01f);
-            //ReturnToGround();
-        }
-        if (transform.position.y < -40 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
-        {
+            Damaged(statusManager.finalStatus.maxHp*0.1f);
             ReturnToGround();
+            return;
         }
+        //if (transform.position.y < -40 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
+        //{
+        //    ReturnToGround();
+        //}
         if (characterController.isGrounded)
         {
             vSpeed = 0;
@@ -217,8 +218,9 @@ public class Player : LivingEntity
 
     private void ReturnToGround()
     {
+        Debug.Log("낙사!");
         isFalling = false;
-        transform.position = lastRoomTransform.position;
+        transform.position = lastRoomTransformPos;
     }
 
     //마스터리 강화 관련 

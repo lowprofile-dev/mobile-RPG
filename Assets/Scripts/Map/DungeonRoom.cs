@@ -205,7 +205,7 @@ public class DungeonRoom : MonoBehaviour
         if (bounds.Contains(dungeonManager.player.GetComponent<CapsuleCollider>().bounds.center))
         {
             hasPlayer = true;
-            dungeonManager.player.GetComponent<Player>().lastRoomTransform = monsterSpawnPoints[0].transform;
+            dungeonManager.player.GetComponent<Player>().lastRoomTransformPos = monsterSpawnPoints[0].transform.TransformPoint(0, 1, 0);
             dungeonManager.player.GetComponent<Player>().currentDungeonArea = areaCode;
             if (!isCleared && !isSpawning)
             {
