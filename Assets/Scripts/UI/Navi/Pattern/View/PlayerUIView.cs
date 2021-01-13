@@ -71,6 +71,7 @@ public class PlayerUIView : View
         SetMyStatusText();
         SetHpStemina();
         SetTalkOrAttackSprite();
+
         SetEffectList();
     }
 
@@ -124,7 +125,7 @@ public class PlayerUIView : View
     /// </summary>
     public void SetTalkOrAttackSprite()
     {
-        Debug.Log((Player.Instance != null) + " " + Player.Instance.CheckThereisObject());
+        //Debug.Log((Player.Instance != null) + " " + Player.Instance.CheckThereisObject());
         if (Player.Instance != null && Player.Instance.CheckThereisObject()) _atkImg.sprite = _talkSprite;
         else _atkImg.sprite = _atkSprite;
     }
@@ -134,8 +135,12 @@ public class PlayerUIView : View
     /// </summary>
     public void SetMyStatusText()
     {
-        _masteryText.text = MasteryManager.Instance.currentMastery.currentMasteryLevel.ToString();
-        _weaponText.text = WeaponManager.Instance.GetWeapon().masteryLevel.ToString();
+        if (WeaponManager.Instance.GetWeapon() != null)
+        {
+            _masteryText.text = MasteryManager.Instance.currentMastery.currentMasteryLevel.ToString();
+            _weaponText.text = WeaponManager.Instance.GetWeapon().masteryLevel.ToString();
+        }
+        
     }
 
     public void SetHpStemina()
@@ -153,16 +158,19 @@ public class PlayerUIView : View
             if (count > 100) break;
         }
 
-        for (int i = 0; i < 4; i++)
+        if (UILoaderManager.Instance.IsSceneDungeon())
         {
-            Card cardData = CardManager.Instance.dungeonCardData[i, Player.Instance.currentDungeonArea];
-
-            if (cardData != null)
+            for (int i = 0; i < 4; i++)
             {
-                GameObject buffImgObj = ObjectPoolManager.Instance.GetObject(_buffImgPrefab);
-                buffImgObj.transform.SetParent(_buffFrame.transform);
-                buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>(iconPath + cardData.cardData.iconImg);
-                buffImgObj.GetComponent<RectTransform>().localScale = Vector3.one;
+                Card cardData = CardManager.Instance.dungeonCardData[i, Player.Instance.currentDungeonArea - 1];
+
+                if (cardData != null)
+                {
+                    GameObject buffImgObj = ObjectPoolManager.Instance.GetObject(_buffImgPrefab);
+                    buffImgObj.transform.SetParent(_buffFrame.transform);
+                    buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>(iconPath + cardData.cardData.iconImg);
+                    buffImgObj.GetComponent<RectTransform>().localScale = Vector3.one;
+                }
             }
         }
 

@@ -16,6 +16,7 @@ public class Player : LivingEntity
 {
     public static Player Instance;
 
+    public GameObject GetPlayer { get { return this.gameObject; } }
     private bool avoidButtonClick = false;
     [SerializeField] private float _initEvadeTime;
     private float _evadeTime;
@@ -107,7 +108,7 @@ public class Player : LivingEntity
 
         _evadeTime = _initEvadeTime;
 
-        _rushTime = 2;
+        _rushTime = 1;
         _prevRushPos = Vector3.zero;
         
         moveDir = Vector3.forward;
@@ -119,6 +120,7 @@ public class Player : LivingEntity
         base.InitObject();
 
         _hp = StatusManager.Instance.finalStatus.maxHp;
+        Debug.Log(_hp);
         _stemina = StatusManager.Instance.finalStatus.maxStamina;
 
         selection = GetComponent<PartSelection>();
@@ -152,7 +154,7 @@ public class Player : LivingEntity
 
     private void ApplyGravity()
     {
-        if (transform.position.y < -50 && !_isdead)
+        if (transform.position.y < -50 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
         {
             ChangeState(PLAYERSTATE.PS_DIE);
         }
@@ -920,7 +922,7 @@ public class Player : LivingEntity
     {
         OnTrailparticles();
         _isRushing = true;
-        _rushTime = 2;
+        _rushTime = 1;
         _cntFootStepSound = _rushSoundTime / 2;
     }
 
@@ -979,7 +981,7 @@ public class Player : LivingEntity
     {
         OffTrailParticles();
         _isRushing = false;
-        _rushTime = 2;
+        _rushTime = 1;
 
         if (weaponManager.GetWeaponName() == "SWORD" && _cntSkillType == 1)
         {
@@ -1066,7 +1068,8 @@ public class Player : LivingEntity
 
     private void DieEnter()
     {
-        //Debug.log("죽음!");
+        if (_isdead) return;
+        Debug.Log("죽음!");
 
         _isdead = true;
 
@@ -1090,7 +1093,6 @@ public class Player : LivingEntity
             _hp = statusManager.finalStatus.maxHp;
             ChangeState(PLAYERSTATE.PS_IDLE);
         }
-        else Invoke("DieExit", 3f);
     }
 
     public void DieExit()
@@ -1168,7 +1170,7 @@ public class Player : LivingEntity
     /// </summary>
     public void CheckToDie()
     {
-        if (_hp <= 0 && !isdead)
+        if (_hp <= 0 && !isdead && _cntState != PLAYERSTATE.PS_DIE)
         {
             ChangeState(PLAYERSTATE.PS_DIE);
         }

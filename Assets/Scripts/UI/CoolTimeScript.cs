@@ -38,13 +38,16 @@ public class CoolTimeScript : MonoBehaviour
 
     public float GetCoolTime()
     {
-        switch (gameObject.name)
+        if (WeaponManager.Instance.GetWeapon() != null)
         {
-            case "SkillA": return WeaponManager.Instance.GetWeapon().skillACool;
-            case "SkillB": return WeaponManager.Instance.GetWeapon().skillBCool;
-            case "SkillC": return WeaponManager.Instance.GetWeapon().skillCCool;
-        }
+            switch (gameObject.name)
+            {
 
+                case "SkillA": return WeaponManager.Instance.GetWeapon().skillACool;
+                case "SkillB": return WeaponManager.Instance.GetWeapon().skillBCool;
+                case "SkillC": return WeaponManager.Instance.GetWeapon().skillCCool;
+            }
+        }
         return 0;
     }
 
@@ -95,30 +98,33 @@ public class CoolTimeScript : MonoBehaviour
 
         if (gameObject.name != "SkillA")
         {
-            if (gameObject.name == "SkillB" && WeaponManager.Instance.GetWeapon().CheckSkillB() && isLock == true)
+            if (WeaponManager.Instance.GetWeapon() != null)
             {
-                isLock = false;
-                lockImage.enabled = false;
-                button.enabled = true;
-            }
-            else if (gameObject.name == "SkillB" && !WeaponManager.Instance.GetWeapon().CheckSkillB() && isLock == false)
-            {
-                isLock = true;
-                lockImage.enabled = true;
-                button.enabled = false;
-            }
+                if (gameObject.name == "SkillB" && WeaponManager.Instance.GetWeapon().CheckSkillB() && isLock == true)
+                {
+                    isLock = false;
+                    lockImage.enabled = false;
+                    button.enabled = true;
+                }
+                else if (gameObject.name == "SkillB" && !WeaponManager.Instance.GetWeapon().CheckSkillB() && isLock == false)
+                {
+                    isLock = true;
+                    lockImage.enabled = true;
+                    button.enabled = false;
+                }
 
-            if (gameObject.name == "SkillC" && WeaponManager.Instance.GetWeapon().CheckSkillC() && isLock == true)
-            {
-                isLock = false;
-                lockImage.enabled = false;
-                button.enabled = true;
-            }
-            else if (gameObject.name == "SkillC" && !WeaponManager.Instance.GetWeapon().CheckSkillC() && isLock == false)
-            {
-                isLock = true;
-                lockImage.enabled = true;
-                button.enabled = false;
+                if (gameObject.name == "SkillC" && WeaponManager.Instance.GetWeapon().CheckSkillC() && isLock == true)
+                {
+                    isLock = false;
+                    lockImage.enabled = false;
+                    button.enabled = true;
+                }
+                else if (gameObject.name == "SkillC" && !WeaponManager.Instance.GetWeapon().CheckSkillC() && isLock == false)
+                {
+                    isLock = true;
+                    lockImage.enabled = true;
+                    button.enabled = false;
+                }
             }
 
         }

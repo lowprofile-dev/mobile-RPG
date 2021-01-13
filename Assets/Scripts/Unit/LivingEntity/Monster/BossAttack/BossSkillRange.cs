@@ -11,6 +11,7 @@ public class BossSkillRange : MonoBehaviour
     private float angle;
     private float velocity;
     private float speed;
+
     private void OnEnable()
     {
         fillArea.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
