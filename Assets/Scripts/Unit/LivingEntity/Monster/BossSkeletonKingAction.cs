@@ -334,7 +334,7 @@ public class BossSkeletonKingAction : MonsterAction
             GameObject eft = ObjectPoolManager.Instance.GetObject(SpawnPoints.SpawnEffect , SpawnPoints.Points[i].position , Quaternion.identity);           
         }
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
 
         for (int i = 0; i < SpawnPoints.Points.Length; i++)
         {
@@ -343,9 +343,10 @@ public class BossSkeletonKingAction : MonsterAction
             if (rnd == 0) mon = Instantiate(skeleton_grunt);
             else mon = Instantiate(skeleton_sword);
 
-            mon.transform.SetParent(SpawnPoints.Points[i]);
-            mon.transform.localPosition = Vector3.zero;
+            mon.GetComponent<NavMeshAgent>().enabled = false;
+            mon.transform.position = SpawnPoints.Points[i].TransformPoint(0, 0, 0);
             monster.transform.localRotation = Quaternion.identity;
+            mon.GetComponent<NavMeshAgent>().enabled = true;
             monsterList.Add(mon);
         }
     }
