@@ -956,7 +956,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0.5
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &-1362427502114699504
@@ -1011,7 +1011,6 @@ MonoBehaviour:
   _findRange: 100
   _attackRange: 15
   _limitTraceRange: 150
-  _moveSpeed: 10
   _attackSpeed: 2
   _checkLayerMask:
     serializedVersion: 2
@@ -1019,6 +1018,7 @@ MonoBehaviour:
   _castChangePercnt: 100
   _castTime: 0
   _bar: {fileID: 4498946723751492929}
+  parentRoom: {fileID: 0}
   attackPos: {fileID: 3097721798005965333}
   JumpSkillRange: {fileID: 6887708075749539812, guid: 3763658679418f34d912a92eb37befb5,
     type: 3}
