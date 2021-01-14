@@ -7,10 +7,10 @@ using UnityEngine.EventSystems;
 
 public class CameraManager : SingletonBase<CameraManager>
 {
-
+   
     [SerializeField] private float Max_Speed = 200f;
     [SerializeField] private float TouchSensitivity_x = 10f;
-    [SerializeField] CinemachineFreeLook CinemachineCamera;
+    [SerializeField] CinemachineFreeLook _playerFollowCamera; public CinemachineFreeLook PlayerFollowCamera { get { return _playerFollowCamera; } }
     SimpleInputNamespace.Joystick joystick;
     float m_fOldToucDis = 0f;       // 터치 이전 거리를 저장
     float m_fFieldOfView = 7;     // 카메라의 FieldOfView의 기본값
@@ -18,9 +18,9 @@ public class CameraManager : SingletonBase<CameraManager>
 
     public void InitCameraManager(GameObject obj)
     {
-        CinemachineCamera = obj.GetComponent<CinemachineFreeLook>();
+        _playerFollowCamera = obj.GetComponent<CinemachineFreeLook>();
         CinemachineCore.GetInputAxis = this.HandleAxisInputDelegate;
-        CinemachineCamera.m_CommonLens = true;
+        _playerFollowCamera.m_CommonLens = true;
     }
 
     private void Update()
@@ -37,8 +37,8 @@ public class CameraManager : SingletonBase<CameraManager>
             shakeTimer -= Time.deltaTime;
             if (shakeTimer <= 0f)
             {
-                CinemachineCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
-                CinemachineCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0f;
+                _playerFollowCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = 0f;
+                _playerFollowCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = 0f;
             }
         }
     }
@@ -51,15 +51,13 @@ public class CameraManager : SingletonBase<CameraManager>
                 if(Input.touchCount == 1)
                 {
                     if (!joystick.getHold() && (IsPointerOverGameObject(0) == false && Input.touches[0].phase == TouchPhase.Moved))//(!joystick.getHold())
-                    {
-                 //       Debug.Log("asd");
+                    {              
                          return Input.touches[0].deltaPosition.x / TouchSensitivity_x;
                     }
                     
                 }
                 else if (Input.touchCount > 0)
-                {
-               //     Debug.Log("이거 하는중 ㅎ");
+                {              
                     Touch[] touch = Input.touches;
 
                     for (int i = 0; i < touch.Length; i++)
@@ -97,12 +95,12 @@ public class CameraManager : SingletonBase<CameraManager>
                 m_fFieldOfView -= fDis;
 
                 // 카메라 줌 최대 범위 지정 2 ~ 7;
-                m_fFieldOfView = Mathf.Clamp(m_fFieldOfView, 2, 7);
+                m_fFieldOfView = Mathf.Clamp(m_fFieldOfView, 2, 8);
 
                 // 확대 / 축소가 갑자기 되지않도록 보간
-                //CinemachineCamera.m_Lens.FieldOfView = Mathf.Lerp(CinemachineCamera.m_Lens.FieldOfView, m_fFieldOfView, Time.deltaTime * 5);
-                //CinemachineCamera.GetRig(0).m_Lens.OrthographicSize = Mathf.Lerp(CinemachineCamera.GetRig(0).m_Lens.OrthographicSize, m_fFieldOfView, Time.deltaTime * 5);
-                CinemachineCamera.m_Lens.OrthographicSize = Mathf.Lerp(CinemachineCamera.m_Lens.OrthographicSize, m_fFieldOfView, Time.deltaTime * 5);
+                //_playerFollowCamera.m_Lens.FieldOfView = Mathf.Lerp(_playerFollowCamera.m_Lens.FieldOfView, m_fFieldOfView, Time.deltaTime * 5);
+                //_playerFollowCamera.GetRig(0).m_Lens.OrthographicSize = Mathf.Lerp(_playerFollowCamera.GetRig(0).m_Lens.OrthographicSize, m_fFieldOfView, Time.deltaTime * 5);
+                _playerFollowCamera.m_Lens.OrthographicSize = Mathf.Lerp(_playerFollowCamera.m_Lens.OrthographicSize, m_fFieldOfView, Time.deltaTime * 5);
                 m_fOldToucDis = m_fToucDis;
             }
         }
@@ -112,8 +110,8 @@ public class CameraManager : SingletonBase<CameraManager>
     //강도 , 빈도 , 시간
     public void ShakeCamera(float intensity , float frequency, float time)
     {     
-        CinemachineCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = frequency;
-        CinemachineCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = intensity;
+        _playerFollowCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = frequency;
+        _playerFollowCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_AmplitudeGain = intensity;
 
         shakeTimer = time;
     }

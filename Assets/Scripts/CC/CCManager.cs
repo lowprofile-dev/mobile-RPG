@@ -45,10 +45,6 @@ public class CCManager : MonoBehaviour
     {
         if(type == "fall")
         {
-            Debug.Log("CCMANAGER 넘어짐");
-
-           
-
             GameObject eft = ObjectPoolManager.Instance.GetObject("Effect/CCEffect/FallEffect");
             eft.transform.SetParent(obj.transform);
             eft.transform.localPosition = Vector3.zero;
@@ -66,15 +62,7 @@ public class CCManager : MonoBehaviour
         {
             
                 if (currentCC != "fall")
-                {
-                       Debug.Log("CCMANAGER 스턴");
-
-                //GameObject txt = ObjectPoolManager.Instance.GetObject("UI/DamageTEXT");
-                //txt.transform.SetParent(obj.transform);
-                //txt.transform.localPosition = Vector3.zero;
-                //txt.transform.rotation = Quaternion.identity;
-                //txt.GetComponent<DamageText>().PlayText("스턴!", type);
-
+                {                      
                 GameObject eft = ObjectPoolManager.Instance.GetObject("Effect/CCEffect/StunEffect");
                 eft.transform.SetParent(obj.transform);
                 eft.transform.localPosition = new Vector3(0f, obj.transform.lossyScale.y, 0f);
@@ -88,10 +76,6 @@ public class CCManager : MonoBehaviour
                     else if (currentType == "player")
                         player.ChangeState(PLAYERSTATE.PS_STUN);
                 }
-                else
-                {
-           //         Debug.Log("넘어짐 상태라 스턴안걸림");
-                }
             
         }
         else if(type == "rigid")
@@ -99,7 +83,6 @@ public class CCManager : MonoBehaviour
             
                 if (currentCC != "fall" && currentCC != "stun")
                 {
-                   Debug.Log("CCMANAGER 경직");
 
                     ccControl.Clear();
                     ccControl.Add(type, cc);
@@ -108,10 +91,6 @@ public class CCManager : MonoBehaviour
                         mons.ChangeState(MONSTER_STATE.STATE_RIGID);
                     else if (currentType == "player")
                         player.ChangeState(PLAYERSTATE.PS_RIGID);
-                }
-                else
-                {
-                           // Debug.Log("넘어짐 상태 혹은 스턴 상태라 경직 안걸림");
                 }
             
         }

@@ -125,7 +125,7 @@ public class MonsterAction : MonoBehaviour
         _monster.CCManager.Update();
         if (_target == null)
         {
-            _target = GameObject.FindGameObjectWithTag("Player");
+            _target = Player.Instance.gameObject;
         }
         UpdateState();
     }
@@ -1063,8 +1063,14 @@ public class MonsterAction : MonoBehaviour
     {
         if (!DeathCheck())
         {
+            GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
+            txt.transform.SetParent(transform);
+            txt.transform.localPosition = Vector3.zero;
+            txt.transform.rotation = Quaternion.identity;
+            txt.GetComponent<DamageText>().PlayText("경직!", "monster");
+
             _navMeshAgent.isStopped = true;
-            //     Debug.Log("경직걸림");
+            StopAllCoroutines();
             _monster.myAnimator.SetTrigger("Rigid");
         }
     }
@@ -1073,9 +1079,13 @@ public class MonsterAction : MonoBehaviour
     {
         if (!DeathCheck())
         {
+            GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
+            txt.transform.SetParent(transform);
+            txt.transform.localPosition = Vector3.zero;
+            txt.transform.rotation = Quaternion.identity;
+            txt.GetComponent<DamageText>().PlayText("스턴!", "monster");
 
         _navMeshAgent.isStopped = true;
-    //    Debug.Log("스턴걸림");
         StopAllCoroutines();
         _monster.myAnimator.SetTrigger("Stun");
         }

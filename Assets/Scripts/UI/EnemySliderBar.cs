@@ -16,7 +16,7 @@ public class EnemySliderBar : MonoBehaviour
 
     private void Start()
     {
-        cam = GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineFreeLook>();
+        cam = CameraManager.Instance.PlayerFollowCamera;
     }
     private void Update()
     {

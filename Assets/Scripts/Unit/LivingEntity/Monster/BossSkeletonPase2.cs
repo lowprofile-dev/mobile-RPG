@@ -438,6 +438,23 @@ public class BossSkeletonPase2 : MonsterAction
         _attackCoroutine = null;
     }
 
+    protected override void FallStart()
+    {
+        GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
+        txt.transform.SetParent(transform);
+        txt.transform.localPosition = Vector3.zero;
+        txt.transform.rotation = Quaternion.identity;
+        txt.GetComponent<DamageText>().PlayText("넘어짐 면역!", "monster");
+    }
+
+    protected override void RigidStart()
+    {        
+    }
+
+    protected override void StunStart()
+    {
+        base.StunStart();
+    }
     protected override void IdleStart()
     {
         //ChangeState(MONSTER_STATE.STATE_TRACE);
