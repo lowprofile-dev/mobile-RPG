@@ -48,6 +48,18 @@ public class DungeonRoom : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        for (int i = monsters.Count-1; i >= 0; i--)
+        {
+            Destroy(monsters[i]);
+        }
+        for (int i = doors.Count - 1; i >= 0; i--)
+        {
+            Destroy(doors[i]);
+        }
+    }
+
     private void ChangeLights()
     {
         GetLights(transform);
