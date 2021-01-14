@@ -14,6 +14,7 @@ public class InventoryUIView : View
     [SerializeField] TextMeshProUGUI gold;
     [SerializeField] TextMeshProUGUI coin;
     [SerializeField] TextMeshProUGUI gem;
+    [SerializeField] GameObject itemDetailNew;
 
     ItemManager itemManager;
     List<GameObject> itemSlots;
@@ -61,6 +62,7 @@ public class InventoryUIView : View
             slot.GetComponent<ItemSlot>().SetQuantity(item.Value);
             slot.GetComponent<ItemSlot>().SetItemData(itemManager.itemDictionary[item.Key]);
             slot.GetComponent<ItemSlot>().SetItemDetail(itemDetail);
+            slot.GetComponent<ItemSlot>().SetItemDetailNew(itemDetailNew);
             itemSlots.Add(slot);
             switch(itemData.itemgrade)
             {

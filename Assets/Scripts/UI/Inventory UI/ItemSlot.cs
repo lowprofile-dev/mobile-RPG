@@ -6,12 +6,13 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*/
 {
     [SerializeField] GameObject itemIcon;
     [SerializeField] GameObject itemQuantity;
     [SerializeField] GameObject itemDetail;
     [SerializeField] GameObject itemDetailPrefab;
+    [SerializeField] GameObject itemDetailNew;
     [SerializeField] GameObject itemGrade;
     [SerializeField] GameObject isEquipped;
     bool isShowingItemInfo;
@@ -47,6 +48,11 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void SetItemDetail(GameObject obj)
     {
         itemDetail = obj;
+    }
+
+    public void SetItemDetailNew(GameObject obj)
+    {
+        itemDetailNew = obj;
     }
 
     public void SetQuantity(int quantity)
@@ -93,11 +99,11 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         Debug.Log(itemData.itemName + " 장착!");
     }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        isShowingItemInfo = false;
-        itemDetail.SetActive(false);
-    }
+    //public void OnPointerUp(PointerEventData eventData)
+    //{
+    //    isShowingItemInfo = false;
+    //    itemDetail.SetActive(false);
+    //}
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -106,13 +112,17 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             EquipItem();
         }
 
-        if (!isShowingItemInfo)
-        {
-            itemDetail.SetActive(true);
-            itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
-            itemDetail.transform.position = eventData.position;
-        }
+        //if (!isShowingItemInfo)
+        //{
+        //    itemDetail.SetActive(true);
+        //    itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
+        //    itemDetail.transform.position = eventData.position;
+        //}
 
-        isShowingItemInfo = true;
+        itemDetailNew.GetComponent<ItemDetailNew>().LoadItemBasicInfo(itemData);
+        itemDetailNew.GetComponent<ItemDetailNew>().LoadItemDetail(itemData);
+        itemDetailNew.GetComponent<ItemDetailNew>().SetIcon(itemIcon.GetComponent<Image>().sprite);
+
+        //isShowingItemInfo = true;
     }
 }

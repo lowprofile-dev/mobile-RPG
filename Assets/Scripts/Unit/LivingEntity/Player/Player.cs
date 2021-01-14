@@ -195,7 +195,7 @@ public class Player : LivingEntity
     private void ApplyGravity()
     {
         //낙사
-        if (transform.position.y < -20 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
+        if (transform.position.y < -70 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
         {
             isFalling = true;
             //ChangeState(PLAYERSTATE.PS_DIE);

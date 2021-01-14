@@ -1,19 +1,75 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
-public class ItemDetail : MonoBehaviour
+public class ItemDetailNew : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI itemText;
-    [SerializeField] GameObject itemStatusPrefab;
+    public Image ItemIcon;
+    public TextMeshProUGUI ItemBasicInfo;
+    public TextMeshProUGUI ItemInfo;
+
+    public void SetIcon(Sprite icon)
+    {
+        ItemIcon.sprite = icon;
+    }
+
+    public void LoadItemBasicInfo(ItemData itemData)
+    {
+        string basicData = "";
+        ItemBasicInfo.richText = true;
+        ItemBasicInfo.verticalAlignment = VerticalAlignmentOptions.Top;
+
+        basicData += ("이름: " + itemData.itemName + "\n");
+        switch (itemData.itemType)
+        {
+            case "Armor":
+                basicData += ("종류: " + "갑옷" + "\n");
+                break;
+            case "Bottom":
+                basicData += ("종류: " + "하의" + "\n");
+                break;
+            case "Helmet":
+                basicData += ("종류: " + "투구" + "\n");
+                break;
+            case "Gloves":
+                basicData += ("종류: " + "장갑" + "\n");
+                break;
+            case "Boot":
+                basicData += ("종류: " + "신발" + "\n");
+                break;
+        }
+        switch (itemData.itemgrade)
+        {
+            case 1:
+                basicData += ("등급: " + "일반" + "\n");
+                break;
+            case 2:
+                basicData += ("등급: " + "고급" + "\n");
+                break;
+            case 3:
+                basicData += ("등급: " + "희귀" + "\n");
+                break;
+            case 4:
+                basicData += ("등급: " + "영웅" + "\n");
+                break;
+            case 5:
+                basicData += ("등급: " + "전설" + "\n");
+                break;
+        }
+        
+
+        basicData = basicData.Remove(basicData.Length - 1, 1);
+        ItemBasicInfo.text = basicData;
+    }
 
     public void LoadItemDetail(ItemData itemData)
     {
         string allData = "";
-        
-        itemText.richText = true;
-        itemText.verticalAlignment = VerticalAlignmentOptions.Top;
+
+        ItemInfo.richText = true;
+        ItemInfo.verticalAlignment = VerticalAlignmentOptions.Top;
 
         allData += UIManager.Instance.AddFontData(itemData.itemName, "white", 24) + "\n";
         allData += UIManager.Instance.AddFontData(itemData.itemType, "white", 16) + "\n";
@@ -37,6 +93,6 @@ public class ItemDetail : MonoBehaviour
         if (itemData.fallresistance != 0) allData += UIManager.Instance.AddFontData("넉백 저항 \t -" + itemData.fallresistance + "%", "white", 18) + "\n";
 
         allData = allData.Remove(allData.Length - 1, 1);
-        itemText.text = allData;
+        ItemInfo.text = allData;
     }
 }
