@@ -406,6 +406,7 @@ public class ItemManager : SingletonBase<ItemManager>
         SaveCurrentItems();
         SaveCurrentItemKeys();
         EquipItems();
+        player.InitOutline();
     }
 
 

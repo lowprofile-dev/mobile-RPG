@@ -124,8 +124,10 @@ public class Player : LivingEntity
         OffTrailParticles();
     }
 
-    private void InitOutline()
+    public void InitOutline()
     {
+        lRenderers.Clear();
+        playerOutlinable.outlineTargets.Clear();
         GetRenderers(transform);
         for (int i = 0; i < lRenderers.Count; i++)
         {

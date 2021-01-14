@@ -263,6 +263,8 @@ MonoBehaviour:
   selection: {fileID: 0}
   weaponManager: {fileID: 0}
   currentDungeonArea: 0
+  isFalling: 0
+  lastRoomTransformPos: {x: 0, y: 0, z: 0}
 --- !u!114 &3921490016967684023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +354,7 @@ MonoBehaviour:
   drawingMode: 1
   outlineLayer: 0
   outlineTargets: []
-  renderStyle: 1
+  renderStyle: 2
   outlineParameters:
     enabled: 1
     color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -363,15 +365,15 @@ MonoBehaviour:
       serializedProperties: []
   backParameters:
     enabled: 1
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    color: {r: 0.13852811, g: 1, b: 0, a: 1}
     dilateShift: 1
     blurShift: 1
     fillPass:
       shader: {fileID: 0}
       serializedProperties: []
   frontParameters:
-    enabled: 1
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    enabled: 0
+    color: {r: 0.13725491, g: 1, b: 0, a: 1}
     dilateShift: 1
     blurShift: 1
     fillPass:
