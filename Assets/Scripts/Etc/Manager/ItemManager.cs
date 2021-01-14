@@ -122,6 +122,8 @@ public class ItemManager : SingletonBase<ItemManager>
         playerInventory = new Dictionary<int, int>(); //ID,개수
         Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
         itemDictionary = itemTable.TableToDictionary<int, ItemData>();
+        LoadCurrentItemKeys();
+        LoadCurrentItems();
         LoadItemsPerCategory();
         itemCart.Add(null);
         itemCart.Add(null);

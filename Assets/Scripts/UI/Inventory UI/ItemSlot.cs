@@ -13,6 +13,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] GameObject itemDetail;
     [SerializeField] GameObject itemDetailPrefab;
     [SerializeField] GameObject itemGrade;
+    [SerializeField] GameObject isEquipped;
     bool isShowingItemInfo;
     ItemData itemData;
     ItemManager itemManager;
@@ -24,6 +25,11 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         itemGrade = gameObject.transform.GetChild(2).gameObject;
         isShowingItemInfo = false;
         itemManager = ItemManager.Instance;
+    }
+
+    private void Update()
+    {
+        UpdateEquippedStatus();
     }
 
     public void SetItemGrade(Color color)
@@ -51,6 +57,34 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void SetItemData(ItemData id)
     {
         itemData = id;
+    }
+
+    private void UpdateEquippedStatus()
+    {
+        isEquipped.SetActive(false);
+        switch (itemData.itemType)
+        {
+            case "Armor":
+                if (itemManager.currentItemKeys.ArmorKey == itemData.id)
+                    isEquipped.SetActive(true);
+                break;
+            case "Bottom":
+                if (itemManager.currentItemKeys.BottomKey == itemData.id)
+                    isEquipped.SetActive(true);
+                break;
+            case "Helmet":
+                if (itemManager.currentItemKeys.HelmetKey == itemData.id)
+                    isEquipped.SetActive(true);
+                break;
+            case "Gloves":
+                if (itemManager.currentItemKeys.GlovesKey == itemData.id)
+                    isEquipped.SetActive(true);
+                break;
+            case "Boot":
+                if (itemManager.currentItemKeys.BootKey == itemData.id)
+                    isEquipped.SetActive(true);
+                break;
+        }
     }
 
     private void EquipItem()
