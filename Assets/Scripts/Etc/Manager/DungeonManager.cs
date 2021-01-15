@@ -72,7 +72,7 @@ public class DungeonManager : MonoBehaviour
 
     private void SetStageInfo()
     {
-        stageInfo.text = dungeonStage + " - " + nRoomCleared;
+        stageInfo.text = "스테이지 " + dungeonStage + " - " + playerCurrentArea + "구역";
     }
 
     private void InitDungeon()
