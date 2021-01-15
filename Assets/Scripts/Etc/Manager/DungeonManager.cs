@@ -173,7 +173,6 @@ public class DungeonManager : MonoBehaviour
     public void ChangeAreaCheck()
     {
         if (!isPlayerSpawned) return;
-        //Debug.log("current Dungeon : " + playerCurrentArea + "// player Current Dungeon : " + Player.Instance.currentDungeonArea);
         if(playerCurrentArea != Player.Instance.currentDungeonArea)
         {
             if (playerCurrentArea > 0) CardManager.Instance.ExitEffectCards(playerCurrentArea - 1);

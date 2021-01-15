@@ -3,27 +3,7 @@ using System.Collections;
 
 public class SkillWand02 : PlayerAttack
 {
-
-    public override void OnLoad()
-    {
-        StartCoroutine(PlaySound());
-
-        GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
-
-        Effect.transform.position = transform.position;
-        Effect.transform.rotation = Quaternion.identity;
-        Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
-
-        SetLocalRotation(Effect);
-
-        if (_attackedTarget != null)
-        {
-            _attackedTarget.Clear();
-        }
-    }
-
-
-    private IEnumerator PlaySound()
+    protected override IEnumerator PlaySound()
     {
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 3", 0.6f);
 
@@ -36,17 +16,12 @@ public class SkillWand02 : PlayerAttack
         }
     }
 
-    // 데미지 받는 빈도를 늘리기 위함.
-    public override IEnumerator DoMultiDamage(MonsterAction monster)
+    // 타격 빈도의 변경
+    public override void CallMultiDamageCoroutine(Collider other)
     {
-        for (int i = 0; i < _damageCount; i++)
-        {
-            thisSkillsDamage += monster.DamageCheck(_useFixedDmg ? _damage : _damage * StatusManager.Instance.finalStatus.attackDamage);
-            DoRestoreFromDamage();
-            yield return new WaitForSeconds(0.2f);
-        }
+        StartCoroutine(DoMultiDamage(other.GetComponent<MonsterAction>(), 0.2f));
     }
-
+    
     // 사라지면 바로 코루틴을 끄기위함
     protected override IEnumerator SetColliderTimer(float time)
     {

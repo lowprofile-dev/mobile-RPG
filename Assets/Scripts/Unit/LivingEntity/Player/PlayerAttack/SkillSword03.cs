@@ -3,22 +3,6 @@ using System.Collections;
 
 public class SkillSword03 : PlayerAttack
 {
-    public override void OnLoad()
-    {
-        GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
-
-        Effect.transform.position = transform.position;
-        Effect.transform.rotation = Quaternion.identity;
-        Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
-
-        SetLocalRotation(Effect);
-
-        if (_attackedTarget != null)
-        {
-            _attackedTarget.Clear();
-        }
-    }
-
     protected override IEnumerator SetColliderTimer(float time)
     {
         yield return new WaitForSeconds(0.2f);
@@ -32,13 +16,4 @@ public class SkillSword03 : PlayerAttack
         yield return new WaitForSeconds(10f);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
-
-    /*
-    public override IEnumerator DoMultiDamage(MonsterAction monster)
-    {
-        base.DoMultiDamage(monster);
-        GetComponent<CCAttack>().ApplyCC(monster.gameObject, 0, 0.5f, 0);
-        yield return null;
-    }
-    */
 }

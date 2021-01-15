@@ -71,7 +71,7 @@ public class StatusManager : SingletonBase<StatusManager>
     // 카드 리롤
     public int cardRerollCoin;
     public int needToCardRerollCoin;
-    public int rerollCount;
+    public int rerollCount;    
 
     /// <summary>
     /// 스테이터스 정보들을 초기화한다.
@@ -187,24 +187,40 @@ public class StatusManager : SingletonBase<StatusManager>
 
     /////////////////// 기타 기능 ////////////////////
 
+    
+    /// <summary>
+    /// 현재 HP의 %
+    /// </summary>
     public float GetCurrentHpPercent()
     {
-        if (Player.Instance != null)
-        {
-            return Player.Instance.Hp / finalStatus.maxHp;
-        }
-
+        if (Player.Instance != null) return Player.Instance.Hp / finalStatus.maxHp;
         return 0f;
     }
 
+    /// <summary>
+    /// 현재 스테미너의 %
+    /// </summary>
+    /// <returns></returns>
     public float GetCurrentSteminaPercent()
     {
-        if (Player.Instance != null)
-        {
-            return Player.Instance.Stemina / finalStatus.maxStamina;
-        }
-
+        if (Player.Instance != null) return Player.Instance.Stemina / finalStatus.maxStamina;
         return 0f;
-        
+    }
+
+
+    /// <summary>
+    /// 스테이터스 계수에 따른 최종 데미지 적용 
+    /// </summary>
+    public int GetFinalDamageRandomly()
+    {
+        return (int)UnityEngine.Random.Range(finalStatus.attackDamage * finalStatus.minDamagePer, finalStatus.attackDamage * finalStatus.maxDamagePer);
+    }
+
+    /// <summary>
+    /// 계수 고정형 최종 데미지 적용
+    /// </summary>
+    public int GetFinalDamageRandomly(float minDamagePer, float maxDamagePer)
+    {
+        return (int)UnityEngine.Random.Range(finalStatus.attackDamage * minDamagePer, finalStatus.attackDamage * maxDamagePer);
     }
 }

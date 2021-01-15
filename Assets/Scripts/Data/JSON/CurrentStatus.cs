@@ -24,6 +24,8 @@ public class CurrentStatus : ICloneable
     public float attackSpeed;           //공격속도 (= 공격속도 쿨타임)
     public float attackCooldown;        //공격스킬 쿨타임 % 감소
     public float magicDamage;
+    public float minDamagePer;          // 최종 데미지 랜덤 수치
+    public float maxDamagePer;          // 최종 데미지 랜덤 수치
 
     [Header("방어 및 이동 관련 스텟")]
     public float armor;                 //방어력
@@ -54,6 +56,8 @@ public class CurrentStatus : ICloneable
         maxSpeed = moveSpeed;
         dashCooldown = 1;
         dashStamina = 2;
+        minDamagePer = 0.7f;
+        maxDamagePer = 1.3f;
     }
 
     /// <summary>

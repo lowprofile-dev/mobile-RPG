@@ -62,6 +62,7 @@ public class PlayerUIView : View
     public override void UIStart()
     {
         base.UIStart();
+        SetEffectList();
     }
 
     public override void UIUpdate()
@@ -71,8 +72,6 @@ public class PlayerUIView : View
         SetMyStatusText();
         SetHpStemina();
         SetTalkOrAttackSprite();
-
-        SetEffectList();
     }
 
 

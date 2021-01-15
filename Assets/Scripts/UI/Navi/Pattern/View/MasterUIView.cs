@@ -17,6 +17,7 @@ public class MasterUIView : View
 
     private void ExitButtonClicked()
     {
+        UIManager.Instance.playerUIView.SetEffectList();
         UINaviationManager.Instance.PopToNav("SubUI_MasteryView");
     }
 
