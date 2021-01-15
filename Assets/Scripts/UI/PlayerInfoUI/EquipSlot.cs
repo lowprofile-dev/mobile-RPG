@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class EquipSlot : MonoBehaviour , IPointerClickHandler
+public class EquipSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] GameObject itemIcon;
     [SerializeField] GameObject itemDetail;
     [SerializeField] GameObject itemDetailPrefab;
-
+    [SerializeField] Transform pos;
     bool isShowingItemInfo;
     ItemData itemData;
     //WeaponData weaponData;
@@ -43,13 +43,24 @@ public class EquipSlot : MonoBehaviour , IPointerClickHandler
     //    weaponData = id;
     //}
 
-    public void OnPointerClick(PointerEventData eventData)
+    //public void OnPointerClick(PointerEventData eventData)
+    //{
+    //    itemDetail.SetActive(true);
+    //    //Debug.Log("장비템 로드");
+    //    //itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
+    //    itemDetail.GetComponent<EquipDetail>().LoadData(itemData, icon);
+    //    itemDetail.transform.position = pos.position;
+    //}
+
+    public void OnPointerDown(PointerEventData eventData)
     {
         itemDetail.SetActive(true);
-        //Debug.Log("장비템 로드");
-        //itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
         itemDetail.GetComponent<EquipDetail>().LoadData(itemData, icon);
-        itemDetail.transform.position = transform.position + new Vector3(80f,0f,0f);
+        itemDetail.transform.position = pos.position;
+    }
+        public void OnPointerUp(PointerEventData eventData)
+    {
+        itemDetail.SetActive(false);
     }
 
     //public void OnMouseEnter()
