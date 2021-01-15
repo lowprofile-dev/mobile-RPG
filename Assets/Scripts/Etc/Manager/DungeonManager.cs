@@ -143,6 +143,7 @@ public class DungeonManager : MonoBehaviour
 
     public void ClearStage()
     {
+        bossCleared = false;
         if (dungeonStage == 4)
         {          
             UILoaderManager.Instance.LoadVillage();
