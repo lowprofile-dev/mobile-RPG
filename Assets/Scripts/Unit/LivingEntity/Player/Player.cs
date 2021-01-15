@@ -203,6 +203,7 @@ public class Player : LivingEntity
             ReturnToGround();
             return;
         }
+
         //if (transform.position.y < -40 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
         //{
         //    ReturnToGround();
@@ -212,7 +213,7 @@ public class Player : LivingEntity
             vSpeed = 0;
         }
 
-        vSpeed = vSpeed - Time.deltaTime * 9.8f;
+        vSpeed = vSpeed - Time.deltaTime * 274f;
         characterController.Move(Vector3.up * vSpeed * Time.deltaTime);
     }
 
