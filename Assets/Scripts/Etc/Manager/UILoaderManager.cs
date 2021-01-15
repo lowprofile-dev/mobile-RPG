@@ -3,9 +3,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 public class UILoaderManager : SingletonBase<UILoaderManager>
 {
     private GameObject _playerUI = null; public GameObject PlayerUI { get { return _playerUI; } }
+    private TextMeshProUGUI _nameText; public TextMeshProUGUI NameText { get { return _nameText; }}
 
     public void Start()
     {
@@ -15,6 +17,9 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
     public void InitUILoaderManager()
     {
         _playerUI = GameObject.Find("PlayerUI_View");
+        _nameText = GameObject.Find("NamePanel").transform.Find("BossNameText").GetComponent<TextMeshProUGUI>();
+        _nameText.text = "";
+        
 
     }
 

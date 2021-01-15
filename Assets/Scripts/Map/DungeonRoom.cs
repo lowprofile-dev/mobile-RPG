@@ -308,8 +308,7 @@ public class DungeonRoom : MonoBehaviour
                 Invoke("CloseDoors", 1f);
                 if (isBossRoom)
                 {
-                    SpawnBoss();
-                    Invoke("SpawnBoss", 2f);
+                    Invoke("SpawnBoss", 1f);                  
                 }
                 else
                     StartCoroutine(SpawnMonsterCoroutine());
@@ -329,9 +328,10 @@ public class DungeonRoom : MonoBehaviour
             return;
         }
         SoundManager.Instance.PlayBGM("BossBGM", 0.6f);
-        GameObject boss = dungeonManager.SpawnBoss();
+        GameObject boss = dungeonManager.SpawnBoss(bossSpawnPoint.transform);
         boss.GetComponent<NavMeshAgent>().enabled = false;
         boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);
+        boss.transform.LookAt(Player.Instance.gameObject.transform);
         boss.transform.SetParent(null);
         boss.GetComponent<NavMeshAgent>().enabled = true;
         monsters.Add(boss);

@@ -135,15 +135,15 @@ public class DungeonManager : MonoBehaviour
     /// <summary>
     /// 스테이지 별 보스 스폰
     /// </summary>
-    public GameObject SpawnBoss()
+    public GameObject SpawnBoss(Transform tr)
     {
-        //GameObject bossSpawnPoint = GameObject.FindGameObjectWithTag("BossSpawnPoint");
-        GameObject boss = Instantiate(BossPrefabs[dungeonStage-1]);
+        GameObject boss = Instantiate(BossPrefabs[dungeonStage-1]);        
         return boss;
     }
 
     public void ClearStage()
     {
+        bossCleared = false;
         if (dungeonStage == 4)
         {          
             UILoaderManager.Instance.LoadVillage();

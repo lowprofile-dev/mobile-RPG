@@ -57,6 +57,8 @@ public class BossSkeletonKingAction : MonsterAction
         base.InitObject();
         SpawnPoints = GameObject.FindWithTag("BossSpawnPoint").GetComponent<BossSpawnPoint>();
     }
+   
+
     protected override void DoAttack()
     {
      
@@ -142,13 +144,30 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void SpawnStart()
     {
-        _isImmune = true; // 스폰 중 무적
+        Debug.Log("보스스켈레톤 스폰" + _monster.monsterName.ToString());
+        transform.LookAt(_target.transform.position);
+        UILoaderManager.Instance.NameText.text = _monster.monsterName.ToString();
         _monster.myAnimator.SetTrigger("Spawn");
+        _bar.gameObject.SetActive(false);
+    }
+    protected override void SpawnUpdate()
+    {
+        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            StartCoroutine(TimeDelay());
+            ChangeState(MONSTER_STATE.STATE_IDLE);
+        }
+    }
+    private IEnumerator TimeDelay()
+    {
+        _navMeshAgent.isStopped = true;
+        yield return new WaitForSeconds(3f);
+        _navMeshAgent.isStopped = false;
+        _monster.myAnimator.SetTrigger("Walk");
     }
     protected override void SpawnExit()
     {
-        base.SpawnExit();
-        currentTarget = _target;
+        base.SpawnExit();      
     }
     private void AttackCorotineInit()
     {
@@ -245,7 +264,7 @@ public class BossSkeletonKingAction : MonsterAction
     public override void InitState()
     {
         _currentState = MONSTER_STATE.STATE_NULL;
-        ChangeState(MONSTER_STATE.STATE_IDLE);
+        ChangeState(MONSTER_STATE.STATE_SPAWN);
         _navMeshAgent.enabled = true;
         _navMeshAgent.speed = _monster.speed;
         currentTarget = _target;
@@ -380,7 +399,8 @@ public class BossSkeletonKingAction : MonsterAction
         {
             GameObject range = ObjectPoolManager.Instance.GetObject(AirSkillRange);
             range.GetComponent<BossSkillRange>().RemovedRange(gameObject, _attackSpeed);
-            range.transform.position = new Vector3(UnityEngine.Random.Range(transform.position.x - 20, transform.position.x + 20), _target.transform.position.y, UnityEngine.Random.Range(transform.position.z - 20, transform.position.z + 20));
+            range.transform.position = 
+                new Vector3(UnityEngine.Random.Range(transform.position.x - 20, transform.position.x + 20), _target.transform.position.y, UnityEngine.Random.Range(transform.position.z - 20, transform.position.z + 20));
             ProjectileList.Add(range.transform);
         }
 
@@ -416,7 +436,7 @@ public class BossSkeletonKingAction : MonsterAction
 
         GameObject range = ObjectPoolManager.Instance.GetObject(BlackHoleRange);
         range.GetComponent<BossSkillRange>().RemovedRange(_target, _attackSpeed);
-        range.transform.position = _target.transform.position;
+        range.transform.position = new Vector3(_target.transform.position.x, _target.transform.position.y, _target.transform.position.z); 
 
         yield return new WaitForSeconds(_attackSpeed);
 

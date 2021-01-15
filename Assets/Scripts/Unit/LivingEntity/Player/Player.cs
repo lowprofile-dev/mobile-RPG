@@ -24,6 +24,8 @@ public class Player : LivingEntity
     [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
     private PLAYERSTATE _cntState; public PLAYERSTATE cntState { get { return _cntState; } }
 
+    [SerializeField] private GameObject systemPanel;
+
     [Header("버튼 입력")]
     private bool AttackButtonClick = false;
     private bool SkillA_ButtonClick = false;
@@ -536,7 +538,7 @@ public class Player : LivingEntity
         if (Input.GetKeyDown(KeyCode.L))
         {
             weaponManager.GetWeapon().exp += 80;
-            weaponManager.GetWeapon().MasteryLevelUp();
+            //weaponManager.GetWeapon().MasteryLevelUp();
             switch (weaponManager.GetWeapon().name)
             {
                 case "sword":

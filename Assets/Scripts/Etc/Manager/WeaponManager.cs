@@ -63,6 +63,11 @@ public class WeaponManager : SingletonBase<WeaponManager>
         UIManager.Instance.playerUIView.SetWeaponSkillIcon();
     }
 
+    public bool LevelUpCheck()
+    {
+        return _currentWeapon.LevelUpCheck();
+    }
+
     public string GetWeaponName()
     {
         return _currentWeaponName;
