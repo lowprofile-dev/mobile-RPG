@@ -30,10 +30,11 @@ public class Weapon
     public int expMax= 100;
     public int exp =0;
 
-
     public float attackDamage;
     public float magicDamage;
     public float skillSpeed;
+
+    private bool levelUp = false;
 
     public GameObject SkillAEffect;
     public GameObject SkillBEffect;
@@ -52,6 +53,7 @@ public class Weapon
     public virtual void Update()
     {
         OutfitGradeCheck();
+        MasteryLevelUp();
     }
 
     public virtual GameObject SkillA()
@@ -111,18 +113,25 @@ public class Weapon
 
     public void MasteryLevelUp()
     {
-        if(exp >= expMax)
+        if (exp >= expMax)
         {
             exp = exp - expMax;
             masteryLevel++;
             SkillRelease();
             Weaponcheck();
+            levelUp = true;
         }
+        else levelUp = false;
     }
 
     private void Weaponcheck()
     {
         MasteryManager.Instance.incrementMasteryLevel(this.name);
+    }
+
+    public bool LevelUpCheck()
+    {
+        return levelUp;
     }
 
     public void SkillRelease()

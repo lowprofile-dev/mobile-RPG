@@ -136,7 +136,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
 
     public void LoadCurrentMastery()
     {
-        //PlayerPrefs.DeleteKey("LoadCurrentMasteryCount");
+        PlayerPrefs.DeleteKey("LoadCurrentMasteryCount");
         PlayerPrefs.SetInt("LoadCurrentMasteryCount", PlayerPrefs.GetInt("LoadCurrentMasteryCount", 0));
         if (PlayerPrefs.GetInt("LoadCurrentMasteryCount") == 0)
         {
@@ -168,7 +168,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
 
     public void LoadSkillLevel()
     {
-        //PlayerPrefs.DeleteKey("LoadWeaponSkillCount");
+        PlayerPrefs.DeleteKey("LoadWeaponSkillCount");
         PlayerPrefs.SetInt("LoadWeaponSkillCount", PlayerPrefs.GetInt("LoadWeaponSkillCount", 0));
         if (PlayerPrefs.GetInt("LoadWeaponSkillCount") == 0)
         {
