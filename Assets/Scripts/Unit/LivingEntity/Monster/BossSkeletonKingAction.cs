@@ -399,7 +399,8 @@ public class BossSkeletonKingAction : MonsterAction
         {
             GameObject range = ObjectPoolManager.Instance.GetObject(AirSkillRange);
             range.GetComponent<BossSkillRange>().RemovedRange(gameObject, _attackSpeed);
-            range.transform.position = new Vector3(UnityEngine.Random.Range(transform.position.x - 20, transform.position.x + 20), _target.transform.position.y, UnityEngine.Random.Range(transform.position.z - 20, transform.position.z + 20));
+            range.transform.position = 
+                new Vector3(UnityEngine.Random.Range(transform.position.x - 20, transform.position.x + 20), _target.transform.position.y, UnityEngine.Random.Range(transform.position.z - 20, transform.position.z + 20));
             ProjectileList.Add(range.transform);
         }
 
