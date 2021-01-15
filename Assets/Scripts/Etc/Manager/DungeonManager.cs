@@ -139,7 +139,6 @@ public class DungeonManager : MonoBehaviour
     {
         //GameObject bossSpawnPoint = GameObject.FindGameObjectWithTag("BossSpawnPoint");
         GameObject boss = Instantiate(BossPrefabs[dungeonStage-1]);
-        CameraManager.Instance.CameraSetTarget(boss);
         return boss;
     }
 
