@@ -143,6 +143,9 @@ public class DungeonManager : MonoBehaviour
         boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);
         boss.transform.SetParent(null);
         boss.GetComponent<NavMeshAgent>().enabled = true;
+
+        CameraManager.Instance.CameraSetTarget(boss);
+
         return boss;
     }
 
