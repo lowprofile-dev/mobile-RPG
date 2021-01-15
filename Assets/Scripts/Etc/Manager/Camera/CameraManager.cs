@@ -30,6 +30,28 @@ public class CameraManager : SingletonBase<CameraManager>
         CameraShake();
     }
 
+    public void CameraSetTarget(GameObject target)
+    {
+        StartCoroutine(CameraReturnToPlayer(target.transform));
+    }
+
+    private IEnumerator CameraReturnToPlayer(Transform target)
+    {
+        UILoaderManager.Instance.PlayerUI.SetActive(false);
+        _playerFollowCamera.m_Follow = target;
+        _playerFollowCamera.m_LookAt = target;
+
+        yield return new WaitForSeconds(0.5f);
+
+        ShakeCamera(1, 1, 3);
+
+        yield return new WaitForSeconds(3f);
+        UILoaderManager.Instance.NameText.text = "";
+        _playerFollowCamera.m_Follow = Player.Instance.gameObject.transform;
+        _playerFollowCamera.m_LookAt = Player.Instance.gameObject.transform;
+        UILoaderManager.Instance.PlayerUI.SetActive(true);
+    }
+
     private void CameraShake()
     {
         if(shakeTimer > 0)

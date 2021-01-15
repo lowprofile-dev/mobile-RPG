@@ -27,6 +27,7 @@ public class DungeonRoom : MonoBehaviour
     [SerializeField] int nMonsterAlive = 0;
     [SerializeField] bool isSpawning = false;
     [SerializeField] GameObject doorPrefab;
+    [SerializeField] GameObject bossSpawnPoint;
     private List<GameObject> doorways = new List<GameObject>();
     private List<GameObject> doors = new List<GameObject>();
     private List<GameObject> monsters = new List<GameObject>();
@@ -41,10 +42,29 @@ public class DungeonRoom : MonoBehaviour
         dungeonManager = transform.parent.gameObject.GetComponent<DungeonManager>();
         //StartCoroutine(roomSetAreaCodeCoroutine());
         GetMonsterSpawnPoints(transform);
+        GetBossSpawnPoint(transform);
         if (dungeonManager.hasPlane && !isSetArea)
         {
             SetArea();
             //this.enabled = false;
+        }
+    }
+
+    private void GetBossSpawnPoint(Transform parent)
+    {
+        if (!isBossRoom) return;
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.tag == "BossSpawnPoint")
+            {
+                bossSpawnPoint = child.gameObject;
+                return;
+            }
+            if (child.childCount > 0)
+            {
+                GetBossSpawnPoint(child);
+            }
         }
     }
 
@@ -288,15 +308,10 @@ public class DungeonRoom : MonoBehaviour
                 Invoke("CloseDoors", 1f);
                 if (isBossRoom)
                 {
-                    SoundManager.Instance.PlayBGM("BossBGM", 0.6f);
-                    GameObject obj = dungeonManager.SpawnBoss();
-                    monsters.Add(obj);
-                    
-                    obj.GetComponent<MonsterAction>().parentRoom = this;
-
-                    nMonsterSpawned++;
+                    Invoke("SpawnBoss", 1f);                  
                 }
-                StartCoroutine(SpawnMonsterCoroutine());
+                else
+                    StartCoroutine(SpawnMonsterCoroutine());
             }
         }
         else
@@ -304,6 +319,25 @@ public class DungeonRoom : MonoBehaviour
             hasPlayer = false;
             OpenDoors();
         }
+    }
+
+    private void SpawnBoss()
+    {
+        if (nMonsterSpawned >= nMonsterToSpawn)
+        {
+            return;
+        }
+        SoundManager.Instance.PlayBGM("BossBGM", 0.6f);
+        GameObject boss = dungeonManager.SpawnBoss(bossSpawnPoint.transform);
+        boss.GetComponent<NavMeshAgent>().enabled = false;
+        boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);
+        boss.transform.LookAt(Player.Instance.gameObject.transform);
+        boss.transform.SetParent(null);
+        boss.GetComponent<NavMeshAgent>().enabled = true;
+        monsters.Add(boss);
+        boss.GetComponent<MonsterAction>().parentRoom = this;
+        nMonsterSpawned++;
+        CameraManager.Instance.CameraSetTarget(boss);
     }
 
     void SetArea()
