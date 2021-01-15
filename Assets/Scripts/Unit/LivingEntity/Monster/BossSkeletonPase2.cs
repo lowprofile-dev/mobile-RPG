@@ -153,18 +153,34 @@ public class BossSkeletonPase2 : MonsterAction
     }
     protected override void SpawnStart()
     {
-        base.SpawnStart();
-        
+        UILoaderManager.Instance.NameText.text = _monster.monsterName.ToString();
+        _monster.myAnimator.SetTrigger("Spawn");
+        _bar.gameObject.SetActive(false);
+
     }
-    protected override void AddSpawnEffect()
+    protected override void SpawnUpdate()
     {
-        base.AddSpawnEffect();
+        //base.SpawnUpdate();
+       if(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            _monster.myAnimator.SetTrigger("Walk");
+            StartCoroutine(TimeDelay());
+            ChangeState(MONSTER_STATE.STATE_IDLE);
+        }
+
+    }
+    private IEnumerator TimeDelay()
+    {
+        _navMeshAgent.isStopped = true;
+        yield return new WaitForSeconds(3f);
+        _navMeshAgent.isStopped = false;
     }
 
     protected override void SpawnExit()
     {
         base.SpawnExit();
-        ChangeState(MONSTER_STATE.STATE_IDLE);
+        //_monster.myAnimator.SetTrigger("Walk");
+        //ChangeState(MONSTER_STATE.STATE_IDLE);
     }
     private void AttackCorotineInit()
     {
@@ -243,7 +259,7 @@ public class BossSkeletonPase2 : MonsterAction
     public override void InitState()
     {
         _currentState = MONSTER_STATE.STATE_NULL;
-        ChangeState(MONSTER_STATE.STATE_IDLE);
+        ChangeState(MONSTER_STATE.STATE_SPAWN);
         _navMeshAgent.enabled = true;
         _navMeshAgent.speed = _monster.speed;
         currentTarget = _target;
@@ -251,7 +267,8 @@ public class BossSkeletonPase2 : MonsterAction
     }
 
     protected override void AttackExit()
-    {          
+    {
+        _navMeshAgent.acceleration = 8f;
     }
 
     public override void MoveToTarget()
@@ -348,7 +365,7 @@ public class BossSkeletonPase2 : MonsterAction
     {
         yield return null;
         //range 가 맵밖으로 나갔을경우를 생각해야함.
-        _navMeshAgent.acceleration = 10f;
+        _navMeshAgent.acceleration = 100f;
         GameObject range = ObjectPoolManager.Instance.GetObject(JumpSkillRange);
         range.GetComponent<BossSkillRange>().RemovedRange(gameObject , _attackSpeed);
         range.transform.position = _target.transform.position;

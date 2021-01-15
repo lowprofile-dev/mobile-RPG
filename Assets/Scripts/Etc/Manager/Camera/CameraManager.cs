@@ -38,12 +38,15 @@ public class CameraManager : SingletonBase<CameraManager>
     private IEnumerator CameraReturnToPlayer(Transform target)
     {
         UILoaderManager.Instance.PlayerUI.SetActive(false);
-        ShakeCamera(2, 1, 3);
         _playerFollowCamera.m_Follow = target;
         _playerFollowCamera.m_LookAt = target;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
 
+        ShakeCamera(1, 1, 3);
+
+        yield return new WaitForSeconds(3f);
+        UILoaderManager.Instance.NameText.text = "";
         _playerFollowCamera.m_Follow = Player.Instance.gameObject.transform;
         _playerFollowCamera.m_LookAt = Player.Instance.gameObject.transform;
         UILoaderManager.Instance.PlayerUI.SetActive(true);
