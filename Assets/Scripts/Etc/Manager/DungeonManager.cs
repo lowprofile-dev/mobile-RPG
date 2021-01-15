@@ -72,7 +72,7 @@ public class DungeonManager : MonoBehaviour
 
     private void SetStageInfo()
     {
-        stageInfo.text = dungeonStage + " - " + nRoomCleared;
+        stageInfo.text = "스테이지 " + dungeonStage + " - " + playerCurrentArea + "구역";
     }
 
     private void InitDungeon()
@@ -137,12 +137,8 @@ public class DungeonManager : MonoBehaviour
     /// </summary>
     public GameObject SpawnBoss()
     {
-        GameObject bossSpawnPoint = GameObject.FindGameObjectWithTag("BossSpawnPoint");
+        //GameObject bossSpawnPoint = GameObject.FindGameObjectWithTag("BossSpawnPoint");
         GameObject boss = Instantiate(BossPrefabs[dungeonStage-1]);
-        boss.GetComponent<NavMeshAgent>().enabled = false;
-        boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);
-        boss.transform.SetParent(null);
-        boss.GetComponent<NavMeshAgent>().enabled = true;
         return boss;
     }
 
