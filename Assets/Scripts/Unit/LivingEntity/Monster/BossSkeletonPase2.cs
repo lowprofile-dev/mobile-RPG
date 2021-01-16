@@ -368,7 +368,7 @@ public class BossSkeletonPase2 : MonsterAction
         _navMeshAgent.acceleration = 100f;
         GameObject range = ObjectPoolManager.Instance.GetObject(JumpSkillRange);
         range.GetComponent<BossSkillRange>().RemovedRange(gameObject , _attackSpeed);
-        range.transform.position = _target.transform.position;
+        range.transform.position = new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z);
         currentTarget = range;
         _navMeshAgent.SetDestination(range.transform.position);
         transform.LookAt(range.transform.position);
@@ -492,6 +492,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void DeathStart()
     {
+        _navMeshAgent.isStopped = true;
         base.DeathStart();
     }
 
