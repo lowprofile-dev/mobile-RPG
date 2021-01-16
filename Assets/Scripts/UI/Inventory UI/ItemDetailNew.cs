@@ -9,14 +9,25 @@ public class ItemDetailNew : MonoBehaviour
     public Image ItemIcon;
     public TextMeshProUGUI ItemBasicInfo;
     public TextMeshProUGUI ItemInfo;
+    public Button ItemEquipButton;
+
+    ItemData _itemData;
 
     public void SetIcon(Sprite icon)
     {
         ItemIcon.sprite = icon;
     }
 
+    public void SetItem()
+    {
+        if (_itemData == null)
+            return;
+        ItemManager.Instance.SetItemToPlayer(_itemData);
+    }
+
     public void LoadItemBasicInfo(ItemData itemData)
     {
+        _itemData = itemData;
         string basicData = "";
         ItemBasicInfo.richText = true;
         ItemBasicInfo.verticalAlignment = VerticalAlignmentOptions.Top;
