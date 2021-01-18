@@ -199,7 +199,6 @@ public class BossSkeletonKingAction : MonsterAction
        
         int proc = UnityEngine.Random.Range(0, 100);
 
-        Debug.Log(monsterList.Count);
         if (monsterList.Count == 0)
         {
             _castTime = summonCastingTime;
@@ -350,7 +349,8 @@ public class BossSkeletonKingAction : MonsterAction
 
         for (int i = 0; i < SpawnPoints.Points.Length; i++)
         {
-            GameObject eft = ObjectPoolManager.Instance.GetObject(SpawnPoints.SpawnEffect , SpawnPoints.Points[i].position , Quaternion.identity);           
+            GameObject eft = ObjectPoolManager.Instance.GetObject(SpawnPoints.SpawnEffect);
+            eft.transform.position = new Vector3(SpawnPoints.Points[i].position.x, transform.position.y, SpawnPoints.Points[i].position.z);
         }
 
         yield return new WaitForSeconds(3f);
@@ -400,7 +400,7 @@ public class BossSkeletonKingAction : MonsterAction
             GameObject range = ObjectPoolManager.Instance.GetObject(AirSkillRange);
             range.GetComponent<BossSkillRange>().RemovedRange(gameObject, _attackSpeed);
             range.transform.position = 
-                new Vector3(UnityEngine.Random.Range(transform.position.x - 20, transform.position.x + 20), _target.transform.position.y, UnityEngine.Random.Range(transform.position.z - 20, transform.position.z + 20));
+                new Vector3(UnityEngine.Random.Range(transform.position.x - 20, transform.position.x + 20), transform.position.y, UnityEngine.Random.Range(transform.position.z - 20, transform.position.z + 20));
             ProjectileList.Add(range.transform);
         }
 
@@ -436,7 +436,7 @@ public class BossSkeletonKingAction : MonsterAction
 
         GameObject range = ObjectPoolManager.Instance.GetObject(BlackHoleRange);
         range.GetComponent<BossSkillRange>().RemovedRange(_target, _attackSpeed);
-        range.transform.position = new Vector3(_target.transform.position.x, _target.transform.position.y, _target.transform.position.z); 
+        range.transform.position = new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z); 
 
         yield return new WaitForSeconds(_attackSpeed);
 

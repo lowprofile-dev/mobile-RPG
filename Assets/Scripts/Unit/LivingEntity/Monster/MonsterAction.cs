@@ -527,6 +527,7 @@ public class MonsterAction : MonoBehaviour
         // 사거리 내에 적 존재 시 발동
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
+            _navMeshAgent.isStopped = true;
             ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
     }
@@ -713,6 +714,7 @@ public class MonsterAction : MonoBehaviour
     protected virtual void LookTarget()
     {
         transform.LookAt(_target.transform);
+        //Debug.Log("조준");
     }
 
     /////////// 캐스트 관련////////////
