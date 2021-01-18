@@ -15,11 +15,11 @@ public class PlayerUIView : View
     [SerializeField] private Button _atkBtn;
     [SerializeField] private Image _atkImg;
     [SerializeField] private Button _invincibleBtn;
-    [SerializeField] private Button _skillAButton;
+    [SerializeField] private Button _skillAButton; public Button skillAButton { get { return _skillAButton; } }
     [SerializeField] private Image _skillAImg;
-    [SerializeField] private Button _skillBButton;
+    [SerializeField] private Button _skillBButton; public Button skillBButton { get { return _skillBButton; } }
     [SerializeField] private Image _skillBImg;
-    [SerializeField] private Button _skillCButton;
+    [SerializeField] private Button _skillCButton; public Button skillCButton { get { return _skillCButton; } }
     [SerializeField] private Image _skillCImg;
     [SerializeField] private TextMeshProUGUI _masteryText;
     [SerializeField] private TextMeshProUGUI _weaponText;

@@ -81,40 +81,16 @@ public class TalkManager : SingletonBase<TalkManager>
     }
 
     /// <summary>
-    /// [임시] Object별 토크체커를 설정한다.
+    /// Object별 토크체커를 설정한다.
     /// </summary>
     public void SetTalkCheckers()
     {
-        // Object CSV의 완성이 이뤄지면 자동화시킨다.
-        talkCheckers[100] = new TalkChecker(100);
-        talkCheckers[101] = new TalkChecker(101);
-        talkCheckers[102] = new TalkChecker(102);
-        talkCheckers[103] = new TalkChecker(103);
-        talkCheckers[104] = new TalkChecker(104);
-        talkCheckers[105] = new TalkChecker(105);
-        talkCheckers[106] = new TalkChecker(106);
-        talkCheckers[107] = new TalkChecker(107);
-        talkCheckers[108] = new TalkChecker(108);
-        talkCheckers[110] = new TalkChecker(110);
-        talkCheckers[111] = new TalkChecker(111);
-        talkCheckers[112] = new TalkChecker(112);
-        talkCheckers[113] = new TalkChecker(113);
-        talkCheckers[114] = new TalkChecker(114);
-        talkCheckers[998] = new TalkChecker(998);
-        talkCheckers[999] = new TalkChecker(999);
+        foreach (NpcData npcData in _csvNpcData.Values)
+        {
+            talkCheckers[npcData.id] = new TalkChecker(npcData.id);
+        }
     }
-
-    /// <summary>
-    /// 현재 대화의 현재 진행중인 대사를 가져온다.
-    /// </summary>
-    /// <param name="convId">해당 대화의 ID</param>
-    public string GetCurrentConv(string convId)
-    {
-        Talk data = talkDatas[convId];
-        string text = data.texts[data.convIndex];
-        return text;
-    }
-
+    
     /// <summary>
     /// 전체 퀘스트의 진행 중 상황을 업데이트한다.
     /// </summary>

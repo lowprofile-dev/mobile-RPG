@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// 퀘스트의 정보 및 기능이 담겨있다.
@@ -52,6 +51,55 @@ public class Quest
         canStart = false;
     }
 
+    public void GetQuestReward()
+    {
+        for (int i = 0; i < _rewardList.Count; i++)
+        {
+            int rewardId = _rewardIdList[i];
+            int rewardAmount = _rewardAmountList[i];
+
+            switch (_rewardList[i])
+            {
+                case 0: // 재화 
+                    switch (rewardId)
+                    {
+                        case 0: ItemManager.Instance.AddGold(rewardAmount); break; // 돈
+                        case 1: ItemManager.Instance.AddCoin(rewardAmount); break; // 코인
+                        case 2: ItemManager.Instance.AddGem(rewardAmount); break; // 젬
+                    }
+                    break;
+
+                case 1: // 숙련도
+                    switch (rewardId)
+                    {
+                        case 0: WeaponManager.Instance.AddExpToSpecificWeapon("SWORD", rewardAmount); break;
+                        case 1: WeaponManager.Instance.AddExpToSpecificWeapon("WAND", rewardAmount); break;
+                        case 2: WeaponManager.Instance.AddExpToSpecificWeapon("DAGGER", rewardAmount); break;
+                        case 3: WeaponManager.Instance.AddExpToSpecificWeapon("BLUNT", rewardAmount); break;
+                        case 4: WeaponManager.Instance.AddExpToSpecificWeapon("STAFF", rewardAmount); break;
+                        case 5:
+                            WeaponManager.Instance.AddExpToSpecificWeapon("SWORD", rewardAmount); 
+                            WeaponManager.Instance.AddExpToSpecificWeapon("WAND", rewardAmount); 
+                            WeaponManager.Instance.AddExpToSpecificWeapon("DAGGER", rewardAmount); 
+                            WeaponManager.Instance.AddExpToSpecificWeapon("BLUNT", rewardAmount); 
+                            WeaponManager.Instance.AddExpToSpecificWeapon("STAFF", rewardAmount);
+                            break;
+                    }
+                    MasteryManager.Instance.UpdateCurrentExp();
+                    break;
+                case 2: // 아이템
+                    for (int j = 0; j < rewardAmount; j++) ItemManager.Instance.AddItem(ItemManager.Instance.itemDictionary[rewardId]); // 해당 아이템을 n개만큼 추가한다.
+                    break;
+
+            }
+        }
+    }
+
+    public void CheckQuestCanEnd(int reward, int id, int number)
+    {
+
+    }
+
     /// <summary>
     /// 퀘스트를 시작한다.
     /// </summary>
@@ -59,7 +107,7 @@ public class Quest
     {
         // 시작 연출
 
-    //    Debug.Log("퀘스트 [" + questData.questName + "] 을 시작합니다.");
+        //    Debug.Log("퀘스트 [" + questData.questName + "] 을 시작합니다.");
         canStart = false;
         isOn = true;
 
@@ -73,11 +121,11 @@ public class Quest
     /// </summary>
     public void SuccessQuest()
     {
-  //      Debug.Log("퀘스트 [" + questData.questName + "] 을 클리어하였습니다.");
+        //      Debug.Log("퀘스트 [" + questData.questName + "] 을 클리어하였습니다.");
 
         // 완료 연출
         // 보상하는 알고리즘.
-        // TO DO // 
+        GetQuestReward();
 
         // 결과물 관리
         _talkManager.endedQuests.Add(this);
@@ -135,16 +183,8 @@ public class Quest
         split = _questData.neededQuestsId.Split(' ');
         for (int j = 0; j < split.Length; j++) _neededQuestList.Add(split[j]);
 
-        try
-        {
-            split = _questData.reward.Split(' ');
-            for (int j = 0; j < split.Length; j++) _rewardList.Add(int.Parse(split[j]));
-
-        }
-        catch
-        {
-      //      Debug.Log("WQKJEKL");
-        }
+        split = _questData.reward.Split(' ');
+        for (int j = 0; j < split.Length; j++) _rewardList.Add(int.Parse(split[j]));
 
         split = _questData.rewardId.Split(' ');
         for (int j = 0; j < split.Length; j++) _rewardIdList.Add(int.Parse(split[j]));

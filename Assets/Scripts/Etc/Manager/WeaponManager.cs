@@ -43,6 +43,42 @@ public class WeaponManager : SingletonBase<WeaponManager>
         AddWeapon("WAND", Wand as Wand);
     }
 
+    /// <summary>
+    /// 현재 무기에 Exp 추가
+    /// </summary>
+    public void AddExpToCurrentWeapon(int amount)
+    {
+        AddExpToSpecificWeapon(_currentWeaponName, amount);
+    }
+
+    /// <summary>
+    /// 특정 무기에 Exp 추가
+    /// </summary>
+    public void AddExpToSpecificWeapon(string name, int amount)
+    {
+        switch (name)
+        {
+            case "SWORD":
+                MasteryManager.Instance.currentMastery.currentSwordMasteryExp += amount;
+                break;
+            case "WAND":
+                MasteryManager.Instance.currentMastery.currentWandMasteryExp += amount;
+                break;
+            case "DAGGER":
+                MasteryManager.Instance.currentMastery.currentWandMasteryExp += amount;
+                break;
+            case "BLUNT":
+                MasteryManager.Instance.currentMastery.currentWandMasteryExp += amount;
+                break;
+            case "STAFF":
+                MasteryManager.Instance.currentMastery.currentWandMasteryExp += amount;
+                break;
+            default:
+                Debug.Log("잘못된 이름입니다.");
+                break;
+        }
+    }
+
     public void UpdateWeapon()
     {
         if (_currentWeapon != null) _currentWeapon.Update();

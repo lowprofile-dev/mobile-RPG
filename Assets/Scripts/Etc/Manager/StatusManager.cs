@@ -69,7 +69,6 @@ public class StatusManager : SingletonBase<StatusManager>
     public CurrentStatus finalStatus;
 
     // 카드 리롤
-    public int cardRerollCoin;
     public int needToCardRerollCoin;
     public int rerollCount;    
 
@@ -78,7 +77,6 @@ public class StatusManager : SingletonBase<StatusManager>
     /// </summary>
     public void InitStatusManager()
     {
-        cardRerollCoin = 10000;
         needToCardRerollCoin = 0;
         rerollCount = 0;
 

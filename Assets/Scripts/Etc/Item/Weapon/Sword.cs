@@ -63,8 +63,6 @@ public class Sword : Weapon
         return SkillAEffect;
     }
 
-  
-
     public override GameObject SkillB()
     {
         Player.Instance.RushEnter();

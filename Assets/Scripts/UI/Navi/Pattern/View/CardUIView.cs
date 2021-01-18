@@ -174,10 +174,10 @@ public class CardUIView : View
         {
             if (_isRerolling) // 리롤 중이면
             {
-                if (StatusManager.Instance.needToCardRerollCoin <= StatusManager.Instance.cardRerollCoin) // 재화가 충분하면
+                if (StatusManager.Instance.needToCardRerollCoin <= ItemManager.Instance.currentItems.coin) // 재화가 충분하면
                 {
                     // 리롤을 하고, 버튼을 원래대로 돌린다.
-                    StatusManager.Instance.cardRerollCoin -= StatusManager.Instance.needToCardRerollCoin;
+                    ItemManager.Instance.currentItems.coin -= StatusManager.Instance.needToCardRerollCoin;
                     _rerollBtn.GetComponent<Image>().sprite = _rerollDark;
 
                     for (int i = 0; i < _roomAreaImg.Length; i++)
@@ -212,7 +212,7 @@ public class CardUIView : View
     /// </summary>
     public void UpdateRerollCoin()
     {
-        _cntCoinText.text = StatusManager.Instance.cardRerollCoin.ToString();
+        _cntCoinText.text = ItemManager.Instance.currentItems.coin.ToString();
     }
 
     /// <summary>

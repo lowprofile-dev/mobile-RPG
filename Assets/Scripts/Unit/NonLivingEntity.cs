@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Object 및 NPC에 사용되는 클래스
@@ -9,6 +10,8 @@ public class NonLivingEntity : Unit
 
     private TalkManager _talkManager;   // 토크매니저 캐싱
     private TalkChecker _myTalkChecker; // 해당 NPC의 토크체커 캐싱
+
+    public Image  minimapIconSprite;
 
     public GameObject canQuestSquare;
     public GameObject canEndSquare;
@@ -50,5 +53,23 @@ public class NonLivingEntity : Unit
     public void Interaction()
     {
         _myTalkChecker.Talk();
+    }
+
+    public void CheckTalkCheckerMinimapIcon()
+    {
+        if(_myTalkChecker.canFinishQuest)
+        {
+            minimapIconSprite.sprite = GlobalDefine.Instance.questExitMinimapIcon;
+        }
+
+        else if(_myTalkChecker.canStartQuest)
+        {
+            minimapIconSprite.sprite = GlobalDefine.Instance.questStartMinimapIcon;
+        }
+
+        else
+        {
+            minimapIconSprite.sprite = GlobalDefine.Instance.npcBaseMinimapIcon;
+        }
     }
 }

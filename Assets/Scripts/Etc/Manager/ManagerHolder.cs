@@ -18,6 +18,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     [HideInInspector] public MasteryManager masteryManager;
     [HideInInspector] public WeaponManager weaponManager;
     [HideInInspector] public ItemManager itemManager;
+    [HideInInspector] public GlobalDefine globalDefine;
 
     private void Start()
     {
