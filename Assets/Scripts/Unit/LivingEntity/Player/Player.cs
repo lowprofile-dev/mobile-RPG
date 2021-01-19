@@ -1494,6 +1494,7 @@ public class Player : LivingEntity
             itemManager.AddItem(itemInfo);
             //Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
             SystemPanel.instance.SetText(itemInfo.itemData.itemName + " 아이템 획득!");
+            SystemPanel.instance.FadeOutStart();
             other.gameObject.SetActive(false);
         }
     }
