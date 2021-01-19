@@ -40,7 +40,6 @@ public class CameraManager : SingletonBase<CameraManager>
         UILoaderManager.Instance.PlayerUI.SetActive(false);
         _playerFollowCamera.m_Follow = target;
         _playerFollowCamera.m_LookAt = target;
-
         yield return new WaitForSeconds(0.5f);
 
         ShakeCamera(1, 1, 3);

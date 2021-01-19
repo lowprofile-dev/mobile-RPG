@@ -53,6 +53,8 @@ public class WeaponMasteryView : View
 
     private bool isInit = false;
 
+    static int IsWeaponMasteryTutorial;
+
     private void Start()
     {
         _swordScript = new SkillScript[4];
@@ -62,6 +64,18 @@ public class WeaponMasteryView : View
         _staffScript = new SkillScript[4];
         exitButton.onClick.AddListener(delegate { ExitButtonClick(); });
         ScriptInit();
+
+        if (tutorialButton != null) tutorialButton.onClick.AddListener(delegate { TutorialClick(); });
+        tutorialExitButton.onClick.AddListener(delegate { TutorialExit(); });
+
+        IsWeaponMasteryTutorial = PlayerPrefs.GetInt("WeaponMasteryTutorial");
+
+        if (IsWeaponMasteryTutorial == 0)
+        {
+            tutorialPage.SetActive(true);
+            IsWeaponMasteryTutorial++;
+            PlayerPrefs.SetInt("WeaponMasteryTutorial", IsWeaponMasteryTutorial);
+        }
     }
 
     private void ExitButtonClick()

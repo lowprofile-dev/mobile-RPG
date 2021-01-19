@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum VIEWTYPE
 {
@@ -11,6 +12,11 @@ public class View : MonoBehaviour
 {
     protected VIEWTYPE viewtype;
     [SerializeField] private string _viewName; public string viewName { get { return _viewName; } }
+
+    // 튜토리얼 관련
+    [SerializeField] protected Button tutorialButton;
+    [SerializeField] protected Button tutorialExitButton;
+    [SerializeField] protected GameObject tutorialPage;
 
     private void OnEnable()
     {
@@ -72,5 +78,12 @@ public class View : MonoBehaviour
     public void Hide()
     {
         UIExit();
+    }
+
+    protected virtual void TutorialClick(){
+        tutorialPage.SetActive(true);
+    }
+    protected virtual void TutorialExit(){
+        tutorialPage.SetActive(false);
     }
 }
