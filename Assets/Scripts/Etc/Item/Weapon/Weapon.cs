@@ -120,6 +120,9 @@ public class Weapon
             SkillRelease();
             Weaponcheck();
             levelUp = true;
+            SystemPanel.instance.SetText("Level UP !!");
+            SystemPanel.instance.FadeOutStart();
+            
         }
         else levelUp = false;
     }
