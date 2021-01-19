@@ -15,7 +15,6 @@ public class UIManager : SingletonBase<UIManager>
     [SerializeField] private Button SkillBbtn;
     [SerializeField] private Button SkillCbtn;
     [SerializeField] private Button InventoryBtn;
-    [SerializeField] private Button OptionBtn;
 
     public void InitUIManager()
     {
@@ -27,7 +26,6 @@ public class UIManager : SingletonBase<UIManager>
         SkillBbtn = playerView.Find("SkillB").GetComponent<Button>();
         SkillCbtn = playerView.Find("SkillC").GetComponent<Button>();
         InventoryBtn = playerView.Find("Inventory").GetComponent<Button>();
-        OptionBtn = playerView.Find("Option").GetComponent<Button>();
 
         AddListenerToUI();
     }
@@ -36,7 +34,6 @@ public class UIManager : SingletonBase<UIManager>
     {
         InvincibleBtn.onClick.AddListener(InvincibleClick);
         InventoryBtn.onClick.AddListener(InventoryClick);
-        OptionBtn.onClick.AddListener(OptionClick);
     }
 
     void InventoryClick()
@@ -45,6 +42,7 @@ public class UIManager : SingletonBase<UIManager>
         UINaviationManager.Instance.PushToNav("SubUI_Inventory");
     }
 
+    /*
     public void OptionClick()
     {
         //Debug.log("옵션");
@@ -60,6 +58,8 @@ public class UIManager : SingletonBase<UIManager>
         //옵션 구현
         //UINaviationManager.Instance.PushToNav("SubUI_Info");
     }
+    */
+
     public void InvincibleClick() //회피
     {
         //Debug.log("회피");

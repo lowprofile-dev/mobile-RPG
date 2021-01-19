@@ -29,6 +29,7 @@ public class PlayerUIView : View
     [SerializeField] private Image _steminaSlider;
     [SerializeField] private GameObject _buffFrame;
     [SerializeField] private GameObject _buffImgPrefab;
+    [SerializeField] private Button _optionButton;
 
     [SerializeField] private Sprite[] _swordSkiilsImg;
     [SerializeField] private Sprite[] _staffSkillsImg;
@@ -43,6 +44,7 @@ public class PlayerUIView : View
         _shopTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleShopView(); });
         _atkBtn.onClick.AddListener(delegate { Player.Instance.CheckInteractObject(); });
         _invincibleBtn.onClick.AddListener(delegate { Player.Instance.EvadeBtnClicked(); });
+        _optionButton.onClick.AddListener(delegate { AddOptionView(); });
 
         _skillAButton.onClick.AddListener(delegate { Player.Instance.SkillABtnClicked(); });
         _skillAButton.onClick.AddListener(delegate { _skillAButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
@@ -85,6 +87,10 @@ public class PlayerUIView : View
         SetTalkOrAttackSprite();
     }
 
+    public void AddOptionView()
+    {
+        UINaviationManager.Instance.PushToNav("SubUI_OptionView");
+    }
 
     public void SetWeaponSkillIcon()
     {
