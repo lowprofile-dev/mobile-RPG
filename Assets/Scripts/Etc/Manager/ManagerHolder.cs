@@ -19,6 +19,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     [HideInInspector] public WeaponManager weaponManager;
     [HideInInspector] public ItemManager itemManager;
     [HideInInspector] public GlobalDefine globalDefine;
+    [HideInInspector] public MonsterManager monsterManager;
 
     private void Start()
     {
@@ -55,6 +56,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         uiManager = (UIManager)AddManager<UIManager>();
         statusManager = (StatusManager)AddManager<StatusManager>();
         itemManager = (ItemManager)AddManager<ItemManager>();
+        monsterManager = (MonsterManager)AddManager<MonsterManager>();
     }
 
     private void InitManagers()
@@ -73,6 +75,9 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         uiManager.InitUIManager();
         statusManager.InitStatusManager();
         itemManager.InitItemManager();
+        monsterManager.InitMonsterManager();
+
+
     }
 
     private void Update()

@@ -73,16 +73,29 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public virtual void InitObject()
     {
+       
         _isImmune = false;
 
         CachingObject();
 
         _traceTimer = 0;
         _spawnPosition = transform.position;
-
+        InitStatus();
         InitState();
         var _mon = this;
         _monster.CCManager = new CCManager(ref _mon , "monster");
+    }
+
+    protected virtual void InitStatus()
+    {
+        _monster.Hp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp;
+        _findRange = MonsterManager.Instance.MonsterDictionary[_monster.id].findrange;
+        _attackRange = MonsterManager.Instance.MonsterDictionary[_monster.id].attackrange;
+        _limitTraceRange = MonsterManager.Instance.MonsterDictionary[_monster.id].LimitTraceRange;
+        _attackSpeed = MonsterManager.Instance.MonsterDictionary[_monster.id].AttackSpeed;
+        _monster.attackDamage = (int)MonsterManager.Instance.MonsterDictionary[_monster.id].damage;
+        _navMeshAgent.speed = MonsterManager.Instance.MonsterDictionary[_monster.id].speed;
+
     }
 
     protected virtual void CachingObject()
