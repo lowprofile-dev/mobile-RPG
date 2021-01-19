@@ -101,4 +101,15 @@ public class TalkManager : SingletonBase<TalkManager>
             talkChecker.CheckQuestIsOn();
         }
     }
+
+    /// <summary>
+    /// 현재 퀘스트의 조건 완료 여부를 검사한다.
+    /// </summary>
+    public void SetQuestCondition(int condition, int conditionId, int conditionNumber)
+    {
+        foreach (Quest quest in currentQuests)
+        {
+            quest.CheckQuestEnd(condition, conditionId, conditionNumber);
+        }
+    }
 }

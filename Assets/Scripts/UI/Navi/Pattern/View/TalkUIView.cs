@@ -79,16 +79,25 @@ public class TalkUIView : View
             _isAcceptInput = false;
         }
 
-        NpcData npcData = TalkManager.Instance._csvNpcData[int.Parse(target.speaker[target.convIndex])];
-
-        _talkText.text = target.texts[target.convIndex];
-        _speakerNameText.text = npcData.name;
-
-        if (_npcCamGameObject.GetComponent<Unit>() == null || _npcCamGameObject.GetComponent<Unit>().id != npcData.id)
+        try
         {
-            DestroyImmediate(_npcCamGameObject);
-            _npcCamGameObject = npcData.id == 998 ? Instantiate(Player.Instance.playerAvater, new Vector3(1050, 1050, 1050), Quaternion.Euler(-10, 170, 0)) : ResourceManager.Instance.Instantiate("Prefab/NPC/" + npcData.prefabPath, new Vector3(1050, 1050, 1050), Quaternion.Euler(-10, 170, 0));
-            _npcFaceCam.GetComponent<FaceCam>().SetTarget(_npcCamGameObject);
+            NpcData npcData = TalkManager.Instance._csvNpcData[int.Parse(target.speaker[target.convIndex])];
+
+            _talkText.text = target.texts[target.convIndex];
+            _speakerNameText.text = npcData.name;
+
+            if (_npcCamGameObject.GetComponent<Unit>() == null || _npcCamGameObject.GetComponent<Unit>().id != npcData.id)
+            {
+                DestroyImmediate(_npcCamGameObject);
+                _npcCamGameObject = npcData.id == 998 ? Instantiate(Player.Instance.playerAvater, new Vector3(1050, 1050, 1050), Quaternion.Euler(-10, 170, 0)) : ResourceManager.Instance.Instantiate("Prefab/NPC/" + npcData.prefabPath, new Vector3(1050, 1050, 1050), Quaternion.Euler(-10, 170, 0));
+                _npcFaceCam.GetComponent<FaceCam>().SetTarget(_npcCamGameObject);
+            }
         }
+
+        catch
+        {
+            Debug.Log("HELLO!");
+        }
+
     }
 }

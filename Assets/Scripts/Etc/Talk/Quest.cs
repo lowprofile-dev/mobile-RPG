@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// 퀘스트의 정보 및 기능이 담겨있다.
@@ -15,6 +16,8 @@ public class Quest
     public bool canEnd;     // 퀘스트 종료 조건이 채워졌는지.
     public bool isOn;       // 퀘스트가 진행 중인지.
     public bool isEnd;      // 퀘스트가 종료되었는지.
+    private List<int> _curConditionAmountList; public List<int> curConditionAmountList { get { return _curConditionAmountList; } } // 조건 현황
+
 
     // 정제한 데이터
     private List<int> _npcList; public List<int> npcList { get { return _npcList; } }                                       // 상호작용 NPC가 순서대로 되어있다.
@@ -25,6 +28,7 @@ public class Quest
     private List<int> _rewardList; public List<int> rewardList { get { return _rewardList; } }                              // 보상 리스트
     private List<int> _rewardIdList; public List<int> rewardIdList { get { return _rewardIdList; } }                        // 보상 아이디 리스트
     private List<int> _rewardAmountList; public List<int> rewardAmountList { get { return _rewardAmountList; } }            // 보상 개수 리스트    
+    private List<int> _conditionList; public List<int> conditionList { get { return _conditionList; } }                     // 조건 리스트
     private List<int> _conditionIdList; public List<int> conditionIdList { get { return _conditionIdList; } }               // 조건 아이디 리스트
     private List<int> _conditionAmountList; public List<int> conditionAmountList { get { return _conditionAmountList; } }   // 조건 개수 리스트
 
@@ -41,8 +45,11 @@ public class Quest
         _rewardList = new List<int>();
         _rewardIdList = new List<int>();
         _rewardAmountList = new List<int>();
+        _conditionList = new List<int>();
         _conditionIdList = new List<int>();
         _conditionAmountList = new List<int>();
+        _curConditionAmountList = new List<int>();
+
 
         _currentIndex = 0;
 
@@ -78,10 +85,10 @@ public class Quest
                         case 3: WeaponManager.Instance.AddExpToSpecificWeapon("BLUNT", rewardAmount); break;
                         case 4: WeaponManager.Instance.AddExpToSpecificWeapon("STAFF", rewardAmount); break;
                         case 5:
-                            WeaponManager.Instance.AddExpToSpecificWeapon("SWORD", rewardAmount); 
-                            WeaponManager.Instance.AddExpToSpecificWeapon("WAND", rewardAmount); 
-                            WeaponManager.Instance.AddExpToSpecificWeapon("DAGGER", rewardAmount); 
-                            WeaponManager.Instance.AddExpToSpecificWeapon("BLUNT", rewardAmount); 
+                            WeaponManager.Instance.AddExpToSpecificWeapon("SWORD", rewardAmount);
+                            WeaponManager.Instance.AddExpToSpecificWeapon("WAND", rewardAmount);
+                            WeaponManager.Instance.AddExpToSpecificWeapon("DAGGER", rewardAmount);
+                            WeaponManager.Instance.AddExpToSpecificWeapon("BLUNT", rewardAmount);
                             WeaponManager.Instance.AddExpToSpecificWeapon("STAFF", rewardAmount);
                             break;
                     }
@@ -95,9 +102,57 @@ public class Quest
         }
     }
 
-    public void CheckQuestCanEnd(int reward, int id, int number)
+    public void CheckQuestEnd(int condition, int conditionId, int conditionNumber)
     {
+        switch (condition)
+        {
+            case 0: break;
+            case 1: MonsterHuntCheck(conditionId, conditionNumber); break;
+            case 2: ItemCheck(conditionId, conditionNumber); break;
+            case 3: dungeonCheck(conditionId, conditionNumber); break;
+        }
+    }
 
+    /// <summary>
+    /// 던전 관련 퀘스트 조건 체크
+    /// </summary>
+    private void dungeonCheck(int conditionId, int conditionNumber)
+    {
+        for (int i = 0; i < _conditionList.Count; i++)
+        {
+            if (_conditionList[i] == 3)
+            {
+                if (conditionId == _conditionIdList[i])
+                {
+                    _curConditionAmountList[i] += conditionNumber;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 아이템 관련 퀘스트 조건 체크
+    /// </summary>
+    private void ItemCheck(int conditionId, int conditionNumber)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// 몬스터 관련 퀘스트 조건 체크
+    /// </summary>
+    private void MonsterHuntCheck(int conditionId, int conditionNumber)
+    {
+        for(int i=0; i<_conditionList.Count; i++)
+        {
+            if(_conditionList[i] == 1)
+            {
+                if(conditionId == _conditionIdList[i])
+                {
+                    _curConditionAmountList[i] += conditionNumber;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -196,7 +251,11 @@ public class Quest
         for (int j = 0; j < split.Length; j++) _conditionIdList.Add(int.Parse(split[j]));
 
         split = _questData.conditionAmount.Split(' ');
-        for (int j = 0; j < split.Length; j++) _conditionAmountList.Add(int.Parse(split[j]));
+        for (int j = 0; j < split.Length; j++)
+        {
+            _conditionAmountList.Add(int.Parse(split[j]));
+            _curConditionAmountList.Add(0);
+        }
     }
 
     /// <summary>
