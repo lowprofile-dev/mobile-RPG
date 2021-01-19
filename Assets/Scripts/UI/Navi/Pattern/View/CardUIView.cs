@@ -8,6 +8,10 @@ using UnityEngine.UI;
 /// </summary>
 public class CardUIView : View
 {
+    // 튜토리얼 관련
+    [SerializeField] private GameObject[] _tutorials;
+    private int tutorialIdx = 0;
+
     [SerializeField] private Image _basePanel;
     [SerializeField] private Image _paperImg;
     [SerializeField] private CardUIRoomArea[] _roomAreaImg;
@@ -35,10 +39,6 @@ public class CardUIView : View
 
     [SerializeField] private GameObject[] _setBar;
 
-    // 튜토리얼 관련
-    [SerializeField] private GameObject[] _tutorials;
-    [SerializeField] private Button _tutorialBtn;
-    [SerializeField] private Button _nextPageBtn;
 
     private bool _isRerolling; public bool isRerolling { get { return _isRerolling; } }
     [HideInInspector] public CardUIRoomArea cntPointerArea;
@@ -46,7 +46,7 @@ public class CardUIView : View
 
     string iconPath = "Image/TonityEden/Skill Icons Megapack/";
 
-
+    static int IsCardTutorial;
     private void Start()
     {
         _watchBtn.onClick.AddListener(delegate { ToogleCardViews(); });
@@ -57,6 +57,17 @@ public class CardUIView : View
         isRerollingAnimationPlaying = false;
 
         for (int i = 0; i < _roomAreaImg.Length; i++) _roomAreaImg[i].roomNumber = i;
+
+        if (tutorialButton != null) tutorialButton.onClick.AddListener(delegate { TutorialClick(); });
+        tutorialExitButton.onClick.AddListener(delegate { TutorialExit(); });
+
+        IsCardTutorial = PlayerPrefs.GetInt("CardTutorial");
+        if (IsCardTutorial == 0)
+        {
+            tutorialPage.SetActive(true);
+            IsCardTutorial++;
+            PlayerPrefs.SetInt("CardTutorial", IsCardTutorial);
+        }
     }
 
 
@@ -333,5 +344,35 @@ public class CardUIView : View
         card2.AddNewSetEffect(card3.setEffect);
         card3.AddNewSetEffect(card1.setEffect);
         card3.AddNewSetEffect(card2.setEffect);
+    }
+
+    protected override void TutorialClick()
+    {
+        base.TutorialClick();
+        tutorialIdx = 0;
+
+        _tutorials[tutorialIdx].SetActive(true);
+
+    }
+    protected override void TutorialExit()
+    {
+
+        tutorialIdx++;
+
+        if (tutorialIdx >= _tutorials.Length)
+        {
+            for (int i = 0; i < _tutorials.Length; i++)
+            {
+                _tutorials[i].SetActive(false);
+            }
+            tutorialPage.SetActive(false);
+        }
+        else
+        {
+            _tutorials[tutorialIdx - 1].SetActive(false);
+            _tutorials[tutorialIdx].SetActive(true);
+        }
+        
+       
     }
 }

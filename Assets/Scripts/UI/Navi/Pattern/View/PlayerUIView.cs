@@ -36,10 +36,7 @@ public class PlayerUIView : View
     [SerializeField] private Sprite[] _wandSkillImg;
     [SerializeField] private Sprite[] _bluntSkillImg;
 
-    // 튜토리얼 관련
-    [SerializeField] private GameObject _tutorialPage;
-    [SerializeField] private Button _nextButton; 
-
+    static int IsPlayerTutorial;
     private void Start()
     {
         _cardTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleCardUIView(); });
@@ -55,6 +52,17 @@ public class PlayerUIView : View
         _skillCButton.onClick.AddListener(delegate { _skillCButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
         _masteryButton.onClick.AddListener(delegate { _masteryButton.GetComponent<MasteryButton>().onButtonClick(); });
         _weaponButton.onClick.AddListener(delegate { _weaponButton.GetComponent<WeaponButton>().onButtonClick(); });
+
+        if (tutorialButton != null) tutorialButton.onClick.AddListener(delegate { TutorialClick(); });
+        tutorialExitButton.onClick.AddListener(delegate { TutorialExit(); });
+
+        IsPlayerTutorial = PlayerPrefs.GetInt("PlayerTutorial");
+        if (IsPlayerTutorial == 0)
+        {
+            tutorialPage.SetActive(true);
+            IsPlayerTutorial++;
+            PlayerPrefs.SetInt("PlayerTutorial", IsPlayerTutorial);
+        }
     }
 
     public override void UIExit()

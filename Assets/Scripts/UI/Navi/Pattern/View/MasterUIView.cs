@@ -9,13 +9,24 @@ public class MasterUIView : View
 {
     [SerializeField] TextMeshProUGUI masteryLevelText;
     [SerializeField] Button exitButton;
-    [SerializeField] Button tutorialButton;
-    [SerializeField] GameObject tutorialPage;
 
+    static int IsMasterTutorial;
     // Start is called before the first frame update
     void Start()
     {
         exitButton.onClick.AddListener(delegate { ExitButtonClicked(); });
+
+        if (tutorialButton != null) tutorialButton.onClick.AddListener(delegate { TutorialClick(); });
+        tutorialExitButton.onClick.AddListener(delegate { TutorialExit(); });
+
+        IsMasterTutorial = PlayerPrefs.GetInt("MasterUITutorial");
+        if (IsMasterTutorial == 0)
+        {
+            tutorialPage.SetActive(true);
+            IsMasterTutorial++;
+            PlayerPrefs.SetInt("MasterUITutorial", IsMasterTutorial);
+        }
+
     }
 
     private void ExitButtonClicked()
