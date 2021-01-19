@@ -41,6 +41,10 @@ public class WeaponMasteryView : View
     [SerializeField] GameObject[] wandSkill;
     [SerializeField] GameObject[] staffSkill;
 
+    // 튜토리얼 관련
+    [SerializeField] private GameObject _tutorialPage;
+    [SerializeField] private Button _tutorialBtn;
+
     SkillScript[] _swordScript;
     SkillScript[] _daggerScript;
     SkillScript[] _bluntScript;

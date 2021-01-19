@@ -9,6 +9,9 @@ public class MasterUIView : View
 {
     [SerializeField] TextMeshProUGUI masteryLevelText;
     [SerializeField] Button exitButton;
+    [SerializeField] Button tutorialButton;
+    [SerializeField] GameObject tutorialPage;
+
     // Start is called before the first frame update
     void Start()
     {

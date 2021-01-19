@@ -36,6 +36,9 @@ public class PlayerUIView : View
     [SerializeField] private Sprite[] _wandSkillImg;
     [SerializeField] private Sprite[] _bluntSkillImg;
 
+    // 튜토리얼 관련
+    [SerializeField] private GameObject _tutorialPage;
+    [SerializeField] private Button _nextButton; 
 
     private void Start()
     {
