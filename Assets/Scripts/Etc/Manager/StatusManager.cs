@@ -158,7 +158,7 @@ public class StatusManager : SingletonBase<StatusManager>
         itemAppliedStatus.dashCooldown = itemAppliedStatus.dashCooldown - (multiplicationStatus.dashCooldown / 100.0f);
         itemAppliedStatus.dashStamina = itemAppliedStatus.dashStamina * (1 - multiplicationStatus.dashStamina / 100f);
     }
-
+    
     private void LoadCurrentStatus()
     {
         PlayerPrefs.SetInt("LoadCurrentStatusCount", PlayerPrefs.GetInt("LoadCurrentStatusCount", 0));

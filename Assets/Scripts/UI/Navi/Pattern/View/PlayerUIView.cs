@@ -29,6 +29,7 @@ public class PlayerUIView : View
     [SerializeField] private Image _steminaSlider;
     [SerializeField] private GameObject _buffFrame;
     [SerializeField] private GameObject _buffImgPrefab;
+    [SerializeField] private Button _optionButton;
 
     [SerializeField] private Sprite[] _swordSkiilsImg;
     [SerializeField] private Sprite[] _staffSkillsImg;
@@ -36,16 +37,14 @@ public class PlayerUIView : View
     [SerializeField] private Sprite[] _wandSkillImg;
     [SerializeField] private Sprite[] _bluntSkillImg;
 
-    // 튜토리얼 관련
-    [SerializeField] private GameObject _tutorialPage;
-    [SerializeField] private Button _nextButton; 
-
+    static int IsPlayerTutorial;
     private void Start()
     {
         _cardTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleCardUIView(); });
         _shopTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleShopView(); });
         _atkBtn.onClick.AddListener(delegate { Player.Instance.CheckInteractObject(); });
         _invincibleBtn.onClick.AddListener(delegate { Player.Instance.EvadeBtnClicked(); });
+        _optionButton.onClick.AddListener(delegate { AddOptionView(); });
 
         _skillAButton.onClick.AddListener(delegate { Player.Instance.SkillABtnClicked(); });
         _skillAButton.onClick.AddListener(delegate { _skillAButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
@@ -55,6 +54,17 @@ public class PlayerUIView : View
         _skillCButton.onClick.AddListener(delegate { _skillCButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
         _masteryButton.onClick.AddListener(delegate { _masteryButton.GetComponent<MasteryButton>().onButtonClick(); });
         _weaponButton.onClick.AddListener(delegate { _weaponButton.GetComponent<WeaponButton>().onButtonClick(); });
+
+        if (tutorialButton != null) tutorialButton.onClick.AddListener(delegate { TutorialClick(); });
+        tutorialExitButton.onClick.AddListener(delegate { TutorialExit(); });
+
+        IsPlayerTutorial = PlayerPrefs.GetInt("PlayerTutorial");
+        if (IsPlayerTutorial == 0)
+        {
+            tutorialPage.SetActive(true);
+            IsPlayerTutorial++;
+            PlayerPrefs.SetInt("PlayerTutorial", IsPlayerTutorial);
+        }
     }
 
     public override void UIExit()
@@ -77,6 +87,10 @@ public class PlayerUIView : View
         SetTalkOrAttackSprite();
     }
 
+    public void AddOptionView()
+    {
+        UINaviationManager.Instance.PushToNav("SubUI_OptionView");
+    }
 
     public void SetWeaponSkillIcon()
     {

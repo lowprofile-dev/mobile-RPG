@@ -19,11 +19,12 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     [HideInInspector] public WeaponManager weaponManager;
     [HideInInspector] public ItemManager itemManager;
     [HideInInspector] public GlobalDefine globalDefine;
+    [HideInInspector] public MonsterManager monsterManager;
 
     private void Start()
     {
         Screen.SetResolution(Screen.width, (int)(Screen.width * (9f / 16f)), true);
-        QualitySettings.vSyncCount = 0;
+        QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
 
         Random.InitState((int)(System.DateTime.Now.Ticks));
@@ -55,6 +56,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         uiManager = (UIManager)AddManager<UIManager>();
         statusManager = (StatusManager)AddManager<StatusManager>();
         itemManager = (ItemManager)AddManager<ItemManager>();
+        monsterManager = (MonsterManager)AddManager<MonsterManager>();
     }
 
     private void InitManagers()
@@ -73,6 +75,9 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         uiManager.InitUIManager();
         statusManager.InitStatusManager();
         itemManager.InitItemManager();
+        monsterManager.InitMonsterManager();
+
+
     }
 
     private void Update()
