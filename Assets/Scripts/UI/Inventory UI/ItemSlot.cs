@@ -45,6 +45,11 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*
         itemIcon.GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
     }
 
+    public void SetIcon(Sprite sprite)
+    {
+        itemIcon.GetComponent<Image>().sprite = sprite;
+    }
+
     public void SetItemDetail(GameObject obj)
     {
         itemDetail = obj;

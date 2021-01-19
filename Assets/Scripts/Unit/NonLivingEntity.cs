@@ -13,38 +13,20 @@ public class NonLivingEntity : Unit
 
     public Image  minimapIconSprite;
 
-    public GameObject canQuestSquare;
     public GameObject canEndSquare;
+    
+    protected void OnDisable()
+    {
+        if(_myTalkChecker != null) _myTalkChecker._npcList.Remove(this);
+    }
 
     protected virtual void Start()
     {
         _talkManager = TalkManager.Instance;
         _myTalkChecker = _talkManager.talkCheckers[_id];
-    }
-
-    protected virtual void Update()
-    {
-        if (_myTalkChecker.canFinishQuest)
-        {
-            canEndSquare.SetActive(true);
-            canQuestSquare.SetActive(false);
-        }
-
-        else
-        {
-            canEndSquare.SetActive(false);
-
-            if (_myTalkChecker.canStartQuest || _myTalkChecker.canProcressQuest)
-            {
-                canQuestSquare.SetActive(true);
-            }
-
-            else
-            {
-                canQuestSquare.SetActive(false);
-            }
-
-        }
+        _myTalkChecker._npcList.Add(this);
+        CheckQuestVisibleInfo();
+        minimapIconSprite.transform.rotation = Quaternion.Euler(90, 0, 0);
     }
 
     /// <summary>
@@ -55,21 +37,27 @@ public class NonLivingEntity : Unit
         _myTalkChecker.Talk();
     }
 
-    public void CheckTalkCheckerMinimapIcon()
+    public void CheckQuestVisibleInfo()
     {
-        if(_myTalkChecker.canFinishQuest)
+        if(_myTalkChecker != null && minimapIconSprite != null)
         {
-            minimapIconSprite.sprite = GlobalDefine.Instance.questExitMinimapIcon;
+            if (_myTalkChecker.canFinishQuest)
+            {
+                minimapIconSprite.sprite = GlobalDefine.Instance.questExitMinimapIcon;
+            }
+
+            else if (_myTalkChecker.canStartQuest)
+            {
+                minimapIconSprite.sprite = GlobalDefine.Instance.questStartMinimapIcon;
+            }
+
+            else
+            {
+                minimapIconSprite.sprite = GlobalDefine.Instance.npcBaseMinimapIcon;
+            }
         }
 
-        else if(_myTalkChecker.canStartQuest)
-        {
-            minimapIconSprite.sprite = GlobalDefine.Instance.questStartMinimapIcon;
-        }
-
-        else
-        {
-            minimapIconSprite.sprite = GlobalDefine.Instance.npcBaseMinimapIcon;
-        }
+        if (_myTalkChecker.canFinishQuest || _myTalkChecker.canStartQuest) canEndSquare.SetActive(true);
+        else canEndSquare.SetActive(false);
     }
 }

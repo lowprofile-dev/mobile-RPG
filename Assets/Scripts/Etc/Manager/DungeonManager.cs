@@ -149,6 +149,7 @@ public class DungeonManager : MonoBehaviour
             UILoaderManager.Instance.LoadVillage();
             CardManager.Instance._cntDungeon = null;
             CardManager.Instance.currentStage = 0;
+            TalkManager.Instance.SetQuestCondition(3, 1, 1);
             return;
         }
 

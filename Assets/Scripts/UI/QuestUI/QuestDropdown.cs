@@ -52,4 +52,15 @@ public class QuestDropdown : SingletonBase<QuestDropdown>
         panel.SetData(quest);
         panels.Add(panel);
     }
+
+    public void UpdatePanel(Quest quest)
+    {
+        for(int i=0; i<panels.Count; i++)
+        {
+            if(panels[i].parentQuest.questData.id == quest.questData.id)
+            {
+                panels[i].SetData(quest);
+            }
+        }
+    }
 }

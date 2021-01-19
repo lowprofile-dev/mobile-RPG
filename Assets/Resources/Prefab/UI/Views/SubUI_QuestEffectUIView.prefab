@@ -12,13 +12,14 @@ GameObject:
   - component: {fileID: 3927538867051814900}
   - component: {fileID: 3927538867051814901}
   - component: {fileID: 3927538867051814902}
+  - component: {fileID: 571960729807081255}
   m_Layer: 5
   m_Name: SubUI_QuestEffectUIView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3927538867051814889
 RectTransform:
   m_ObjectHideFlags: 0
@@ -99,6 +100,22 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &571960729807081255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3927538867051814890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3344b76f9a2559449a218c8f26d8da6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _viewName: SubUI_QuestEffectUIView
+  tutorialButton: {fileID: 0}
+  tutorialExitButton: {fileID: 0}
+  tutorialPage: {fileID: 0}
 --- !u!1 &5180796773043384176
 GameObject:
   m_ObjectHideFlags: 0

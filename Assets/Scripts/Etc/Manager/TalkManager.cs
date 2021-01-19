@@ -2,7 +2,8 @@
 using System.Collections;
 using UnityEngine;
 using CSVReader;
-
+using Newtonsoft.Json;
+using System.IO;
 
 [CSVReader.Data("id")]
 public class NpcData
@@ -37,7 +38,80 @@ public class TalkManager : SingletonBase<TalkManager>
         GetData();
         SetTalkCheckers();
         FindInitStartQuest();
+        LoadCurrentQuests();
         CheckQuestIsOn();
+    }
+
+    
+    public void SaveCurrentQuests()
+    {
+        /*
+        string jsonData = JsonUtility.ToJson(questDatas, true);
+        string path = Path.Combine(Application.persistentDataPath, "playerQuest.json");
+        File.WriteAllText(path, jsonData);
+
+        jsonData = JsonUtility.ToJson(startAbleQuests, true);
+        path = Path.Combine(Application.persistentDataPath, "playerQuestStartAble.json");
+        File.WriteAllText(path, jsonData);
+
+        jsonData = JsonUtility.ToJson(startAbleQuests, true);
+        path = Path.Combine(Application.persistentDataPath, "playerQuestCurrent.json");
+        File.WriteAllText(path, jsonData);
+
+        jsonData = JsonUtility.ToJson(startAbleQuests, true);
+        path = Path.Combine(Application.persistentDataPath, "playerQuestEnded.json");
+        File.WriteAllText(path, jsonData);
+        */
+    }
+    
+    public void LoadCurrentQuests()
+    {
+        /*
+        PlayerPrefs.SetInt("LoadCurrentQuestKeys", PlayerPrefs.GetInt("LoadCurrentQuestKeys", 0));
+        if (PlayerPrefs.GetInt("LoadCurrentQuestKeys") == 0)
+        {
+            PlayerPrefs.SetInt("LoadCurrentQuestKeys", 1);
+            SaveCurrentQuests();
+            PlayerPrefs.Save();
+        }
+
+        LoadQuestAllData();
+        LoadQuestStartableData();
+        LoadQuestcurrentQuestsData();
+        LoadQuestEndedQuestsData();
+        */
+    }
+
+    private void LoadQuestAllData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "playerQuest.json");
+        string jsonData = File.ReadAllText(path);
+        if (jsonData == null) return;
+        questDatas = JsonUtility.FromJson<Dictionary<string, Quest>>(jsonData);
+    }
+
+    private void LoadQuestStartableData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "playerQuestStartAble.json");
+        string jsonData = File.ReadAllText(path);
+        if (jsonData == null) return;
+        startAbleQuests = JsonUtility.FromJson<HashSet<Quest>>(jsonData);
+    }
+
+    private void LoadQuestcurrentQuestsData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "playerQuestCurrent.json");
+        string jsonData = File.ReadAllText(path);
+        if (jsonData == null) return;
+        currentQuests = JsonUtility.FromJson<HashSet<Quest>>(jsonData);
+    }
+
+    private void LoadQuestEndedQuestsData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "playerQuestEnded.json");
+        string jsonData = File.ReadAllText(path);
+        if (jsonData == null) return;
+        endedQuests = JsonUtility.FromJson<HashSet<Quest>>(jsonData);
     }
 
     /// <summary>
@@ -109,7 +183,9 @@ public class TalkManager : SingletonBase<TalkManager>
     {
         foreach (Quest quest in currentQuests)
         {
-            quest.CheckQuestEnd(condition, conditionId, conditionNumber);
+            quest.UpdateQuestCondition(condition, conditionId, conditionNumber);
         }
+
+        CheckQuestIsOn();
     }
 }

@@ -44,9 +44,4 @@ public class PartSelectionNpc : NonLivingEntity
         if (lWeaponId != 0) _myPartSelection.ChangeLeftWeaponPart(lWeaponId);
         if (lShieldId != 0) _myPartSelection.ChangeLeftShieldPart(lShieldId);
     }
-
-    protected override void Update()
-    {
-        base.Update();
-    }
 }

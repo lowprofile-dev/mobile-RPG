@@ -727,7 +727,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.2, y: 0.92}
   m_AnchorMax: {x: 0.2, y: 0.92}
-  m_AnchoredPosition: {x: -13.200012, y: -49.04297}
+  m_AnchoredPosition: {x: -13.199951, y: -49.04297}
   m_SizeDelta: {x: 173.51178, y: 198.08548}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &448702857554638339
@@ -2972,8 +2972,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _viewName: 
   tutorialButton: {fileID: 0}
-  tutorialExitButton: {fileID: 0}
-  tutorialPage: {fileID: 0}
+  tutorialExitButton: {fileID: 8544798579983729128}
+  tutorialPage: {fileID: 3918995036812908189}
   _atkSprite: {fileID: 21300000, guid: 90f916ccb0445244cbc3600f90d16147, type: 3}
   _talkSprite: {fileID: 21300000, guid: 6f83754d1cbb0eb42ad3a6a0c9cfa223, type: 3}
   _cardTestBtn: {fileID: 448702858662977910}
@@ -2997,6 +2997,7 @@ MonoBehaviour:
   _buffImgPrefab: {fileID: 1178066090166967396, guid: 63d5ed2bca5184149bf94c51229f18b9,
     type: 3}
   _optionButton: {fileID: 448702858296493661}
+  _questDropdown: {fileID: 1535493079707110947}
   _swordSkiilsImg:
   - {fileID: 21300000, guid: 14e19f376a4fb104b9b3353173e9137c, type: 3}
   - {fileID: 21300000, guid: 3ff818180683e9f4491489888d3b757e, type: 3}
@@ -5214,6 +5215,8 @@ GameObject:
   - component: {fileID: 4311590901470425249}
   - component: {fileID: 7833821433156490339}
   - component: {fileID: 1741241223198620790}
+  - component: {fileID: 708583631}
+  - component: {fileID: 708583632}
   m_Layer: 5
   m_Name: Tutorial_Panel
   m_TagString: Untagged
@@ -5280,6 +5283,44 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!223 &708583631
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918995036812908189}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 1800963715
+  m_SortingOrder: 1
+  m_TargetDisplay: 0
+--- !u!114 &708583632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918995036812908189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &4020452798926121700
 GameObject:
   m_ObjectHideFlags: 0
@@ -6419,3 +6460,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1535493079761495545}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1535493079707110947 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 88239066, guid: 608ae051d8479bd4a8bf8b3ea11d156c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1535493079761495545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aa49affe89cbfd49ba53c59d9792dec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

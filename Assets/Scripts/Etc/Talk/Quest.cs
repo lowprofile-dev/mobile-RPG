@@ -55,6 +55,7 @@ public class Quest
 
         isOn = false;
         isEnd = false;
+        canEnd = false;
         canStart = false;
     }
 
@@ -102,15 +103,41 @@ public class Quest
         }
     }
 
-    public void CheckQuestEnd(int condition, int conditionId, int conditionNumber)
+    /// <summary>
+    /// 조건을 받아 완료 여부를 체크한다.
+    /// </summary>
+    public void UpdateQuestCondition(int condition, int conditionId, int conditionNumber)
     {
         switch (condition)
         {
             case 0: break;
             case 1: MonsterHuntCheck(conditionId, conditionNumber); break;
-            case 2: ItemCheck(conditionId, conditionNumber); break;
+            case 2: break;
             case 3: dungeonCheck(conditionId, conditionNumber); break;
         }
+
+        CheckQuestCanEnd();
+        UIManager.Instance.playerUIView.questDropdown.UpdatePanel(this);
+    }
+
+    /// <summary>
+    /// 조건들을 모두 완료했는지 체크
+    /// </summary>
+    public void CheckQuestCanEnd()
+    {
+        bool endFlag = true;
+
+        for(int i=0; i<_conditionList.Count; i++)
+        {
+            if(_curConditionAmountList[i] < _conditionAmountList[i])
+            {
+                endFlag = false;
+                break;
+            }
+        }
+
+        if (endFlag) canEnd = true;
+        else canEnd = false;
     }
 
     /// <summary>
@@ -128,14 +155,6 @@ public class Quest
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// 아이템 관련 퀘스트 조건 체크
-    /// </summary>
-    private void ItemCheck(int conditionId, int conditionNumber)
-    {
-        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -161,14 +180,15 @@ public class Quest
     public void StartQuest()
     {
         // 시작 연출
-
-        //    Debug.Log("퀘스트 [" + questData.questName + "] 을 시작합니다.");
         canStart = false;
         isOn = true;
+        canEnd = false;
+        isEnd = false;
 
         _talkManager.currentQuests.Add(this);
         TalkManager.Instance.CheckQuestIsOn();
         QuestDropdown.Instance.ViewDropdown();
+        TalkManager.Instance.SaveCurrentQuests();
     }
 
     /// <summary>
@@ -176,7 +196,7 @@ public class Quest
     /// </summary>
     public void SuccessQuest()
     {
-        //      Debug.Log("퀘스트 [" + questData.questName + "] 을 클리어하였습니다.");
+        // Debug.Log("퀘스트 [" + questData.questName + "] 을 클리어하였습니다.");
 
         // 완료 연출
         // 보상하는 알고리즘.
@@ -185,6 +205,8 @@ public class Quest
         // 결과물 관리
         _talkManager.endedQuests.Add(this);
         _talkManager.currentQuests.Remove(this);
+        canStart = false;
+        canEnd = false;
         isOn = false;
         isEnd = true;
 
@@ -200,6 +222,7 @@ public class Quest
 
         TalkManager.Instance.CheckQuestIsOn();
         QuestDropdown.Instance.ViewDropdown();
+        TalkManager.Instance.SaveCurrentQuests();
     }
 
     /// <summary>
@@ -208,12 +231,6 @@ public class Quest
     public void NextIndex()
     {
         _currentIndex++;
-
-        // 퀘스트 완료
-        if (_currentIndex == convList.Count)
-        {
-            SuccessQuest();
-        }
     }
 
     /// <summary>
@@ -246,6 +263,9 @@ public class Quest
 
         split = _questData.rewardAmount.Split(' ');
         for (int j = 0; j < split.Length; j++) _rewardAmountList.Add(int.Parse(split[j]));
+
+        split = _questData.condition.Split(' ');
+        for (int j = 0; j < split.Length; j++) _conditionList.Add(int.Parse(split[j]));
 
         split = _questData.conditionId.Split(' ');
         for (int j = 0; j < split.Length; j++) _conditionIdList.Add(int.Parse(split[j]));

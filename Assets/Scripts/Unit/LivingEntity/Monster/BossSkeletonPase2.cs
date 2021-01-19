@@ -492,6 +492,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void DeathStart()
     {
+        TalkManager.Instance.SetQuestCondition(1, monster.id, 1);
         _navMeshAgent.isStopped = true;
         base.DeathStart();
     }

@@ -16,12 +16,15 @@ public class TalkChecker
     private bool _canProgressQuest; public bool canProcressQuest { get { return _canProgressQuest; } }          // 현재 퀘스트 진행중인지
     private int _talkIndex; public int talkIndex { get { return _talkIndex; } }                                 // relevantTalk에서 몇번째 대화인지          
 
+    public HashSet<NonLivingEntity> _npcList;
+
     public TalkChecker(int id)
     {
         _objectId = id;
 
         _relevantQuests = new List<Quest>();
         _relevantTalks = new List<Talk>();
+        _npcList = new HashSet<NonLivingEntity>();
         AddRelevantQuests();
         AddRelevantTalks();
         _talkIndex = 0;
@@ -104,15 +107,26 @@ public class TalkChecker
                 {
                     _canFinishQuest = true;
                 }
-
-                if (_relevantQuests[i].isOn) // 퀘스트가 진행중임을 알림
-                {
-                    _canProgressQuest = true;
-                }
             }
+        }
+
+        foreach(NonLivingEntity entity in _npcList)
+        {
+            entity.CheckQuestVisibleInfo();
         }
     }
     
+    public void RewardQuest()
+    {
+        Quest quest = GetTargetQuest();
+
+        Player.Instance.ChangeState(PLAYERSTATE.PS_IDLE);
+        quest.NextIndex();
+        quest.SuccessQuest();
+        TalkManager.Instance.CheckQuestIsOn();
+        UINaviationManager.Instance.PopToNav("PlayerUI_TalkUIView");
+    }
+
     public void AcceptQuest()
     {
         Quest quest = GetTargetQuest();
@@ -125,6 +139,7 @@ public class TalkChecker
             quest.StartQuest();
         }
 
+        quest.UpdateQuestCondition(0, 0, 0);
         TalkManager.Instance.CheckQuestIsOn(); // 퀘스트 진행도 Refresh
         UINaviationManager.Instance.PopToNav("PlayerUI_TalkUIView");
     }
@@ -153,7 +168,7 @@ public class TalkChecker
         Quest quest = null;
 
         // 퀘스트가 없다면
-        if (!canStartQuest && !canFinishQuest && !canProcressQuest)
+        if (!canStartQuest && !canFinishQuest)
         {
             talk = relevantTalks[_talkIndex];
             isQuest = false;
@@ -226,7 +241,16 @@ public class TalkChecker
         for (int i = 0; i < relevantQuests.Count; i++)
         {
             Quest curQuest = relevantQuests[i];
-            if ((curQuest.canStart || curQuest.isOn) && curQuest.npcList[curQuest.currentIndex] == _objectId)
+            if (curQuest.canEnd && !curQuest.isEnd && curQuest.npcList[curQuest.currentIndex] == _objectId)
+            {
+                return curQuest;
+            }
+        }
+
+        for (int i=0; i < relevantQuests.Count; i++)
+        {
+            Quest curQuest = relevantQuests[i];
+            if(curQuest.canStart && curQuest.npcList[curQuest.currentIndex] == _objectId)
             {
                 return curQuest;
             }

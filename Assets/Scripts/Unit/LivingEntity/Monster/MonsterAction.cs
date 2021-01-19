@@ -891,10 +891,9 @@ public class MonsterAction : MonoBehaviour
 
         _monster.CCManager.Release();
         _monster.DebuffManager.Release();
-        if (parentRoom != null)
-        {
-            parentRoom.MonsterDeathCheck();
-        }
+        if (parentRoom != null) parentRoom.MonsterDeathCheck();
+        TalkManager.Instance.SetQuestCondition(1, monster.id, 1);
+
         DeathSound();
         StopAllCoroutines();
         StartCoroutine(DoDeathAction());

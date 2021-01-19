@@ -30,6 +30,7 @@ public class PlayerUIView : View
     [SerializeField] private GameObject _buffFrame;
     [SerializeField] private GameObject _buffImgPrefab;
     [SerializeField] private Button _optionButton;
+    [SerializeField] private QuestDropdown _questDropdown; public QuestDropdown questDropdown { get { return _questDropdown; } }
 
     [SerializeField] private Sprite[] _swordSkiilsImg;
     [SerializeField] private Sprite[] _staffSkillsImg;

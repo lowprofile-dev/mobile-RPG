@@ -19,8 +19,6 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
         _playerUI = GameObject.Find("PlayerUI_View");
         _nameText = GameObject.Find("NamePanel").transform.Find("BossNameText").GetComponent<TextMeshProUGUI>();
         _nameText.text = "";
-        
-
     }
 
     public void LoadUI()
@@ -50,6 +48,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
         SoundManager.Instance.StopEffect("Fire Loop");
         SoundManager.Instance.PlayBGM("DungeonBGM", 0.6f);
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Cave 1 Loop", 0.25f, 0, true);
+        TalkManager.Instance.SetQuestCondition(3, 0, 1);
     }
 
     public bool IsSceneDungeon()
