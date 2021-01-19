@@ -1145,7 +1145,7 @@ public class MonsterAction : MonoBehaviour
             txt.transform.rotation = Quaternion.identity;
             txt.GetComponent<DamageText>().PlayText("경직!", "monster");
 
-            _monster.myAnimator.ResetTrigger("rigid");
+            _monster.myAnimator.ResetTrigger("Rigid");
             _navMeshAgent.isStopped = false;
             _monster.myAnimator.SetTrigger("Idle");
         }
@@ -1161,7 +1161,7 @@ public class MonsterAction : MonoBehaviour
             txt.transform.rotation = Quaternion.identity;
             txt.GetComponent<DamageText>().PlayText("스턴!", "monster");
 
-            _monster.myAnimator.ResetTrigger("stun");
+            _monster.myAnimator.ResetTrigger("Stun");
             _navMeshAgent.isStopped = false;
             _monster.myAnimator.SetTrigger("Idle");
         }
@@ -1171,7 +1171,7 @@ public class MonsterAction : MonoBehaviour
     {
         if (!DeathCheck())
         {
-            _monster.myAnimator.ResetTrigger("fall");
+            _monster.myAnimator.ResetTrigger("Fall");
             _navMeshAgent.isStopped = false;
             _monster.myAnimator.SetTrigger("Idle");
         }
