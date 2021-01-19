@@ -5,28 +5,22 @@ using UnityEngine.UI;
 using TMPro;
 public class SystemPanel : MonoBehaviour
 {
+    public static SystemPanel instance;
+
     public TextMeshProUGUI text;
     [SerializeField] private GameObject panel;
     private Image image;
-    private bool isCheck = false;
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
         image = panel.transform.GetComponent<Image>();
         panel.SetActive(false);
     }
 
-    public void Update()
+    public void SetText(string inputText)
     {
-        if(WeaponManager.Instance != null && WeaponManager.Instance.GetWeapon() != null)
-        {
-            if (WeaponManager.Instance.LevelUpCheck() && isCheck == false)
-            {
-                FadeOutStart();
-                isCheck = true;
-                text.text = WeaponManager.Instance.GetWeapon().name.ToUpper() + " Level UP !!";
-            }
-        }
+        text.text = inputText;
     }
 
     public void FadeOutStart()
@@ -49,7 +43,6 @@ public class SystemPanel : MonoBehaviour
             if (image.color.a >= 1f)
             {
                 panel.SetActive(false);
-                isCheck = false;
                 break;
             }
         }
