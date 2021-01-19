@@ -61,11 +61,13 @@ public class Card
 
     public void AddNewEffect(CardEffect effect)
     {
+        effect.level = level;
         effectList.Add(effect);
     }
 
     public void AddNewSetEffect(CardEffect effect)
     {
+        effect.level = level;
         addedSetEffectList.Add(effect);
     }
 
