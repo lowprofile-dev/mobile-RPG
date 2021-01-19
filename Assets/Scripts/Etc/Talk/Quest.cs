@@ -189,6 +189,8 @@ public class Quest
         TalkManager.Instance.CheckQuestIsOn();
         QuestDropdown.Instance.ViewDropdown();
         TalkManager.Instance.SaveCurrentQuests();
+        SystemPanel.instance.SetText(questData.questName + " 퀘스트를 시작합니다.");
+        SystemPanel.instance.FadeOutStart();
     }
 
     /// <summary>
