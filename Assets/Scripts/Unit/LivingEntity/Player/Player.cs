@@ -1493,6 +1493,7 @@ public class Player : LivingEntity
             Item itemInfo = other.gameObject.GetComponent<Item>();
             itemManager.AddItem(itemInfo);
             //Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
+            SystemPanel.instance.SetText(itemInfo.itemData.itemName + " 아이템 획득!");
             other.gameObject.SetActive(false);
         }
     }
