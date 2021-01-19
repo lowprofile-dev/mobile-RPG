@@ -35,6 +35,11 @@ public class CardUIView : View
 
     [SerializeField] private GameObject[] _setBar;
 
+    // 튜토리얼 관련
+    [SerializeField] private GameObject[] _tutorials;
+    [SerializeField] private Button _tutorialBtn;
+    [SerializeField] private Button _nextPageBtn;
+
     private bool _isRerolling; public bool isRerolling { get { return _isRerolling; } }
     [HideInInspector] public CardUIRoomArea cntPointerArea;
     [HideInInspector] public bool isRerollingAnimationPlaying;
