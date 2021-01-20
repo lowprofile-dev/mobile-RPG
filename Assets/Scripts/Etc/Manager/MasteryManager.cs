@@ -75,14 +75,14 @@ public class CurrentMastery : ICloneable
         currentStaffMasteryExp = 0;
         currentWandMasteryExp = 0;
 
-        currentSwordSkillBReleased = true;
-        currentSwordSkillCReleased = true;
+        currentSwordSkillBReleased = false;
+        currentSwordSkillCReleased = false;
         currentDaggerSkillBReleased = false;
         currentDaggerSkillCReleased = false;
         currentBluntSkillBReleased = false;
         currentBluntSkillCReleased = false;
-        currentWandSkillBReleased = true;
-        currentWandSkillCReleased = true;
+        currentWandSkillBReleased = false;
+        currentWandSkillCReleased = false;
         currentStaffSkillBReleased = false;
         currentStaffSkillCReleased = false;
         currentMasteryChoices = new List<int>(new int[10]);
