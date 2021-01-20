@@ -13,9 +13,9 @@ public class QuestPanel : MonoBehaviour
     {
         parentQuest = quest;
         
-        title.text = quest.questData.questName;
+        title.text = quest.questName;
         descript.richText = true;
-        descript.text = quest.questData.questDescription;
+        descript.text = quest.questDescription;
 
         for(int i=0; i<quest.conditionList.Count; i++)
         {

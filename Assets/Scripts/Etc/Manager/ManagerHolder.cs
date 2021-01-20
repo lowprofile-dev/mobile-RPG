@@ -77,7 +77,6 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         itemManager.InitItemManager();
         monsterManager.InitMonsterManager();
 
-
     }
 
     private void Update()
