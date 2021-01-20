@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 각 Object별 퀘스트 및 대화를 관리하는 클래스
 /// </summary>
+[System.Serializable]
 public class TalkChecker
 {
     private int _objectId;

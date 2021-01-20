@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-/// <summary>
-/// 퀘스트의 정보 및 기능이 담겨있다.
-/// </summary>
+[System.Serializable]
 public class Quest
 {
-    private TalkManager _talkManager; // 토크매니저 캐싱
+    // 퀘스트 데이터
+    public string id;
+    public string questName;
+    public string description;
+    public string questDescription;
 
-    private QuestData _questData; public QuestData questData { get { return _questData; } }     // CSV를 통해 읽어온 퀘스트 데이터
 
     // 퀘스트 진행여부 관련
     private int _currentIndex; public int currentIndex { get { return _currentIndex; } }        // 현재 퀘스트의 몇번째 진행상황인지
@@ -35,8 +35,6 @@ public class Quest
 
     public Quest()
     {
-        _talkManager = TalkManager.Instance;
-
         _npcList = new List<int>();
         _convList = new List<string>();
         _afterQuestList = new List<string>();
@@ -49,7 +47,6 @@ public class Quest
         _conditionIdList = new List<int>();
         _conditionAmountList = new List<int>();
         _curConditionAmountList = new List<int>();
-
 
         _currentIndex = 0;
 
@@ -127,9 +124,9 @@ public class Quest
     {
         bool endFlag = true;
 
-        for(int i=0; i<_conditionList.Count; i++)
+        for (int i = 0; i < _conditionList.Count; i++)
         {
-            if(_curConditionAmountList[i] < _conditionAmountList[i])
+            if (_curConditionAmountList[i] < _conditionAmountList[i])
             {
                 endFlag = false;
                 break;
@@ -162,11 +159,11 @@ public class Quest
     /// </summary>
     private void MonsterHuntCheck(int conditionId, int conditionNumber)
     {
-        for(int i=0; i<_conditionList.Count; i++)
+        for (int i = 0; i < _conditionList.Count; i++)
         {
-            if(_conditionList[i] == 1)
+            if (_conditionList[i] == 1)
             {
-                if(conditionId == _conditionIdList[i])
+                if (conditionId == _conditionIdList[i])
                 {
                     _curConditionAmountList[i] += conditionNumber;
                 }
@@ -185,11 +182,11 @@ public class Quest
         canEnd = false;
         isEnd = false;
 
-        _talkManager.currentQuests.Add(this);
+        TalkManager.Instance.currentQuests.Add(id, this);
         TalkManager.Instance.CheckQuestIsOn();
         QuestDropdown.Instance.ViewDropdown();
         TalkManager.Instance.SaveCurrentQuests();
-        SystemPanel.instance.SetText(questData.questName + " 퀘스트를 시작합니다.");
+        SystemPanel.instance.SetText(questName + " 퀘스트를 시작합니다.");
         SystemPanel.instance.FadeOutStart();
     }
 
@@ -205,8 +202,8 @@ public class Quest
         GetQuestReward();
 
         // 결과물 관리
-        _talkManager.endedQuests.Add(this);
-        _talkManager.currentQuests.Remove(this);
+        TalkManager.Instance.endedQuests.Add(id, this);
+        TalkManager.Instance.currentQuests.Remove(id);
         canStart = false;
         canEnd = false;
         isOn = false;
@@ -218,7 +215,7 @@ public class Quest
             // 이어지는 퀘스트 리스트의 추가 가능 여부를 보고 퀘스트의 추가를 결정한다.
             for (int i = 0; i < _afterQuestList.Count; i++)
             {
-                _talkManager.questDatas[_afterQuestList[i]].CheckQuestCanStart();
+                TalkManager.Instance.questDatas[_afterQuestList[i]].CheckQuestCanStart();
             }
         }
 
@@ -240,39 +237,42 @@ public class Quest
     /// </summary>
     public void RefineQuestData(QuestData targetQuestData)
     {
-        _questData = targetQuestData;
+        id = targetQuestData.id;
+        questName = targetQuestData.questName;
+        description = targetQuestData.description;
+        questDescription = targetQuestData.questDescription;
 
-        string[] split = _questData.npcId.Split(' ');
+        string[] split = targetQuestData.npcId.Split(' ');
         for (int j = 0; j < split.Length; j++) _npcList.Add(int.Parse(split[j]));
 
-        split = _questData.convId.Split(' ');
+        split = targetQuestData.convId.Split(' ');
         for (int j = 0; j < split.Length; j++) _convList.Add(split[j]);
 
-        split = _questData.afterQuestsId.Split(' ');
+        split = targetQuestData.afterQuestsId.Split(' ');
         for (int j = 0; j < split.Length; j++) _afterQuestList.Add(split[j]);
 
-        split = _questData.quitQuestId.Split(' ');
+        split = targetQuestData.quitQuestId.Split(' ');
         for (int j = 0; j < split.Length; j++) _quitQuestList.Add(split[j]);
 
-        split = _questData.neededQuestsId.Split(' ');
+        split = targetQuestData.neededQuestsId.Split(' ');
         for (int j = 0; j < split.Length; j++) _neededQuestList.Add(split[j]);
 
-        split = _questData.reward.Split(' ');
+        split = targetQuestData.reward.Split(' ');
         for (int j = 0; j < split.Length; j++) _rewardList.Add(int.Parse(split[j]));
 
-        split = _questData.rewardId.Split(' ');
+        split = targetQuestData.rewardId.Split(' ');
         for (int j = 0; j < split.Length; j++) _rewardIdList.Add(int.Parse(split[j]));
 
-        split = _questData.rewardAmount.Split(' ');
+        split = targetQuestData.rewardAmount.Split(' ');
         for (int j = 0; j < split.Length; j++) _rewardAmountList.Add(int.Parse(split[j]));
 
-        split = _questData.condition.Split(' ');
+        split = targetQuestData.condition.Split(' ');
         for (int j = 0; j < split.Length; j++) _conditionList.Add(int.Parse(split[j]));
 
-        split = _questData.conditionId.Split(' ');
+        split = targetQuestData.conditionId.Split(' ');
         for (int j = 0; j < split.Length; j++) _conditionIdList.Add(int.Parse(split[j]));
 
-        split = _questData.conditionAmount.Split(' ');
+        split = targetQuestData.conditionAmount.Split(' ');
         for (int j = 0; j < split.Length; j++)
         {
             _conditionAmountList.Add(int.Parse(split[j]));
@@ -289,7 +289,7 @@ public class Quest
         bool startFlag = true;
         for (int i = 0; i < _neededQuestList.Count; i++)
         {
-            if (!_talkManager.endedQuests.Contains(_talkManager.questDatas[_neededQuestList[i]]))
+            if (!TalkManager.Instance.endedQuests.ContainsValue(TalkManager.Instance.questDatas[_neededQuestList[i]]))
             {
                 startFlag = false;
                 break;
@@ -299,7 +299,6 @@ public class Quest
         // 조건이 맞는다면 시작 가능 퀘스트로 추가
         if (startFlag)
         {
-            _talkManager.startAbleQuests.Add(this);
             canStart = true;
         }
     }
@@ -308,12 +307,12 @@ public class Quest
     {
         string data = "";
 
-        data += "이름 : " + questData.questName + '\n';
+        data += "이름 : " + questName + '\n';
         for (int i = 0; i < _npcList.Count; i++)
         {
             data += _npcList[i] + " " + _convList[i] + "\n";
         }
-        data += "설명 : " + questData.description + '\n';
+        data += "설명 : " + description + '\n';
 
         return data;
     }

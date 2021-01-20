@@ -62,12 +62,12 @@ public class CurrentMastery : ICloneable
 
     public CurrentMastery()
     {
-        currentMasteryLevel = 50;
-        currentSwordMasteryLevel = 30;
+        currentMasteryLevel = 5;
+        currentSwordMasteryLevel = 1;
         currentDaggerMasteryLevel = 1;
         currentBluntMasteryLevel = 1;
         currentStaffMasteryLevel = 1;
-        currentWandMasteryLevel = 30;
+        currentWandMasteryLevel = 1;
 
         currentSwordMasteryExp = 0;
         currentDaggerMasteryExp = 0;
@@ -75,14 +75,14 @@ public class CurrentMastery : ICloneable
         currentStaffMasteryExp = 0;
         currentWandMasteryExp = 0;
 
-        currentSwordSkillBReleased = true;
-        currentSwordSkillCReleased = true;
+        currentSwordSkillBReleased = false;
+        currentSwordSkillCReleased = false;
         currentDaggerSkillBReleased = false;
         currentDaggerSkillCReleased = false;
         currentBluntSkillBReleased = false;
         currentBluntSkillCReleased = false;
-        currentWandSkillBReleased = true;
-        currentWandSkillCReleased = true;
+        currentWandSkillBReleased = false;
+        currentWandSkillCReleased = false;
         currentStaffSkillBReleased = false;
         currentStaffSkillCReleased = false;
         currentMasteryChoices = new List<int>(new int[10]);

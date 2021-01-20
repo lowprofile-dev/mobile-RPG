@@ -85,8 +85,8 @@ public class TalkUIView : View
             _nextTalkImg.gameObject.SetActive(true);
             _rewardImg.gameObject.SetActive(true);
             _rewardList.SetRewards(quest);
-            _questTitle.text = quest.questData.questName;
-            _questDescript.text = quest.questData.description;
+            _questTitle.text = quest.questName;
+            _questDescript.text = quest.description;
             _isAcceptInput = true;
         }
 
