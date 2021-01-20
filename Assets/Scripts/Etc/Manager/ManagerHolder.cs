@@ -61,6 +61,8 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
 
     private void InitManagers()
     {
+        PlayerPrefs.DeleteAll();
+
         gameManager.InitGameManager();
         resourceManager.InitResourceManager();
         objectPoolManager.InitObjectPoolManager();
@@ -76,6 +78,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         statusManager.InitStatusManager();
         itemManager.InitItemManager();
         monsterManager.InitMonsterManager();
+
 
     }
 

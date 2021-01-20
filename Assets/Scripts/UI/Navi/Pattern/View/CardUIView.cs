@@ -88,6 +88,7 @@ public class CardUIView : View
             _roomAreaImg[i].InitCardRoomData(cntCard);
         } // 카드 갱신
 
+        UpdateRerollCoin();
         CalculateRerollValue(); // 리롤 비용 초기화
         BingoCheck(); // 빙고 체크
     }

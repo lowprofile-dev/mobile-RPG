@@ -62,12 +62,12 @@ public class CurrentMastery : ICloneable
 
     public CurrentMastery()
     {
-        currentMasteryLevel = 50;
-        currentSwordMasteryLevel = 30;
+        currentMasteryLevel = 5;
+        currentSwordMasteryLevel = 1;
         currentDaggerMasteryLevel = 1;
         currentBluntMasteryLevel = 1;
         currentStaffMasteryLevel = 1;
-        currentWandMasteryLevel = 30;
+        currentWandMasteryLevel = 1;
 
         currentSwordMasteryExp = 0;
         currentDaggerMasteryExp = 0;
