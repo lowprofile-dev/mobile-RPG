@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class DungeonRoom : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class DungeonRoom : MonoBehaviour
     private List<GameObject> doors = new List<GameObject>();
     private List<GameObject> monsters = new List<GameObject>();
     private List<GameObject> lights = new List<GameObject>();
+    private List<GameObject> minimapIcons = new List<GameObject>();
     System.Random random = new System.Random();
 
     int spawnPointIndex = 0;
@@ -43,10 +45,27 @@ public class DungeonRoom : MonoBehaviour
         //StartCoroutine(roomSetAreaCodeCoroutine());
         GetMonsterSpawnPoints(transform);
         GetBossSpawnPoint(transform);
+        GetMinimapImages(transform);
         if (dungeonManager.hasPlane && !isSetArea)
         {
             SetArea();
             //this.enabled = false;
+        }
+    }
+
+    private void GetMinimapImages(Transform parent)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.gameObject.layer == 14 && child.gameObject.GetComponent<Image>() != null)
+            {
+                minimapIcons.Add(child.gameObject);
+            }
+            if (child.childCount > 0)
+            {
+                GetMinimapImages(child);
+            }
         }
     }
 
@@ -132,7 +151,6 @@ public class DungeonRoom : MonoBehaviour
             GameObject door = Instantiate(doorPrefab);
             door.transform.position = doorways[i].transform.TransformPoint(0, 0, 0);
             door.transform.rotation = doorways[i].transform.rotation;
-            //door.transform.SetParent(null);
             doors.Add(door);
         }
     }
@@ -202,10 +220,52 @@ public class DungeonRoom : MonoBehaviour
             SetArea();
             //this.enabled = false;
             ChangeLights();
+            SetMinimapColor();
         }
         CheckPlayerInRoom();
         //CheckClear();
         //CheckMonstersInRoom();
+    }
+
+    private void SetMinimapColor()
+    {
+        GetMinimapImages(transform);
+        for (int i = 0; i < minimapIcons.Count; i++)
+        {
+            Color color;
+            switch (this.areaCode - 1)
+            {
+                case 0:
+                    minimapIcons[i].GetComponent<Image>().color = Color.red;
+                    break;
+                case 1:
+                    ColorUtility.TryParseHtmlString("#ff7f00", out color);
+                    minimapIcons[i].GetComponent<Image>().color = color;
+                    break;
+                case 2:
+                    minimapIcons[i].GetComponent<Image>().color = Color.yellow;
+                    break;
+                case 3:
+                    minimapIcons[i].GetComponent<Image>().color = Color.green;
+                    break;
+                case 4:
+                    minimapIcons[i].GetComponent<Image>().color = Color.blue;
+                    break;
+                case 5:
+                    minimapIcons[i].GetComponent<Image>().color = Color.cyan;
+                    break;
+                case 6:
+                    ColorUtility.TryParseHtmlString("#8b00ff", out color);
+                    minimapIcons[i].GetComponent<Image>().color = color;
+                    break;
+                case 7:
+                    minimapIcons[i].GetComponent<Image>().color = Color.white;
+                    break;
+                case 8:
+                    minimapIcons[i].GetComponent<Image>().color = Color.black;
+                    break;
+            }
+        }
     }
 
     public void CheckClear()
@@ -394,27 +454,14 @@ public class DungeonRoom : MonoBehaviour
             CheckMonstersInRoom();
             return;
         }
-        //spawnPointIndex = random.Next(monsterSpawnPoints.Count);
-        //monsterIndex = random.Next(monsterPrefabs.Count);
-        //var monster = Instantiate(monsterPrefabs[monsterIndex]);
-        //monster.GetComponent<NavMeshAgent>().enabled = false;
-        //monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
-        //monster.transform.SetParent(null);
-        //monster.GetComponent<NavMeshAgent>().enabled = true;
-        //nMonsterSpawned += 1;
-        //monsters.Add(monster);
         for (int i = 0; i < nMonsters; i++)
         {
             nMonsterAlive++;
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
-            //spawnPointIndex = i;
-            //monsterIndex = random.Next(monsterPrefabs.Count);
-            //var monster = Instantiate(monsterPrefabs[monsterIndex]);
             monsterIndex = random.Next(dungeonManager.currentStageMonsterPrefabs.Count);
             var monster = Instantiate(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
             monster.GetComponent<NavMeshAgent>().enabled = false;
             monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
-            //monster.transform.SetParent(null);
             monster.GetComponent<NavMeshAgent>().enabled = true;
             nMonsterSpawned += 1;
             monster.GetComponent<MonsterAction>().parentRoom = this;
