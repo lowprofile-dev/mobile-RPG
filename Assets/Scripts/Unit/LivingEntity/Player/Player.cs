@@ -80,7 +80,7 @@ public class Player : LivingEntity
     private float _rushTime;
 
     public PartSelection selection;
-    FaceCam faceCam;
+    FaceCam faceCam; public FaceCam FaceCam { get { return faceCam; }}
 
     private bool resurrection = false;
 

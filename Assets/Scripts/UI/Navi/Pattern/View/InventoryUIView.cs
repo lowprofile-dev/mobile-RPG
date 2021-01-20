@@ -98,5 +98,6 @@ public class InventoryUIView : View
     public void OnClickQuitButton()
     {
         UINaviationManager.Instance.PopToNav("SubUI_Inventory");
+        Player.Instance.FaceCam.InitFaceCam(Player.Instance.playerAvater);
     }
 }
