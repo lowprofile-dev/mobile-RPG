@@ -171,16 +171,16 @@ public class MasteryScript : MonoBehaviour
         {
             if (levelLimit <= MasteryManager.Instance.currentMastery.currentMasteryLevel)
             {
-                if(levelLimit >= 10 && masteryManager.currentMastery.currentMasteryChoices[((levelLimit - 1) / 5) -1] == 0)
-                {
-                    upPanel.SetActive(true);
-                    downPanel.SetActive(true);
-                }
-                else if(levelLimit >= 10 && masteryManager.currentMastery.currentMasteryChoices[((levelLimit - 1) / 5) - 1] != 0)
+                if(levelLimit >= 10)
                 {
                     upPanel.SetActive(false);
                     downPanel.SetActive(false);
                 }
+                //else if(levelLimit >= 10)
+                //{
+                //    upPanel.SetActive(false);
+                //    downPanel.SetActive(false);
+                //}
                 if (upSkill.isOn)
                 {
                 //    downPanel.SetActive(true);
