@@ -49,9 +49,12 @@ public class TalkManager : SingletonBase<TalkManager>
     
     public void SaveCurrentQuests()
     {
-        string jsonData = JsonConvert.SerializeObject(questDatas, Formatting.Indented);
-        string path = Path.Combine(Application.persistentDataPath, "playerQuest.json");
-        File.WriteAllText(path, jsonData);
+        if(questDatas != null)
+        {
+            string jsonData = JsonConvert.SerializeObject(questDatas, Formatting.Indented);
+            string path = Path.Combine(Application.persistentDataPath, "playerQuest.json");
+            File.WriteAllText(path, jsonData);
+        }
     }
     
     public void LoadCurrentQuests()
