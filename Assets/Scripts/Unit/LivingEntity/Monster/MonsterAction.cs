@@ -1138,12 +1138,6 @@ public class MonsterAction : MonoBehaviour
     {
         if (!DeathCheck())
         {
-            GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
-            txt.transform.SetParent(transform);
-            txt.transform.localPosition = Vector3.zero;
-            txt.transform.rotation = Quaternion.identity;
-            txt.GetComponent<DamageText>().PlayText("경직!", "monster");
-
             _monster.myAnimator.ResetTrigger("Rigid");
             _navMeshAgent.isStopped = false;
             _monster.myAnimator.SetTrigger("Idle");
@@ -1154,12 +1148,6 @@ public class MonsterAction : MonoBehaviour
     {
         if (!DeathCheck())
         {
-            GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
-            txt.transform.SetParent(transform);
-            txt.transform.localPosition = Vector3.zero;
-            txt.transform.rotation = Quaternion.identity;
-            txt.GetComponent<DamageText>().PlayText("스턴!", "monster");
-
             _monster.myAnimator.ResetTrigger("Stun");
             _navMeshAgent.isStopped = false;
             _monster.myAnimator.SetTrigger("Idle");
