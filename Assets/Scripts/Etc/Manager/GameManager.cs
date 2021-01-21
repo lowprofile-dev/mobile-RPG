@@ -8,12 +8,4 @@ public class GameManager : SingletonBase<GameManager>
     public void InitGameManager()
     {
     }
-
-    void Start()
-    {
-    }
-    
-    void Update()
-    {
-    }
 }

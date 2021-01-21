@@ -21,7 +21,7 @@ public class MonsterManager : SingletonBase<MonsterManager>
     {
         monsterDictionary = new Dictionary<int, MonsterData>();
 
-        Table monsterTable = CSVReader.Reader.ReadCSVToTable("CSVData/MonsterDataBase");
+        Table monsterTable = Reader.ReadCSVToTable("CSVData/MonsterDataBase");
         monsterDictionary = monsterTable.TableToDictionary<int, MonsterData>();
     }
 }

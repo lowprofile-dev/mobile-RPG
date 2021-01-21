@@ -5,6 +5,8 @@
     
     담당자 : 안영훈
     부 담당자 : 
+
+    내 정보 UI에 있는 캐릭터 거울 UI에 관한 스크립트
 */
 ////////////////////////////////////////////////////
 using System.Collections;
@@ -27,34 +29,47 @@ public class BodyCamController : MonoBehaviour , IPointerDownHandler , IPointerU
     }
     private void LoadAvata()
     {
+        if(Player.Instance != null)
         bodyAvata = Player.Instance.FaceCam.BodyAvata;
     }
 
-    private void Update() // 내 정보 창에서 캐릭터 회전
+    private IEnumerator RotateMirror() // 캐릭터쪽 거울을 터치하면 회전시키는 함수
     {
-        if (isButtonDown && bodyAvata != null)
+        while (true)
         {
+            yield return null;
 
-            Vector3 rot = bodyAvata.transform.rotation.eulerAngles;
+            if (isButtonDown && bodyAvata != null)
+            {
+
+                Vector3 rot = bodyAvata.transform.rotation.eulerAngles;
 #if UNITY_EDITOR
-            rot.y -= Input.GetAxis("Mouse X") * rotateSpeed;
+                rot.y -= Input.GetAxis("Mouse X") * rotateSpeed;
 #endif
 
 #if (UNITY_ANDROID || UNITY_IPHONE) && !UNITY_EDITOR
             rot.y += Input.touches[0].deltaPosition.x * rotateSpeed;
 #endif
-            Quaternion q = Quaternion.Euler(rot);
-            bodyAvata.transform.rotation = Quaternion.Slerp(bodyAvata.transform.rotation, q, 2f);
+                Quaternion q = Quaternion.Euler(rot);
+                bodyAvata.transform.rotation = Quaternion.Slerp(bodyAvata.transform.rotation, q, 2f);
+            }
+            else
+            {
+                break;
+            }
+
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         isButtonDown = true;
+        StartCoroutine(RotateMirror());
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         isButtonDown = false;
+        StopCoroutine(RotateMirror());
     }
 }

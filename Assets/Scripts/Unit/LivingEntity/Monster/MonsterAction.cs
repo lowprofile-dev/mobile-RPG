@@ -72,12 +72,9 @@ public class MonsterAction : MonoBehaviour
     /// 오브젝트 초기화
     /// </summary>
     public virtual void InitObject()
-    {
-       
+    {     
         _isImmune = false;
-
         CachingObject();
-
         _traceTimer = 0;
         _spawnPosition = transform.position;
         InitStatus();
@@ -135,14 +132,9 @@ public class MonsterAction : MonoBehaviour
 
     private void Update()
     {
-        _monster.CCManager.Update();
-        if (_target == null)
-        {
-            _target = Player.Instance.gameObject;
-        }
+        _monster.CCManager.Update();       
         UpdateState();
     }
-
 
     /////////// 상태 관련 ////////////
 
@@ -456,8 +448,6 @@ public class MonsterAction : MonoBehaviour
         if (_idleCoroutine != null) StopCoroutine(_idleCoroutine);
         _monster.myAnimator.ResetTrigger("Idle");
     }
-
-
 
     /////////// 두리번거리기 관련////////////
 
