@@ -47,24 +47,31 @@ namespace EPOOutline
             EditorPrefs.SetString("Models checked", "true");
             var models = AssetDatabase.FindAssets("t:Model");
 
+            
             try
             {
                 var index = 0;
                 foreach (var modelGUID in models)
                 {
-                    var model = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(modelGUID));
+                    GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(modelGUID));
+                    if(model.GetComponent<Outlinable>() != null)
+                    {
+                        var title = "Checking models for easy performant outlines";
+                        var info = "Some model postprocessing will be applied. Checked {0}/{1}";
 
-                    var title = "Checking models for easy performant outlines";
-                    var info = "Some model postprocessing will be applied. Checked {0}/{1}";
+                        EditorUtility.DisplayProgressBar(title, string.Format(info, index, models.Length), (float)index / (float)models.Length);
+                        index++;
 
-                    EditorUtility.DisplayProgressBar(title, string.Format(info, index, models.Length), (float)index / (float)models.Length);
-                    index++;
+                        var mesh = GetMesh(model);
+                        if (mesh == null)
+                            continue;
 
-                    var mesh = GetMesh(model);
-                    if (mesh == null)
-                        continue;
-
-                    PostprocessModel(model, mesh);
+                        PostprocessModel(model, mesh);
+                    }
+                    else
+                    {
+                        Debug.Log(model.name + "은 Outliner를 가지고 있지 않습니다.");
+                    }
                 }
             }
             catch (Exception ex)
