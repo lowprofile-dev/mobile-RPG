@@ -182,6 +182,8 @@ public class Quest
         canEnd = false;
         isEnd = false;
 
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/QuestAccepted", 1f);
+
         TalkManager.Instance.currentQuests.Add(id, this);
         TalkManager.Instance.CheckQuestIsOn();
         QuestDropdown.Instance.ViewDropdown();
@@ -200,6 +202,9 @@ public class Quest
         // 완료 연출
         // 보상하는 알고리즘.
         GetQuestReward();
+
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/QuestRewardBag", 1f);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/QuestRewardJewel", 1f);
 
         // 결과물 관리
         TalkManager.Instance.endedQuests.Add(id, this);

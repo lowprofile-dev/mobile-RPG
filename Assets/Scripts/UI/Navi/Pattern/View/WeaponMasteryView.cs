@@ -365,4 +365,19 @@ public class WeaponMasteryView : View
         
     }
 
+    public override void UIStart()
+    {
+        base.UIStart();
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/OpenMastery", 0.9f);
+    }
+
+    public override void UIUpdate()
+    {
+        base.UIUpdate();
+    }
+
+    public override void UIExit()
+    {
+        base.UIExit();
+    }
 }

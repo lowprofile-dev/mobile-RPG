@@ -77,6 +77,7 @@ public class PlayerUIView : View
     {
         base.UIStart();
         SetEffectList();
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/OpenMastery", 0.9f);
     }
 
     public override void UIUpdate()

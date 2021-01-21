@@ -41,6 +41,8 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
 
     private void AddManagersToStartGame()
     {
+        PlayerPrefs.DeleteAll();
+
         gameManager = (GameManager)AddManager<GameManager>();
         resourceManager = (ResourceManager)AddManager<ResourceManager>();
         objectPoolManager = (ObjectPoolManager)AddManager<ObjectPoolManager>();

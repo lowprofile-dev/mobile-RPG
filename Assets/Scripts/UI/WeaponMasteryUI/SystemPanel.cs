@@ -29,6 +29,9 @@ using DG.Tweening;
 
     public void FadeOutStart()
     {
+        AudioSource sound = SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 0.9f);
+        SoundManager.Instance.SetAudioReverbEffect(sound, AudioReverbPreset.Cave);
+
         if(sequence != null) sequence.Kill();
 
         image.color -= new Color(0, 0, 0, 1);

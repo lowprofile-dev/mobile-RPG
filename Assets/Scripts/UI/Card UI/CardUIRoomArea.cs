@@ -131,6 +131,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     /// </summary>
     public void ToggleCardView()
     {
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickMedium01", 1.0f);
         _cardBtn.gameObject.SetActive(!_cardBtn.gameObject.activeSelf);
     }
 
@@ -199,6 +200,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         dissolveEffect.Reverse = false;
         dissolveEffect.Play();
         _cardNameText.gameObject.SetActive(false);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardSwapStart", 0.9f);
         yield return new WaitForSeconds(1.49f); // 사라지는 부분
 
         _cardBtn.gameObject.SetActive(false);
@@ -215,6 +217,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         dissolveEffect.color = new Color(103, 127, 203);
         dissolveEffect.Play();
 
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardSwapEnd", 0.9f);
         yield return new WaitForSeconds(1.49f); // 드러나는 부분
 
         dissolveEffect.effectFactor = 0f;

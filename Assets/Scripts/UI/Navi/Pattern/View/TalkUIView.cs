@@ -115,6 +115,8 @@ public class TalkUIView : View
             _npcCamGameObject.tag = "NpcCamGameObject";
             _npcFaceCam.GetComponent<FaceCam>().SetTarget(_npcCamGameObject);
         }
+
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightHigh" + UnityEngine.Random.Range(0, 2), 1.0f);
     }
 
     public void FindNpcCams()

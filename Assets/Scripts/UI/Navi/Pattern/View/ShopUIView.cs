@@ -159,6 +159,7 @@ public class ShopUIView : View
         itemManager.SellItem();
         LoadItemCards();
         SetTotalPrice();
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SellItem", 0.9f);
     }
 
     private void OnClickExtract()
@@ -211,4 +212,19 @@ public class ShopUIView : View
         }
     }
 
+    public override void UIStart()
+    {
+        base.UIStart();
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightMedium01", 0.9f);
+    }
+
+    public override void UIUpdate()
+    {
+        base.UIUpdate();
+    }
+
+    public override void UIExit()
+    {
+        base.UIExit();
+    }
 }

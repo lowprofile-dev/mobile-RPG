@@ -169,6 +169,7 @@ public class DungeonManager : MonoBehaviour
         dungeonStage++;
         nRoomCleared = 0;
         currentStageMonsterPrefabs = stagesMonsterPrefabs[dungeonStage-1];
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonFloorStart", 0.9f);
     }
 
     public void ChangeAreaCheck()

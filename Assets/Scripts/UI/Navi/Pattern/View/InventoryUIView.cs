@@ -23,6 +23,7 @@ public class InventoryUIView : View
     public override void UIStart()
     {
         base.UIStart();
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/OpenInventory", 0.9f);
     }
 
     public override void UIUpdate()
