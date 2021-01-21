@@ -159,7 +159,7 @@ public class DungeonManager : MonoBehaviour
         if(!CardManager.Instance.isAcceptCardData)
         {
             CardManager.Instance.isAcceptCardData = true;
-            CardManager.Instance.currentStage = dungeonStage + 1;
+            CardManager.Instance.currentStage = dungeonStage;
             UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
         }
     }
