@@ -52,6 +52,7 @@ public class DungeonManager : MonoBehaviour
         stagesMonsterPrefabs.Add(stage3MonsterPrefabs);
         stagesMonsterPrefabs.Add(stage4MonsterPrefabs);
         currentStageMonsterPrefabs = stagesMonsterPrefabs[0];
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonFloorStart", 0.9f);
     }
 
     private void Update()

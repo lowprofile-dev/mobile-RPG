@@ -155,7 +155,7 @@ public class DungeonRoom : MonoBehaviour
             door.transform.rotation = doorways[i].transform.rotation;
             doors.Add(door);
         }
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomStart", 0.9f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomStart", 1.1f);
         isClosedPrev = true;
     }
 
@@ -170,7 +170,7 @@ public class DungeonRoom : MonoBehaviour
 
         if(isClosedPrev)
         {
-            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomEnd", 0.9f);
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomEnd", 1.1f);
             isClosedPrev = false;
         }
     }

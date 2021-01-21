@@ -215,7 +215,7 @@ public class ShopUIView : View
     public override void UIStart()
     {
         base.UIStart();
-        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightMedium01", 0.9f);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickMedium01", 0.9f);
     }
 
     public override void UIUpdate()

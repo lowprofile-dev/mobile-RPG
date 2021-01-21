@@ -116,7 +116,7 @@ public class TalkUIView : View
             _npcFaceCam.GetComponent<FaceCam>().SetTarget(_npcCamGameObject);
         }
 
-        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightHigh" + UnityEngine.Random.Range(0, 2), 1.0f);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightHigh" + UnityEngine.Random.Range(1, 3), 1.0f);
     }
 
     public void FindNpcCams()

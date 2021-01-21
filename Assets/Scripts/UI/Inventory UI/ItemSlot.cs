@@ -129,6 +129,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*
         itemDetailNew.GetComponent<ItemDetailNew>().LoadItemBasicInfo(itemData);
         itemDetailNew.GetComponent<ItemDetailNew>().LoadItemDetail(itemData);
         itemDetailNew.GetComponent<ItemDetailNew>().SetIcon(itemIcon.GetComponent<Image>().sprite);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 0.9f);
 
         //isShowingItemInfo = true;
     }

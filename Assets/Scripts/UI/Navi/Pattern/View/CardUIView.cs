@@ -203,9 +203,6 @@ public class CardUIView : View
         {
             if (_isRerolling) // 리롤 중이면
             {
-
-
-
                 if (StatusManager.Instance.needToCardRerollCoin <= ItemManager.Instance.currentItems.coin) // 재화가 충분하면
                 {
                     StartCoroutine(PlayRerollSound());
