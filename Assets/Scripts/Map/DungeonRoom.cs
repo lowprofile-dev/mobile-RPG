@@ -14,6 +14,8 @@ public class DungeonRoom : MonoBehaviour
     [SerializeField] bool hasPlayer = false;
     [SerializeField] bool isBossRoom = false;
 
+    bool isClosedPrev = false;
+
     Bounds bounds;
     Vector2 center;
     DungeonManager dungeonManager;
@@ -154,6 +156,7 @@ public class DungeonRoom : MonoBehaviour
             doors.Add(door);
         }
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomStart", 0.9f);
+        isClosedPrev = true;
     }
 
     private void OpenDoors()
@@ -164,7 +167,12 @@ public class DungeonRoom : MonoBehaviour
             //ObjectPoolManager.Instance.ReturnObject(doors[i].gameObject);
         }
         //doors.Clear();
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomEnd", 0.9f);
+
+        if(isClosedPrev)
+        {
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomEnd", 0.9f);
+            isClosedPrev = false;
+        }
     }
 
     private void GetDoorways(Transform parent)

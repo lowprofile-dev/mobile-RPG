@@ -184,7 +184,14 @@ public class CardUIView : View
 
 
     ///////////////////// 리롤 관련 ///////////////////////
-    
+
+    private IEnumerator PlayRerollSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardSwapStart", 0.9f);
+        yield return new WaitForSeconds(2.5f);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardSwapEnd", 0.9f);
+    }
+
     /// <summary>
     /// 리롤 사용 여부를 Toggle한다.
     /// </summary>
@@ -197,8 +204,12 @@ public class CardUIView : View
             if (_isRerolling) // 리롤 중이면
             {
 
+
+
                 if (StatusManager.Instance.needToCardRerollCoin <= ItemManager.Instance.currentItems.coin) // 재화가 충분하면
                 {
+                    StartCoroutine(PlayRerollSound());
+
                     // 리롤을 하고, 버튼을 원래대로 돌린다.
                     ItemManager.Instance.currentItems.coin -= StatusManager.Instance.needToCardRerollCoin;
                     _rerollBtn.GetComponent<Image>().sprite = _rerollDark;
