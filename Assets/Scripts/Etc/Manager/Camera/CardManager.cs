@@ -45,7 +45,7 @@ public class CardManager : SingletonBase<CardManager>
     {
         return dungeonCardData[currentStage, pos];
     }
-    
+
     /// <summary>
     /// area의 카드 이펙트들을 실행한다.
     /// </summary>

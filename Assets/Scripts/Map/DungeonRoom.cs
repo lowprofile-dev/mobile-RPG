@@ -15,6 +15,7 @@ public class DungeonRoom : MonoBehaviour
     [SerializeField] bool isBossRoom = false;
 
     bool isClosedPrev = false;
+    bool isMinimapSet = false;
 
     Bounds bounds;
     Vector2 center;
@@ -223,22 +224,9 @@ public class DungeonRoom : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (dungeonManager.hasPlane && !isSetArea)
-        {
-            SetArea();
-            //this.enabled = false;
-            ChangeLights();
-            SetMinimapColor();
-        }
-        CheckPlayerInRoom();
-        //CheckClear();
-        //CheckMonstersInRoom();
-    }
-
     private void SetMinimapColor()
     {
+        isMinimapSet = true;
         GetMinimapImages(transform);
         for (int i = 0; i < minimapIcons.Count; i++)
         {
@@ -277,6 +265,22 @@ public class DungeonRoom : MonoBehaviour
             }
             Debug.Log(areaCode - 1 + " " + name + " " + minimapIcons[i].GetComponent<Image>().color);
         }
+    }
+
+    private void Update()
+    {
+        if (dungeonManager.hasPlane && !isSetArea)
+        {
+            SetArea();
+            //this.enabled = false;
+            ChangeLights();
+            SetMinimapColor();
+        }
+        if (!isMinimapSet)
+            SetMinimapColor();
+        CheckPlayerInRoom();
+        //CheckClear();
+        //CheckMonstersInRoom();
     }
 
     public void CheckClear()

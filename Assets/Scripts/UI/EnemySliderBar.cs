@@ -17,10 +17,16 @@ public class EnemySliderBar : MonoBehaviour
     private void Start()
     {
         cam = CameraManager.Instance.PlayerFollowCamera;
+        StartCoroutine("LookTarget");
     }
-    private void Update()
+
+    private IEnumerator LookTarget()
     {
-        transform.LookAt(cam.transform);
+        while (true)
+        {
+            yield return new WaitForSeconds(0.1f);
+            transform.LookAt(cam.transform);
+        }
     }
 
     public void HpUpdate()
@@ -31,6 +37,5 @@ public class EnemySliderBar : MonoBehaviour
     public void CastUpdate()
     {
         CastSlider.value = parent.GetComponent<MonsterAction>()._cntCastTime / parent.GetComponent<MonsterAction>()._castTime;
-
     }
 }

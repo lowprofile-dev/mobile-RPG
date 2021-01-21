@@ -5,10 +5,10 @@ using Cinemachine;
 public class FaceCam : MonoBehaviour
 {
     // Start is called before the first frame update
-    CinemachineFreeLook faceCam;
-    [SerializeField] CinemachineFreeLook bodycam;
-    GameObject followAvatar = null;
-    GameObject bodyAvatar = null;
+    CinemachineFreeLook faceCam; public CinemachineFreeLook FaceCamera { get { return faceCam; }}
+    [SerializeField] CinemachineFreeLook bodycam; public CinemachineFreeLook Bodycam { get { return bodycam; } }
+    GameObject followAvatar = null; public GameObject FaceAvata { get { return followAvatar; } }
+    GameObject bodyAvatar = null; public GameObject BodyAvata { get { return bodyAvatar; } }
 
     private void OnEnable()
     {
@@ -25,10 +25,8 @@ public class FaceCam : MonoBehaviour
     {
         if (followAvatar != null)
             Destroy(followAvatar);
-        //ObjectPoolManager.Instance.ReturnObject(followAvatar);
-        if (bodyAvatar != null)
+        if (bodyAvatar != null)            
             Destroy(bodyAvatar);
-            //ObjectPoolManager.Instance.ReturnObject(bodyAvatar);
     }
 
     private void OnDisable()
@@ -41,8 +39,8 @@ public class FaceCam : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         followAvatar = Instantiate(target);
-        bodyAvatar = ObjectPoolManager.Instance.GetObject(target);
-        
+        bodyAvatar = Instantiate(target);
+
         followAvatar.transform.position = new Vector3(0, 1000, -15);
         followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         bodyAvatar.transform.position = new Vector3(0, 2000, -15);

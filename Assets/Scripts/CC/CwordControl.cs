@@ -31,7 +31,6 @@ public abstract class CwordControl
         elapsed += Time.deltaTime;
         if(elapsed >= duration)
         {
-      //      Debug.Log("CC 지속시간 끝");
             Remove();
         }
     }

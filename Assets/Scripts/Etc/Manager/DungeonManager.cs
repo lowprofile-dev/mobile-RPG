@@ -38,6 +38,7 @@ public class DungeonManager : MonoBehaviour
 
     private GameObject stageExit;
     bool isPlayerSpawned = false;
+    DunGen.RuntimeDungeon runtimeDungeon;
 
     //디버깅용
     GameObject plane;
@@ -53,6 +54,7 @@ public class DungeonManager : MonoBehaviour
         stagesMonsterPrefabs.Add(stage4MonsterPrefabs);
         currentStageMonsterPrefabs = stagesMonsterPrefabs[0];
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonFloorStart", 0.9f);
+        runtimeDungeon = FindObjectOfType<DunGen.RuntimeDungeon>();
     }
 
     private void Update()
@@ -165,7 +167,6 @@ public class DungeonManager : MonoBehaviour
 
     public void ToNextStage()
     {
-        var runtimeDungeon = FindObjectOfType<DunGen.RuntimeDungeon>();
         runtimeDungeon.Generate();
         isPlayerSpawned = false;
         SpawnPlayer();
