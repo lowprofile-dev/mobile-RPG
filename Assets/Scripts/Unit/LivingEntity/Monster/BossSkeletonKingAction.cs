@@ -9,8 +9,6 @@ public class BossSkeletonKingAction : MonsterAction
     enum AttackType { AIR_ATTACK , ATTACK1,ATTACK2, BLACKHOLE, JUMP_ATTACK , SUMMON}
 
     [SerializeField] private GameObject attackPos;
-    //[SerializeField] private Transform _baseMeleeAttackPos;
-    //[SerializeField] private GameObject _baseMeleeAttackPrefab;
 
     AttackType attackType;
     [SerializeField] private GameObject JumpSkillRange;
@@ -61,8 +59,8 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void DoAttack()
     {
-     
-        StopCoroutine(_attackCoroutine);
+
+        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
 
@@ -118,7 +116,6 @@ public class BossSkeletonKingAction : MonsterAction
     }
     protected void ComboAttack()
     {
-        //애니메이터 호출용
         _monster.myAnimator.SetTrigger("Attack1");
         currentAnimation = "Attack1";
 
@@ -144,7 +141,6 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void SpawnStart()
     {
-        Debug.Log("보스스켈레톤 스폰" + _monster.monsterName.ToString());
         transform.LookAt(_target.transform.position);
         UILoaderManager.Instance.NameText.text = _monster.monsterName.ToString();
         _monster.myAnimator.SetTrigger("Spawn");
@@ -447,7 +443,7 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void TraceStart()
     {
-        StopCoroutine(_attackCoroutine);
+        if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _monster.myAnimator.ResetTrigger("Walk");
 

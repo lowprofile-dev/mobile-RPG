@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File Stun.cs
+    class Stun
+    
+    담당자 : 안영훈
+    부 담당자 :
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -14,14 +14,16 @@ public class BodyCamController : MonoBehaviour , IPointerDownHandler , IPointerU
 
     private void OnEnable()
     {
-        bodyAvata = GameObject.FindGameObjectWithTag("BodyCamAvata");
-        //bodyAvata.transform.position = new Vector3(2000, 2000, -15);
-        //bodyAvata.transform.rotation = Quaternion.Euler(-10, 170, 0);
+        Invoke("LoadAvata", 1f);
+    }
+    private void LoadAvata()
+    {
+        bodyAvata = Player.Instance.FaceCam.BodyAvata;
     }
 
     private void Update()
     {
-        if (isButtonDown)
+        if (isButtonDown && bodyAvata != null)
         {
 
             Vector3 rot = bodyAvata.transform.rotation.eulerAngles;
@@ -33,10 +35,7 @@ public class BodyCamController : MonoBehaviour , IPointerDownHandler , IPointerU
             rot.y += Input.touches[0].deltaPosition.x * rotateSpeed;
 #endif
             Quaternion q = Quaternion.Euler(rot);
-            //q.z = 0;
             bodyAvata.transform.rotation = Quaternion.Slerp(bodyAvata.transform.rotation, q, 2f);
-
-            //bodycam.m_XAxis.Value = Input.touches[0].deltaPosition.x / 10;
         }
     }
 

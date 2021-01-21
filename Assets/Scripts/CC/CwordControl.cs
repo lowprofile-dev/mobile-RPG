@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File CwordControl.cs
+    class CwordControl
+    
+    담당자 : 안영훈
+    부 담당자 :
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +31,6 @@ public abstract class CwordControl
         elapsed += Time.deltaTime;
         if(elapsed >= duration)
         {
-      //      Debug.Log("CC 지속시간 끝");
             Remove();
         }
     }

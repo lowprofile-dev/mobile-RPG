@@ -1,10 +1,19 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File BossSkeletonWarrior.cs
+    class BossSkeletonWarrior
+    
+    담당자 : 안영훈
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class BossSkeletonPase2 : MonsterAction
+public class BossSkeletonWarrior : MonsterAction
 {
     enum AttackType { JUMP_ATTACK , SHOCK_WAVE, SHOCK_WAVE2, DASH_ATTACK , LEFT_ATTACK}
 
@@ -38,7 +47,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void DoAttack()
     {
-        StopCoroutine(_attackCoroutine);
+        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         //_attackCoroutine = null;
         _readyCast = false;
 
@@ -105,8 +114,8 @@ public class BossSkeletonPase2 : MonsterAction
     {
 
         MakeEffect();
-        
-        StopCoroutine(_attackCoroutine);
+
+        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
 
@@ -312,6 +321,8 @@ public class BossSkeletonPase2 : MonsterAction
         if (attackType != AttackType.DASH_ATTACK)
             _monster.myAnimator.SetTrigger("Walk");
 
+        _navMeshAgent.SetDestination(_target.transform.position);
+
         switch (attackType)
         {
             case AttackType.JUMP_ATTACK:
@@ -341,7 +352,7 @@ public class BossSkeletonPase2 : MonsterAction
         _navMeshAgent.SetDestination(_target.transform.position);
         _navMeshAgent.isStopped = false;
         _navMeshAgent.speed = _monster.speed * 1.5f;
-        _navMeshAgent.acceleration = 500f;
+        _navMeshAgent.acceleration = 250f;
         transform.LookAt(_target.transform.position);
 
         _monster.myAnimator.SetTrigger("Attack3");
@@ -364,8 +375,7 @@ public class BossSkeletonPase2 : MonsterAction
     private IEnumerator JumpAction()
     {
         yield return null;
-        //range 가 맵밖으로 나갔을경우를 생각해야함.
-        _navMeshAgent.acceleration = 100f;
+        _navMeshAgent.acceleration = 25f;
         GameObject range = ObjectPoolManager.Instance.GetObject(JumpSkillRange);
         range.GetComponent<BossSkillRange>().RemovedRange(gameObject , _attackSpeed);
         range.transform.position = new Vector3(_target.transform.position.x, transform.position.y, _target.transform.position.z);
@@ -403,13 +413,26 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void TraceStart()
     {
-        StopCoroutine(_attackCoroutine);
-        _monster.myAnimator.ResetTrigger("Walk");
-        _monster.myAnimator.SetTrigger("Walk");
+        if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
+        _attackCoroutine = null;
+        _monster.myAnimator.ResetTrigger("Walk");       
+
+        if (Vector3.Distance(transform.position, _target.transform.position) >= _navMeshAgent.stoppingDistance)
+        {
+            _monster.myAnimator.SetTrigger("Idle");
+        }
+        else
+        {
+            _monster.myAnimator.SetTrigger("Walk");
+        }
+
         _navMeshAgent.speed = _monster.speed * 2f;
         _navMeshAgent.isStopped = false;
     }
-
+    protected override void TraceUpdate()
+    {
+        MoveToTarget();
+    }
     protected override void AttackStart()
     {
         if (!_readyCast && ToCast()) return;
