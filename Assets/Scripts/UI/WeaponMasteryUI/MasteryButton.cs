@@ -6,7 +6,7 @@ public class MasteryButton : MonoBehaviour
 {
 
     public void onButtonClick()
-    {
+    {       
        UINaviationManager.Instance.PushToNav("SubUI_MasteryView");
     }
 }
