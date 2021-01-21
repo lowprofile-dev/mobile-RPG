@@ -31,6 +31,7 @@ public class BossSkeletonKingAction : MonsterAction
     [SerializeField] float AirSkillCastingTime;
 
     BossSpawnPoint SpawnPoints = null;
+    bool IsSummonSpawn = false;
     
     List<Transform> ProjectileList = new List<Transform>();
     List<GameObject> monsterList = new List<GameObject>();
@@ -40,7 +41,7 @@ public class BossSkeletonKingAction : MonsterAction
     private float velocity;
     private float angle;
 
-    string currentAnimation;
+    string currentAnimation = null;
     
     private void OnDrawGizmos()
     {
@@ -195,10 +196,11 @@ public class BossSkeletonKingAction : MonsterAction
        
         int proc = UnityEngine.Random.Range(0, 100);
 
-        if (monsterList.Count == 0)
+        if (monsterList.Count == 0 && !IsSummonSpawn)
         {
             _castTime = summonCastingTime;
             attackType = AttackType.SUMMON;
+            IsSummonSpawn = true;
             return;
         }
 
@@ -364,6 +366,7 @@ public class BossSkeletonKingAction : MonsterAction
             mon.GetComponent<NavMeshAgent>().enabled = true;
             monsterList.Add(mon);
         }
+        IsSummonSpawn = false;
     }
 
     private IEnumerator JumpAttackAction()
@@ -387,7 +390,6 @@ public class BossSkeletonKingAction : MonsterAction
 
     private IEnumerator AirAction()
     {
-
         _monster.myAnimator.SetTrigger("HoldAttack");
         yield return null;
 

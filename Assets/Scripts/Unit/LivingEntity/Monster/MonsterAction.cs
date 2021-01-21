@@ -132,14 +132,9 @@ public class MonsterAction : MonoBehaviour
 
     private void Update()
     {
-        _monster.CCManager.Update();
-        if (_target == null)
-        {
-            _target = Player.Instance.gameObject;
-        }
+        _monster.CCManager.Update();       
         UpdateState();
     }
-
 
     /////////// 상태 관련 ////////////
 

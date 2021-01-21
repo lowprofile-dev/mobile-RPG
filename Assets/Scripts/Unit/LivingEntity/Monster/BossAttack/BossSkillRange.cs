@@ -11,6 +11,7 @@
 */
 ////////////////////////////////////////////////////
 ///
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +20,6 @@ public class BossSkillRange : MonoBehaviour
 {
     [SerializeField] GameObject backGround;
     [SerializeField] GameObject fillArea; // 경고 범위 색칠 범위
-    private bool movePos = false; // 범위가 움직일지 말지 정하는 bool
     [SerializeField] GameObject target; // 경고 범위가 따라다닐 타겟
     private float angle; // 회전용 각도
     private float velocity; // 회전용 속도
@@ -45,34 +45,37 @@ public class BossSkillRange : MonoBehaviour
     }
     void Update()
     {
-
         // 경고 범위를 속도에 맞게 Lerp 시킴
         fillArea.transform.localScale = Vector3.Lerp(fillArea.transform.localScale, Vector3.one, Time.deltaTime * speed);
+    }
 
-        if (movePos)
+    private void OnDisable()
+    {
+        StopCoroutine(RotateToTarget());
+    }
+
+    public void setFollow()
+    {
+        StartCoroutine(RotateToTarget());
+    }
+
+    private IEnumerator RotateToTarget()
+    {
+        while (true)
         {
+            yield return null;
+
             // 경고 범위의 각도를 타겟에 맞춤
             transform.position = target.transform.position;
 
             Vector3 dir = (target.transform.forward + target.transform.right);
-        
+
             dir.y = 0f;
 
             float pos = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
             angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, pos, ref velocity, 0.001f);
-     
+
             transform.rotation = Quaternion.Euler(90f, angle + 90f, 0f);
-
         }
-    }
-    
-    private void OnDisable()
-    {
-        movePos = false;
-    }
-
-    public void setFollow() // 경고 범위가 타겟을 따라다닐지 말지 설정하는 함수
-    {
-        movePos = true;      
     }
 }
