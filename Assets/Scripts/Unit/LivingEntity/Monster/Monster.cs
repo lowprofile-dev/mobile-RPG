@@ -74,11 +74,6 @@ public class Monster : LivingEntity
         _monsterAction.InitObject();
     }
 
-    public override void setSpeed(float speed)
-    {
-        _monsterAction.NavMeshAgent.speed = speed;
-    }
-
     //private void OnDestroy()
     //{
 
