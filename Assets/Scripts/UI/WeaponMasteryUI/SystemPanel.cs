@@ -14,7 +14,6 @@ using DG.Tweening;
     private Image image;
     private Sequence sequence;
 
-    // Start is called before the first frame update
     void Start()
     {
         instance = this;
@@ -29,6 +28,7 @@ using DG.Tweening;
 
     public void FadeOutStart()
     {
+
         AudioSource sound = SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 0.9f);
         SoundManager.Instance.SetAudioReverbEffect(sound, AudioReverbPreset.Cave);
 

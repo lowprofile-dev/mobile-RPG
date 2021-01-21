@@ -153,9 +153,13 @@ public class DungeonManager : MonoBehaviour
             TalkManager.Instance.SetQuestCondition(3, 1, 1);
             return;
         }
-
-        CardManager.Instance.currentStage = dungeonStage + 1;
-        UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
+        
+        if(!CardManager.Instance.isAcceptCardData)
+        {
+            CardManager.Instance.isAcceptCardData = true;
+            CardManager.Instance.currentStage = dungeonStage + 1;
+            UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
+        }
     }
 
 

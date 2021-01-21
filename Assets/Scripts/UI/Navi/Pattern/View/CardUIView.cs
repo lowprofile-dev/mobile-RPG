@@ -118,6 +118,7 @@ public class CardUIView : View
         if (!isRerollingAnimationPlaying) // 리롤 애니메이션 재생 중이 아니면
         {
             UINaviationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
+            CardManager.Instance.isAcceptCardData = false;
 
             if(CardManager.Instance._cntDungeon == null)
             {
