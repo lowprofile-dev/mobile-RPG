@@ -53,7 +53,7 @@ public class CCManager : MonoBehaviour
             ccControl.Clear();
             ccControl.Add(type, cc);
             currentCC = type;
-            if (currentType == "monster")
+            if (currentType == "monster" && !mons.monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Fall"))
                 mons.ChangeState(MONSTER_STATE.STATE_FALL);
             else if (currentType == "player")
                 player.ChangeState(PLAYERSTATE.PS_FALL);
@@ -71,7 +71,7 @@ public class CCManager : MonoBehaviour
                 ccControl.Clear();
                     ccControl.Add(type, cc);
                     currentCC = type;
-                    if (currentType == "monster")
+                    if (currentType == "monster" && !mons.monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Stun"))
                         mons.ChangeState(MONSTER_STATE.STATE_STUN);
                     else if (currentType == "player")
                         player.ChangeState(PLAYERSTATE.PS_STUN);
@@ -87,7 +87,7 @@ public class CCManager : MonoBehaviour
                     ccControl.Clear();
                     ccControl.Add(type, cc);
                     currentCC = type;
-                    if (currentType == "monster")
+                    if (currentType == "monster" && !mons.monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Rigid") )
                         mons.ChangeState(MONSTER_STATE.STATE_RIGID);
                     else if (currentType == "player")
                         player.ChangeState(PLAYERSTATE.PS_RIGID);

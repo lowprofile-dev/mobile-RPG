@@ -39,7 +39,7 @@ public class BossSkeletonPase2 : MonsterAction
     protected override void DoAttack()
     {
         StopCoroutine(_attackCoroutine);
-        _attackCoroutine = null;
+        //_attackCoroutine = null;
         _readyCast = false;
 
         MakeEffect();
@@ -440,19 +440,19 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void RigidExit()
     {
-        base.RigidExit();
-        _attackCoroutine = null;
+        //base.RigidExit();
+        //_attackCoroutine = null;
     }
     protected override void StunExit()
     {
-        base.StunExit();
-        _attackCoroutine = null;
+        //base.StunExit();
+        //_attackCoroutine = null;
 
     }
     protected override void FallExit()
     {
-        base.FallExit();
-        _attackCoroutine = null;
+        //base.FallExit();
+        //_attackCoroutine = null;
     }
 
     protected override void FallStart()
@@ -470,7 +470,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void StunStart()
     {
-        base.StunStart();
+        //base.StunStart();
     }
     protected override void IdleStart()
     {
