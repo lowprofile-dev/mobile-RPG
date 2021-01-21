@@ -16,6 +16,7 @@ public class MonsterManager : SingletonBase<MonsterManager>
 {
     private Dictionary<int, MonsterData> monsterDictionary; public Dictionary<int, MonsterData> MonsterDictionary { get { return monsterDictionary; } }
 
+    // 몬스터 CSV 데이터 로드
     public void InitMonsterManager()
     {
         monsterDictionary = new Dictionary<int, MonsterData>();

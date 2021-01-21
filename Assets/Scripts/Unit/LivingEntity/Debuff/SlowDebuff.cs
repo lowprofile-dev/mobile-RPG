@@ -1,4 +1,17 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File SlowDebuff.cs
+    class SlowDebuff
+    
+    담당자 : 안영훈
+    부 담당자 : 
+
+    슬로우 효과를 주는 디버프 (미완성)
+    Player 스텟 관련 사항이 너무 복잡하여 아직 적용 시키지 못하였음
+*/
+////////////////////////////////////////////////////
+///
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

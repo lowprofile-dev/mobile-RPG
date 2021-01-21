@@ -1,8 +1,20 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File Debuff.cs
+    class Debuff
+    
+    담당자 : 안영훈
+    부 담당자 : 
+
+    디버프 추상클래스 - 새로운 디버프를 만들고 싶다면 이 클래스를 상속받으면 됨.
+*/
+////////////////////////////////////////////////////
+///
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Debuff { //디버프 추상클래스
+public abstract class Debuff { 
 
     protected LivingEntity target; //타겟
     private float duration; //지속시간

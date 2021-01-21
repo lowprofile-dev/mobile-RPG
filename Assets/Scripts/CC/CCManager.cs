@@ -5,6 +5,8 @@
     
     담당자 : 안영훈
     부 담당자 : 
+
+    CC 는 한번에 하나의 CC만 걸릴 수 있기 때문에 Dictionary 현재의 키값의 CC만 업데이트 하도록 설계되어있음.
 */
 ////////////////////////////////////////////////////
 using System.Collections;
@@ -44,7 +46,7 @@ public class CCManager : MonoBehaviour
         HandleCC();
     }
 
-    public void Release()
+    public void Release() // CC 삭제
     {
         ccControl.Clear();
         currentCC = null;
@@ -52,6 +54,13 @@ public class CCManager : MonoBehaviour
     
     public void AddCC(string type, CwordControl cc , GameObject obj)
     {
+        /*
+         * CC 우선순위
+         * 넘어짐 > 스턴 > 경직
+         * 우선순위순으로 현재 CC가 다음 CC보다 우선순위가 낮은 경우 우선순위가 높은 CC가 적용됨
+         * ex ) 넘어짐 발동중에는 스턴 , 경직 적용안됨
+         * ex2 ) 스턴이나 경직 발동중 넘어짐상태가 들어오면 스턴 , 경직 취소 후 넘어짐 상태로 적용
+         */
         if(type == "fall")
         {
             GameObject eft = ObjectPoolManager.Instance.GetObject("Effect/CCEffect/FallEffect");
@@ -105,7 +114,7 @@ public class CCManager : MonoBehaviour
         }
         
     }
-    public void RemoveCC(string type)
+    public void RemoveCC(string type) // CC 지속시간이 끝나면 호출되는 함수
     {
         ccControl.Remove(type);
         ccControl[type] = null;
@@ -117,7 +126,7 @@ public class CCManager : MonoBehaviour
             player.ChangeState(PLAYERSTATE.PS_IDLE);
     }
 
-    private void HandleCC()
+    private void HandleCC() // key값의 CC만 업데이트
     {
         if(currentCC != null)
         {

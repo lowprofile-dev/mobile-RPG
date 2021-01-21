@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File BodyCamController.cs
+    class BodyCamController
+    
+    담당자 : 안영훈
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
@@ -21,7 +30,7 @@ public class BodyCamController : MonoBehaviour , IPointerDownHandler , IPointerU
         bodyAvata = Player.Instance.FaceCam.BodyAvata;
     }
 
-    private void Update()
+    private void Update() // 내 정보 창에서 캐릭터 회전
     {
         if (isButtonDown && bodyAvata != null)
         {

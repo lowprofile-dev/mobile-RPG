@@ -1,14 +1,27 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File BossSkillRangeFill.cs
+    class BossSkillRangeFill
+    
+    담당자 : 안영훈
+    부 담당자 : 
+
+    보스가 스킬을 사용할 때 경고 범위 출력을 위한 코드
+
+*/
+////////////////////////////////////////////////////
+///
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class BossSkillRangeFill : MonoBehaviour
 {
     [SerializeField] GameObject backGround;
-    [SerializeField] GameObject fillArea;
-    private bool movePos = false;
-    [SerializeField] GameObject target;
-    [SerializeField] GameObject parent;
+    [SerializeField] GameObject fillArea; // 경고 범위 색칠 범위
+    private bool movePos = false; // 경고 범위가 움질일지 말지
+    [SerializeField] GameObject target; 
+    [SerializeField] GameObject parent; //경고 범위가 따라다닐 타겟 (각도)
 
     private float angle;
     private float velocity;
@@ -33,12 +46,12 @@ public class BossSkillRangeFill : MonoBehaviour
     }
     void Update()
     {
-
+        // 경고 범위를 속도에 맞게 Lerp 시킴
         fillArea.GetComponent<Image>().fillAmount = Mathf.Lerp(fillArea.GetComponent<Image>().fillAmount, 1f, Time.deltaTime * speed);
 
         if (movePos)
         {
-          
+            // 경고 범위의 각도를 타겟에 맞춤
             transform.position = parent.transform.position;
 
 

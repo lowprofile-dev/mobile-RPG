@@ -48,7 +48,6 @@ public class BossSkeletonWarrior : MonsterAction
     protected override void DoAttack()
     {
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-        //_attackCoroutine = null;
         _readyCast = false;
 
         MakeEffect();
@@ -170,19 +169,20 @@ public class BossSkeletonWarrior : MonsterAction
     protected override void SpawnUpdate()
     {
         //base.SpawnUpdate();
-       if(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+       if(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Spawn") && _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
-            _monster.myAnimator.SetTrigger("Walk");
-            StartCoroutine(TimeDelay());
+            _monster.myAnimator.SetTrigger("Idle");
+            _navMeshAgent.isStopped = true;
+            Invoke("TimeDelay" , 5f);
             ChangeState(MONSTER_STATE.STATE_IDLE);
         }
 
     }
-    private IEnumerator TimeDelay()
-    {
-        _navMeshAgent.isStopped = true;
-        yield return new WaitForSeconds(3f);
+    private void TimeDelay()
+    {              
         _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
+
     }
 
     protected override void SpawnExit()
