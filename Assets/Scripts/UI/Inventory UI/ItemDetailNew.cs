@@ -23,6 +23,7 @@ public class ItemDetailNew : MonoBehaviour
         if (_itemData == null)
             return;
         ItemManager.Instance.SetItemToPlayer(_itemData);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ItemEquip2", 0.9f);
     }
 
     public void LoadItemBasicInfo(ItemData itemData)

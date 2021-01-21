@@ -101,7 +101,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*
     private void EquipItem()
     {
         itemManager.SetItemToPlayer(itemData);
-        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ItemEquip" + UnityEngine.Random.Range(1, 4), 0.9f);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ItemEquip2", 0.9f);
 
         //Debug.Log(itemData.itemName + " 장착!");
     }
