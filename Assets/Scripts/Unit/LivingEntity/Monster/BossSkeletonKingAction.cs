@@ -61,8 +61,8 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void DoAttack()
     {
-     
-        StopCoroutine(_attackCoroutine);
+
+        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
 
@@ -447,7 +447,7 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void TraceStart()
     {
-        StopCoroutine(_attackCoroutine);
+        if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _monster.myAnimator.ResetTrigger("Walk");
 

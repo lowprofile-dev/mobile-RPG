@@ -38,7 +38,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void DoAttack()
     {
-        StopCoroutine(_attackCoroutine);
+        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         //_attackCoroutine = null;
         _readyCast = false;
 
@@ -105,8 +105,8 @@ public class BossSkeletonPase2 : MonsterAction
     {
 
         MakeEffect();
-        
-        StopCoroutine(_attackCoroutine);
+
+        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
 
@@ -403,7 +403,7 @@ public class BossSkeletonPase2 : MonsterAction
 
     protected override void TraceStart()
     {
-        StopCoroutine(_attackCoroutine);
+        if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _monster.myAnimator.ResetTrigger("Walk");
         _monster.myAnimator.SetTrigger("Walk");
         _navMeshAgent.speed = _monster.speed * 2f;
