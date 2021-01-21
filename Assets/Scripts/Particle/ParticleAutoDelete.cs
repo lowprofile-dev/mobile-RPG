@@ -24,7 +24,6 @@ public class ParticleAutoDelete : MonoBehaviour
         {
             ObjectPoolManager.Instance.ReturnObject(transform.parent.gameObject);
         }
-
         else
         {
             ObjectPoolManager.Instance.ReturnObject(gameObject);
