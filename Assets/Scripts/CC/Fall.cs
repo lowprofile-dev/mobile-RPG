@@ -13,7 +13,7 @@ using UnityEngine;
 
 public class Fall : CwordControl
 {
-
+    //넘어짐 상태이상
     public Fall(float duration, LivingEntity target, string type) : base(target, duration, type) { }
 
     public override void Updata()

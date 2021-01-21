@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File CameraManager.cs
+    class CameraManager
+    
+    담당자 : 안영훈
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
@@ -16,7 +25,7 @@ public class CameraManager : SingletonBase<CameraManager>
     float m_fFieldOfView = 7;     // 카메라의 FieldOfView의 기본값
     private float shakeTimer;
 
-    public void InitCameraManager(GameObject obj)
+    public void InitCameraManager(GameObject obj) // 카메라 초기화
     {
         _playerFollowCamera = obj.GetComponent<CinemachineFreeLook>();
         CinemachineCore.GetInputAxis = this.HandleAxisInputDelegate;
@@ -35,7 +44,7 @@ public class CameraManager : SingletonBase<CameraManager>
         StartCoroutine(CameraReturnToPlayer(target.transform));
     }
 
-    private IEnumerator CameraReturnToPlayer(Transform target)
+    private IEnumerator CameraReturnToPlayer(Transform target) // 보스전 카메라 연출용 함수
     {
         UILoaderManager.Instance.PlayerUI.SetActive(false);
         _playerFollowCamera.m_Follow = target;
@@ -51,7 +60,7 @@ public class CameraManager : SingletonBase<CameraManager>
         UILoaderManager.Instance.PlayerUI.SetActive(true);
     }
 
-    private void CameraShake()
+    private void CameraShake() // 카메라 shake 지속시간 계산 함수
     {
         if(shakeTimer > 0)
         {
@@ -64,7 +73,7 @@ public class CameraManager : SingletonBase<CameraManager>
         }
     }
 
-    private float HandleAxisInputDelegate(string axisName)
+    private float HandleAxisInputDelegate(string axisName) // Touch 부분 델리게이트 카메라 회전
     {
         switch (axisName)
         {
@@ -99,7 +108,7 @@ public class CameraManager : SingletonBase<CameraManager>
         return 0f;
     }
 
-    private void ZoomInOut()
+    private void ZoomInOut() // 카메라 줌 아웃
     {
         float m_fToucDis = 0f;
         float fDis = 0f;
@@ -128,7 +137,7 @@ public class CameraManager : SingletonBase<CameraManager>
 
     }
 
-    //강도 , 빈도 , 시간
+    // 카메라 shake 함수 강도 , 빈도 , 시간
     public void ShakeCamera(float intensity , float frequency, float time)
     {     
         _playerFollowCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>().m_FrequencyGain = frequency;
@@ -137,6 +146,7 @@ public class CameraManager : SingletonBase<CameraManager>
         shakeTimer = time;
     }
 
+    // UI 등 게임오브젝트에 Touch 되어 있는지 판별
     public static bool IsPointerOverGameObject(int idx)
     {
       if (EventSystem.current.IsPointerOverGameObject(Input.touches[idx].fingerId)) return true;

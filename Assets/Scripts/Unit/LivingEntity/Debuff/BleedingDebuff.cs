@@ -1,8 +1,18 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File BleedingDebuff.cs
+    class BleedingDebuff
+    
+    담당자 : 안영훈
+    부 담당자 : 
+
+    출혈 (지속 데미지) 효과가 있는 디버프
+*/
+////////////////////////////////////////////////////
+///
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-// 테스트용으로 만들어본 출혈 디버프 
 
 public class BleedingDebuff : Debuff
 {
@@ -13,10 +23,11 @@ public class BleedingDebuff : Debuff
     private float tickDamage; //지속데미지
 
     public BleedingDebuff(float tickDamage, float tickTime, float duration, LivingEntity target) : base(target, duration)
-    { //디버프
+    { 
         this.tickDamage = tickDamage;
         this.tickTime = tickTime;
 
+        //출혈 디버프 텍스트 출력
         GameObject txt = ObjectPoolManager.Instance.GetObject("UI/DamageTEXT");
         txt.transform.SetParent(target.gameObject.transform);
         txt.transform.localPosition = Vector3.zero;
@@ -24,7 +35,7 @@ public class BleedingDebuff : Debuff
         txt.GetComponent<DamageText>().PlayText("출혈!", "player");
     }
 
-    public override void Update()
+    public override void Update() // 디버프 지속시간 계산
     {
         if (target != null)
         {

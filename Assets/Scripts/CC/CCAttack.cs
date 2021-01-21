@@ -39,6 +39,10 @@ public class CCAttack : MonoBehaviour
     {
         if(CheckCanApplyCC(unit) == false) return;
 
+        /*
+         *  확률 계산 우선순위
+         *  넘어짐 > 스턴 > 경직 순으로 계산됨
+         */
         float roll = Random.Range(0, 100);
 
         float fallRate = ffall * 100f;

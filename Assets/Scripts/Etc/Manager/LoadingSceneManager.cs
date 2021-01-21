@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File LoadingSceneManager.cs
+    class LoadingSceneManager
+    
+    담당자 : 김기정
+    부 담당자 : 안영훈
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,7 +34,7 @@ public class LoadingSceneManager : MonoBehaviour
         SceneManager.LoadScene("LoadingScene" , LoadSceneMode.Additive);
     }
 
-    public static void LoadScene(string current , string target) // cuurent -> target
+    public static void LoadScene(string current , string target) // 씬이동 cuurent -> target
     {
 
         nextScene = target;
@@ -42,7 +51,7 @@ public class LoadingSceneManager : MonoBehaviour
 
     }
 
-    IEnumerator LoadScene()
+    IEnumerator LoadScene() // 로딩
     {
         yield return null;
 
@@ -79,10 +88,9 @@ public class LoadingSceneManager : MonoBehaviour
   
     }
 
-    private void ActivateTransientScene(AsyncOperation op)
+    private void ActivateTransientScene(AsyncOperation op) // 이동한 씬을 메인씬으로 만듬
     {
         Scene scene = SceneManager.GetSceneByName(nextScene);
-        SceneManager.SetActiveScene(scene);
-        
+        SceneManager.SetActiveScene(scene);        
     }
 }

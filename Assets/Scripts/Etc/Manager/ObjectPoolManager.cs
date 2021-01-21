@@ -33,10 +33,6 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 
     }
 
-    private void Start()
-    {
-    }
-
     public void ClearObjectPool() // 오브젝트풀에 적재되어있는 모든 것 없애기
     {
         objectPool.Clear();
@@ -80,6 +76,12 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
             ReturnObject(eft);
         }
     }
+    /////////////////////////
+    /*
+         GetObject()  오브젝트풀에 적재되어있는 게임오브젝트 반환 풀에 적재되어있지않으면 자동으로 만들어서 반환해줌
+    */
+    /////////////////////////
+
     public GameObject GetObject(GameObject obj)
     {
         if (objectPool.TryGetValue(obj.name, out Queue<GameObject> objectList))
@@ -168,23 +170,6 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
         newGO.transform.rotation = rot;
         return newGO;
     }
-
-    //public void ReturnObject(GameObject gameObject) // 사용하던 게임오브젝트를 오브젝트풀에 반환
-    //{
-    //    if (objectPool.TryGetValue(gameObject.name, out Queue<GameObject> objectList))
-    //    {
-    //        objectList.Enqueue(gameObject);
-    //    }
-    //    else
-    //    {
-    //        Queue<GameObject> newObjectQueue = new Queue<GameObject>();
-    //        newObjectQueue.Enqueue(gameObject);
-    //        objectPool.Add(gameObject.name, newObjectQueue);
-    //    }
-    //    gameObject.transform.SetParent(transform);
-    //    gameObject.SetActive(false);
-
-    //}
 
     public void ReturnObject(GameObject gameObject , Transform parent = null) // 사용하던 게임오브젝트를 오브젝트풀에 반환
     {

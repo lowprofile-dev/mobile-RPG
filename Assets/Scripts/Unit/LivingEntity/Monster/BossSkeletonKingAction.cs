@@ -148,18 +148,18 @@ public class BossSkeletonKingAction : MonsterAction
     }
     protected override void SpawnUpdate()
     {
-        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Spawn") && _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
-            StartCoroutine(TimeDelay());
-            ChangeState(MONSTER_STATE.STATE_IDLE);
+            _monster.myAnimator.SetTrigger("Idle");
+            _navMeshAgent.isStopped = true;
+            Invoke("TimeDelay", 5f);
+            ChangeState(MONSTER_STATE.STATE_IDLE);          
         }
     }
-    private IEnumerator TimeDelay()
+    private void TimeDelay()
     {
-        _navMeshAgent.isStopped = true;
-        yield return new WaitForSeconds(3f);
         _navMeshAgent.isStopped = false;
-        _monster.myAnimator.SetTrigger("Walk");
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
     protected override void SpawnExit()
     {
@@ -538,4 +538,8 @@ public class BossSkeletonKingAction : MonsterAction
             _monster.myAnimator.SetTrigger("Laugh");
         }
     }
+    protected override void IdleStart()
+    {
+    }
+
 }

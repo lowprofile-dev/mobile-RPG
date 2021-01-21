@@ -20,6 +20,7 @@ public class EnemySliderBar : MonoBehaviour
         StartCoroutine("LookTarget");
     }
 
+    // 카메라 방향으로 bar들을 회전
     private IEnumerator LookTarget()
     {
         while (true)
@@ -29,12 +30,12 @@ public class EnemySliderBar : MonoBehaviour
         }
     }
 
-    public void HpUpdate()
+    public void HpUpdate() // 해당 오브젝트의 hp 업데이트
     {
         HPSlider.value = parent.Hp / parent.initHp;
     }
 
-    public void CastUpdate()
+    public void CastUpdate() // 해당 오브젝트의 casting 업데이트
     {
         CastSlider.value = parent.GetComponent<MonsterAction>()._cntCastTime / parent.GetComponent<MonsterAction>()._castTime;
     }
