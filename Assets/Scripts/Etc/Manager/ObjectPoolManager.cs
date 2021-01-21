@@ -1,8 +1,15 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File ObjectPoolManager.cs
+    class ObjectPoolManager
+    
+    담당자 : 안영훈
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
 
 public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 {
