@@ -92,7 +92,6 @@ public class MonsterAction : MonoBehaviour
         _attackSpeed = MonsterManager.Instance.MonsterDictionary[_monster.id].AttackSpeed;
         _monster.attackDamage = (int)MonsterManager.Instance.MonsterDictionary[_monster.id].damage;
         _navMeshAgent.speed = MonsterManager.Instance.MonsterDictionary[_monster.id].speed;
-
     }
 
     protected virtual void CachingObject()
@@ -102,6 +101,8 @@ public class MonsterAction : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
         _outlinable = GetComponent<Outlinable>();
         _target = Player.Instance.GetPlayer;
+        _navMeshAgent.enabled = false;
+        _navMeshAgent.enabled = true;
     }
 
     /// <summary>
