@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+    File ItemManager.cs
+    class ItemManager
+    
+    담당자 : 김기정
+    부 담당자 :
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -30,32 +38,11 @@ public class ItemManager : SingletonBase<ItemManager>
     List<ItemData> legendaryClassItems = new List<ItemData>();
     List<List<ItemData>> allClassItems = new List<List<ItemData>>();
 
+    //아이템 드랍률
     public float[] itemDropProbability = { 5, 3, 1.5f, 0.5f, 0};
-
     public float[] stage1Probability = { 5, 3, 1.5f, 0.5f, 0 };
     public float[] stage2Probability = { 2, 4, 2, 1.5f, 0.5f };
     public float[] bossProbability = { 0, 0, 60, 25, 15 };
-
-    private void Start()
-    {
-        //아이템 데이터 초기화를 원할시 주석 풀것!
-        //PlayerPrefs.DeleteAll();
-        //statusManager = StatusManager.Instance;
-        //currentItems = new CurrentItems();
-        //currentItemKeys = new CurrentItemKeys();
-        //itemDictionary = new Dictionary<int, ItemData>();
-        //playerInventory = new Dictionary<int, int>(); //ID,개수
-        //Table itemTable = CSVReader.Reader.ReadCSVToTable("CSVData/ItemDatabase");
-        //itemDictionary = itemTable.TableToDictionary<int, ItemData>();
-        //itemCart.Add(null);
-        //itemCart.Add(null);
-        //itemCart.Add(null);
-        //itemCart.Add(null);
-        //LoadCurrentItems();
-        //LoadInventoryData();
-        //EquipItems();
-    }
-    
 
     private void Update()
     {
@@ -66,8 +53,6 @@ public class ItemManager : SingletonBase<ItemManager>
             itemCart.Add(null);
             itemCart.Add(null);
         }
-        //inventorySize = playerInventory.Count;
-        //playerInventory.Remove(0);
         inventorySize = 0;
         foreach (var item in playerInventory)
         {
@@ -77,7 +62,6 @@ public class ItemManager : SingletonBase<ItemManager>
         if (player == null)
         {
             player = Player.Instance;
-            //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
             if (player != null)
                 playerPartSelection = player.gameObject.GetComponent<PartSelection>();
         }
@@ -113,6 +97,9 @@ public class ItemManager : SingletonBase<ItemManager>
         currentItems = JsonUtility.FromJson<CurrentItems>(jsonData);
     }
 
+    /// <summary>
+    /// 아이템매니저 초기화
+    /// </summary>
     internal void InitItemManager()
     {
         statusManager = StatusManager.Instance;
@@ -177,7 +164,6 @@ public class ItemManager : SingletonBase<ItemManager>
         PlayerPrefs.SetInt("LoadCurrentItemKeys", PlayerPrefs.GetInt("LoadCurrentItemKeys", 0));
         if (PlayerPrefs.GetInt("LoadCurrentItemKeys") == 0)
         {
-     //       Debug.Log("최초 스테이터스 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadCurrentItemKeys", 1);
             SaveCurrentItemKeys();
             PlayerPrefs.Save();
@@ -190,7 +176,6 @@ public class ItemManager : SingletonBase<ItemManager>
 
     public void AddToCart(int index, ItemData itemData)
     {
-        //if (playerInventory)
         if (itemCart[index] != null && itemCart[index].id != 0)
         {
             AddItem(itemCart[index]);
@@ -214,25 +199,12 @@ public class ItemManager : SingletonBase<ItemManager>
 
     public void ResetCart()
     {
-        //foreach (var itemData in itemCart)
-        //{
-        //    if (itemData.id == 0) continue;
-        //    //if (itemData != null)
-        //    if (itemData.id != 0)
-        //        AddItem(itemData);
-        //    itemData = null;
-        //}
         for (int i = 0; i < itemCart.Count; i++)
         {
             if (itemCart[i] != null)
                 AddItem(itemCart[i]);
             itemCart[i] = null;
         }
-        //itemCart.Clear();
-        //itemCart.Add(null);
-        //itemCart.Add(null);
-        //itemCart.Add(null);
-        //itemCart.Add(null);
         playerInventory.Remove(0);
         SaveInventoryData();
     }
@@ -339,8 +311,6 @@ public class ItemManager : SingletonBase<ItemManager>
         playerPartSelection.ChangeRightKneePart(currentItems.rightKneeIndex);
         playerPartSelection.ChangeLeftHipPart(currentItems.leftHipIndex);
         playerPartSelection.ChangeRightHipPart(currentItems.rightHipIndex);
-        //이거 풀면 초상화는 해결되는데 조이스틱이 망가짐
-        //player.ChangeFaceCamera();
     }
 
     public void SetItemToPlayer(Player _player)
@@ -357,8 +327,6 @@ public class ItemManager : SingletonBase<ItemManager>
         _player.selection.ChangeRightKneePart(currentItems.rightKneeIndex);
         _player.selection.ChangeLeftHipPart(currentItems.leftHipIndex);
         _player.selection.ChangeRightHipPart(currentItems.rightHipIndex);
-        //이거 풀면 초상화는 해결되는데 조이스틱이 망가짐
-        //_player.ChangeFaceCamera();
     }
 
     /// <summary>
@@ -431,13 +399,11 @@ public class ItemManager : SingletonBase<ItemManager>
     {
         if (PlayerPrefs.GetInt("LoadInventoryDataCount") == 0)
         {
-     //       Debug.Log("최초 인벤토리 데이터 로드 실행입니다.");
             PlayerPrefs.SetInt("LoadInventoryDataCount", 1);
             InitInventoryData();
             SaveInventoryData();
             PlayerPrefs.Save();
         }
-        //List<KeyValuePair<ItemData, int>> temp = new List<KeyValuePair<ItemData, int>>();
         string path = Path.Combine(Application.persistentDataPath, "inventoryDB.json");
         string jsonData = File.ReadAllText(path);
         if (jsonData == null) return;
@@ -471,7 +437,6 @@ public class ItemManager : SingletonBase<ItemManager>
         EquipGloves(currentItemKeys.GlovesKey);
         EquipBoot(currentItemKeys.BootKey);
         statusManager.UpdateFinalStatus();
-   //     Debug.Log("curreunt status : " + statusManager.finalStatus);
     }
 
     private void EquipBoot(int bootKey)
@@ -510,10 +475,13 @@ public class ItemManager : SingletonBase<ItemManager>
         statusManager.additionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
     }
 
+    /// <summary>
+    /// 아이템 드랍 함수
+    /// </summary>
+    /// <param name="monsterTransform"> 드랍할 좌표(몬스터가 사망한 지점) </param>
     public void DropItem(Transform monsterTransform)
     {
         var roll = UnityEngine.Random.Range(0, 100.0f);
-       // Debug.Log("아이템 드랍 주사위 : " + roll);
         for (int i = 0; i < 5; i++)
         {
             if (roll <= itemDropProbability[i])
@@ -521,7 +489,6 @@ public class ItemManager : SingletonBase<ItemManager>
                 GameObject dropItem = ObjectPoolManager.Instance.GetObject(dropItemPrefab);
                 dropItem.GetComponent<Item>().id = allClassItems[i][UnityEngine.Random.Range(0, allClassItems[i].Count)].id;
                 dropItem.GetComponent<Item>().LoadItemData();
-                //dropItem.transform.position = monsterTransform.TransformPoint(0, 1, 0);
                 dropItem.transform.position = monsterTransform.position;
                 dropItem.transform.rotation = monsterTransform.rotation;
                 dropItem.transform.SetParent(null);

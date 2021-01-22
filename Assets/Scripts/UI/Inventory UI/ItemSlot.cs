@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+    File ItemSlot.cs
+    class ItemSlot
+    
+    담당자 : 김기정
+    부 담당자 : 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -102,15 +110,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*
     {
         itemManager.SetItemToPlayer(itemData);
         SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ItemEquip2", 0.9f);
-
-        //Debug.Log(itemData.itemName + " 장착!");
     }
-
-    //public void OnPointerUp(PointerEventData eventData)
-    //{
-    //    isShowingItemInfo = false;
-    //    itemDetail.SetActive(false);
-    //}
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -119,18 +119,9 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*
             EquipItem();
         }
 
-        //if (!isShowingItemInfo)
-        //{
-        //    itemDetail.SetActive(true);
-        //    itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
-        //    itemDetail.transform.position = eventData.position;
-        //}
-
         itemDetailNew.GetComponent<ItemDetailNew>().LoadItemBasicInfo(itemData);
         itemDetailNew.GetComponent<ItemDetailNew>().LoadItemDetail(itemData);
         itemDetailNew.GetComponent<ItemDetailNew>().SetIcon(itemIcon.GetComponent<Image>().sprite);
         SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 0.9f);
-
-        //isShowingItemInfo = true;
     }
 }

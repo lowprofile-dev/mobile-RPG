@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+    File DungeonRoom.cs
+    class DungeonRoom
+    
+    담당자 : 김기정
+    부 담당자 :
+ */
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

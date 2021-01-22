@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+    File ItemDetailNew.cs
+    class ItemDetailNew
+    
+    담당자 : 김기정
+    부 담당자 : 이신홍
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

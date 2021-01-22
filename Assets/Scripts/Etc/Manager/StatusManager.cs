@@ -1,8 +1,19 @@
-﻿using CSVReader;
+﻿/*
+    File StatusManager.cs
+    class StatusManager, AdditionStatus, MultiplicationStatus
+    
+    담당자 : 김기정
+    부 담당자 :
+ */
+
+using CSVReader;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+/// <summary>
+/// 합연산용 스텟 클래스
+/// </summary>
 public class AdditionStatus
 {
     public float hp;                    //최대 체력 증가
@@ -31,6 +42,9 @@ public class AdditionStatus
     }
 }
 
+/// <summary>
+/// 곱연산용 스텟 클래스
+/// </summary>
 public class MultiplicationStatus
 {
     public float hpIncreaseRate;        //체력 % 증가
@@ -91,32 +105,12 @@ public class StatusManager : SingletonBase<StatusManager>
         LoadCurrentStatus();
     }
 
-
-    void Start()
-    {
-        //player = Player.Instance;
-        //playerStatus = new CurrentStatus();
-        //itemAdditionStatus = new AdditionStatus();
-        //itemMultiplicationStatus = new MultiplicationStatus();
-        //itemAppliedStatus = new CurrentStatus();
-        //finalStatus = new CurrentStatus();
-        //Table statusTable = CSVReader.Reader.ReadCSVToTable("CSVData/StatusDatabase");
-        //statusDictionary = statusTable.TableToDictionary<int, StatusData>();
-        //LoadCurrentStatus();
-    }
-
-    void Update()
+    public void UpdateFinalStatus()
     {
         if (player == null)
         {
             player = Player.Instance;
         }
-    }
-
-
-
-    public void UpdateFinalStatus()
-    {
         AddCurrentStatus();
         MultiplyCurrentStatus();
         SetFinalStatus();
@@ -129,16 +123,6 @@ public class StatusManager : SingletonBase<StatusManager>
 
     private void AddCurrentStatus()
     {
-        //hp = 0;                    //최대 체력 증가
-        //hpRecovery = 0;            //체력 회복량
-        //stamina = 0;               //최대 스태미너 증가
-        //staminaRecovery = 0;       //스태미너 회복량
-        //attackDamage = 0;          //공격력 증가
-        //armor = 0;                 //방어력 증가
-        //magicResistance = 0;       //마법 방어력 증가
-        //rigidresistance = 0;       //경직 cc 저항
-        //stunresistance = 0;        //스턴 cc 저항
-        //fallresistance = 0;        //넘어짐 cc 저항 
         itemAppliedStatus.maxHp = playerStatus.maxHp + additionStatus.hp;
         itemAppliedStatus.hpRecovery = playerStatus.hpRecovery + additionStatus.hpRecovery;
         itemAppliedStatus.maxStamina = playerStatus.maxStamina + additionStatus.stamina;

@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*
+    File DungeonManager.cs
+    class DungeonManager
+    
+    담당자 : 김기정
+    부 담당자 :
+ */
+
+using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.AI;
@@ -34,7 +42,6 @@ public class DungeonManager : MonoBehaviour
     public bool bossCleared = false;
 
     public int playerCurrentArea;
-    //public DungeonRoom playerCurrentRoom;
 
     private GameObject stageExit;
     bool isPlayerSpawned = false;
@@ -65,7 +72,6 @@ public class DungeonManager : MonoBehaviour
         }
         InitDungeon();
         SetStageInfo();
-        //Invoke("ChangeAreaCheck", 5f);
         ChangeAreaCheck();
         if (isStageCleared)
         {
@@ -78,6 +84,9 @@ public class DungeonManager : MonoBehaviour
         stageInfo.text = "스테이지 " + dungeonStage + " - " + playerCurrentArea + "구역";
     }
 
+    /// <summary>
+    /// 던전 초기화 및 맵 재생성
+    /// </summary>
     private void InitDungeon()
     {
         if (dungeon == null)
@@ -101,6 +110,7 @@ public class DungeonManager : MonoBehaviour
         }
     }
 
+    //deprecated
     private void CreateBoundaryPlane()
     {
         //Bounds에서 받아온 값을 Plane.localScale로 전환하는데 쓰이는 계수
@@ -111,6 +121,7 @@ public class DungeonManager : MonoBehaviour
         hasPlane = true;
     }
 
+    //deprecated
     private void FindBoundary()
     {
         bounds = gameObject.GetComponent<Collider>().bounds;
