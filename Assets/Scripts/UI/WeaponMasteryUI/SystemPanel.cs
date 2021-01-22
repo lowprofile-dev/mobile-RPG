@@ -5,7 +5,17 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
-    public class SystemPanel : MonoBehaviour
+////////////////////////////////////////////////////
+/*
+    File SystemPanel.cs
+    class SystemPanel
+
+    담당자 : 김의겸
+    부 담당자 : 이신홍
+*/
+////////////////////////////////////////////////////
+///
+public class SystemPanel : MonoBehaviour
 {
     public static SystemPanel instance;
 
@@ -20,15 +30,23 @@ using DG.Tweening;
         image = panel.transform.GetComponent<Image>();
         panel.SetActive(false);
     }
-
+    /// <summary>
+    ///  시스템 패널에 출력하고 싶은 텍스트로 값을 변경해준다.
+    /// </summary>
+    /// <param name="inputText"> 시스템 패널에 출력하고 싶은 텍스트를 입력받는다.</param>
     public void SetText(string inputText)
     {
         text.text = inputText;
     }
 
+    /// <summary>
+    /// 시스템 패널을 출력해준다.
+    /// DoTween Sequence를 사용하여 백그라운드 이미지와 텍스트를
+    /// 천천히 위에서 아래로 나타나게 하고
+    /// 1초의 간격 뒤에 천천히 사라지게 하는 함수.
+    /// </summary>
     public void FadeOutStart()
     {
-
         AudioSource sound = SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 0.9f);
         SoundManager.Instance.SetAudioReverbEffect(sound, AudioReverbPreset.Cave);
 

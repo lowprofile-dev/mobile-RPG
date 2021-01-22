@@ -1,4 +1,18 @@
 ﻿using UnityEngine;
+
+////////////////////////////////////////////////////
+/*
+    File Wand.cs
+    class Wand
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+/// <summary>
+/// 스킬에 사용되는 이팩트와 데이터를 미리 저장해놓은 클래스
+/// </summary>
 public class Wand : Weapon
 {
     // Start is called before the first frame update
@@ -44,7 +58,9 @@ public class Wand : Weapon
         WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Wand Animator");
 
     }
-
+    /// <summary>
+    /// 각 스킬에 맞는 이팩트를 넣어주어 스킬에 적용하는 함수
+    /// </summary>
     public override GameObject SkillA()
     {
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Skill 1", 0.6f);

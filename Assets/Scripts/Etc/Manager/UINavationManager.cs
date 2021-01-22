@@ -48,6 +48,29 @@ public class UINaviationManager : SingletonBase<UINaviationManager>
             PushToNav("SubUI_ShopBase");
         }
     }
+    internal void ToggleWeaponView()
+    {
+        if (FindTargetIsInNav("SubUI_WeaponMasteryView"))
+        {
+            PopToNav("SubUI_WeaponMasteryView");
+        }
+        else
+        {
+            PushToNav("SubUI_WeaponMasteryView");
+        }
+    }
+
+    internal void ToggleMasteryView()
+    {
+        if (FindTargetIsInNav("SubUI_MasteryView"))
+        {
+            PopToNav("SubUI_MasteryView");
+        }
+        else
+        {
+            PushToNav("SubUI_MasteryView");
+        }
+    }
 
     public void ToggleTalkView()
     {

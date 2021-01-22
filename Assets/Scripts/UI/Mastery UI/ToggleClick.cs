@@ -3,7 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ToggleClick : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
+////////////////////////////////////////////////////
+/*
+    File ToggleClick.cs
+    class ToggleClick
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+
+public class ToggleClick : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] GameObject skill;
     MasteryScript mastery;
@@ -13,17 +24,10 @@ public class ToggleClick : MonoBehaviour, IPointerClickHandler, IPointerDownHand
         mastery = skill.GetComponent<MasteryScript>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-
-    }
-
+    /// <summary>
+    /// 토글키에 마우스 클릭 이벤트가 일어 날 경우 정보창에 출력하기 위한 함수를 호출한다.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
         if (transform.parent.name == "Mastery Card 1")
@@ -33,9 +37,4 @@ public class ToggleClick : MonoBehaviour, IPointerClickHandler, IPointerDownHand
         else mastery.DownSkillOn();
     }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        //if (transform.parent.name == "Mastery Card 1") mastery.UpSkillMouseOff();
-        //else mastery.DownSkillMouseOff();
-    }
 }

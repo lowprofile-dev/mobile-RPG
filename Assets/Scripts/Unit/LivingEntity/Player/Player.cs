@@ -537,26 +537,7 @@ public class Player : LivingEntity
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            weaponManager.GetWeapon().exp += 80;
-            //weaponManager.GetWeapon().MasteryLevelUp();
-            switch (weaponManager.GetWeapon().name)
-            {
-                case "sword":
-                    MasteryManager.Instance.currentMastery.currentSwordMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-                case "dagger":
-                    MasteryManager.Instance.currentMastery.currentDaggerMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-                case "blunt":
-                    MasteryManager.Instance.currentMastery.currentBluntMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-                case "wand":
-                    MasteryManager.Instance.currentMastery.currentWandMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-                case "staff":
-                    MasteryManager.Instance.currentMastery.currentStaffMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-            }
+            weaponManager.AddExpToCurrentWeapon(80);
             MasteryManager.Instance.SaveCurrentMastery();
         }
     }

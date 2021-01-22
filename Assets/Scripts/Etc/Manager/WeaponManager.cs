@@ -4,6 +4,15 @@ using UnityEngine;
 using CSVReader;
 using System;
 using System.IO;
+////////////////////////////////////////////////////
+/*
+    File WeaponManager.cs
+    class WeaponManager
+
+    담당자 : 김의겸
+    부 담당자 : 이신홍
+*/
+////////////////////////////////////////////////////
 
 public class WeaponManager : SingletonBase<WeaponManager>
 {
@@ -23,7 +32,9 @@ public class WeaponManager : SingletonBase<WeaponManager>
     {
        statusManager = StatusManager.Instance;
     }
-
+    /// <summary>
+    /// 무기매니저 초기화
+    /// </summary>
     public void InitWeaponManager()
     {
         _currentWeapon = null;
@@ -77,18 +88,31 @@ public class WeaponManager : SingletonBase<WeaponManager>
                 Debug.Log("잘못된 이름입니다.");
                 break;
         }
+        MasteryManager.Instance.UpdateCurrentExp();
     }
 
+    /// <summary>
+    /// 현재 무기의 Update 함수를 실행해준다.
+    /// </summary>
     public void UpdateWeapon()
     {
         if (_currentWeapon != null) _currentWeapon.Update();
     }
 
+    /// <summary>
+    /// 무기 딕셔너리에 무기를 추가한다.
+    /// </summary>
+    /// <param name="weaponName"> 입력할 무기의 이름</param>
+    /// <param name="weapon">입력할 무기의 클래스</param>
     public void AddWeapon(string weaponName, Weapon weapon)
     {
         _weaponDic.Add(weaponName, weapon);
     }
 
+    /// <summary>
+    /// 현재 무기를 입력받은 무기의 이름을 통해 변경해준다. 
+    /// </summary>
+    /// <param name="weaponName"> 바꿀 무기의 이름을 입력받는다 </param>
     public void SetWeapon(string weaponName)
     {
         _currentWeaponName = weaponName;
@@ -99,20 +123,27 @@ public class WeaponManager : SingletonBase<WeaponManager>
         UIManager.Instance.playerUIView.SetWeaponSkillIcon();
     }
 
-    public bool LevelUpCheck()
-    {
-        return _currentWeapon.LevelUpCheck();
-    }
-
+    /// <summary>
+    /// 현재 무기의 이름을 리턴받는 함수
+    /// </summary>
+    /// <returns></returns>
     public string GetWeaponName()
     {
         return _currentWeaponName;
     }
+
+    /// <summary>
+    /// 현재 무기의 클래스를 리턴받는 함수
+    /// </summary>
+    /// <returns></returns>
     public Weapon GetWeapon()
     {
         return _currentWeapon;
     } 
 
+    /// <summary>
+    /// 전체 무기 스킬의 쿨타임을 1씩 줄여준다
+    /// </summary>
     public void WeaponCoolTimeReduce()
     {
         foreach (string key in _weaponDic.Keys)

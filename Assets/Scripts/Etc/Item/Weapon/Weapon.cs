@@ -3,6 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+////////////////////////////////////////////////////
+/*
+    File Weapon.cs
+    class Weapon
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+
 public class Weapon
 {
     public string name;
@@ -50,12 +61,19 @@ public class Weapon
     
     public RuntimeAnimatorController WeaponAnimation;
 
+    /// <summary>
+    /// 무기의 외형과 레벨이 변경됐는지 체크한다.
+    /// </summary>
     public virtual void Update()
     {
         OutfitGradeCheck();
         MasteryLevelUp();
     }
 
+    /// <summary>
+    /// 각 스킬의 이팩트를 반환해주는 함수들
+    /// </summary>
+    /// <returns></returns>
     public virtual GameObject SkillA()
     {
         return SkillAEffect;
@@ -100,6 +118,9 @@ public class Weapon
         return AttackEffect;
     }
 
+    /// <summary>
+    /// 무기의 숙련도 레벨에 따라 외형을 바꿔주는 함수.
+    /// </summary>
     public void OutfitGradeCheck()
     {
         if (outfitGrade <= 2)
@@ -111,6 +132,9 @@ public class Weapon
         }
     }
 
+    /// <summary>
+    /// 무기의 레벨이 올랐는지 체크하며 최신화 해주는 함수 
+    /// </summary>
     public void MasteryLevelUp()
     {
         if (exp >= expMax)
@@ -118,7 +142,7 @@ public class Weapon
             exp = exp - expMax;
             masteryLevel++;
             SkillRelease();
-            Weaponcheck();
+            MasteryManager.Instance.incrementMasteryLevel(this.name);
             levelUp = true;
             SystemPanel.instance.SetText("Level UP !!");
             SystemPanel.instance.FadeOutStart();
@@ -127,16 +151,9 @@ public class Weapon
         else levelUp = false;
     }
 
-    private void Weaponcheck()
-    {
-        MasteryManager.Instance.incrementMasteryLevel(this.name);
-    }
-
-    public bool LevelUpCheck()
-    {
-        return levelUp;
-    }
-
+    /// <summary>
+    /// 레벨에 따른 스킬의 해금을 관리하는 함수
+    /// </summary>
     public void SkillRelease()
     {
         if (masteryLevel >= 19 && skillCRelease == false)
@@ -189,7 +206,10 @@ public class Weapon
             skillLevel[2] = 1;
         }
     }
-
+    /// <summary>
+    /// 스킬의 해금 여부를 리턴해주는 함수
+    /// </summary>
+    /// <returns></returns>
     public bool CheckSkillB()
     {
         return skillBRelease;

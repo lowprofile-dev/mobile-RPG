@@ -1,6 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+////////////////////////////////////////////////////
+/*
+    File Blunt.cs
+    class Blunt
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+/// <summary>
+/// 스킬에 사용되는 이팩트와 데이터를 미리 저장해놓은 클래스
+/// </summary>
 public class Blunt : Weapon
 {
     // Start is called before the first frame update

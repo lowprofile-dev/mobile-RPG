@@ -90,7 +90,7 @@ public class Quest
                             WeaponManager.Instance.AddExpToSpecificWeapon("STAFF", rewardAmount);
                             break;
                     }
-                    MasteryManager.Instance.UpdateCurrentExp();
+                    //MasteryManager.Instance.UpdateCurrentExp();
                     break;
                 case 2: // 아이템
                     for (int j = 0; j < rewardAmount; j++) ItemManager.Instance.AddItem(ItemManager.Instance.itemDictionary[rewardId]); // 해당 아이템을 n개만큼 추가한다.

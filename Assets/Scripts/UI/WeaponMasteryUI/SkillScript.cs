@@ -5,6 +5,16 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
+////////////////////////////////////////////////////
+/*
+    File SkillScript.cs
+    class SkillScript
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+///
 public class SkillScript : MonoBehaviour
 {
     [SerializeField] private GameObject parent;
@@ -15,7 +25,7 @@ public class SkillScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI skillNameText;
     [SerializeField] private GameObject upgradeWindow;
     [SerializeField] GameObject outofWindow;
-    
+
     private GameObject window;
     private Button ok;
     private Button cancle;
@@ -25,6 +35,10 @@ public class SkillScript : MonoBehaviour
     public int skillLevel = 0;
 
     // Start is called before the first frame update
+    /// <summary>
+    /// 시작할때 스킬의 해금 여부를 체크한 후에
+    /// 스킬 잠금 이미지와 텍스트 및 버튼의 동작 여부를 초기화 해준다.
+    /// </summary>
     void Start()
     {
         if (isLock)
@@ -49,16 +63,25 @@ public class SkillScript : MonoBehaviour
         ok.onClick.AddListener(delegate { testok(); });
         cancle.onClick.AddListener(delegate { testoff(); });
         skillButton.onClick.AddListener(delegate { teston(); });
-
-
     }
 
+    /// <summary>
+    /// 
+    /// 강화창에서 OK 버튼을 눌렀을 경우에 동작을 임의로 작성한 함수
+    /// 
+    /// </summary>
     private void testok()
     {
         skillLevel++;
         testoff();
     }
 
+    /// <summary>
+    /// 
+    /// 스킬의 이미지를 클릭했을 경우
+    /// 강화창이 팝업되고, 그에 따른 텍스트들을 임의로 결정해주는 함수.
+    /// 
+    /// </summary>
     public void teston()
     {
         outofWindow.SetActive(true);
@@ -66,17 +89,32 @@ public class SkillScript : MonoBehaviour
         upGradeContents.SetText(skillLevel, 5000 + skillLevel * 1000);
     }
 
+    /// <summary>
+    /// 
+    /// 강화창을 닫아주는 함수
+    /// 
+    /// </summary>
     public void testoff()
     {
         outofWindow.SetActive(false);
         window.SetActive(false);
     }
 
+    /// <summary>
+    /// 
+    /// 스킬의 레벨을 출력해주는 함수
+    /// 
+    /// </summary>
     public void SkillLevelPrint()
     {
         skillLevelText.text = "Lv." + skillLevel;
     }
 
+    /// <summary>
+    /// 
+    /// 스킬의 해금 조건이 만족되었을 경우 해금을 풀어주는 함수 
+    /// 
+    /// </summary>
     public void SkillUnLock()
     {
         skillLockImage.gameObject.SetActive(false);

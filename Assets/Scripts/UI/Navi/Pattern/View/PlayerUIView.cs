@@ -31,7 +31,7 @@ public class PlayerUIView : View
     [SerializeField] private GameObject _buffImgPrefab;
     [SerializeField] private Button _optionButton;
     [SerializeField] private QuestDropdown _questDropdown; public QuestDropdown questDropdown { get { return _questDropdown; } }
-
+    private WeaponMasteryView weaponView;
     [SerializeField] private Sprite[] _swordSkiilsImg;
     [SerializeField] private Sprite[] _staffSkillsImg;
     [SerializeField] private Sprite[] _daggerSkillImg;
@@ -53,8 +53,8 @@ public class PlayerUIView : View
         _skillBButton.onClick.AddListener(delegate { _skillBButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
         _skillCButton.onClick.AddListener(delegate { Player.Instance.SkillCBtnClicked(); });
         _skillCButton.onClick.AddListener(delegate { _skillCButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
-        _masteryButton.onClick.AddListener(delegate { _masteryButton.GetComponent<MasteryButton>().onButtonClick(); });
-        _weaponButton.onClick.AddListener(delegate { _weaponButton.GetComponent<WeaponButton>().onButtonClick(); });
+        _masteryButton.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleMasteryView(); });
+        _weaponButton.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleWeaponView(); });
 
         if (tutorialButton != null) tutorialButton.onClick.AddListener(delegate { TutorialClick(); });
         tutorialExitButton.onClick.AddListener(delegate { TutorialExit(); });
@@ -204,4 +204,5 @@ public class PlayerUIView : View
             }
         }
     }
+
 }

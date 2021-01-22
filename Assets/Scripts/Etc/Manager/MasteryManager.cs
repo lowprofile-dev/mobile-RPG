@@ -4,7 +4,19 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
 using CSVReader;
+////////////////////////////////////////////////////
+/*
+    File MasteryManager.cs
+    class MasteryManager
 
+    담당자 : 김의겸
+    부 담당자 : 김기정
+*/
+////////////////////////////////////////////////////
+
+/// <summary>
+///  무기별 스킬 레벨 저장용 클래스
+/// </summary>
 [System.Serializable]
 public class WeaponSkillLevel : ICloneable
 {
@@ -28,6 +40,9 @@ public class WeaponSkillLevel : ICloneable
     }
 }
 
+/// <summary>
+///  마스터리 레벨 ,무기별 숙련도 레벨, 경험치 저장용 클래스
+/// </summary>
 [System.Serializable]
 public class CurrentMastery : ICloneable
 {
@@ -97,6 +112,9 @@ public class CurrentMastery : ICloneable
     }
 }
 
+/// <summary>
+/// 마스터리 스킬 데이터 저장용
+/// </summary>
 [CSVReader.Data("id")]
 public class PlayerMasteryData
 {
@@ -106,15 +124,15 @@ public class PlayerMasteryData
     public string masteryDescription;
 }
 
+/// <summary>
+/// 마스터리 매니저
+/// 마스터리 레벨 및 스킬 레벨, 경험치, 스킬 데이터 등을 관리하는 매니저
+/// 초기화/세이브/로드
+/// </summary>
 public class MasteryManager : SingletonBase<MasteryManager>
 {
     public CurrentMastery currentMastery;
     public WeaponSkillLevel[] weaponSkillLevel;
-    //public WeaponSkillLevel swordSkillLevel;
-    //public WeaponSkillLevel daggerSkillLevel;
-    //public WeaponSkillLevel bluntSkillLevel;
-    //public WeaponSkillLevel wandSkillLevel;
-    //public WeaponSkillLevel staffSkillLevel;
     public Dictionary<int,PlayerMasteryData> masteryDictionary;
 
     public void InitMasteryManager()
@@ -203,28 +221,32 @@ public class MasteryManager : SingletonBase<MasteryManager>
         {
             case "sword":
                 currentMastery.currentSwordMasteryLevel++;
-                currentMastery.currentSwordMasteryExp = 0;
+                currentMastery.currentSwordMasteryExp = currentMastery.currentSwordMasteryExp - WeaponManager.Instance.GetWeapon().expMax;
                 break;
             case "dagger":
                 currentMastery.currentDaggerMasteryLevel++;
-                currentMastery.currentDaggerMasteryExp = 0;
+                currentMastery.currentDaggerMasteryExp = currentMastery.currentDaggerMasteryExp - WeaponManager.Instance.GetWeapon().expMax;
                 break;
             case "blunt":
                 currentMastery.currentBluntMasteryLevel++;
-                currentMastery.currentBluntMasteryExp = 0 ;
+                currentMastery.currentBluntMasteryExp = currentMastery.currentBluntMasteryExp - WeaponManager.Instance.GetWeapon().expMax;
                 break;
             case "staff":
                 currentMastery.currentStaffMasteryLevel++;
-                currentMastery.currentStaffMasteryExp = 0;
+                currentMastery.currentStaffMasteryExp = currentMastery.currentStaffMasteryExp - WeaponManager.Instance.GetWeapon().expMax;
                 break;
             case "wand":
                 currentMastery.currentWandMasteryLevel++;
-                currentMastery.currentWandMasteryExp = 0;
+                currentMastery.currentWandMasteryExp = currentMastery.currentWandMasteryExp - WeaponManager.Instance.GetWeapon().expMax;
                 break;
         }
         SaveCurrentMastery();
     }
-
+    /// <summary>
+    /// 무기와 스킬 이름을 입력받아 스킬의 레벨을 1씩 증가시킨다.
+    /// </summary>
+    /// <param name="weapon"> 현재 무기를 입력받는다.</param>
+    /// <param name="skillName">무기의 스킬 이름을 입력받는다</param>
     public void incrementSkillLevel(string weapon, string skillName)
     {
         switch (weapon)
@@ -317,6 +339,9 @@ public class MasteryManager : SingletonBase<MasteryManager>
         }
         SaveSkillLevel();
     }
+    /// <summary>
+    /// 무기의 경험치와 마스터리매니저의 경험치가 맞지 않을경우 최신화 시킨다.
+    /// </summary>
     public void UpdateCurrentExp()
     {
         if (WeaponManager.Instance != null)
@@ -357,12 +382,11 @@ public class MasteryManager : SingletonBase<MasteryManager>
             SaveCurrentMastery();
         }
     }
-
-    public void SetMastery(int choice)
-    {
-        currentMastery.currentMasteryChoices.Add(choice);
-    }
-
+    
+    /// <summary>
+    /// 게임이 강제 종료 될 경우
+    /// 데이터를 저장한다.
+    /// </summary>
     private void OnApplicationQuit()
     {
         SaveCurrentMastery();

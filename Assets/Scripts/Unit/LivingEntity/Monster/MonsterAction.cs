@@ -935,25 +935,25 @@ public class MonsterAction : MonoBehaviour
     {
         if (DeathCheck())
         {
-            switch (WeaponManager.Instance.GetWeapon().name)
-            {
-                case "sword":
-                    MasteryManager.Instance.currentMastery.currentSwordMasteryExp += 10;
-                    break;
-                case "wand":
-                    MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
-                    break;
-                case "dagger":
-                    MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
-                    break;
-                case "blunt":
-                    MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
-                    break;
-                case "staff":
-                    MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
-                    break;
-            }
-        
+            //switch (WeaponManager.Instance.GetWeapon().name)
+            //{
+            //    case "sword":
+            //        MasteryManager.Instance.currentMastery.currentSwordMasteryExp += 10;
+            //        break;
+            //    case "wand":
+            //        MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
+            //        break;
+            //    case "dagger":
+            //        MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
+            //        break;
+            //    case "blunt":
+            //        MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
+            //        break;
+            //    case "staff":
+            //        MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
+            //        break;
+            //}
+            WeaponManager.Instance.AddExpToCurrentWeapon(10);
         //    Debug.Log(name + " Exp + 10");
             MasteryManager.Instance.UpdateCurrentExp();
             ChangeState(MONSTER_STATE.STATE_DIE);

@@ -6,6 +6,18 @@ using TMPro;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+
+////////////////////////////////////////////////////
+/*
+    File MasteryScript.cs
+    class MasteryScript
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+
 public class MasteryScript : MonoBehaviour 
 {
     [SerializeField] GameObject parent;
@@ -40,6 +52,9 @@ public class MasteryScript : MonoBehaviour
         ToggleCheck();
     }
 
+    /// <summary>
+    /// 각 마스터리 스킬 별 이름과 내용, 해금 레벨을 초기화 해주는 함수  
+    /// </summary>
     private void InitCheck()
     {
         if(MasteryManager.Instance != null && isInit == false)
@@ -160,6 +175,12 @@ public class MasteryScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 
+    /// 해금 레벨이 안되었을 경우 버튼의 입력을 패널을 추가하여 막아주고,
+    /// 해금 레벨이 되었을 경우 패널을 없애서 입력을 받을 수 있도록 해주는 함수 
+    /// 
+    /// </summary>
     public void ToggleCheck()
     {
         if(SceneManager.GetActiveScene().name == "DungeonScene")
@@ -176,25 +197,17 @@ public class MasteryScript : MonoBehaviour
                     upPanel.SetActive(false);
                     downPanel.SetActive(false);
                 }
-                //else if(levelLimit >= 10)
-                //{
-                //    upPanel.SetActive(false);
-                //    downPanel.SetActive(false);
-                //}
+
                 if (upSkill.isOn)
                 {
-                //    downPanel.SetActive(true);
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = -1;
                 }
                 else if (downSkill.isOn)
                 {
-                 //   upPanel.SetActive(true);
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 1;
                 }
                 else
                 {
-                 //   upPanel.SetActive(false);
-                 //   downPanel.SetActive(false);
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 0;
                 }
                 masteryManager.SaveCurrentMastery();
@@ -208,42 +221,38 @@ public class MasteryScript : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 마스터리 스킬 중 위쪽에 위치하는 스킬들을 클릭했을경우
+    /// 마스터리 정보창에 스킬 관련 정보가 출력된다.
+    /// </summary>
     public void UpSkillOn()
     {
         masteryInfo.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = masteryData[0].masteryName;
         masteryInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = masteryData[0].masteryDescription;
-        //masteryInfo.transform.position = upSkill.transform.position + new Vector3(0,-70);
         masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = upSkill.transform.GetChild(0).GetComponent<Image>().sprite;
         masteryInfo.SetActive(true);
     }
-    public void UpSkillMouseOff()
-    {
-        masteryInfo.SetActive(false);
-    }
+    //public void UpSkillMouseOff()
+    //{
+    //    masteryInfo.SetActive(false);
+    //}
 
+    /// <summary>
+    /// 마스터리 스킬 중 아래쪽에 위치하는 스킬들을 클릭했을경우
+    /// 마스터리 정보창에 스킬 관련 정보가 출력된다.
+    /// </summary>
     public void DownSkillOn()
     {
         masteryInfo.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryName;
         masteryInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryDescription;
         masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = downSkill.transform.GetChild(0).GetComponent<Image>().sprite;
-
-        //masteryInfo.transform.position = downSkill.transform.position + new Vector3(0, -70);
         masteryInfo.SetActive(true);
 
     }
 
-    public void DownSkillMouseOff()
-    {
-        masteryInfo.SetActive(false);
-    }
+    //public void DownSkillMouseOff()
+    //{
+    //    masteryInfo.SetActive(false);
+    //}
 
-    //public void OnPointerClick(PointerEventData eventData)
-    //{
-    //    ((IPointerClickHandler)upSkill).OnPointerClick(eventData);
-    //}
-    //
-    //public void OnPointerClick(PointerEventData eventData)
-    //{
-    //    ((IPointerClickHandler)downSkill).OnPointerClick(eventData);
-    //}
 }
