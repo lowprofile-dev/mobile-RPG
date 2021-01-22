@@ -23,8 +23,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
 
     private void Start()
     {
-        Screen.SetResolution(Screen.width, (int)(Screen.width * (9f / 16f)), true);
-        QualitySettings.vSyncCount = 1;
+        Screen.SetResolution(848, 480, true);
         Application.targetFrameRate = 60;
 
         Random.InitState((int)(System.DateTime.Now.Ticks));

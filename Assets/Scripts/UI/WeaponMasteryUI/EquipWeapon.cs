@@ -24,6 +24,8 @@ public class EquipWeapon : MonoBehaviour
 
     public void onbuttonClick()
     {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/WeaponEquip", 0.8f);
+
         if (name == "SWORD" || name == "WAND")
         {
 

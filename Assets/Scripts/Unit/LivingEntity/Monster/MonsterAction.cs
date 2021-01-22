@@ -72,12 +72,9 @@ public class MonsterAction : MonoBehaviour
     /// 오브젝트 초기화
     /// </summary>
     public virtual void InitObject()
-    {
-       
+    {     
         _isImmune = false;
-
         CachingObject();
-
         _traceTimer = 0;
         _spawnPosition = transform.position;
         InitStatus();
@@ -135,14 +132,9 @@ public class MonsterAction : MonoBehaviour
 
     private void Update()
     {
-        _monster.CCManager.Update();
-        if (_target == null)
-        {
-            _target = Player.Instance.gameObject;
-        }
+        _monster.CCManager.Update();       
         UpdateState();
     }
-
 
     /////////// 상태 관련 ////////////
 
@@ -456,8 +448,6 @@ public class MonsterAction : MonoBehaviour
         if (_idleCoroutine != null) StopCoroutine(_idleCoroutine);
         _monster.myAnimator.ResetTrigger("Idle");
     }
-
-
 
     /////////// 두리번거리기 관련////////////
 
@@ -891,10 +881,9 @@ public class MonsterAction : MonoBehaviour
 
         _monster.CCManager.Release();
         _monster.DebuffManager.Release();
-        if (parentRoom != null)
-        {
-            parentRoom.MonsterDeathCheck();
-        }
+        if (parentRoom != null) parentRoom.MonsterDeathCheck();
+        TalkManager.Instance.SetQuestCondition(1, monster.id, 1);
+
         DeathSound();
         StopAllCoroutines();
         StartCoroutine(DoDeathAction());
@@ -1139,12 +1128,6 @@ public class MonsterAction : MonoBehaviour
     {
         if (!DeathCheck())
         {
-            GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
-            txt.transform.SetParent(transform);
-            txt.transform.localPosition = Vector3.zero;
-            txt.transform.rotation = Quaternion.identity;
-            txt.GetComponent<DamageText>().PlayText("경직!", "monster");
-
             _monster.myAnimator.ResetTrigger("Rigid");
             _navMeshAgent.isStopped = false;
             _monster.myAnimator.SetTrigger("Idle");
@@ -1155,12 +1138,6 @@ public class MonsterAction : MonoBehaviour
     {
         if (!DeathCheck())
         {
-            GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
-            txt.transform.SetParent(transform);
-            txt.transform.localPosition = Vector3.zero;
-            txt.transform.rotation = Quaternion.identity;
-            txt.GetComponent<DamageText>().PlayText("스턴!", "monster");
-
             _monster.myAnimator.ResetTrigger("Stun");
             _navMeshAgent.isStopped = false;
             _monster.myAnimator.SetTrigger("Idle");

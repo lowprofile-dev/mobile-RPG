@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// 카드 UI
@@ -76,6 +77,8 @@ public class CardUIView : View
 
     public override void UIStart()
     {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardUIStart", 0.9f);
+
         base.UIStart();
 
         CardManager cardManager = CardManager.Instance;
@@ -88,6 +91,7 @@ public class CardUIView : View
             _roomAreaImg[i].InitCardRoomData(cntCard);
         } // 카드 갱신
 
+        UpdateRerollCoin();
         CalculateRerollValue(); // 리롤 비용 초기화
         BingoCheck(); // 빙고 체크
     }
@@ -114,6 +118,7 @@ public class CardUIView : View
         if (!isRerollingAnimationPlaying) // 리롤 애니메이션 재생 중이 아니면
         {
             UINaviationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
+            CardManager.Instance.isAcceptCardData = false;
 
             if(CardManager.Instance._cntDungeon == null)
             {
@@ -181,17 +186,28 @@ public class CardUIView : View
 
     ///////////////////// 리롤 관련 ///////////////////////
 
+    private IEnumerator PlayRerollSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardSwapStart", 0.9f);
+        yield return new WaitForSeconds(2.5f);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardSwapEnd", 0.9f);
+    }
+
     /// <summary>
     /// 리롤 사용 여부를 Toggle한다.
     /// </summary>
     public void ToogleRerollBtn()
     {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickMedium03", 0.9f);
+
         if (!isRerollingAnimationPlaying) // 리롤 애니메이션 재생중이 아니면
         {
             if (_isRerolling) // 리롤 중이면
             {
                 if (StatusManager.Instance.needToCardRerollCoin <= ItemManager.Instance.currentItems.coin) // 재화가 충분하면
                 {
+                    StartCoroutine(PlayRerollSound());
+
                     // 리롤을 하고, 버튼을 원래대로 돌린다.
                     ItemManager.Instance.currentItems.coin -= StatusManager.Instance.needToCardRerollCoin;
                     _rerollBtn.GetComponent<Image>().sprite = _rerollDark;
@@ -325,6 +341,11 @@ public class CardUIView : View
 
             AddSetEffect(_roomAreaImg[2].cntCard, _roomAreaImg[4].cntCard, _roomAreaImg[6].cntCard);
             _setBar[7].SetActive(true);
+        }
+
+        if(isSet)
+        {
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 1.0f);
         }
 
         foreach (int nums in bingoNums) // 세트임을 알리고 효과를 켠다.

@@ -18,12 +18,14 @@ public class CardManager : SingletonBase<CardManager>
     public int currentStage;
 
     public HashSet<CardEffect> activeEffects;
+    public bool isAcceptCardData; // 카드매니저 스테이지의 중복 ++를 막기위함.
 
     /// <summary>
     /// 카드 매니저 초기화 (데이터를 받고, 정제하며, 초기화한다)
     /// </summary>
     public void InitCardManager()
     {
+        isAcceptCardData = false;
         _cntDungeon = null;
         currentCards = new List<Card>();
         dungeonCardData = new Card[4, 9];
@@ -43,7 +45,7 @@ public class CardManager : SingletonBase<CardManager>
     {
         return dungeonCardData[currentStage, pos];
     }
-    
+
     /// <summary>
     /// area의 카드 이펙트들을 실행한다.
     /// </summary>

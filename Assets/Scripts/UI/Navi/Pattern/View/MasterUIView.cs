@@ -10,6 +10,7 @@ public class MasterUIView : View
     [SerializeField] TextMeshProUGUI masteryLevelText;
     [SerializeField] Button exitButton;
 
+    
     static int IsMasterTutorial;
     // Start is called before the first frame update
     void Start()
@@ -44,5 +45,21 @@ public class MasterUIView : View
     public void LevelPrint()
     {
         masteryLevelText.text = "Lv." + MasteryManager.Instance.currentMastery.currentMasteryLevel;
+    }
+
+    public override void UIStart()
+    {
+        base.UIStart();
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/OpenMastery", 0.9f);
+    }
+
+    public override void UIUpdate()
+    {
+        base.UIUpdate();
+    }
+
+    public override void UIExit()
+    {
+        base.UIExit();
     }
 }

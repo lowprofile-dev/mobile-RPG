@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
-  m_lineSpacingMax: -20
+  m_lineSpacingMax: -10
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 20
   m_enableWordWrapping: 1
@@ -1147,7 +1147,7 @@ MonoBehaviour:
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
-  m_lineSpacingMax: -20
+  m_lineSpacingMax: -10
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 20
   m_enableWordWrapping: 1
@@ -1605,7 +1605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1799623980296434722
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1640,14 +1640,14 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: -2040161809
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &1799623980296434724
 MonoBehaviour:
@@ -1701,6 +1701,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _viewName: SubUI_CardUIView
+  tutorialButton: {fileID: 1170739262427804039}
+  tutorialExitButton: {fileID: 771858526886435593}
+  tutorialPage: {fileID: 6269185649863393452}
+  _tutorials:
+  - {fileID: 8370468647890510686}
+  - {fileID: 2887237189573496161}
+  - {fileID: 9145163037014501096}
+  - {fileID: 2337593236500879589}
   _basePanel: {fileID: 1799623980474609581}
   _paperImg: {fileID: 1799623980093434024}
   _roomAreaImg:
@@ -1744,13 +1752,6 @@ MonoBehaviour:
   - {fileID: 8985640182347589399}
   - {fileID: 8985640182197695940}
   - {fileID: 8985640182509140326}
-  _tutorials:
-  - {fileID: 8370468647890510686}
-  - {fileID: 2887237189573496161}
-  - {fileID: 9145163037014501096}
-  - {fileID: 2337593236500879589}
-  _tutorialBtn: {fileID: 1170739262427804039}
-  _nextPageBtn: {fileID: 771858526886435593}
   cntPointerArea: {fileID: 0}
   isRerollingAnimationPlaying: 0
 --- !u!1 &1799623980335338794
@@ -5038,7 +5039,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7940945957368905654
 RectTransform:
   m_ObjectHideFlags: 0

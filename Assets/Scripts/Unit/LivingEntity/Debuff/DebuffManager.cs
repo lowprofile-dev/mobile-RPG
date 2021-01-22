@@ -1,4 +1,16 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File DebuffManager.cs
+    class DebuffManager
+    
+    담당자 : 안영훈
+    부 담당자 : 
+
+    디버프를 관리하는 매니저 스크립트 유닛마다 선언해서 가지고 있으면 됨
+
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,16 +29,16 @@ public class DebuffManager : MonoBehaviour
         HandleDebuffs();
     }
 
-    public void Release()
+    public void Release() // 디버프 클리어
     {
         debuffs.Clear();
     }
 
-    public void AddDebuff(Debuff debuff)
+    public void AddDebuff(Debuff debuff) // 디버프 적용
     {
         newDebuffs.Add(debuff);  
     }
-    public void RemoveDebuff(Debuff debuff) //디버프삭제
+    public void RemoveDebuff(Debuff debuff) //디버프 삭제
     {
         debuffsToRemove.Add(debuff);
     }

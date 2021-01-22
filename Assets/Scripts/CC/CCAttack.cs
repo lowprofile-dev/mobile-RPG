@@ -1,4 +1,13 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File CCAttack.cs
+    class CCAttack
+    
+    담당자 : 안영훈
+    부 담당자 : 이신홍
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,6 +39,10 @@ public class CCAttack : MonoBehaviour
     {
         if(CheckCanApplyCC(unit) == false) return;
 
+        /*
+         *  확률 계산 우선순위
+         *  넘어짐 > 스턴 > 경직 순으로 계산됨
+         */
         float roll = Random.Range(0, 100);
 
         float fallRate = ffall * 100f;
@@ -41,25 +54,19 @@ public class CCAttack : MonoBehaviour
         if(roll <= fallRate)
         {
             //넘어짐
-            //Debug.log("상태이상 넘어짐");
             unit.GetComponent<LivingEntity>().CCManager.AddCC("fall", new Fall(2, unit.GetComponent<LivingEntity>(), "fall") , unit);
         }
         else if (roll <= stunRate + fallRate)
         {
             //스턴
-            //Debug.log("상태이상 스턴");
             unit.GetComponent<LivingEntity>().CCManager.AddCC("stun", new Stun(2, unit.GetComponent<LivingEntity>(), "stun") , unit);
         }
         else if (roll <= frigRate + fallRate + frigRate)
         {
             //경직
-            //Debug.log("상태이상 경직");
             unit.GetComponent<LivingEntity>().CCManager.AddCC("rigid", new Rigid(1, unit.GetComponent<LivingEntity>(), "rigid") , unit);
         }
-        else
-        {
-            //Debug.log("안걸림");
-        }
+
     }
 
 

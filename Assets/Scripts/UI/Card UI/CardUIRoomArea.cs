@@ -131,6 +131,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     /// </summary>
     public void ToggleCardView()
     {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickMedium01", 1.0f);
         _cardBtn.gameObject.SetActive(!_cardBtn.gameObject.activeSelf);
     }
 
@@ -279,6 +280,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
             }
 
             _parentView.BingoCheck(); // 빙고 체크
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardReplace", 0.9f);
         }
 
         _cardBtn.transform.position = _initCardPos; // 위치를 되돌린다.

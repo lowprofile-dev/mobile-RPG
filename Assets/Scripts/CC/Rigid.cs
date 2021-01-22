@@ -1,4 +1,16 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File Rigid.cs
+    class Rigid
+    
+    담당자 : 안영훈
+    부 담당자 :
+
+
+    상태 이상 경직 
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Talk
 {
     private TalkData _talkData; public TalkData talkData { get { return _talkData; } }

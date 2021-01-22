@@ -9,8 +9,6 @@ public class BossSkeletonKingAction : MonsterAction
     enum AttackType { AIR_ATTACK , ATTACK1,ATTACK2, BLACKHOLE, JUMP_ATTACK , SUMMON}
 
     [SerializeField] private GameObject attackPos;
-    //[SerializeField] private Transform _baseMeleeAttackPos;
-    //[SerializeField] private GameObject _baseMeleeAttackPrefab;
 
     AttackType attackType;
     [SerializeField] private GameObject JumpSkillRange;
@@ -33,6 +31,7 @@ public class BossSkeletonKingAction : MonsterAction
     [SerializeField] float AirSkillCastingTime;
 
     BossSpawnPoint SpawnPoints = null;
+    bool IsSummonSpawn = false;
     
     List<Transform> ProjectileList = new List<Transform>();
     List<GameObject> monsterList = new List<GameObject>();
@@ -42,7 +41,7 @@ public class BossSkeletonKingAction : MonsterAction
     private float velocity;
     private float angle;
 
-    string currentAnimation;
+    string currentAnimation = null;
     
     private void OnDrawGizmos()
     {
@@ -61,8 +60,8 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void DoAttack()
     {
-     
-        StopCoroutine(_attackCoroutine);
+
+        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _readyCast = false;
 
@@ -118,7 +117,6 @@ public class BossSkeletonKingAction : MonsterAction
     }
     protected void ComboAttack()
     {
-        //애니메이터 호출용
         _monster.myAnimator.SetTrigger("Attack1");
         currentAnimation = "Attack1";
 
@@ -144,7 +142,6 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void SpawnStart()
     {
-        Debug.Log("보스스켈레톤 스폰" + _monster.monsterName.ToString());
         transform.LookAt(_target.transform.position);
         UILoaderManager.Instance.NameText.text = _monster.monsterName.ToString();
         _monster.myAnimator.SetTrigger("Spawn");
@@ -152,18 +149,18 @@ public class BossSkeletonKingAction : MonsterAction
     }
     protected override void SpawnUpdate()
     {
-        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        if (_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Spawn") && _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
         {
-            StartCoroutine(TimeDelay());
-            ChangeState(MONSTER_STATE.STATE_IDLE);
+            _monster.myAnimator.SetTrigger("Idle");
+            _navMeshAgent.isStopped = true;
+            Invoke("TimeDelay", 5f);
+            ChangeState(MONSTER_STATE.STATE_IDLE);          
         }
     }
-    private IEnumerator TimeDelay()
+    private void TimeDelay()
     {
-        _navMeshAgent.isStopped = true;
-        yield return new WaitForSeconds(3f);
         _navMeshAgent.isStopped = false;
-        _monster.myAnimator.SetTrigger("Walk");
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
     protected override void SpawnExit()
     {
@@ -199,10 +196,11 @@ public class BossSkeletonKingAction : MonsterAction
        
         int proc = UnityEngine.Random.Range(0, 100);
 
-        if (monsterList.Count == 0)
+        if (monsterList.Count == 0 && !IsSummonSpawn)
         {
             _castTime = summonCastingTime;
             attackType = AttackType.SUMMON;
+            IsSummonSpawn = true;
             return;
         }
 
@@ -368,6 +366,7 @@ public class BossSkeletonKingAction : MonsterAction
             mon.GetComponent<NavMeshAgent>().enabled = true;
             monsterList.Add(mon);
         }
+        IsSummonSpawn = false;
     }
 
     private IEnumerator JumpAttackAction()
@@ -391,7 +390,6 @@ public class BossSkeletonKingAction : MonsterAction
 
     private IEnumerator AirAction()
     {
-
         _monster.myAnimator.SetTrigger("HoldAttack");
         yield return null;
 
@@ -447,7 +445,7 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void TraceStart()
     {
-        StopCoroutine(_attackCoroutine);
+        if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _attackCoroutine = null;
         _monster.myAnimator.ResetTrigger("Walk");
 
@@ -542,4 +540,8 @@ public class BossSkeletonKingAction : MonsterAction
             _monster.myAnimator.SetTrigger("Laugh");
         }
     }
+    protected override void IdleStart()
+    {
+    }
+
 }

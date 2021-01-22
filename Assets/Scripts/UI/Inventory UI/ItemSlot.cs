@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+    File ItemSlot.cs
+    class ItemSlot
+    
+    담당자 : 김기정
+    부 담당자 : 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -43,6 +51,11 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*
         Texture2D texture = RuntimePreviewGenerator.GenerateModelPreview(model);
         Rect rect = new Rect(0, 0, texture.width, texture.height);
         itemIcon.GetComponent<Image>().sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+    }
+
+    public void SetIcon(Sprite sprite)
+    {
+        itemIcon.GetComponent<Image>().sprite = sprite;
     }
 
     public void SetItemDetail(GameObject obj)
@@ -96,14 +109,8 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*
     private void EquipItem()
     {
         itemManager.SetItemToPlayer(itemData);
-        //Debug.Log(itemData.itemName + " 장착!");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ItemEquip2", 0.9f);
     }
-
-    //public void OnPointerUp(PointerEventData eventData)
-    //{
-    //    isShowingItemInfo = false;
-    //    itemDetail.SetActive(false);
-    //}
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -112,17 +119,9 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*
             EquipItem();
         }
 
-        //if (!isShowingItemInfo)
-        //{
-        //    itemDetail.SetActive(true);
-        //    itemDetail.GetComponent<ItemDetail>().LoadItemDetail(itemData);
-        //    itemDetail.transform.position = eventData.position;
-        //}
-
         itemDetailNew.GetComponent<ItemDetailNew>().LoadItemBasicInfo(itemData);
         itemDetailNew.GetComponent<ItemDetailNew>().LoadItemDetail(itemData);
         itemDetailNew.GetComponent<ItemDetailNew>().SetIcon(itemIcon.GetComponent<Image>().sprite);
-
-        //isShowingItemInfo = true;
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 0.9f);
     }
 }

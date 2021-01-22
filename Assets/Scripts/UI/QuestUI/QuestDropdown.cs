@@ -38,9 +38,9 @@ public class QuestDropdown : SingletonBase<QuestDropdown>
         foreach(QuestPanel panel in panels) panel.DestroyPanel();
         panels.Clear();
 
-        HashSet<Quest> hashes = TalkManager.Instance.currentQuests;
+        Dictionary<string, Quest> dics = TalkManager.Instance.currentQuests;
 
-        foreach(Quest quest in hashes)
+        foreach(Quest quest in dics.Values)
         {
             AddPanel(quest);
         }
@@ -51,5 +51,16 @@ public class QuestDropdown : SingletonBase<QuestDropdown>
         QuestPanel panel = Instantiate(questObject, contents.transform).GetComponent<QuestPanel>();
         panel.SetData(quest);
         panels.Add(panel);
+    }
+
+    public void UpdatePanel(Quest quest)
+    {
+        for(int i=0; i<panels.Count; i++)
+        {
+            if(panels[i].parentQuest.id == quest.id)
+            {
+                panels[i].SetData(quest);
+            }
+        }
     }
 }

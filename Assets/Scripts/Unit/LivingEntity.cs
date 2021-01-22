@@ -29,8 +29,7 @@ public class LivingEntity : Unit
 
     protected virtual void Update()
     {
-        _DebuffManager.Update();
-        
+        _DebuffManager.Update();      
     }
     
     // 오브젝트에서 필요한 초기화들을 실시한다.

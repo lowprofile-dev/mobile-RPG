@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*
+    File DungeonManager.cs
+    class DungeonManager
+    
+    담당자 : 김기정
+    부 담당자 :
+ */
+
+using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.AI;
@@ -34,10 +42,10 @@ public class DungeonManager : MonoBehaviour
     public bool bossCleared = false;
 
     public int playerCurrentArea;
-    //public DungeonRoom playerCurrentRoom;
 
     private GameObject stageExit;
     bool isPlayerSpawned = false;
+    DunGen.RuntimeDungeon runtimeDungeon;
 
     //디버깅용
     GameObject plane;
@@ -52,6 +60,8 @@ public class DungeonManager : MonoBehaviour
         stagesMonsterPrefabs.Add(stage3MonsterPrefabs);
         stagesMonsterPrefabs.Add(stage4MonsterPrefabs);
         currentStageMonsterPrefabs = stagesMonsterPrefabs[0];
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonFloorStart", 0.9f);
+        runtimeDungeon = FindObjectOfType<DunGen.RuntimeDungeon>();
     }
 
     private void Update()
@@ -62,7 +72,6 @@ public class DungeonManager : MonoBehaviour
         }
         InitDungeon();
         SetStageInfo();
-        //Invoke("ChangeAreaCheck", 5f);
         ChangeAreaCheck();
         if (isStageCleared)
         {
@@ -75,6 +84,9 @@ public class DungeonManager : MonoBehaviour
         stageInfo.text = "스테이지 " + dungeonStage + " - " + playerCurrentArea + "구역";
     }
 
+    /// <summary>
+    /// 던전 초기화 및 맵 재생성
+    /// </summary>
     private void InitDungeon()
     {
         if (dungeon == null)
@@ -98,6 +110,7 @@ public class DungeonManager : MonoBehaviour
         }
     }
 
+    //deprecated
     private void CreateBoundaryPlane()
     {
         //Bounds에서 받아온 값을 Plane.localScale로 전환하는데 쓰이는 계수
@@ -108,6 +121,7 @@ public class DungeonManager : MonoBehaviour
         hasPlane = true;
     }
 
+    //deprecated
     private void FindBoundary()
     {
         bounds = gameObject.GetComponent<Collider>().bounds;
@@ -149,17 +163,21 @@ public class DungeonManager : MonoBehaviour
             UILoaderManager.Instance.LoadVillage();
             CardManager.Instance._cntDungeon = null;
             CardManager.Instance.currentStage = 0;
+            TalkManager.Instance.SetQuestCondition(3, 1, 1);
             return;
         }
-
-        CardManager.Instance.currentStage = dungeonStage + 1;
-        UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
+        
+        if(!CardManager.Instance.isAcceptCardData)
+        {
+            CardManager.Instance.isAcceptCardData = true;
+            CardManager.Instance.currentStage = dungeonStage;
+            UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
+        }
     }
 
 
     public void ToNextStage()
     {
-        var runtimeDungeon = FindObjectOfType<DunGen.RuntimeDungeon>();
         runtimeDungeon.Generate();
         isPlayerSpawned = false;
         SpawnPlayer();
@@ -168,6 +186,7 @@ public class DungeonManager : MonoBehaviour
         dungeonStage++;
         nRoomCleared = 0;
         currentStageMonsterPrefabs = stagesMonsterPrefabs[dungeonStage-1];
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonFloorStart", 0.9f);
     }
 
     public void ChangeAreaCheck()

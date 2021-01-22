@@ -10,6 +10,7 @@ public class EnemySliderBar : MonoBehaviour
     [SerializeField] protected Slider HPSlider;
     [SerializeField] protected Slider CastSlider;
     [SerializeField] protected Monster parent;
+    protected MonsterAction parentAction;
 
     float angle;
     float velocity;
@@ -17,20 +18,28 @@ public class EnemySliderBar : MonoBehaviour
     private void Start()
     {
         cam = CameraManager.Instance.PlayerFollowCamera;
-    }
-    private void Update()
-    {
-        transform.LookAt(cam.transform);
+        StartCoroutine("LookTarget");
+        parentAction = parent.GetComponent<MonsterAction>();
     }
 
-    public void HpUpdate()
+    // 카메라 방향으로 bar들을 회전
+    private IEnumerator LookTarget()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.1f);
+            transform.LookAt(cam.transform);
+        }
+    }
+
+    public void HpUpdate() // 해당 오브젝트의 hp 업데이트
     {
         HPSlider.value = parent.Hp / parent.initHp;
     }
 
-    public void CastUpdate()
+    public void CastUpdate() // 해당 오브젝트의 casting 업데이트
     {
-        CastSlider.value = parent.GetComponent<MonsterAction>()._cntCastTime / parent.GetComponent<MonsterAction>()._castTime;
-
+        //CastSlider.value = parent.GetComponent<MonsterAction>()._cntCastTime / parent.GetComponent<MonsterAction>()._castTime;
+        CastSlider.value = parentAction._cntCastTime / parentAction._castTime;
     }
 }

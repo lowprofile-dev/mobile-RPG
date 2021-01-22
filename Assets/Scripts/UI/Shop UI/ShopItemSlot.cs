@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+    File ShopItemSlot.cs
+    class ShopItemSlot
+    
+    담당자 : 김기정
+    부 담당자 : 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -35,7 +43,6 @@ public class ShopItemSlot : MonoBehaviour
     {
         if (itemManager == null) itemManager = ItemManager.Instance;
         itemManager.AddToCart(shopItemCardIndex, this.itemData);
-       // Debug.Log("아이템 ID: " + this.itemData.id);
         ShopUI.GetComponent<ShopUIView>().LoadPlayerInventory();
         ShopUI.GetComponent<ShopUIView>().LoadItemCards();
         ShopUI.GetComponent<ShopUIView>().SetTotalPrice();

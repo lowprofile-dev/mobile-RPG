@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 97602c0554056d044ae9853e04dd5757, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -71,7 +71,7 @@ LightmapSettings:
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
-    m_MixedBakeMode: 2
+    m_MixedBakeMode: 1
     m_BakeBackend: 1
     m_PVRSampling: 1
     m_PVRDirectSampleCount: 32
@@ -996,7 +996,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -1035,7 +1035,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 4.1406e-41, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1669,11 +1669,13 @@ MonoBehaviour:
   - {fileID: 5711455880128171077, guid: b15fb212ab8e20b48978202886a9bfdc, type: 3}
   - {fileID: 3184240531697180170, guid: 59a6e3d3c78516e41b1101e20d3e0e25, type: 3}
   - {fileID: 1355095795314762, guid: 9f160afaef86a164ea4b662a1da64180, type: 3}
+  - {fileID: 1990508195570502, guid: 26d070db52caddb41b33b7ce3c7f8a16, type: 3}
   stage2MonsterPrefabs:
   - {fileID: 2386692087498796433, guid: d9d5279237bb680478efdec73a8b1a49, type: 3}
   - {fileID: 4389056476029205342, guid: d90f51c287aa8ff4296235294365cc00, type: 3}
   - {fileID: 2065811538764769898, guid: 4b09b9d1350cb4f43a01e964231496cb, type: 3}
   - {fileID: 3184240531697180170, guid: 59a6e3d3c78516e41b1101e20d3e0e25, type: 3}
+  - {fileID: 1990508195570502, guid: 26d070db52caddb41b33b7ce3c7f8a16, type: 3}
   stage3MonsterPrefabs:
   - {fileID: 3184240531697180170, guid: 59a6e3d3c78516e41b1101e20d3e0e25, type: 3}
   - {fileID: 2386692087498796433, guid: d9d5279237bb680478efdec73a8b1a49, type: 3}
@@ -2326,7 +2328,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 16384
   m_VolumeTrigger: {fileID: 0}
   m_RenderPostProcessing: 0
   m_Antialiasing: 0
@@ -2346,8 +2348,8 @@ Camera:
   m_GameObject: {fileID: 1787091161}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0.39215687}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2368,7 +2370,7 @@ Camera:
   m_Depth: 5
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 81920
+    m_Bits: 16384
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 2bc5a305465783d4a8a4fc29b1de5ba9, type: 2}
   m_TargetDisplay: 0

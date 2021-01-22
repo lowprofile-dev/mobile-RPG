@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class SystemPanel : MonoBehaviour
+using DG.Tweening;
+
+    public class SystemPanel : MonoBehaviour
 {
     public static SystemPanel instance;
 
     public TextMeshProUGUI text;
     [SerializeField] private GameObject panel;
     private Image image;
-    // Start is called before the first frame update
+    private Sequence sequence;
+
     void Start()
     {
         instance = this;
@@ -25,10 +28,33 @@ public class SystemPanel : MonoBehaviour
 
     public void FadeOutStart()
     {
+
+        AudioSource sound = SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 0.9f);
+        SoundManager.Instance.SetAudioReverbEffect(sound, AudioReverbPreset.Cave);
+
+        if(sequence != null) sequence.Kill();
+
+        image.color -= new Color(0, 0, 0, 1);
+        text.color -= new Color(0, 0, 0, 1);
+        image.transform.position -= new Vector3(0, 15, 0);
+
+        panel.SetActive(true);
+        sequence = DOTween.Sequence();
+        sequence.Append(image.DOFade(0.8f, 1f));
+        sequence.Join(text.DOFade(0.8f, 1f));
+        sequence.Join(image.transform.DOMoveY(image.transform.position.y + 15, 1.3f));
+        sequence.AppendInterval(1);
+        sequence.Append(image.DOFade(0, 1f));
+        sequence.Join(text.DOFade(0, 1f));
+        sequence.OnComplete(delegate { panel.SetActive(false); });
+
+        /*
         panel.SetActive(true);
         StartCoroutine("FadeOut");
+        */
     }
 
+    /*
     IEnumerator FadeOut()
     {
         float time = 0f;
@@ -47,4 +73,5 @@ public class SystemPanel : MonoBehaviour
             }
         }
     }
+    */
 }

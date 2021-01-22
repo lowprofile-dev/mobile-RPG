@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+    File CurrentItems.cs
+    class CurrentItems
+    
+    담당자 : 김기정
+    부 담당자 :
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -73,6 +73,7 @@ public class OptionUIView : View
     public override void UIStart()
     {
         base.UIStart();
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickMedium02", 0.9f);
     }
 
     public override void UIUpdate()

@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+    File ItemDetailNew.cs
+    class ItemDetailNew
+    
+    담당자 : 김기정
+    부 담당자 : 이신홍
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +31,7 @@ public class ItemDetailNew : MonoBehaviour
         if (_itemData == null)
             return;
         ItemManager.Instance.SetItemToPlayer(_itemData);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ItemEquip2", 0.9f);
     }
 
     public void LoadItemBasicInfo(ItemData itemData)

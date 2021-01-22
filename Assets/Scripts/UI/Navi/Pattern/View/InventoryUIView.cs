@@ -23,6 +23,7 @@ public class InventoryUIView : View
     public override void UIStart()
     {
         base.UIStart();
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/OpenInventory", 0.9f);
     }
 
     public override void UIUpdate()
@@ -98,5 +99,6 @@ public class InventoryUIView : View
     public void OnClickQuitButton()
     {
         UINaviationManager.Instance.PopToNav("SubUI_Inventory");
+        Player.Instance.FaceCam.InitFaceCam(Player.Instance.playerAvater);
     }
 }

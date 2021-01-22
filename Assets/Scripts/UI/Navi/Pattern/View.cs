@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public enum VIEWTYPE
 {
@@ -22,6 +23,7 @@ public class View : MonoBehaviour
     {
         _viewName = gameObject.name;
     }
+
     void Update()
     {
         switch (viewtype)
@@ -45,11 +47,7 @@ public class View : MonoBehaviour
     {
         gameObject.SetActive(true);
         viewtype = VIEWTYPE.VIEWTYPE_ISAPPEARING;
-
-        // 애니메이션 구현
-
-        // 끝났으면
-
+        
         viewtype = VIEWTYPE.VIEWTYPE_APPEARED;
     }
 
@@ -61,10 +59,6 @@ public class View : MonoBehaviour
     public virtual void UIExit()
     {
         viewtype = VIEWTYPE.VIEWTYPE_ISDISAPPEARING;
-
-        // 애니메이션 구현
-
-        // 끝났으면
 
         viewtype = VIEWTYPE.VIEWTYPE_DISAPPEARED;
         gameObject.SetActive(false);

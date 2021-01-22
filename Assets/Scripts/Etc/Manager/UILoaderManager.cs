@@ -1,4 +1,13 @@
-﻿using System;
+﻿////////////////////////////////////////////////////
+/*
+    File UILoaderManager.cs
+    class UILoaderManager
+    
+    담당자 : 안영훈
+    부 담당자 : 이신홍 , 김기정
+*/
+////////////////////////////////////////////////////
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,8 +28,6 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
         _playerUI = GameObject.Find("PlayerUI_View");
         _nameText = GameObject.Find("NamePanel").transform.Find("BossNameText").GetComponent<TextMeshProUGUI>();
         _nameText.text = "";
-        
-
     }
 
     public void LoadUI()
@@ -28,7 +35,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
          _playerUI.GetComponent<Canvas>().enabled = true;
     }
 
-    public void LoadVillage()
+    public void LoadVillage() // 마을씬 로드
     {
         LoadingSceneManager.LoadScene("DungeonScene", "VillageScene");
         SoundManager.Instance.StopEffect("Fire Loop");
@@ -36,23 +43,24 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
         StartCoroutine(VillageMusicPlay());
     }
 
-    IEnumerator VillageMusicPlay()
+    IEnumerator VillageMusicPlay() // 마을 음악 재생
     {
         yield return new WaitForSeconds(1f);
         SoundManager.Instance.PlayBGM("VillageBGM", 0.55f);
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Fire Loop", 0.15f, 0, true);
     }
 
-    public void LoadDungeon()
+    public void LoadDungeon() // 던전씬 로드
     {
         LoadingSceneManager.LoadScene("VillageScene", "DungeonScene");
         SoundManager.Instance.StopEffect("Cave 1 Loop");
         SoundManager.Instance.StopEffect("Fire Loop");
         SoundManager.Instance.PlayBGM("DungeonBGM", 0.6f);
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Cave 1 Loop", 0.25f, 0, true);
+        TalkManager.Instance.SetQuestCondition(3, 0, 1);
     }
 
-    public bool IsSceneDungeon()
+    public bool IsSceneDungeon() // 지금이 던전씬인지 확인하는 함수
     {
         return SceneManager.GetActiveScene().name == "DungeonScene";
     }
