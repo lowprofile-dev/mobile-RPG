@@ -40,7 +40,7 @@ public class CurrentItems
 
     public CurrentItems()
     {
-        this.gold = 100;
+        this.gold = 5000;
         this.coin = 50;
         this.gem = 10;
         this.headAccesoriesIndex = 7;

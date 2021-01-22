@@ -56,8 +56,8 @@ public class SkillScript : MonoBehaviour
         }
         window = Instantiate(upgradeWindow, parent.transform);
         upGradeContents = window.GetComponent<UpGradeContents>();
-        ok = window.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(0).GetChild(0).GetComponent<Button>();
-        cancle = window.transform.GetChild(0).GetChild(1).GetChild(2).GetChild(0).GetChild(1).GetComponent<Button>();
+        ok = window.transform.GetChild(0).GetChild(2).GetChild(2).GetChild(0).GetChild(0).GetComponent<Button>();
+        cancle = window.transform.GetChild(0).GetChild(2).GetChild(2).GetChild(0).GetChild(1).GetComponent<Button>();
 
         outofWindow.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate { testoff(); });
         ok.onClick.AddListener(delegate { testok(); });
@@ -72,8 +72,18 @@ public class SkillScript : MonoBehaviour
     /// </summary>
     private void testok()
     {
-        skillLevel++;
-        testoff();
+        if(500+skillLevel*100 <= ItemManager.Instance.currentItems.gold)
+        {
+            ItemManager.Instance.currentItems.gold -= 500 + skillLevel * 100;
+            upGradeContents.SetPlayerMoneyText(ItemManager.Instance.currentItems.gold);
+            skillLevel++;
+            testoff();
+        }
+        else
+        {
+            SystemPanel.instance.SetText("강화 할 돈이 부족합니다.");
+            SystemPanel.instance.FadeOutStart();
+        }
     }
 
     /// <summary>
@@ -86,7 +96,8 @@ public class SkillScript : MonoBehaviour
     {
         outofWindow.SetActive(true);
         window.SetActive(true);
-        upGradeContents.SetText(skillLevel, 5000 + skillLevel * 1000);
+        upGradeContents.SetUpgradeMoneyText(skillLevel, 500 + skillLevel * 100);
+        upGradeContents.SetPlayerMoneyText(ItemManager.Instance.currentItems.gold);
     }
 
     /// <summary>
