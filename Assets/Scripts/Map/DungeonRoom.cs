@@ -316,6 +316,7 @@ public class DungeonRoom : MonoBehaviour
 
     private void CheckPlayerInRoom()
     {
+        if (Player.Instance == null) return;
         if (bounds.Contains(dungeonManager.player.GetComponent<CapsuleCollider>().bounds.center))
         {
             hasPlayer = true;

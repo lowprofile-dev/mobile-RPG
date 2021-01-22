@@ -1,4 +1,16 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File BossSkeletonKingAction.cs
+    class BossSkeletonKingAction
+    
+    담당자 : 안영훈
+    부 담당자 : 
+
+    스켈레톤킹 보스 행동 스크립트
+*/
+////////////////////////////////////////////////////
+///
+using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
 using System.Collections;
@@ -42,14 +54,6 @@ public class BossSkeletonKingAction : MonsterAction
     private float angle;
 
     string currentAnimation = null;
-    
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _findRange);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
-    }
 
     public override void InitObject()
     {
@@ -174,13 +178,6 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void CastStart()
     {
-
-        // 플레이어가 기절상태나 넘어짐 상태면 우선 공격 모션 2개 있음.
-        // if(_target.getState? == 기절) attackType = AttackType.~~~~
-
-        //if (_attackCoroutine != null) Invoke("AttackCorotineInit", 1.5f);
-
-        
 
         if(Vector3.Distance(transform.position , _target.transform.position) <= _navMeshAgent.stoppingDistance)
         {

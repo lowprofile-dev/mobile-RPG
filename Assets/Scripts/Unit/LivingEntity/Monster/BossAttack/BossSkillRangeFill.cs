@@ -26,6 +26,7 @@ public class BossSkillRangeFill : MonoBehaviour
     private float angle;
     private float velocity;
     private float speed;
+
     private void OnEnable()
     {
         fillArea.GetComponent<Image>().fillAmount = 0f;
