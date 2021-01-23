@@ -57,7 +57,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         _cardBtn.GetComponent<UIDissolve>().effectFactor = 0;
 
         AlphaAllRoomCardData();
-        for (int i = 0; i < CardManager.Instance.currentStage; i++) SetRoomCardData(CardManager.Instance.dungeonCardData[i, roomNumber], i);
+        for (int i = 0; i < CardManager.Instance.currentFloor; i++) SetRoomCardData(CardManager.Instance.dungeonCardData[i, roomNumber], i);
 
         SetCurrentCardData(card);
     }
@@ -160,7 +160,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     {
         if (_rerollICONImg.gameObject.activeSelf)
         {
-            CardManager.Instance.dungeonCardData[CardManager.Instance.currentStage, roomNumber] = null;
+            CardManager.Instance.dungeonCardData[CardManager.Instance.currentFloor, roomNumber] = null;
         }
     }
 
@@ -208,7 +208,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
 
         _cardBtn.gameObject.SetActive(true);
 
-        CardManager.Instance.SetNewCard(roomNumber); // 해당 위치를 새로운 카드로 설정해준다.
+        CardManager.Instance.SetNewCardAtPosition(roomNumber); // 해당 위치를 새로운 카드로 설정해준다.
         InitCardRoomData(CardManager.Instance.GetCardCntStage(roomNumber)); // 해당 방의 카드 데이터를 새롭게 초기화한다.
         ReloadCardData(); // 카드 데이터를 갱신한다.
         dissolveEffect.Reverse = true;

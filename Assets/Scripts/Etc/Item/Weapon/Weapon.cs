@@ -70,10 +70,13 @@ public class Weapon
         MasteryLevelUp();
     }
 
+
+
+
     /// <summary>
     /// 각 스킬의 이팩트를 반환해주는 함수들
     /// </summary>
-    /// <returns></returns>
+
     public virtual GameObject SkillA()
     {
         return SkillAEffect;
@@ -219,6 +222,4 @@ public class Weapon
     {
         return skillCRelease;
     }
-
- 
 }

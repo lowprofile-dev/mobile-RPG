@@ -20,10 +20,13 @@ public class Dagger : Weapon
     public Dagger()
     {
         name = "dagger";
+
         hitStun = 0.5f;
         hitRigid = 0.5f;
         hitFail = 0.5f;
+
         outfitGrade = 0;
+
         masteryLevel = MasteryManager.Instance.currentMastery.currentDaggerMasteryLevel;
 
         skillBRelease = MasteryManager.Instance.currentMastery.currentDaggerSkillBReleased;

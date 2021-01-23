@@ -1,32 +1,50 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using CSVReader;
-////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////
 /*
     File Sword.cs
     class Sword
 
     담당자 : 김의겸
-    부 담당자 : 
+    부 담당자 : 이신홍
 */
 ////////////////////////////////////////////////////
 
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using CSVReader;
+
 /// <summary>
-/// 스킬에 사용되는 이팩트와 데이터를 미리 저장해놓은 클래스
+/// Weapon을 상속하여 Sword의 데이터와 스킬을 구현해놓은 클래스
 /// </summary>
 public class Sword : Weapon
 {
-    // Start is called before the first frame update
     public Sword()
     {
         name = "sword";
+
         hitStun = 0.5f;
         hitRigid = 0.5f;
         hitFail = 0.5f;
-        outfitGrade = 0;
-        masteryLevel= MasteryManager.Instance.currentMastery.currentSwordMasteryLevel;
 
+        outfitGrade = 0;
+
+        masteryLevel = MasteryManager.Instance.currentMastery.currentSwordMasteryLevel;
+
+        attackDamage = 1;
+        magicDamage = 0;
+        skillSpeed = 0;
+
+        exp = MasteryManager.Instance.currentMastery.currentSwordMasteryExp;
+        WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Sword Animator");
+
+        InitSkillData();
+    }
+
+    /// <summary>
+    /// 스킬 관련 초기화
+    /// </summary>
+    public void InitSkillData()
+    {
         skillBRelease = MasteryManager.Instance.currentMastery.currentSwordSkillBReleased;
         skillCRelease = MasteryManager.Instance.currentMastery.currentSwordSkillCReleased;
 
@@ -35,28 +53,22 @@ public class Sword : Weapon
         skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[0].skillBLevel;
         skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[0].skillCLevel;
 
-        attackDamage = 1;
-        magicDamage = 0;
-        skillSpeed = 0;
-
-        exp = MasteryManager.Instance.currentMastery.currentSwordMasteryExp;
-
         skillACoef = 0;
         skillBCoef = 0;
         skillCCoef = 0;
-                  
+
+        // 스킬 쿨타임
         skillACool = 7;
         skillBCool = 8;
         skillCCool = 11;
 
+        // 스킬 프리팹
         AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 1");
         AttackEffect2 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 2");
         AttackEffect3 = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 3");
         SkillAEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Skill 1 Heal");
         SkillBEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Skill B");
         SkillCEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Skill C");
-       
-        WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Sword Animator");
     }
 
     public override void Update()
@@ -66,7 +78,7 @@ public class Sword : Weapon
 
     public override GameObject SkillA()
     {
-        
+        // 체력 회복 스킬
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillAEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
         atk.PlayAttackTimer(0.4f);
@@ -77,6 +89,7 @@ public class Sword : Weapon
 
     public override GameObject SkillB()
     {
+        // 돌진 스킬. 돌진이 끝났을때 SkillB2가 자동으로 실행된다.
         Player.Instance.RushEnter();
 
         return SkillBEffect;
@@ -84,6 +97,7 @@ public class Sword : Weapon
 
     public override GameObject SkillB2()
     {
+        // 부딪힌 자리에서 공격 실행
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 2 Swing", 0.6f);
         CameraManager.Instance.ShakeCamera(10, 3, 0.25f); // 카메라 흔들기 연출
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillBEffect).GetComponent<PlayerAttack>();
@@ -96,6 +110,7 @@ public class Sword : Weapon
 
     public override GameObject SkillC()
     {
+        // 검을 소환하여 큰 데미지
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 3 Swing", 0.6f);
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 3 Holy", 0.6f);
 
@@ -109,6 +124,7 @@ public class Sword : Weapon
 
     public override GameObject Attack3()
     {
+        // 공격 콤보 3
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 3", 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect3).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
@@ -120,6 +136,7 @@ public class Sword : Weapon
 
     public override GameObject Attack2()
     {
+        // 공격 콤보 2
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 2", 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect2).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
@@ -131,6 +148,7 @@ public class Sword : Weapon
 
     public override GameObject Attack()
     {
+        // 공격 콤보 1
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 1", 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<PlayerAttack>();
         atk.SetParent(Player.Instance.skillPoint.gameObject);
@@ -138,6 +156,5 @@ public class Sword : Weapon
         atk.OnLoad();
         
         return null;
-        
     }
 }

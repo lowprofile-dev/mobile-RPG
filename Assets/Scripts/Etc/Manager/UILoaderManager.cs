@@ -15,8 +15,12 @@ using UnityEngine.UI;
 using TMPro;
 public class UILoaderManager : SingletonBase<UILoaderManager>
 {
-    private GameObject _playerUI = null; public GameObject PlayerUI { get { return _playerUI; } }
-    private TextMeshProUGUI _nameText; public TextMeshProUGUI NameText { get { return _nameText; }}
+    private GameObject _playerUI = null; 
+    private TextMeshProUGUI _nameText; 
+
+    // property
+    public GameObject PlayerUI { get { return _playerUI; } }
+    public TextMeshProUGUI NameText { get { return _nameText; } }
 
     public void Start()
     {
@@ -30,10 +34,16 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
         _nameText.text = "";
     }
 
-    public void LoadUI()
+    public void LoadPlayerUI()
     {      
          _playerUI.GetComponent<Canvas>().enabled = true;
     }
+
+
+
+
+
+    //////////// 로드하는 씬 별 작동 양상 /////////////
 
     public void LoadVillage() // 마을씬 로드
     {
@@ -59,6 +69,10 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Ambient/Cave 1 Loop", 0.25f, 0, true);
         TalkManager.Instance.SetQuestCondition(3, 0, 1);
     }
+
+
+
+    //////////// 기타 /////////////
 
     public bool IsSceneDungeon() // 지금이 던전씬인지 확인하는 함수
     {

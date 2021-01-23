@@ -15,7 +15,6 @@ using UnityEngine.UI;
 using TMPro;
 
 public class LoadingSceneManager : MonoBehaviour
-
 {
     public static string nextScene;
     [SerializeField] Image progressBar;

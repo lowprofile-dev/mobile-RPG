@@ -110,7 +110,7 @@ public class Player : LivingEntity
 
     protected override void Start()
     {
-        UILoaderManager.Instance.LoadUI();
+        UILoaderManager.Instance.LoadPlayerUI();
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
         var _player = this;

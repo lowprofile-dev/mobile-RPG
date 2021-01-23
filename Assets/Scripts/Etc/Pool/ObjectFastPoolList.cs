@@ -1,4 +1,13 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File ObjectFastPoolList.cs
+    class ObjectFastPoolList
+    
+    담당자 : 이신홍
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using System.Collections;
 
 /// <summary>

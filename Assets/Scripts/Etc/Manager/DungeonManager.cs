@@ -53,7 +53,7 @@ public class DungeonManager : MonoBehaviour
     private void Start()
     {
         playerCurrentArea = -1;
-        CardManager.Instance._cntDungeon = this;
+        CardManager.Instance.cntDungeon = this;
         hasPlane = false;
         stagesMonsterPrefabs.Add(stage1MonsterPrefabs);
         stagesMonsterPrefabs.Add(stage2MonsterPrefabs);
@@ -161,8 +161,8 @@ public class DungeonManager : MonoBehaviour
         if (dungeonStage == 4)
         {          
             UILoaderManager.Instance.LoadVillage();
-            CardManager.Instance._cntDungeon = null;
-            CardManager.Instance.currentStage = 0;
+            CardManager.Instance.cntDungeon = null;
+            CardManager.Instance.currentFloor = 0;
             TalkManager.Instance.SetQuestCondition(3, 1, 1);
             return;
         }
@@ -170,7 +170,7 @@ public class DungeonManager : MonoBehaviour
         if(!CardManager.Instance.isAcceptCardData)
         {
             CardManager.Instance.isAcceptCardData = true;
-            CardManager.Instance.currentStage = dungeonStage;
+            CardManager.Instance.currentFloor = dungeonStage;
             UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
         }
     }

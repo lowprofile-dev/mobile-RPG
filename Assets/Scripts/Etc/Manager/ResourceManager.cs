@@ -1,32 +1,46 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File ResourceManager.cs
+    class ResourceManager
+    
+    담당자 : 이신홍
+    부 담당자 :
+
+    경로를 통해 리소스를 불러올 수 있는 매니저
+    Resources를 사용하므로 Resource 폴더에 있는 에셋만 불러올 수 있다.
+*/
+////////////////////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 리소스를 관리하는 매니저이다.
 public class ResourceManager : SingletonBase<ResourceManager>
 {
-    public Dictionary<string, Object> resourceContainer = new Dictionary<string, Object>();
+    public Dictionary<string, Object> resourceContainer = new Dictionary<string, Object>(); // 중복된 리소스는 저장해두었다가 사용하도록 하여 Load 부하를 줄임.
 
     public void InitResourceManager()
     {
-
+        // DO SOMETHING
     }
 
+    /// <summary>
+    /// 경로를 받아 오브젝트를 생성한다.
+    /// </summary>
     public static Object Load(string path)
     {
         Object obj = Resources.Load(path);
-        if (obj != null)
-        {
-            return obj;
-        }
+        if (obj != null) return obj;
 
         else
         {
-            Debug.LogError("Resource path is not valided");
+            Debug.LogError("Resource path " + path + " is not valided");
             return null;
         }
     }
+
+
 
     // 다양한 Instantiate 방법 //
 

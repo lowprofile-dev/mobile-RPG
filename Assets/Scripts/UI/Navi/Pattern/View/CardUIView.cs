@@ -86,7 +86,7 @@ public class CardUIView : View
 
         for (int i = 0; i < _roomAreaImg.Length; i++)
         {
-            Card cntCard = cardManager.dungeonCardData[cardManager.currentStage, i];
+            Card cntCard = cardManager.dungeonCardData[cardManager.currentFloor, i];
             _roomAreaImg[i].roomNumber = i;
             _roomAreaImg[i].InitCardRoomData(cntCard);
         } // 카드 갱신
@@ -120,14 +120,14 @@ public class CardUIView : View
             UINaviationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
             CardManager.Instance.isAcceptCardData = false;
 
-            if(CardManager.Instance._cntDungeon == null)
+            if(CardManager.Instance.cntDungeon == null)
             {
                 UILoaderManager.Instance.LoadDungeon();
             } // 던전으로 가는것이면 던전으로 가도록
 
             else
             {
-                CardManager.Instance._cntDungeon.ToNextStage();
+                CardManager.Instance.cntDungeon.ToNextStage();
             } // 다음 층으로 가는거면 다음 층으로 가도록
         }
     }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-using UnityEngine;
-using CSVReader;
-////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////
 /*
     File MasteryManager.cs
     class MasteryManager
@@ -13,6 +7,13 @@ using CSVReader;
     부 담당자 : 김기정
 */
 ////////////////////////////////////////////////////
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using UnityEngine;
+using CSVReader;
 
 /// <summary>
 ///  무기별 스킬 레벨 저장용 클래스

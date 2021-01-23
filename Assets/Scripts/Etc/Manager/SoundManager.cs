@@ -1,4 +1,16 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File ResourceManager.cs
+    class ResourceManager
+    
+    담당자 : 이신홍
+    부 담당자 :
+
+    사운드를 관리하는 매니저
+*/
+////////////////////////////////////////////////////
+
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -23,22 +35,16 @@ public class SoundManager : SingletonBase<SoundManager>
 
     // distance 비례 음량
     private const float     _minDistanceVolume  = 15; // 거리가 이만큼 될때부터 소리가 작아지기 시작
+
     
+
+    ////////// 베이스 //////////
+
     public void InitSoundManager()
     {
         InitSound();
         GameStartBGM();
     }
-
-    public void GameStartBGM()
-    {
-        PlayBGM("BGM/Title", 0.7f);
-    }
-
-    public void UpdateSoundManager()
-    {
-    }
-    
 
     /// 초기 사운드들을 배치하도록 한다.
     public void InitSound()
@@ -56,7 +62,20 @@ public class SoundManager : SingletonBase<SoundManager>
         _bgmContainer2.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0);
     }
 
-    // BGM을 재생시킨다. 기본적으로 FadeIn / Out이 적용된다.
+    /// <summary>
+    /// 시작 씬용 BGM 재생 함수
+    /// </summary>
+    public void GameStartBGM()
+    {
+        PlayBGM("BGM/Title", 0.7f);
+    }
+
+
+    ////////// 재생 & 정지 //////////
+
+    /// <summary>
+    /// BGM을 재생시킨다. 기본적으로 FadeIn / Out이 적용된다.
+    /// </summary>
     public AudioSource PlayBGM(string soundPath, float vol = 1.0f, bool startImmediatly = false)
     {
         AudioSource startSource;
@@ -271,6 +290,9 @@ public class SoundManager : SingletonBase<SoundManager>
         return targetSource;
     }
 
+
+    ////////// 사운드 연출 //////////
+
     /// <summary>
     /// 사운드의 pitch를 조절
     /// </summary>
@@ -347,6 +369,9 @@ public class SoundManager : SingletonBase<SoundManager>
         chorus.wetMix2 = wetMix2;
         chorus.wetMix3 = wetMix3;
     }
+
+
+    ////////// 옵션 //////////
 
     // BGM의 볼륨을 조절
     public void ChangeBGMVolume(float volume)

@@ -49,7 +49,7 @@ public class Talk
     }
 
     // 대화 내용을 정제한다.
-    public void RefineConvData(TalkData targetTalkData)
+    public void ParsingConvData(TalkData targetTalkData)
     {
         _talkData = targetTalkData;
         string[] split =  _talkData.convData.Split('_', '$');

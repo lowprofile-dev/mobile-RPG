@@ -4,13 +4,14 @@ using UnityEngine;
 using CSVReader;
 using System;
 using System.IO;
+
 ////////////////////////////////////////////////////
 /*
     File WeaponManager.cs
     class WeaponManager
 
     담당자 : 김의겸
-    부 담당자 : 이신홍
+    부 담당자 : 
 */
 ////////////////////////////////////////////////////
 
