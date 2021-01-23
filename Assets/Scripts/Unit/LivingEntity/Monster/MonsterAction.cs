@@ -101,7 +101,6 @@ public class MonsterAction : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody>();
         _outlinable = GetComponent<Outlinable>();
         _target = Player.Instance.GetPlayer;
-        _navMeshAgent.enabled = false;
         _navMeshAgent.enabled = true;
     }
 

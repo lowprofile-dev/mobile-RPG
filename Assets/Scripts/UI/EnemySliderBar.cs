@@ -39,7 +39,6 @@ public class EnemySliderBar : MonoBehaviour
 
     public void CastUpdate() // 해당 오브젝트의 casting 업데이트
     {
-        //CastSlider.value = parent.GetComponent<MonsterAction>()._cntCastTime / parent.GetComponent<MonsterAction>()._castTime;
         CastSlider.value = parentAction._cntCastTime / parentAction._castTime;
     }
 }

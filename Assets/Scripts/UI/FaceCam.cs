@@ -14,11 +14,11 @@ public class FaceCam : MonoBehaviour
     {
         faceCam = gameObject.GetComponent<CinemachineFreeLook>();
     }
+
     public void InitFaceCam(GameObject avatar)
     {
         ResetAvata();
         StartCoroutine(SetTargetWithGenerate(avatar));
-        //SetTargetWithGenerate(avatar);
     }
 
     private void ResetAvata()
@@ -45,6 +45,7 @@ public class FaceCam : MonoBehaviour
         followAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
         bodyAvatar.transform.position = new Vector3(0, 2000, -15);
         bodyAvatar.transform.rotation = Quaternion.Euler(-10, 170, 0);
+
         followAvatar.tag = "FaceCamAvata";
         bodyAvatar.tag = "BodyCamAvata";
 
@@ -62,7 +63,6 @@ public class FaceCam : MonoBehaviour
 
     public void SetTarget(GameObject target)
     {
-        faceCam = GetComponent<CinemachineFreeLook>();
         followAvatar = target;
         faceCam.m_Follow = followAvatar.transform;
         faceCam.m_LookAt = followAvatar.transform;
