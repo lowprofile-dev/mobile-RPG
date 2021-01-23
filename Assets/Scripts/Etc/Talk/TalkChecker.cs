@@ -180,6 +180,7 @@ public class TalkChecker
         {
             quest = GetTargetQuest();
             talk = TalkManager.Instance.talkDatas[quest.convList[quest.currentIndex]];
+
             isQuest = true;
         }
 

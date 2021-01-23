@@ -11,7 +11,7 @@ public class Quest
 
 
     // 퀘스트 진행여부 관련
-    private int _currentIndex; public int currentIndex { get { return _currentIndex; } }        // 현재 퀘스트의 몇번째 진행상황인지
+    public int currentIndex; // 현재 퀘스트의 몇번째 진행상황인지
     public bool canStart;   // 퀘스트를 시작할 수 있는지.
     public bool canEnd;     // 퀘스트 종료 조건이 채워졌는지.
     public bool isOn;       // 퀘스트가 진행 중인지.
@@ -48,7 +48,7 @@ public class Quest
         _conditionAmountList = new List<int>();
         _curConditionAmountList = new List<int>();
 
-        _currentIndex = 0;
+        currentIndex = 0;
 
         isOn = false;
         isEnd = false;
@@ -234,7 +234,7 @@ public class Quest
     /// </summary>
     public void NextIndex()
     {
-        _currentIndex++;
+        currentIndex++;
     }
 
     /// <summary>
