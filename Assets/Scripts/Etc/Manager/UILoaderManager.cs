@@ -39,10 +39,6 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
          _playerUI.GetComponent<Canvas>().enabled = true;
     }
 
-
-
-
-
     //////////// 로드하는 씬 별 작동 양상 /////////////
 
     public void LoadVillage() // 마을씬 로드

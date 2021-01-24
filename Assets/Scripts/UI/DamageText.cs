@@ -1,4 +1,16 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File DamageText.cs
+    class DamageText
+    
+    담당자 : 안영훈
+    부 담당자 : 이신홍
+
+    플레이어 , 몬스터가 입는 데미지를 보여주는 텍스트
+*/
+////////////////////////////////////////////////////
+///
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;

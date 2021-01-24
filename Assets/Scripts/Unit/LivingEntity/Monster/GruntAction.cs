@@ -1,17 +1,25 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File GruntAction.cs
+    class GruntAction
+    
+    담당자 : 안영훈
+
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GruntAction : MonsterAction
 {
     bool canPanic;
-    enum GRUNTATTACKTYPE {DEFALUT_ATTACK , SHOULDER_BASH , SPIN , SLAM };
+    enum GRUNTATTACKTYPE {DEFALUT_ATTACK , SHOULDER_BASH , SPIN , SLAM }; // 4가지 공격패턴
     GRUNTATTACKTYPE atktype;
 
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
+    [SerializeField] private Transform _baseMeleeAttackPos; //공격하는 pos
+    [SerializeField] private GameObject _baseMeleeAttackPrefab; //공격 콜라이더 오브젝트
 
-    Collider _baseAtkCollision;
     /////////// 탐색 관련 /////////////
     public override void InitObject()
     {

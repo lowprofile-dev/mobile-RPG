@@ -42,7 +42,7 @@ public class Monster : LivingEntity
     [SerializeField] protected int _attackPattern; public int attackPattern { get { return _attackPattern; } }
     [SerializeField] protected string _description; public string description { get { return _description; } }
     [SerializeField] protected float _attackTime; public float attackTime { get { return _attackTime; } }
-    [SerializeField] protected int _attackDamage; public int attackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
+    [SerializeField] protected float _attackDamage; public float attackDamage { get { return _attackDamage; } set { _attackDamage = value; } }
 
     [SerializeField] protected Material _dissolveMaterial; public Material dissolveMaterial { get { return _dissolveMaterial; } }
     [SerializeField] protected Material _nonDissolveMaterial; public Material nonDissolveMaterial { get { return _nonDissolveMaterial; } }

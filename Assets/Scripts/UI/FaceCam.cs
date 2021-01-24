@@ -1,4 +1,16 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File FaceCam.cs
+    class FaceCam
+    
+    담당자 : 안영훈
+    부 담당자 : 
+
+    캐릭터 모델 정보를 보여주는 카메라 
+*/
+////////////////////////////////////////////////////
+///
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;

@@ -1,22 +1,24 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File SkeletonAction.cs
+    class SkeletonAction
+    
+    담당자 : 안영훈
+
+*/
+////////////////////////////////////////////////////
+using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
 using System.Collections;
 using System;
 using UnityEngine.SceneManagement;
 
-public class BossSkeletonAction : MonsterAction
+public class SkeletonAction : MonsterAction
 {
     [SerializeField] private Transform _baseMeleeAttackPos;
     [SerializeField] private GameObject _baseMeleeAttackPrefab;
     string currentAnimation;
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _findRange);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
-    }
 
     protected override void DoAttack()
     {
@@ -146,5 +148,10 @@ public class BossSkeletonAction : MonsterAction
     protected override void IdleStart()
     {
         ChangeState(MONSTER_STATE.STATE_TRACE);
+    }
+
+    protected override void KillStart()
+    {
+        _monster.myAnimator.SetTrigger("Laugh");
     }
 }

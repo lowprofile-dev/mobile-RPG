@@ -1,4 +1,15 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File BossAttack.cs
+    class BossAttack
+    
+    담당자 : 안영훈
+    부 담당자 : 
+
+    보스 공격 콜라이더 스크립트
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

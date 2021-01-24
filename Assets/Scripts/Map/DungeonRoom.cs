@@ -27,7 +27,7 @@ public class DungeonRoom : MonoBehaviour
 
     Bounds bounds;
     Vector2 center;
-    DungeonManager dungeonManager;
+    DungeonManager dungeonManager; public DungeonManager DungeonManager { get { return dungeonManager; } }
 
     [Header("방별 몬스터 스폰 데이터")]
     [SerializeField] List<GameObject> monsterSpawnPoints = new List<GameObject>();
