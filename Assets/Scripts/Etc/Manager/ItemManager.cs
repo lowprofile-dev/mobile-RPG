@@ -19,7 +19,6 @@ public class ItemManager : SingletonBase<ItemManager>
     //착용중인 아이템 인덱스
     public CurrentItems currentItems;
     public CurrentItemKeys currentItemKeys;
-    //Dictionary<ItemData, int> playerInventory;
     public Dictionary<int, int> playerInventory;
     public Dictionary<int, ItemData> itemDictionary;
     public List<ItemData> itemCart = new List<ItemData>();
@@ -31,8 +30,8 @@ public class ItemManager : SingletonBase<ItemManager>
     public int inventorySize;
     public int dictionarySize;
 
-    List<ItemData> lowClassItems = new List<ItemData>();
-    List<ItemData> highClassItems = new List<ItemData>();
+    public List<ItemData> lowClassItems = new List<ItemData>();
+    public List<ItemData> highClassItems = new List<ItemData>();
     List<ItemData> rareClassItems = new List<ItemData>();
     List<ItemData> heroicClassItems = new List<ItemData>();
     List<ItemData> legendaryClassItems = new List<ItemData>();

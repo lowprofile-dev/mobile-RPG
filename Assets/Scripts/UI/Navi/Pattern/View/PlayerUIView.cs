@@ -1,5 +1,7 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerUIView : View
@@ -12,6 +14,7 @@ public class PlayerUIView : View
 
     [SerializeField] private Button _cardTestBtn;
     [SerializeField] private Button _shopTestBtn;
+    [SerializeField] private Button _shopTestBtn1;
     [SerializeField] private Button _atkBtn;
     [SerializeField] private Image _atkImg;
     [SerializeField] private Button _invincibleBtn;
@@ -43,6 +46,7 @@ public class PlayerUIView : View
     {
         _cardTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleCardUIView(); });
         _shopTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleShopView(); });
+        _shopTestBtn1.onClick.AddListener(delegate { UINaviationManager.Instance.TogglePurchaseShopView(); });
         _atkBtn.onClick.AddListener(delegate { Player.Instance.CheckInteractObject(); });
         _invincibleBtn.onClick.AddListener(delegate { Player.Instance.EvadeBtnClicked(); });
         _optionButton.onClick.AddListener(delegate { AddOptionView(); });
@@ -86,6 +90,21 @@ public class PlayerUIView : View
         SetMyStatusText();
         SetHpStemina();
         SetTalkOrAttackSprite();
+        ActivateShopBtn();
+    }
+
+    private void ActivateShopBtn()
+    {
+        if (SceneManager.GetSceneByName("VillageScene").isLoaded == false)
+        {
+            _shopTestBtn.gameObject.SetActive(false);
+            _shopTestBtn1.gameObject.SetActive(false);
+        }
+        else if (SceneManager.GetSceneByName("VillageScene").isLoaded == true)
+        {
+            _shopTestBtn.gameObject.SetActive(true);
+            _shopTestBtn1.gameObject.SetActive(true);
+        }
     }
 
     public void AddOptionView()

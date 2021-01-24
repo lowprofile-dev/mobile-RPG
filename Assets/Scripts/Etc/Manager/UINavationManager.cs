@@ -11,6 +11,7 @@
 */
 ////////////////////////////////////////////////////
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -88,7 +89,16 @@ public class UINaviationManager : SingletonBase<UINaviationManager>
     {
         if (FindTargetIsInNav("SubUI_ShopBase")) PopToNav("SubUI_ShopBase");
         else PushToNav("SubUI_ShopBase");
+
     }
+
+    internal void TogglePurchaseShopView()
+    {
+        if (FindTargetIsInNav("SubUI_PurchaseShopUIView"))
+            PopToNav("SubUI_PurchaseShopUIView");
+        else PushToNav("SubUI_PurchaseShopUIView");
+    }
+
     internal void ToggleWeaponView()
     {
         if (FindTargetIsInNav("SubUI_WeaponMasteryView")) PopToNav("SubUI_WeaponMasteryView");

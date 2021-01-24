@@ -1465,18 +1465,4 @@ public class Player : LivingEntity
     {
         avoidButtonClick = avoidbutton;
     }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Item")
-        {
-            Item itemInfo = other.gameObject.GetComponent<Item>();
-            itemManager.AddItem(itemInfo);
-            //Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
-            SystemPanel.instance.SetText(itemInfo.itemData.itemName + " 아이템 획득!");
-            SystemPanel.instance.FadeOutStart();
-            other.gameObject.SetActive(false);
-        }
-    }
 }

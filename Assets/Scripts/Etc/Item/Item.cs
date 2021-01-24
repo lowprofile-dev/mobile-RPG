@@ -1,4 +1,12 @@
-﻿using System.Collections;
+﻿/*
+    File Item.cs
+    class Item
+    
+    담당자 : 김기정
+    부 담당자 :
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -9,11 +17,9 @@ public class Item : MonoBehaviour
     public ItemData itemData;
     public bool isDrop;
     ItemManager itemManager;
-    //Transform itemModel;
 
     private void Start()
     {
-        //itemModel = transform.GetChild(0);
         itemManager = ItemManager.Instance;
         LoadItemData();
     }
@@ -29,32 +35,23 @@ public class Item : MonoBehaviour
         ItemManager.Instance.SetItemData(id, out itemData);
     }
 
-    //  COMMENT : 아이템 스크립트에서 모델링까지 불러오는 방식 (비용이 높아 폐기)
-    //public void LoadItemModeling()
-    //{
-    //    string prefabPath;
-    //    switch(itemData.itemType)
-    //    {
-    //        case "Armor":
-
-    //            break;
-    //        case "Bottom":
-
-    //            break;
-    //        case "Helmet":
-
-    //            break;
-    //        case "Gloves":
-
-    //            break;
-    //        case "Boot":
-
-    //            break;
-    //    }
-    //    Instantiate(prefabPath, itemModel);
-    //}
     private void DisableItem()
     {
         gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// 플레이어와 충돌시 인벤토리에 아이템 추가
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            itemManager.AddItem(this);
+            SystemPanel.instance.SetText(itemData.itemName + " 아이템 획득!");
+            SystemPanel.instance.FadeOutStart();
+            gameObject.SetActive(false);
+        }
     }
 }
