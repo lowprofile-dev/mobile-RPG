@@ -19,7 +19,6 @@ public class UIManager : SingletonBase<UIManager>
 {
     public PlayerUIView playerUIView;
 
-    //[SerializeField] private Button AttackBtn;
     [SerializeField] private Button InvincibleBtn;
     [SerializeField] private Button SkillAbtn;
     [SerializeField] private Button SkillBbtn;
@@ -48,36 +47,15 @@ public class UIManager : SingletonBase<UIManager>
 
     void InventoryClick()
     {
-        //Debug.log("인벤토리");
         UINaviationManager.Instance.PushToNav("SubUI_Inventory");
     }
-
-    /*
-    public void OptionClick()
-    {
-        //Debug.log("옵션");
-
-        if (Time.timeScale != 0)
-        {
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Time.timeScale = 1;
-        }
-        //옵션 구현
-        //UINaviationManager.Instance.PushToNav("SubUI_Info");
-    }
-    */
-
+    
     public void InvincibleClick() //회피
     {
-        //Debug.log("회피");
-        if (!Player.Instance.isdead) Player.Instance.SetAvoidButton(true);
     }
+
     public void PlayerInfoClick()
     {
-        //Debug.log("플레이어 정보창");
         UINaviationManager.Instance.PushToNav("SubUI_Info");
     }
 

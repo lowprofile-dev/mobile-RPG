@@ -41,7 +41,7 @@ public class Card
     {
         cardData = data;
 
-        level = 1;
+        level = 0;
         isSet = false;
         isSetOn = false;
         effectList = new List<CardEffect>();
@@ -55,7 +55,7 @@ public class Card
     {
         cardData = copyCard.cardData;
 
-        level = 1;
+        level = 0;
         isSet = false;
         isSetOn = false;
         effectList = new List<CardEffect>(copyCard.effectList);

@@ -12,9 +12,6 @@ public class EnemySliderBar : MonoBehaviour
     [SerializeField] protected Monster parent;
     protected MonsterAction parentAction;
 
-    float angle;
-    float velocity;
-
     private void Start()
     {
         cam = CameraManager.Instance.PlayerFollowCamera;

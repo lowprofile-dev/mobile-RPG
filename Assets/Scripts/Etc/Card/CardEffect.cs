@@ -9,14 +9,12 @@
 */
 ////////////////////////////////////////////////////
 
-using UnityEngine;
-using UnityEditor;
 using System.Collections.Generic;
 
 public class CardEffect
 {
     // 기본 데이터
-    public CardEffectData effectData; 
+    public CardEffectData effectData;
 
     // 파싱 데이터
     public float[] gradeNum;        // 레벨 별 증가량 정보
@@ -40,7 +38,7 @@ public class CardEffect
 
 
     ////////// 데이터 //////////
-   
+
     /// <summary>
     /// EffectData Class 파싱 작업
     /// </summary>
@@ -82,7 +80,7 @@ public class CardEffect
         else if (effectData.id == 6) // 대쉬 속도 증가 (미구현)
         {
             originalValues.Add(Player.Instance.dashSpeed);
-            Player.Instance.dashSpeed *= (gradeNum[level - 1] / 100.0f);
+            Player.Instance.dashSpeed *= (gradeNum[level] / 100.0f);
         }
         else if (effectData.id == 15) // 플레이어의 데미지 증가
         {

@@ -167,12 +167,12 @@ public class CardManager : SingletonBase<CardManager>
 
             Card randomCard = _cardData.Values.ElementAt(cardNum);
             Card card = new Card(randomCard);
+            RandomLevelToCard(card);        // 랜덤 레벨
 
             if (!FindEqualCardInStage(card)) // 중복이 아니면
             {
                 dungeonCardData[currentFloor, pos] = card;
 
-                RandomLevelToCard(card);        // 랜덤 레벨
                 RandomSetToCard(card);          // 랜덤 세트 효과
                 break;
             }
@@ -208,9 +208,9 @@ public class CardManager : SingletonBase<CardManager>
         bool useMastery = (MasteryManager.Instance.currentMastery.currentMasteryChoices[0] == -1); // 마스터리 사용 여부
         int levelRandom = Random.Range(0, 100);
 
-        if (levelRandom >= (useMastery ? 75 : 80)) card.level = 3;
-        else if (levelRandom >= (useMastery ? 40 : 50)) card.level = 2;
-        else card.level = 1;
+        if (levelRandom >= (useMastery ? 75 : 80)) card.level = 2;
+        else if (levelRandom >= (useMastery ? 40 : 50)) card.level = 1;
+        else card.level = 0;
     }
 
     /// <summary>

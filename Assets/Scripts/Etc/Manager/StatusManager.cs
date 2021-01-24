@@ -3,7 +3,7 @@
     class StatusManager, AdditionStatus, MultiplicationStatus
     
     담당자 : 김기정
-    부 담당자 :
+    부 담당자 : 김의겸
  */
 
 using CSVReader;

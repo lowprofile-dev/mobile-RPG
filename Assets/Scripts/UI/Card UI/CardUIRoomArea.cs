@@ -123,9 +123,9 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         _cardIconImg.sprite = Resources.Load<Sprite>(iconPath + card.cardData.iconImg); // 카드 그림
         switch (card.level)
         {
-            case 1: _cardFrameImg.sprite = _level1Sprite; break;
-            case 2: _cardFrameImg.sprite = _level2Sprite; break;
-            case 3: _cardFrameImg.sprite = _level3Sprite; break;
+            case 0: _cardFrameImg.sprite = _level1Sprite; break;
+            case 1: _cardFrameImg.sprite = _level2Sprite; break;
+            case 2: _cardFrameImg.sprite = _level3Sprite; break;
         } // 카드 액자 (Level에 따라)
 
         _cardNameText.text = card.cardData.cardName;

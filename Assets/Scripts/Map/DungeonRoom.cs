@@ -27,7 +27,7 @@ public class DungeonRoom : MonoBehaviour
 
     Bounds bounds;
     Vector2 center;
-    DungeonManager dungeonManager;
+    DungeonManager dungeonManager; public DungeonManager DungeonManager { get { return dungeonManager; } }
 
     [Header("방별 몬스터 스폰 데이터")]
     [SerializeField] List<GameObject> monsterSpawnPoints = new List<GameObject>();
@@ -53,14 +53,12 @@ public class DungeonRoom : MonoBehaviour
     private void Start()
     {
         dungeonManager = transform.parent.gameObject.GetComponent<DungeonManager>();
-        //StartCoroutine(roomSetAreaCodeCoroutine());
         GetMonsterSpawnPoints(transform);
         GetBossSpawnPoint(transform);
         GetMinimapImages(transform);
         if (dungeonManager.hasPlane && !isSetArea)
         {
             SetArea();
-            //this.enabled = false;
         }
     }
 
@@ -115,7 +113,6 @@ public class DungeonRoom : MonoBehaviour
         GetLights(transform);
         for (int i = 0; i < lights.Count; i++)
         {
-            //lights[i].GetComponent<Light>().color
             Color color;
             switch(this.areaCode-1)
             {
@@ -158,7 +155,6 @@ public class DungeonRoom : MonoBehaviour
         GetDoorways(transform);
         for (int i = 0; i < doorways.Count; i++)
         {
-            //GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
             GameObject door = Instantiate(doorPrefab);
             door.transform.position = doorways[i].transform.TransformPoint(0, 0, 0);
             door.transform.rotation = doorways[i].transform.rotation;
@@ -173,9 +169,7 @@ public class DungeonRoom : MonoBehaviour
         for (int i = 0; i < doors.Count; i++)
         {
             doors[i].gameObject.SetActive(false);
-            //ObjectPoolManager.Instance.ReturnObject(doors[i].gameObject);
         }
-        //doors.Clear();
 
         if(isClosedPrev)
         {
@@ -279,15 +273,12 @@ public class DungeonRoom : MonoBehaviour
         if (dungeonManager.hasPlane && !isSetArea)
         {
             SetArea();
-            //this.enabled = false;
             ChangeLights();
             SetMinimapColor();
         }
         if (!isMinimapSet)
             SetMinimapColor();
         CheckPlayerInRoom();
-        //CheckClear();
-        //CheckMonstersInRoom();
     }
 
     public void CheckClear()

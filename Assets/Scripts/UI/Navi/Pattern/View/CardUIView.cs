@@ -159,9 +159,9 @@ public class CardUIView : View
     {
         switch (card.level) // 테두리
         {
-            case 1: _tooltipImageFrameImg.sprite = _level1Sprite; break;
-            case 2: _tooltipImageFrameImg.sprite = _level2Sprite; break;
-            case 3: _tooltipImageFrameImg.sprite = _level3Sprite; break;
+            case 0: _tooltipImageFrameImg.sprite = _level1Sprite; break;
+            case 1: _tooltipImageFrameImg.sprite = _level2Sprite; break;
+            case 2: _tooltipImageFrameImg.sprite = _level3Sprite; break;
         }
 
         _tooltipCardImg.sprite = Resources.Load<Sprite>(iconPath + card.cardData.iconImg); // 카드 이미지
@@ -169,7 +169,7 @@ public class CardUIView : View
 
         for (int i = 0; i < 3; i++) // 레벨에 따른 별 이미지 변화
         {
-            if (card.level > i)
+            if (card.level >= i)
             {
                 _tooltipGradeStarImg[i].sprite = _starGold;
             }

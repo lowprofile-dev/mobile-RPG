@@ -102,12 +102,15 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void InitStatus()
     {
-        _monster.Hp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp;
+        float currentStage = parentRoom.DungeonManager.dungeonStage;
+        if (currentStage > 2) currentStage *= 0.5f;
+
+        _monster.initHp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp * currentStage;
         _findRange = MonsterManager.Instance.MonsterDictionary[_monster.id].findrange;
         _attackRange = MonsterManager.Instance.MonsterDictionary[_monster.id].attackrange;
         _limitTraceRange = MonsterManager.Instance.MonsterDictionary[_monster.id].LimitTraceRange;
         _attackSpeed = MonsterManager.Instance.MonsterDictionary[_monster.id].AttackSpeed;
-        _monster.attackDamage = (int)MonsterManager.Instance.MonsterDictionary[_monster.id].damage;
+        _monster.attackDamage = (int)(MonsterManager.Instance.MonsterDictionary[_monster.id].damage * currentStage);
         _navMeshAgent.speed = MonsterManager.Instance.MonsterDictionary[_monster.id].speed;
     }
 
@@ -840,7 +843,6 @@ public class MonsterAction : MonoBehaviour
     {
         if (GetCanDamageCheck())
         {
-          //  Debug.Log("Player -> " + gameObject.name);
             Damaged(damage);
             ProductionDamaged();
             _isImmune = true;
