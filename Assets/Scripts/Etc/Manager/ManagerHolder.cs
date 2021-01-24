@@ -84,7 +84,6 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     /// </summary>
     private void InitManagers()
     {
-
         resourceManager.InitResourceManager();
         objectPoolManager.InitObjectPoolManager();
         masteryManager.InitMasteryManager();

@@ -1,17 +1,26 @@
-﻿using Coffee.UIEffects;
+﻿////////////////////////////////////////////////////
+/*
+    File CardUIRoomArea.cs
+    class CardUIRoomArea
+    
+    담당자 : 이신홍
+    부 담당자 : 
+
+    방 구역에 대한 카드 UI
+*/
+////////////////////////////////////////////////////
+
+using Coffee.UIEffects;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/// <summary>
-/// 방 구역에 대한 카드 UI.
-/// </summary>
 public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler, IPointerExitHandler, IEndDragHandler
 {
-    [SerializeField] private CardUIView _parentView;
-    [SerializeField] private Image _roomAreaImg;
+    [SerializeField] private CardUIView _parentView;        
+    [SerializeField] private Image _roomAreaImg;            
     [SerializeField] private Image[] _roomFramesImg;
     [SerializeField] private Image[] _roomIconsImg;
     [SerializeField] private Button _cardBtn;

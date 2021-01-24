@@ -1,4 +1,16 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File GoblinAction.cs
+    class GoblinAction
+    
+    담당자 : 이신홍
+    부 담당자 : 
+
+    고블린의 행동을 정의한다.
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
@@ -27,7 +39,7 @@ public class GoblinAction : MonsterAction
     protected override void IdleUpdate()
     {
         base.IdleUpdate();
-        ToStirr();
+        ToStirr(); // 자는 행동이 추가됨.
     }
 
     protected override void DoSomethingIdleSearchFind()
@@ -48,7 +60,7 @@ public class GoblinAction : MonsterAction
     {
         if (CheckAnimationOver("Sleep", 1.0f))
         {
-            ChangeState(MONSTER_STATE.STATE_IDLE);
+            ChangeState(MONSTER_STATE.STATE_IDLE); // 일정 시간 뒤 IDLE로 돌아옴.
         }
     }
 
@@ -62,7 +74,7 @@ public class GoblinAction : MonsterAction
 
     protected override void FindStart()
     {
-        ChangeState(MONSTER_STATE.STATE_TRACE);
+        ChangeState(MONSTER_STATE.STATE_TRACE); // 공격을 받으면 바로 추적하므로
     }
 
     protected override void FindExit()

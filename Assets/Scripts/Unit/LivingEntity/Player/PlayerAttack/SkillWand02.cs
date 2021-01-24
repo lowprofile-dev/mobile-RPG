@@ -1,4 +1,16 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File SkillWand02.cs
+    class SkillWand02
+    
+    모션 이후 여러번의 공격을 빠르게 실행하는 스킬
+
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using System.Collections;
 
 public class SkillWand02 : PlayerAttack
@@ -10,7 +22,7 @@ public class SkillWand02 : PlayerAttack
         yield return new WaitForSeconds(0.2f);
 
         for(int i=0; i<5; i++)
-        {
+        { // 빠르게 5회 사운드를 냄
             SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Skill 2 Attacks", 0.7f);
             yield return new WaitForSeconds(0.05f);
         }

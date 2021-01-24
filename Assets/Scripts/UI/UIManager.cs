@@ -1,4 +1,14 @@
-﻿using System;
+﻿///////////////////////////////////////
+/*
+    File UIManager.cs
+    class UIManager : UI의 기타 기능들을 모아둔 매니저
+
+    담당자 : 안영훈
+    부 담당자 : 이신홍 
+*/
+////////////////////////////////////////////////////
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -71,6 +81,12 @@ public class UIManager : SingletonBase<UIManager>
         UINaviationManager.Instance.PushToNav("SubUI_Info");
     }
 
+    /// <summary>
+    /// RichText의 다양한 표현을 지원하기위한 함수
+    /// </summary>
+    /// <param name="text">string에 들어갈 내용</param>
+    /// <param name="colorName">적용할 색</param>
+    /// <param name="fontSize">폰트 크기</param>
     public string AddFontData(string text, string colorName, float fontSize = 20)
     {
         string rtnText = "";

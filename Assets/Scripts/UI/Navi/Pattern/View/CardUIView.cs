@@ -48,6 +48,7 @@ public class CardUIView : View
     string iconPath = "Image/TonityEden/Skill Icons Megapack/";
 
     static int IsCardTutorial;
+
     private void Start()
     {
         _watchBtn.onClick.AddListener(delegate { ToogleCardViews(); });

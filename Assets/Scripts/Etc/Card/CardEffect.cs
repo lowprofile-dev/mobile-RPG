@@ -261,7 +261,8 @@ public class CardEffect
     {
         string description = effectData.description;
         description = description.Replace(";", effectData.effectName);
-        description = description.Replace(":", gradeNum[level - 1].ToString());
+        description = description.Replace(":", gradeNum[level].ToString());
+
         return description;
     }
 }

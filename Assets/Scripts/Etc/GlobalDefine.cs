@@ -1,10 +1,19 @@
-﻿using UnityEngine;
+﻿//////////////////////////////////////////////
+/*
+    File GlobalDefine.cs
+    class GlobalDefine
+    
+    담당자 : 이신홍
+    부담당자 :
+
+    각종 오브젝트 및 데이터의 캐싱에 사용할 공유 데이터 컨테이너 스크립트
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-/// <summary>
-/// 각종 오브젝트 및 데이터의 캐싱에 사용할 공유 데이터 컨테이너 스크립트
-/// </summary>
 public class GlobalDefine : SingletonBase<GlobalDefine>
 {
     // 미니맵 퀘스트 아이콘 관련

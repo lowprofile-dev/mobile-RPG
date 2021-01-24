@@ -1,4 +1,16 @@
-﻿using DG.Tweening;
+﻿////////////////////////////////////////////////////
+/*
+    File Monster.cs
+    class Monster
+    
+    담당자 : 이신홍
+    부 담당자 : 안영훈
+
+    몬스터의 행동 베이스가 되는 클래스
+*/
+////////////////////////////////////////////////////
+
+using DG.Tweening;
 using EPOOutline;
 using System;
 using System.Collections;
@@ -17,19 +29,18 @@ public class MonsterAction : MonoBehaviour
     protected Coroutine _hitCoroutine;      // HitCoroutine 제어
 
     // 캐싱 대상
-    protected Monster _monster; public Monster monster { get { return _monster; } }
-    protected NavMeshAgent _navMeshAgent; public NavMeshAgent NavMeshAgent { get { return _navMeshAgent; } }
+    protected Monster _monster; 
+    protected NavMeshAgent _navMeshAgent; 
     protected Rigidbody _rigidBody;
     protected Outlinable _outlinable;
 
     // 오브젝트
-    protected GameObject _target; public GameObject Target { get { return _target; } }               // 공격대상        
-    protected GameObject _spawnEffect;              // 스폰용으로 사용된 이펙트
+    protected GameObject _target;       // 공격대상        
+    protected GameObject _spawnEffect;  // 스폰용으로 사용된 이펙트
 
     // 기타 변수
     protected MONSTER_STATE _currentState;                  // 현재 상태
-    public MONSTER_STATE currentState { get { return _currentState; } }
-
+    
     protected float _distance;                      // 타겟과의 거리
     protected float _traceTimer;                    // 추적 이후 경과한 시간
     protected Vector3 _spawnPosition;               // 스폰된 위치
@@ -61,10 +72,16 @@ public class MonsterAction : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] protected EnemySliderBar _bar;
-    
-    private float attackedTime = 0.1f;
-    private float counter = 0f;
-    public DungeonRoom parentRoom = null;
+
+    private float attackedTime = 0.1f;                   
+    private float counter = 0f;                          
+    public DungeonRoom parentRoom = null;               // 이 몬스터가 속한 던전 방
+
+    // property
+    public Monster monster { get { return _monster; } }
+    public NavMeshAgent NavMeshAgent { get { return _navMeshAgent; } }
+    public GameObject Target { get { return _target; } }
+    public MONSTER_STATE currentState { get { return _currentState; } }
 
     /////////// 기본 ////////////
 
@@ -186,7 +203,6 @@ public class MonsterAction : MonoBehaviour
             case MONSTER_STATE.STATE_DIE:
                 DeathStart();
                 ItemManager.Instance.DropItem(transform);
-         //       Debug.Log("아이템 드롭!");
                 break;
             case MONSTER_STATE.STATE_CAST:
                 CastStart();
@@ -212,7 +228,6 @@ public class MonsterAction : MonoBehaviour
     {
         // 반드시 실행되는 업데이트 내용
 
-     //   Debug.Log(_currentState);
         UpdateMonster();
 
         // 스테이트별 업데이트 내용
@@ -405,11 +420,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void FindTargetInIdle()
     {
-        //Vector3 targetDir = (_target.transform.position - transform.position).normalized; // y축의 영향 받지 않음
-        //Physics.Raycast(transform.position, targetDir, out RaycastHit hit, 30f, _checkLayerMask);
         _distance = Vector3.Distance(_target.transform.position, transform.position);
-
-        //if (hit.transform.CompareTag("Player") && _distance <= _findRange) DoSomethingIdleSearchFind();
         if (_distance <= _findRange) DoSomethingIdleSearchFind();
     }
 
@@ -621,11 +632,6 @@ public class MonsterAction : MonoBehaviour
                 _readyCast = false;
                 if(!_readyCast && ToCast()) break;
             }
-            //else
-            //{
-            //    ChangeState(MONSTER_STATE.STATE_TRACE);
-            //    break;
-            //}
         }
     }
 
@@ -637,6 +643,10 @@ public class MonsterAction : MonoBehaviour
         _attackType = 0;
     }
 
+    /// <summary>
+    /// 일정 확률로 캐스트 상태가 된다.
+    /// </summary>
+    /// <returns></returns>
     protected virtual bool ToCast()
     {
         int toCastRandomValue = UnityEngine.Random.Range(0, 100);
@@ -693,31 +703,14 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected bool CanAttackState()
     {
-        // Vector3 targetDir = new Vector3(_target.transform.position.x - transform.position.x, 0f, _target.transform.position.z - transform.position.z);
-        // Physics.Raycast(new Vector3(transform.position.x, 0.5f, transform.position.z), targetDir, out RaycastHit hit, 30f, _checkLayerMask);
-
         _distance = Vector3.Distance(_target.transform.position, transform.position);
-        
         LookTarget();
-
-        /*
-        if (hit.transform == null)
-        {
-            return false;
-        }
-        else if (hit.transform.CompareTag("Player") && _distance <= _attackRange)
-        {
-            return true;
-        }
-        */
-
         return _distance <= _attackRange;
     }
 
     protected virtual void LookTarget()
     {
         transform.LookAt(_target.transform);
-        //Debug.Log("조준");
     }
 
     /////////// 캐스트 관련////////////
@@ -728,12 +721,6 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void CastUpdate()
     {
-        // 타겟과의 거리가 공격 범위보다 커지면
-        //if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
-        //{
-        //    ChangeState(MONSTER_STATE.STATE_TRACE);
-        //}
-
         DoCastingAction();
     }
 
@@ -890,12 +877,14 @@ public class MonsterAction : MonoBehaviour
 
         Invoke("DestroyMonster", 3f);
     }
+
     private void DestroyMonster()
     {
         _bar.gameObject.SetActive(true);
 
         DestroyImmediate(gameObject);
     }
+
     /// <summary>
     /// 죽었을 때, 타이머를 통해 죽는 연출 및 이벤트 발생을 할 수 있도록 한다.
     /// </summary>
@@ -935,26 +924,7 @@ public class MonsterAction : MonoBehaviour
     {
         if (DeathCheck())
         {
-            //switch (WeaponManager.Instance.GetWeapon().name)
-            //{
-            //    case "sword":
-            //        MasteryManager.Instance.currentMastery.currentSwordMasteryExp += 10;
-            //        break;
-            //    case "wand":
-            //        MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
-            //        break;
-            //    case "dagger":
-            //        MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
-            //        break;
-            //    case "blunt":
-            //        MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
-            //        break;
-            //    case "staff":
-            //        MasteryManager.Instance.currentMastery.currentWandMasteryExp += 10;
-            //        break;
-            //}
             WeaponManager.Instance.AddExpToCurrentWeapon(10);
-        //    Debug.Log(name + " Exp + 10");
             MasteryManager.Instance.UpdateCurrentExp();
             ChangeState(MONSTER_STATE.STATE_DIE);
             return true;

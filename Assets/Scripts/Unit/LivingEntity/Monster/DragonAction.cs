@@ -1,4 +1,16 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File DragonAction.cs
+    class DragonAction
+    
+    담당자 : 이신홍
+    부 담당자 : 
+
+    드래곤의 행동을 정의한다.
+*/
+////////////////////////////////////////////////////
+
+using System.Collections;
 using UnityEngine;
 
 public class DragonAction : MonsterAction
@@ -10,15 +22,13 @@ public class DragonAction : MonsterAction
 
     Collider _baseAtkCollision;
 
-    /////////// 기본 /////////////
 
-    /// <summary>
-    /// 패닉이 추가되었으므로 오버라이딩
-    /// </summary>
+    /////////// 기본 /////////////
+    
     public override void InitObject()
     {
         base.InitObject();
-        canPanic = true;
+        canPanic = true; // 패닉이 추가되었으므로 오버라이딩
     }
 
     /////////// 상태 관련 /////////////
@@ -30,7 +40,7 @@ public class DragonAction : MonsterAction
     protected override void IdleUpdate()
     {
         base.IdleUpdate();
-        ToStirr();
+        ToStirr(); // 주변을 둘러보는 애니메이션이 추가되었으므로 오버라이딩
     }
 
 
@@ -44,20 +54,20 @@ public class DragonAction : MonsterAction
 
         if (canPanic)
         {
-            _monster.myAnimator.SetTrigger("Panic");
+            _monster.myAnimator.SetTrigger("Panic"); // 패닉이 추가되었으므로 오버라이딩
         }
     }
 
     protected override bool CheckFindAnimationOver()
     {
-        if (canPanic) return CheckAnimationOver("Panic", 1.0f);
+        if (canPanic) return CheckAnimationOver("Panic", 1.0f); // 패닉이 추가되었으므로 오버라이딩
         else return true;
     }
 
     protected override void FindExit()
     {
         base.FindExit();
-        canPanic = false;
+        canPanic = false; // 패닉이 추가되었으므로 오버라이딩
     }
 
     /////////// 추적 관련 /////////////
@@ -65,14 +75,14 @@ public class DragonAction : MonsterAction
     protected override void DoReturn()
     {
         base.DoReturn();
-        canPanic = true;
+        canPanic = true; // 패닉이 추가되었으므로 오버라이딩
     }
 
     /////////// 공격 관련 /////////////
 
     protected override void DoAttack()
     {
-        if(_attackType == 0 || _attackType == 1)
+        if(_attackType == 0 || _attackType == 1) // 공격 타입 2개
         {
             GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
             obj.transform.SetParent(this.transform);
@@ -86,7 +96,9 @@ public class DragonAction : MonsterAction
 
     protected override void SetAttackAnimation()
     {
-        if(_attackType == 0) _monster.myAnimator.SetTrigger("Attack");
+        // 애니메이션에 따라 공격 알고리즘이 달라진다..
+
+        if (_attackType == 0) _monster.myAnimator.SetTrigger("Attack");
         else if(_attackType == 1) _monster.myAnimator.SetTrigger("AttackSpecial");
     }
 

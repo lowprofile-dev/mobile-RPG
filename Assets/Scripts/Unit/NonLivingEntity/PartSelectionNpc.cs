@@ -1,9 +1,22 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File PartSelectionNpc.cs
+    class PartSelectionNpc
+    
+    NPC중 Partselection을 사용해 부품을 조립하는 형식의 NPC
+    
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 
 public class PartSelectionNpc : NonLivingEntity
 {
     private PartSelection _myPartSelection;
 
+    [Header("부품 ID 선택")]
     [SerializeField] private int headId;
     [SerializeField] private int hairId;
     [SerializeField] private int headAccId;

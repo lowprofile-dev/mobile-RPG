@@ -1,4 +1,14 @@
-﻿using System;
+﻿////////////////////////////////////////////////////
+/*
+    File QuestDropdown.cs
+    class QuestDropdown : 현재 활성화된 퀘스트 목록을 표시하는 UI
+
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,23 +26,31 @@ public class QuestDropdown : SingletonBase<QuestDropdown>
 
     private void Start()
     {
-        dropdownButton.onClick.AddListener(delegate { ToggleDropdown(); });
+        dropdownButton.onClick.AddListener(delegate { ToggleDropdown(); }); // 드롭다운 버튼
         panels = new List<QuestPanel>();
     }
 
+    /// <summary>
+    /// 드롭다운을 켜거나 끈다.
+    /// </summary>
     private void ToggleDropdown()
     {
         questContainer.gameObject.SetActive(!questContainer.gameObject.activeSelf);
         SetQuestUIData();
     }
     
+    /// <summary>
+    /// 드롭다운을 켠다.
+    /// </summary>
     public void ViewDropdown()
     {
         questContainer.gameObject.SetActive(true);
         SetQuestUIData();
     }
 
-
+    /// <summary>
+    /// 각 퀘스트들의 정보를 설정하고 표출한다.
+    /// </summary>
     public void SetQuestUIData()
     {
         foreach(QuestPanel panel in panels) panel.DestroyPanel();
@@ -46,6 +64,9 @@ public class QuestDropdown : SingletonBase<QuestDropdown>
         }
     }
 
+    /// <summary>
+    /// 퀘스트 패널을 추가한다.
+    /// </summary>
     private void AddPanel(Quest quest)
     {
         QuestPanel panel = Instantiate(questObject, contents.transform).GetComponent<QuestPanel>();
@@ -53,6 +74,9 @@ public class QuestDropdown : SingletonBase<QuestDropdown>
         panels.Add(panel);
     }
 
+    /// <summary>
+    /// 퀘스트 패널의 데이터를 갱신한다.
+    /// </summary>
     public void UpdatePanel(Quest quest)
     {
         for(int i=0; i<panels.Count; i++)

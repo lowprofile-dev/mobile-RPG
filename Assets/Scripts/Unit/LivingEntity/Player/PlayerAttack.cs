@@ -1,23 +1,37 @@
-﻿using System;
+﻿////////////////////////////////////////////////////
+/*
+    File PlayerAttack.cs
+    class PlayerAttack
+    
+    플레이어의 공격의 기본이 되는 클래스. 파티클을 생성하고 일정 시간 뒤 사라진다.
+    
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack: MonoBehaviour
 {
-    [SerializeField] protected Collider _collider;
-    [SerializeField] protected GameObject _particleEffectPrefab;
-    [SerializeField] private int targetNumber;
-    protected HashSet<GameObject> _attackedTarget;
-    protected GameObject _baseParent;
+    [Header("기본")]
+    [SerializeField] protected Collider _collider;                  // 충돌체
+    [SerializeField] protected GameObject _particleEffectPrefab;    // 생성할 파티클 오브젝트
 
-    protected bool _isParentPlayer;
-    [SerializeField] protected bool _useFixedDmg;
-    [SerializeField] protected bool _useMeleeDmg;
+    [Header("공격 속성")]
+    [SerializeField] private int targetNumber;                      // 타격한 수
+    [SerializeField] protected bool _useFixedDmg;                   // 고정 데미지인지 
+    [SerializeField] protected bool _useMeleeDmg;                   // 물리 데미지인지
+    [SerializeField] protected float _damage;                       // 데미지 수치
+    [SerializeField] protected float _damageCount;                  // 데미지 입히는 횟수
 
-    [SerializeField] protected float _damage;
-    [SerializeField] protected float _damageCount;
-    protected float thisSkillsDamage;
+    protected HashSet<GameObject> _attackedTarget;                  // 타격한 몬스터 목록 (중복 방지)
+    protected GameObject _baseParent;                               // 공격을 생성한 대상
+
+    protected float thisSkillsDamage;                               // 이 스킬이 입힌 데미지
 
     protected virtual void Start()
     {
@@ -59,16 +73,19 @@ public class PlayerAttack: MonoBehaviour
         Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
     }
 
+    /// <summary>
+    /// 부모를 설정하고 이에 따라 위치를 설정한다.
+    /// </summary>
     public void SetParent(GameObject parent)
     {
         _baseParent = parent;
         transform.SetParent(parent.transform);
         transform.localPosition = Vector3.zero;
-
-        if (parent.GetComponent<Player>() != null) _isParentPlayer = true;
-        else _isParentPlayer = false;
     }
     
+    /// <summary>
+    /// 충돌할때의 판정을 내린다.
+    /// </summary>
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (CanCollision(other))
@@ -134,6 +151,9 @@ public class PlayerAttack: MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// 충돌체의 on/off
+    /// </summary>
     public void SetEnableCollider(bool active)
     {
         _collider.enabled = active;
@@ -148,6 +168,9 @@ public class PlayerAttack: MonoBehaviour
         StartCoroutine(SetColliderTimer(time));
     }
 
+    /// <summary>
+    /// 일정 시간 뒤에 충돌체를 off하며, 객체를 삭제한다.
+    /// </summary>
     protected virtual IEnumerator SetColliderTimer(float time)
     {
         _collider.enabled = true;

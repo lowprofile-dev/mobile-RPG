@@ -1,4 +1,15 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File View.cs
+    class View : UI 페이지의 단위. 캔버스 단위로 관리된다.
+    enum VIEWTYPE 
+
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,12 +23,17 @@ public enum VIEWTYPE
 public class View : MonoBehaviour
 {
     protected VIEWTYPE viewtype;
-    [SerializeField] private string _viewName; public string viewName { get { return _viewName; } }
+    [SerializeField] private string _viewName;
 
     // 튜토리얼 관련
     [SerializeField] protected Button tutorialButton;
     [SerializeField] protected Button tutorialExitButton;
     [SerializeField] protected GameObject tutorialPage;
+
+    // property
+    public string viewName { get { return _viewName; } }
+
+
 
     private void OnEnable()
     {

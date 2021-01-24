@@ -84,6 +84,10 @@ public class ItemDetailNew : MonoBehaviour
         ItemBasicInfo.text = basicData;
     }
 
+
+    /// <summary>
+    /// 아이템 데이터를 받아 이를 TextMeshProUGUI에 표기한다.
+    /// </summary>
     public void LoadItemDetail(ItemData itemData)
     {
         string allData = "";
@@ -95,6 +99,7 @@ public class ItemDetailNew : MonoBehaviour
         allData += UIManager.Instance.AddFontData(itemData.itemType, "white", 16) + "\n";
         allData += UIManager.Instance.AddFontData("\n", "white", 8);
 
+        // 데이터의 존재 유무에 따라 UI 표시가 달라진다.
         if (itemData.hpIncreaseRate != 0) allData += UIManager.Instance.AddFontData("최대 HP \t\t +" + itemData.hpIncreaseRate + "%", "white", 18) + "\n";
         if (itemData.hp != 0) allData += UIManager.Instance.AddFontData("최대 HP \t\t +" + itemData.hp, "white", 18) + "\n";
         if (itemData.hpRecovery != 0) allData += UIManager.Instance.AddFontData("HP 회복 \t\t +" + itemData.hpRecovery, "white", 18) + "\n";
