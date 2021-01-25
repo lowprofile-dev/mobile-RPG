@@ -89,7 +89,8 @@ public class MonsterAction : MonoBehaviour
     /// 오브젝트 초기화
     /// </summary>
     public virtual void InitObject()
-    {     
+    {
+       
         _isImmune = false;
         CachingObject();
         _traceTimer = 0;
@@ -97,13 +98,23 @@ public class MonsterAction : MonoBehaviour
         InitStatus();
         InitState();
         var _mon = this;
-        _monster.CCManager = new CCManager(ref _mon , "monster");
+        _monster.CCManager = new CCManager(ref _mon, "monster");
+
     }
 
     protected virtual void InitStatus()
     {
-        float currentStage = parentRoom.DungeonManager.dungeonStage;
-        if (currentStage > 2) currentStage *= 0.5f;
+        float currentStage;
+
+        if (parentRoom != null)
+        {
+            currentStage = parentRoom.DungeonManager.dungeonStage;
+            if (currentStage > 2) currentStage *= 0.5f;
+        }
+        else
+        {
+            currentStage = 1;
+        }
 
         _monster.initHp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp * currentStage;
         _findRange = MonsterManager.Instance.MonsterDictionary[_monster.id].findrange;

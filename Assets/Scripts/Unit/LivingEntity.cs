@@ -24,8 +24,8 @@ public class LivingEntity : Unit
     protected float _maxSpeed;                          // 최대 속도
 
     // CC 관련
-    protected DebuffManager _DebuffManager = new DebuffManager(); 
-    protected CCManager _CCManager; 
+    protected DebuffManager _DebuffManager = new DebuffManager();
+    protected CCManager _CCManager = null;
 
     // 캐싱
     public Animator myAnimator;
