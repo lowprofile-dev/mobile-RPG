@@ -30,89 +30,80 @@ public class Player : LivingEntity
     // 싱글톤
     public static Player Instance;
 
-    private bool avoidButtonClick = false;
-    [SerializeField] private float _initEvadeTime;
-    private float _evadeTime;
-    [SerializeField] private GameObject _playerAvatar; 
-    private PLAYERSTATE _cntState; 
+    [Header("베이스")]
+    private PLAYERSTATE _cntState;                      // 현재 상태
 
-    [SerializeField] private GameObject systemPanel;
+    [Header("캐싱")]
+    [SerializeField] private GameObject _playerAvatar;                  // 플레이어의 아바타 (껍데기)
+    [SerializeField] private CharacterController characterController;   // 캐릭터 컨트롤러
+    public Joystick joystick = null;                                    // 조이스틱
+    public PartSelection selection;                                     // 아바타 부품
+    private WeaponManager _weaponManager;                               // 무기 매니저
+    private ItemManager _itemManager;                                   // 아이템 매니저
+    private StatusManager _statusManager;                               // 스테이터스 매니저
+    private EPOOutline.Outlinable playerOutlinable;                     // 아웃라이너
 
-    [Header("버튼 입력")]
-    private bool AttackButtonClick = false;
-    private bool SkillA_ButtonClick = false;
-    private bool SkillB_ButtonClick = false;
-    private bool SkillC_ButtonClick = false;
+    [Header("상태 관련")]
+    bool _isdead = false;                                   // 사망 여부
 
-    public bool[] masterySet = new bool[10]; 
+    [Header("움직임")]
+    [SerializeField] private float turnSmoothTime = 0.1f;   // 부드럽게 움직이는 시간
+    float turnSmoothVelocity;                               // 부드럽게 움직이는 속도
+    private Vector3 direction;                              // 입력받은 움직임 방향
+    private Vector3 moveDir;                                // 변환된 움직임 방향
+    private float horizontal;                               // 조이스틱 X 입력
+    private float vertical;                                 // 조이스틱 Y 입력
+    private float vSpeed;                                   // 움직임 속도
 
-    private float skillA_Counter = 0f;
-    private float skillB_Counter = 0f;
-    private float skillC_Counter = 0f;
+    [Header("카메라")]
+    [SerializeField] private Transform cam;                          // 메인 카메라
+    [SerializeField] private GameObject playerFollowCam;             // 플레이어를 쫓는 카메라
+    [SerializeField] private CinemachineFreeLook playerFreeLook;     // playerFollowCam에서의 캐싱
+    [SerializeField] private CinemachineFreeLook minimapFreeLook;    // 미니맵에 사용되는 카메라
+    [SerializeField] private FaceCam faceCam;                        // 얼굴 카메라
 
-    [SerializeField] public Transform firePoint;
-    [SerializeField] public Transform skillPoint;
+    [Header("UI")]
+    [SerializeField] private GameObject _systemPanel;   // 시스템 알림 UI
 
-    [SerializeField] private CharacterController characterController;
-    [SerializeField] private float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
-    [SerializeField] private Transform cam;
-    [SerializeField] private GameObject playerFollowCam;
-    [SerializeField] private CinemachineFreeLook playerFreeLook;
-    [SerializeField] private CinemachineFreeLook minimapFreeLook;
+    [Header("회피 관련")]
+    [SerializeField] private float _initEvadeTime;      // 회피에 사용되는 시간
+    private float _evadeTime;                           // 현재 회피 시간
 
-    [SerializeField] private ParticleSystem trailParticle1;
-    [SerializeField] private ParticleSystem trailParticle2;
+    [Header("마스터리 관련")]
+    public bool[] masterySet = new bool[10];            // 마스터리 활성화 정보
+    private bool resurrection = false;                  // 부활
 
-    public bool weaponChanged = false;
+    [Header("공격 관련")]
+    [SerializeField] public Transform skillPoint;       // 스킬 발사 지점
+    private int _cntSkillType;                          // 현재 사용하는 스킬 정보
+    public int currentCombo;                            // 현재 콤보 수
+    private bool _canConnectCombo;                      // 콤보를 더 이을 수 있는지
 
-    private Vector3 direction;
-    private Vector3 moveDir; 
-    [SerializeField] private Quaternion rotateAngle;
+    [Header("무기 관련")]
+    public bool weaponChanged = false;                  // 무기가 바뀌었는지 여부
 
-    public Joystick joystick = null;
+    [Header("대쉬 관련")]
+    public float dashSpeed;                             // 대쉬 스피드
+    private bool _isRushing;                            // 대쉬하고 있는지 여부
+    private Vector3 _prevRushPos;                       // 대쉬를 시작했을 때의 위치
+    private float _rushTime;                            // 대쉬를 시작한 후의 시간
 
-    float horizontal;
-    float vertical;
-    float vSpeed;
-    bool _isdead = false; 
-    private int _cntSkillType;
+    [Header("던전 관련")]
+    public int currentDungeonArea;                      // 현재 위치한 던전의 구역
 
-    public float dashSpeed;         // 대쉬 스피드
-    public int currentCombo;        // 현재 콤보 수
-    private bool _canConnectCombo;  // 콤보를 더 이을 수 있는지
+    [Header("사운드 관련")]
+    private float _footstepSoundTime = 0.3f;            // 발소리 간격
+    private float _cntFootStepSound = 0f;               // 현재의 발소리 진행 
+    private float _rushSoundTime = 0.24f;               // 대쉬소리 간격
 
+    [Header("시각 관련")]
+    [SerializeField] private ParticleSystem trailParticle1; // 횡 파티클 (회피 / 돌진)
+    [SerializeField] private ParticleSystem trailParticle2; // 종 파티클 (회피 / 돌진)
+    private List<Renderer> lRenderers;                      // 아웃라이너 목록
 
-    [SerializeField] private TrailRenderer _trailRenderer;
-
-    private bool _isRushing;
-    [SerializeField] private Collider _rushingCollider;
-    private Vector3 _prevRushPos;
-    private float _rushTime;
-
-    public PartSelection selection;
-    FaceCam faceCam; public FaceCam FaceCam { get { return faceCam; }}
-
-    private bool resurrection = false;
-
-    public WeaponManager weaponManager;
-    ItemManager itemManager;
-    StatusManager statusManager;
-
-    public int currentDungeonArea;
-
-    // 사운드 관련
-    private float _cntFootStepSound = 0f;
-    private float _footstepSoundTime = 0.3f;
-    private float _rushSoundTime = 0.24f;
-
-    //아웃라이너 관련
-    private EPOOutline.Outlinable playerOutlinable;
-    private List<Renderer> lRenderers;
-
-    //낙사 관련
-    public bool isFalling = false;
-    public Vector3 lastRoomTransformPos;
+    [Header("낙사 관련")]
+    private bool _isFalling = false;                        // 떨어졌는지 여부
+    [HideInInspector] public Vector3 lastRoomTransformPos;  // 최근에 있던 방의 위치
 
     // property
     public GameObject playerAvater { get { return _playerAvatar; } }
@@ -121,6 +112,11 @@ public class Player : LivingEntity
     public bool isdead { get { return _isdead; } set { _isdead = value; } }
     public PLAYERSTATE cntState { get { return _cntState; } }
     public GameObject GetPlayer { get { return this.gameObject; } }
+    public FaceCam FaceCam { get { return faceCam; } }
+    public WeaponManager weaponManager { get { return _weaponManager; } }
+    public ItemManager itemManager { get { return _itemManager; } }
+    public StatusManager statusManager { get { return _statusManager; } }
+
 
 
 
@@ -131,29 +127,25 @@ public class Player : LivingEntity
         Instance = this;
     }
 
-    protected override void Start()
-    {
-        lRenderers = new List<Renderer>();
-
-        UILoaderManager.Instance.LoadPlayerUI();
-        itemManager = ItemManager.Instance;
-        statusManager = StatusManager.Instance;
-        var _player = this;
-        _CCManager = new CCManager(ref _player, "player");
-        base.Start();
-
-        _evadeTime = _initEvadeTime;
-
-        _rushTime = 0.6f;
-        _prevRushPos = Vector3.zero;
-        
-        moveDir = Vector3.forward;
-        OffTrailParticles();
-    }
-
     protected override void InitObject()
     {
         base.InitObject();
+
+        var _player = this;
+
+        UILoaderManager.Instance.LoadPlayerUI();
+
+        _itemManager = ItemManager.Instance;
+        _statusManager = StatusManager.Instance;
+
+        _CCManager = new CCManager(ref _player, "player");
+        lRenderers = new List<Renderer>();
+        _rushTime = 0.6f;
+        _evadeTime = _initEvadeTime;
+        _prevRushPos = Vector3.zero;
+        moveDir = Vector3.forward;
+
+        OffTrailParticles();
 
         _hp = StatusManager.Instance.finalStatus.maxHp;
         _stemina = StatusManager.Instance.finalStatus.maxStamina;
@@ -168,7 +160,7 @@ public class Player : LivingEntity
         _cntState = PLAYERSTATE.PS_IDLE;
         EnterState();
 
-        weaponManager = WeaponManager.Instance;
+        _weaponManager = WeaponManager.Instance;
         if (weaponManager.GetWeaponName() == null) weaponManager.SetWeapon("SWORD");
         else weaponManager.SetWeapon(weaponManager.GetWeaponName());
 
@@ -425,9 +417,6 @@ public class Player : LivingEntity
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             characterController.Move(moveDir.normalized * statusManager.finalStatus.moveSpeed * Time.deltaTime);
         }
-
-        
-        //_myStateMachine.UpdateState();
     }
 
     public void MoveExit()
@@ -772,32 +761,6 @@ public class Player : LivingEntity
 
 
 
-    /// <summary>
-    /// 스킬 쿨타임 체크
-    /// </summary>
-    private void PlayerSkillCheck()
-    {
-        switch (_cntSkillType)
-        {
-            case 0:
-                skillA_Counter += Time.deltaTime;
-                if (skillA_Counter >= weaponManager.GetWeapon().skillACool) SkillA_ButtonClick = false;
-                break;
-            case 1:
-                skillB_Counter += Time.deltaTime;
-                if (skillB_Counter >= weaponManager.GetWeapon().skillBCool) SkillB_ButtonClick = false;
-                break;
-            case 2:
-                skillC_Counter += Time.deltaTime;
-                if (skillC_Counter >= weaponManager.GetWeapon().skillCCool) SkillC_ButtonClick = false;
-                break;
-        }
-    }
-
-
-
-
-
     ///////////////// 상호작용 관련 //////////////////
 
     private void InteractEnter()
@@ -973,8 +936,7 @@ public class Player : LivingEntity
     /// </summary>
     private void GetJoystickInput()
     {
-        if (joystick == null)
-            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        if (joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
         horizontal = joystick.GetX_axis().value;
         vertical = joystick.GetY_axis().value;
 
@@ -1391,7 +1353,7 @@ public class Player : LivingEntity
         //낙사
         if (transform.position.y < -70 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
         {
-            isFalling = true;
+            _isFalling = true;
             Damaged(statusManager.finalStatus.maxHp * 0.1f);
             ReturnToGround();
             return;
@@ -1408,7 +1370,7 @@ public class Player : LivingEntity
 
     private void ReturnToGround()
     {
-        isFalling = false;
+        _isFalling = false;
         transform.position = lastRoomTransformPos;
     }
 
