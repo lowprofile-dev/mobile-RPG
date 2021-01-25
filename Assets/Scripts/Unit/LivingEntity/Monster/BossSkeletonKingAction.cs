@@ -267,6 +267,14 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void AttackExit()
     {
+        foreach (var item in monsterList)
+        {
+            if (item == null)
+            {
+                monsterList.Remove(item);
+                break;
+            }
+        }
     }
 
     public override void MoveToTarget()
@@ -464,6 +472,8 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void AttackStart()
     {
+       
+
         if (!_readyCast && ToCast()) return;
         else
         {
@@ -489,12 +499,8 @@ public class BossSkeletonKingAction : MonsterAction
     }
 
     protected override void AttackUpdate() {
-        foreach (var item in monsterList)
-        {
-            if (item == null) monsterList.Remove(item);
-        }
     }
-
+    
     protected override void RigidStart()
     {       
     }
