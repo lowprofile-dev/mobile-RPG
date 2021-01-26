@@ -6,11 +6,9 @@
     부 담당자 : 안영훈
  */
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class DungeonRoom : MonoBehaviour
@@ -98,7 +96,7 @@ public class DungeonRoom : MonoBehaviour
 
     private void OnDestroy()
     {
-        for (int i = monsters.Count-1; i >= 0; i--)
+        for (int i = monsters.Count - 1; i >= 0; i--)
         {
             ///Destroy(monsters[i]);
             ObjectPoolManager.Instance.ReturnObject(monsters[i]);
@@ -116,7 +114,7 @@ public class DungeonRoom : MonoBehaviour
         for (int i = 0; i < lights.Count; i++)
         {
             Color color;
-            switch(this.areaCode-1)
+            switch (areaCode - 1)
             {
                 case 0:
                     lights[i].GetComponent<Light>().color = Color.red;
@@ -163,7 +161,9 @@ public class DungeonRoom : MonoBehaviour
             door.transform.rotation = doorways[i].transform.rotation;
             doors.Add(door);
         }
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomStart", 1.1f);
+
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomStart", 0.9f);
+        SoundManager.Instance.SetAudioReverbEffect(source, AudioReverbPreset.Cave);
         isClosedPrev = true;
     }
 
@@ -176,9 +176,10 @@ public class DungeonRoom : MonoBehaviour
         }
         doors.Clear();
 
-        if(isClosedPrev)
+        if (isClosedPrev)
         {
-            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomEnd", 1.1f);
+            AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomEnd", 0.9f);
+            SoundManager.Instance.SetAudioReverbEffect(source, AudioReverbPreset.Cave);
             isClosedPrev = false;
         }
     }
@@ -238,7 +239,7 @@ public class DungeonRoom : MonoBehaviour
         for (int i = 0; i < minimapIcons.Count; i++)
         {
             Color color;
-            switch (this.areaCode - 1)
+            switch (areaCode - 1)
             {
                 case 0:
                     minimapIcons[i].GetComponent<Image>().color = Color.red;
@@ -300,7 +301,7 @@ public class DungeonRoom : MonoBehaviour
     /// </summary>
     private void CheckMonstersInRoom()
     {
-        for (int i = monsters.Count -1; i >= 0; i--)
+        for (int i = monsters.Count - 1; i >= 0; i--)
         {
             if (monsters[i] == null) continue;
             if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center))
@@ -325,7 +326,7 @@ public class DungeonRoom : MonoBehaviour
                 if (isBossRoom)
                 {
                     //마스터리 스킬 보스 처치시 드랍율 향상
-                    if(MasteryManager.Instance.currentMastery.currentMasteryChoices[0] == 1)
+                    if (MasteryManager.Instance.currentMastery.currentMasteryChoices[0] == 1)
                     {
                         if (Player.Instance.masterySet[0] == false)
                         {
@@ -335,7 +336,7 @@ public class DungeonRoom : MonoBehaviour
                             }
                             Player.Instance.masterySet[0] = true;
                         }
-                        
+
                     }
                     else
                     {
@@ -345,7 +346,7 @@ public class DungeonRoom : MonoBehaviour
                 else if (dungeonManager.dungeonStage == 1)
                 {
                     //마스터리 스킬 골드, 아이템 획득량 증가
-                    if(MasteryManager.Instance.currentMastery.currentMasteryChoices[4]== -1 
+                    if (MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == -1
                         || MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == 1)
                     {
                         if (Player.Instance.masterySet[4] == false)
@@ -387,7 +388,7 @@ public class DungeonRoom : MonoBehaviour
                 Invoke("CloseDoors", 1f);
                 if (isBossRoom)
                 {
-                    Invoke("SpawnBoss", 1f);                  
+                    Invoke("SpawnBoss", 1f);
                 }
                 else
                     StartCoroutine(SpawnMonsterCoroutine());
@@ -477,12 +478,10 @@ public class DungeonRoom : MonoBehaviour
             nMonsterAlive++;
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
             monsterIndex = random.Next(dungeonManager.currentStageMonsterPrefabs.Count);
-            //var monster = Instantiate(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
             GameObject monster = ObjectPoolManager.Instance.GetObject(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
             monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
             monster.GetComponent<MonsterAction>().parentRoom = this;
             monster.GetComponent<Monster>().InitMonster();
-            //monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
             nMonsterSpawned += 1;
             monster.GetComponent<MonsterAction>().SpawnPos = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
             monsters.Add(monster);
@@ -506,7 +505,8 @@ public class DungeonRoom : MonoBehaviour
     /// <returns></returns>
     IEnumerator roomSetAreaCodeCoroutine()
     {
-        while (dungeonManager.hasPlane && !isSetArea) {
+        while (dungeonManager.hasPlane && !isSetArea)
+        {
 
             yield return null;
         }

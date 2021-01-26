@@ -1386,6 +1386,13 @@ public class Player : LivingEntity
     ///////////////// 기타 캐릭터 기능들 //////////////////
 
 
+    public override void Damaged(float damage)
+    {
+        base.Damaged(damage);
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.4f);
+        SoundManager.Instance.SetPitch(source, 1.5f);
+    }
+
     public void RestoreHP(float restoreHp)
     {
         if(_cntState != PLAYERSTATE.PS_DIE && restoreHp != 0)

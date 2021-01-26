@@ -96,6 +96,7 @@ public class ShopUIView : View
     private void OnClickExitShotButton()
     {
         UINaviationManager.Instance.PopToNav("SubUI_ShopBase");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     public void LoadPlayerInventory()

@@ -40,7 +40,12 @@ public class ToggleClick : MonoBehaviour, IPointerDownHandler
     /// </summary>
     private void SetMasterySound()
     {
-        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SetMastery", 0.9f);
-        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightHigh1", 0.3f);
+        if (UILoaderManager.Instance.IsSceneDungeon()) SoundManager.Instance.PlayEffect(SoundType.UI, "UI/Locker", 0.8f); // 던전이면 락커 사운드
+
+        else // 마을이면 정상 사운드
+        {
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SetMastery", 0.9f);
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightHigh1", 0.3f);
+        }
     }
 }

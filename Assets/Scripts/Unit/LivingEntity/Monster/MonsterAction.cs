@@ -92,7 +92,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     private void OnDisable()
     {
-        parentRoom.MonsterList.Remove(gameObject);
+        //if(parentRoom != null) parentRoom.MonsterList.Remove(gameObject);
         _navMeshAgent.enabled = false;
         transform.rotation = Quaternion.identity;
         transform.position = Vector3.zero;
@@ -101,7 +101,6 @@ public class MonsterAction : MonoBehaviour
     }
     public virtual void InitObject()
     {
-
         _isImmune = false;
         CachingObject();
         _traceTimer = 0;
@@ -932,7 +931,7 @@ public class MonsterAction : MonoBehaviour
         while (true)
         {
             yield return null;
-            if (CheckAnimationOver("Die", 1.0f)) break;
+            if (CheckAnimationOver("Die", 1.0f) || !_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Die")) break;
         }
 
         SetDeathProduction();
@@ -1033,7 +1032,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public void DamagedSound()
     {
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.75f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.6f);
     }
 
     /// <summary>
