@@ -77,7 +77,7 @@ public class CardEffect
             originalValues.Add(StatusManager.Instance.finalStatus.dashStamina);
             StatusManager.Instance.finalStatus.dashStamina += StatusManager.Instance.finalStatus.dashStamina * gradeNum[level] / 100.0f;
         }
-        else if (effectData.id == 6) // 대쉬 속도 증가 (미구현)
+        else if (effectData.id == 6) // 대쉬 속도 증가
         {
             originalValues.Add(Player.Instance.dashSpeed);
             Player.Instance.dashSpeed *= (gradeNum[level] / 100.0f);
@@ -93,7 +93,7 @@ public class CardEffect
             StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
         }
 
-        else if (effectData.id == 26) // 플레이어의 체력이 100%일 때 데미지 증가 (미구현)
+        else if (effectData.id == 26) // 플레이어의 체력이 100%일 때 데미지 증가
         {
             if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
             {
@@ -163,7 +163,21 @@ public class CardEffect
 
     public virtual void UpdateEffect()
     {
-
+        if (effectData.id == 26) // 플레이어의 체력이 100%일 때 데미지 증가
+        {
+            if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
+            {
+                if (originalValues.Count == 0)
+                    originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
+                StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
+                StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
+            }
+            else
+            {
+                if (originalValues.Count > 0)
+                    StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
+            }
+        }
     }
 
     public virtual void EndEffect()
@@ -186,7 +200,7 @@ public class CardEffect
             {
                 StatusManager.Instance.finalStatus.dashStamina = originalValues[0];
             }
-            else if (effectData.id == 6) // 대쉬 속도 증가 (미구현)
+            else if (effectData.id == 6) // 대쉬 속도 증가
             {
                 Player.Instance.dashSpeed = originalValues[0];
             }
@@ -198,12 +212,9 @@ public class CardEffect
             {
                 StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
             }
-            else if (effectData.id == 26) // 플레이어의 체력이 100%일 때 데미지 증가 (미구현)
+            else if (effectData.id == 26) // 플레이어의 체력이 100%일 때 데미지 증가
             {
-                if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
-                {
-                    StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-                }
+                StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
             }
             else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화 (미구현)
             {
