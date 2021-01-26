@@ -18,8 +18,9 @@ using UnityEngine.EventSystems;
 ////////////////////////////////////////////////////
 
 
-public class MasteryScript : MonoBehaviour 
+public class MasteryScript : MonoBehaviour
 {
+    public static int offLevel;
     [SerializeField] GameObject parent;
     [SerializeField] public Toggle upSkill; 
     [SerializeField] public Toggle downSkill;
@@ -191,7 +192,7 @@ public class MasteryScript : MonoBehaviour
         {
             if (levelLimit <= MasteryManager.Instance.currentMastery.currentMasteryLevel)
             {
-                if(levelLimit >= 10)
+                if(levelLimit >= 5)
                 {
                     upPanel.SetActive(false);
                     downPanel.SetActive(false);
@@ -199,15 +200,24 @@ public class MasteryScript : MonoBehaviour
 
                 if (upSkill.isOn)
                 {
+                    if (masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] == 1)
+                    {
+                        Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
+                    }
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = -1;
                 }
                 else if (downSkill.isOn)
                 {
+                    if (masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] == -1)
+                    {
+                        Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
+                    }
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 1;
                 }
                 else
                 {
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 0;
+                    Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
                 }
                 masteryManager.SaveCurrentMastery();
             }
@@ -218,6 +228,7 @@ public class MasteryScript : MonoBehaviour
             }
         }
 
+        
     }
 
     /// <summary>

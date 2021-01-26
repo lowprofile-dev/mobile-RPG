@@ -154,4 +154,16 @@ public class WeaponManager : SingletonBase<WeaponManager>
             _weaponDic[key].skillCCool -= 1;
         }
     }
+    /// <summary>
+    /// 전체 무기 스킬의 쿨타임을 1씩 늘려준다
+    /// </summary>
+    public void WeaponCoolTimeincrease()
+    {
+        foreach (string key in _weaponDic.Keys)
+        {
+            _weaponDic[key].skillACool += 1;
+            _weaponDic[key].skillBCool += 1;
+            _weaponDic[key].skillCCool += 1;
+        }
+    }
 }
