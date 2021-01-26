@@ -94,4 +94,8 @@ public class GhostAction : MonsterAction
 
 
     /////////// 캐스팅 관련 /////////////
+    /// <summary>
+    /// </summary>
+
+    protected override void LookTarget() {  }
 }

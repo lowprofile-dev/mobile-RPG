@@ -31,9 +31,6 @@ public class BossSkeletonWarrior : MonsterAction
     private GameObject currentTarget; // 현재 타겟
     [SerializeField] private Transform _ShokeWavePoint; //레이저 나가는 pos
 
-    private float velocity;
-    private float angle;
-
     string currentAnimation;
     
     protected override void DoAttack() // 공격 애니메이션 지점에서 공격이 ON됨

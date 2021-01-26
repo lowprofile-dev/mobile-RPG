@@ -50,9 +50,6 @@ public class BossSkeletonKingAction : MonsterAction
         
     private GameObject currentTarget;
 
-    private float velocity;
-    private float angle;
-
     string currentAnimation = null;
 
     public override void InitObject()

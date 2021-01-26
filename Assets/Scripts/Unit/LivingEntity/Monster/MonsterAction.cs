@@ -43,7 +43,7 @@ public class MonsterAction : MonoBehaviour
     
     protected float _distance;                      // 타겟과의 거리
     protected float _traceTimer;                    // 추적 이후 경과한 시간
-    protected Vector3 _spawnPosition;               // 스폰된 위치
+    protected Vector3 _spawnPosition; public Vector3 SpawnPos { get { return _spawnPosition; } set { _spawnPosition = value; } }               // 스폰된 위치
     protected Vector3 _patrolPos;                   // 정찰할 위치
     protected float _idleTime;                      // Idle에서 경과한 시간
     protected bool _isImmune;                       // 무적 여부
@@ -83,23 +83,34 @@ public class MonsterAction : MonoBehaviour
     public GameObject Target { get { return _target; } }
     public MONSTER_STATE currentState { get { return _currentState; } }
 
+    protected float velocity, angle;
+
     /////////// 기본 ////////////
 
     /// <summary>
     /// 오브젝트 초기화
     /// </summary>
+    private void OnDisable()
+    {
+        parentRoom.MonsterList.Remove(gameObject);
+        _navMeshAgent.enabled = false;
+        transform.rotation = Quaternion.identity;
+        transform.position = Vector3.zero;
+        _currentState = MONSTER_STATE.STATE_NULL;
+        //_monster.Hp = 500;
+    }
     public virtual void InitObject()
     {
-       
+
         _isImmune = false;
         CachingObject();
         _traceTimer = 0;
-        _spawnPosition = transform.position;
+        //_spawnPosition = transform.position;
         InitStatus();
         InitState();
         var _mon = this;
         _monster.CCManager = new CCManager(ref _mon, "monster");
-
+        _bar.HpUpdate();
     }
 
     protected virtual void InitStatus()
@@ -115,8 +126,7 @@ public class MonsterAction : MonoBehaviour
         {
             currentStage = 1;
         }
-
-        _monster.initHp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp * currentStage;
+        _monster.Hp = _monster.initHp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp * currentStage;
         _findRange = MonsterManager.Instance.MonsterDictionary[_monster.id].findrange;
         _attackRange = MonsterManager.Instance.MonsterDictionary[_monster.id].attackrange;
         _limitTraceRange = MonsterManager.Instance.MonsterDictionary[_monster.id].LimitTraceRange;
@@ -606,7 +616,7 @@ public class MonsterAction : MonoBehaviour
     }
 
     protected virtual void AttackUpdate()
-    {
+    { 
         // 타겟과의 거리가 공격 범위보다 커지면
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
         {
@@ -729,9 +739,8 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void LookTarget()
     {
-        transform.LookAt(_target.transform);
+        //transform.LookAt(_target.transform);
     }
-
     /////////// 캐스트 관련////////////
 
     protected virtual void CastStart()
@@ -886,21 +895,30 @@ public class MonsterAction : MonoBehaviour
 
         _monster.CCManager.Release();
         _monster.DebuffManager.Release();
-        if (parentRoom != null) parentRoom.MonsterDeathCheck();
+
+        if (parentRoom != null)
+        {
+            parentRoom.MonsterList.Remove(gameObject);
+            parentRoom.MonsterDeathCheck();
+        }
+
         TalkManager.Instance.SetQuestCondition(1, monster.id, 1);
 
         DeathSound();
         StopAllCoroutines();
         StartCoroutine(DoDeathAction());
 
-        Invoke("DestroyMonster", 3f);
+        //StartCoroutine("DestroyMonster");
     }
 
-    private void DestroyMonster()
+    private IEnumerator DestroyMonster()
     {
-        _bar.gameObject.SetActive(true);
-
-        DestroyImmediate(gameObject);
+        yield return new WaitForSeconds(3f);
+        _bar.gameObject.SetActive(false);
+        Debug.Log("호출");
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
+        StopAllCoroutines();
+        //DestroyImmediate(gameObject);
     }
 
     /// <summary>
@@ -927,7 +945,7 @@ public class MonsterAction : MonoBehaviour
     {
         _outlinable.enabled = false;
 
-        transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => { DestroyImmediate(gameObject); });
+        transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => { ObjectPoolManager.Instance.ReturnObject(gameObject);/*DestroyImmediate(gameObject);*/ });
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
 
         _bar.gameObject.SetActive(false);
@@ -965,6 +983,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void DeathExit()
     {
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 
 
