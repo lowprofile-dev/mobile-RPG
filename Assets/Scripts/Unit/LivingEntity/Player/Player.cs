@@ -72,6 +72,7 @@ public class Player : LivingEntity
     [Header("마스터리 관련")]
     public bool[] masterySet = new bool[10];            // 마스터리 활성화 정보
     private bool resurrection = false;                  // 부활
+    private bool rage = false;                  // 부활
 
     [Header("공격 관련")]
     [SerializeField] public Transform skillPoint;       // 스킬 발사 지점
@@ -1047,63 +1048,88 @@ public class Player : LivingEntity
         {
             if (masterySet[1] == false)
             {
-                StatusManager.Instance.finalStatus.attackDamage *= 1.1f;
-                StatusManager.Instance.finalStatus.magicDamage *= 1.1f;
+                statusManager.finalStatus.attackDamage *= statusManager.playerStatus.attackDamage *1.2f;
+                statusManager.finalStatus.magicDamage *= statusManager.playerStatus.magicDamage * 1.2f;
+                statusManager.finalStatus.armor = statusManager.playerStatus.armor;
+                statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance;
                 masterySet[1] = true;
             }
-
-
         }
         //방어력 증가 부분
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
+        else if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
         {
             if (masterySet[1] == false)
             {
-                statusManager.finalStatus.armor *= 1.1f;
-                statusManager.finalStatus.magicResistance *= 1.1f;
+                statusManager.finalStatus.armor = statusManager.playerStatus.armor * 1.1f;
+                statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance * 1.1f;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage;
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage;
                 masterySet[1] = true;
             }
+
         }
+        else
+        {
+            statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage;
+            statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage;
+            statusManager.finalStatus.armor = statusManager.playerStatus.armor;
+            statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance;
+        }
+
         // 체력 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == -1)
         {
             if (masterySet[2] == false)
             {
-                statusManager.finalStatus.hpRecovery *= 1.2f;
+                statusManager.finalStatus.hpRecovery = statusManager.playerStatus.hpRecovery * 1.2f;
+                statusManager.finalStatus.staminaRecovery = statusManager.playerStatus.staminaRecovery;
+
                 masterySet[2] = true;
             }
 
         }
         //기력 증가
-
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
+        else if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
         {
             if (masterySet[2] == false)
             {
-                statusManager.finalStatus.staminaRecovery *= 1.2f;
+                statusManager.finalStatus.staminaRecovery = statusManager.playerStatus.staminaRecovery * 1.2f;
+                statusManager.finalStatus.hpRecovery = statusManager.playerStatus.hpRecovery;
                 masterySet[2] = true;
             }
-
         }
+        else
+        {
+            statusManager.finalStatus.hpRecovery = statusManager.playerStatus.hpRecovery;
+            statusManager.finalStatus.staminaRecovery = statusManager.playerStatus.staminaRecovery;
+        }
+
         //이속 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == -1)
         {
             if (masterySet[3] == false)
             {
                 statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed * 2f;
+                statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
                 masterySet[3] = true;
             }
         }
         //공속 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
+        else if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
         {
             if (masterySet[3] == false)
             {
-                statusManager.finalStatus.attackSpeed *= 1.2f;
+                statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed * 1.2f;
+                statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
+
                 masterySet[3] = true;
             }
         }
-
+        else
+        {
+            statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
+            statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
+        }
         //골드 획득량 증가 미구현 && 아이템 확률 증가 통합
         //DungeonRoom.cs 207
 
@@ -1121,6 +1147,7 @@ public class Player : LivingEntity
         {
             if (masterySet[6] == false)
             {
+                statusManager.finalStatus.dashStamina = statusManager.playerStatus.dashStamina;
                 masterySet[6] = true;
             }
         }
@@ -1129,12 +1156,21 @@ public class Player : LivingEntity
         {
             if (masterySet[6] == false)
             {
-                statusManager.playerStatus.dashStamina *= 0.8f;
+                statusManager.finalStatus.dashStamina = statusManager.playerStatus.dashStamina * 0.8f;
                 masterySet[6] = true;
             }
         }
         //기본공격 10% 강화, hp 2% 흡수
         // PlayerAttack.cs 76;
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)
+        {
+            if (masterySet[7] == false)
+            {
+                weaponManager.WeaponCoolTimeincrease();
+                masterySet[7] = true;
+            }
+
+        }
 
         //스킬 쿨타임 1초 감소
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == 1)
@@ -1151,7 +1187,8 @@ public class Player : LivingEntity
         {
             if (masterySet[8] == false)
             {
-                statusManager.finalStatus.attackDamage *= 1.4f;
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage ;
+                statusManager.finalStatus.attackDamage *= statusManager.playerStatus.attackDamage * 1.4f;
                 masterySet[8] = true;
             }
         }
@@ -1162,23 +1199,33 @@ public class Player : LivingEntity
             {
                 if (masterySet[8] == false)
                 {
-                    statusManager.finalStatus.magicDamage *= 1.4f;
+                    statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.4f;
+                    statusManager.finalStatus.attackDamage *= statusManager.playerStatus.attackDamage;
+
                     masterySet[8] = true;
                 }
             }
         }
 
-        // HP 10% 이하 물리/마법 공격력 30% 증가
+        // HP 20% 이하 물리/마법 공격력 30% 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == -1)
         {
             if (masterySet[9] == false)
             {
-                if (statusManager.GetCurrentHpPercent() <= 0.2f)
-                {
-                    statusManager.finalStatus.attackDamage *= 1.3f;
-                    statusManager.finalStatus.magicDamage *= 1.3f;
-                }
+                rage = true;
+                resurrection = false;
                 masterySet[9] = true;
+            }
+
+            if(statusManager.GetCurrentHpPercent()<= 0.2)
+            {
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.3f;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage * 1.3f;
+            }
+            else
+            {
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage;
             }
         }
 
@@ -1188,6 +1235,7 @@ public class Player : LivingEntity
         {
             if (masterySet[9] == false)
             {
+                rage = false;
                 resurrection = true;
                 masterySet[9] = true;
             }
