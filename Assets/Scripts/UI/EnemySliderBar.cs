@@ -12,8 +12,8 @@ public class EnemySliderBar : MonoBehaviour
     [SerializeField] protected Monster parent;
     protected MonsterAction parentAction;
 
-    private void Start()
-    {
+    private void OnEnable()
+    {     
         cam = CameraManager.Instance.PlayerFollowCamera;
         StartCoroutine("LookTarget");
         parentAction = parent.GetComponent<MonsterAction>();
