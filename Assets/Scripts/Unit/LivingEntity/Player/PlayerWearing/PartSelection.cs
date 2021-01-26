@@ -5,7 +5,7 @@ using System;
 
 public class PartSelection : MonoBehaviour
 {
-    private CharacterParts characterParts;
+    [SerializeField] private CharacterParts characterParts;
     
     private PartsCollections collections;
     [SerializeField] bool isPlayer;
