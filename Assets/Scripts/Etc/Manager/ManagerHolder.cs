@@ -30,6 +30,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     [HideInInspector] public ItemManager itemManager;
     [HideInInspector] public GlobalDefine globalDefine;
     [HideInInspector] public MonsterManager monsterManager;
+    [HideInInspector] public AdManager adManager;
 
     private void Start()
     {
@@ -77,6 +78,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         statusManager = (StatusManager)AddManager<StatusManager>();
         itemManager = (ItemManager)AddManager<ItemManager>();
         monsterManager = (MonsterManager)AddManager<MonsterManager>();
+        adManager = (AdManager)AddManager<AdManager>();
     }
 
     /// <summary>
