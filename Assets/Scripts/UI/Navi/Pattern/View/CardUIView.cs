@@ -120,6 +120,7 @@ public class CardUIView : View
         {
             UINaviationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
             CardManager.Instance.isAcceptCardData = false;
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardEnd", 0.9f);
 
             if(CardManager.Instance.cntDungeon == null)
             {
@@ -142,10 +143,8 @@ public class CardUIView : View
     /// </summary>
     public void ToogleCardViews()
     {
-        foreach (CardUIRoomArea area in _roomAreaImg)
-        {
-            area.ToggleCardView();
-        }
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickMedium01", 1.0f);
+        for(int i=0; i<_roomAreaImg.Length; i++) _roomAreaImg[i].ToggleCardView();
     }
 
 
@@ -207,7 +206,7 @@ public class CardUIView : View
             {
                 if (StatusManager.Instance.needToCardRerollCoin <= ItemManager.Instance.currentItems.coin) // 재화가 충분하면
                 {
-                    StartCoroutine(PlayRerollSound());
+                    if(StatusManager.Instance.rerollCount != 0) StartCoroutine(PlayRerollSound());
 
                     // 리롤을 하고, 버튼을 원래대로 돌린다.
                     ItemManager.Instance.currentItems.coin -= StatusManager.Instance.needToCardRerollCoin;
@@ -368,19 +367,22 @@ public class CardUIView : View
         card3.AddNewSetEffect(card2.setEffect);
     }
 
+
+
+    ///////////////////// 튜토리얼 관련 ///////////////////////
+
     protected override void TutorialClick()
     {
         base.TutorialClick();
         tutorialIdx = 0;
-
         _tutorials[tutorialIdx].SetActive(true);
-
     }
+
     protected override void TutorialExit()
     {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickPage", 0.9f);
 
         tutorialIdx++;
-
         if (tutorialIdx >= _tutorials.Length)
         {
             for (int i = 0; i < _tutorials.Length; i++)
@@ -394,7 +396,5 @@ public class CardUIView : View
             _tutorials[tutorialIdx - 1].SetActive(false);
             _tutorials[tutorialIdx].SetActive(true);
         }
-        
-       
     }
 }

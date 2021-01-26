@@ -704,6 +704,11 @@ public class MonsterAction : MonoBehaviour
         if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
 
+    protected virtual void AttackSound()
+    {
+        // DO NOTHING
+    }
+
     /// <summary>
     /// 공격할 때마다 일어나는 현상
     /// </summary>
@@ -1015,7 +1020,7 @@ public class MonsterAction : MonoBehaviour
     /// <summary>
     /// 죽었을 때 나오는 사운드 (공용)
     /// </summary>
-    public void DeathSound()
+    public virtual void DeathSound()
     {
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Die " + UnityEngine.Random.Range(1, 3), 0.75f);
     }

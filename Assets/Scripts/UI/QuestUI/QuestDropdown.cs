@@ -35,6 +35,7 @@ public class QuestDropdown : SingletonBase<QuestDropdown>
     /// </summary>
     private void ToggleDropdown()
     {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 0.9f);
         questContainer.gameObject.SetActive(!questContainer.gameObject.activeSelf);
         SetQuestUIData();
     }

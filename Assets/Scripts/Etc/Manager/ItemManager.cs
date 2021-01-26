@@ -482,9 +482,9 @@ public class ItemManager : SingletonBase<ItemManager>
     public void DropItem(Transform monsterTransform)
     {
         var roll = UnityEngine.Random.Range(0, 100.0f);
-        for (int i = 0; i < 5; i++)
+        for (int i = 4; i >= 0; i--)
         {
-            if (roll <= itemDropProbability[i])
+            if (roll <= itemDropProbability[i]) // 현재 확률에 들어간다면 
             {
                 GameObject dropItem = ObjectPoolManager.Instance.GetObject(dropItemPrefab);
                 dropItem.GetComponent<Item>().id = allClassItems[i][UnityEngine.Random.Range(0, allClassItems[i].Count)].id;
@@ -492,6 +492,7 @@ public class ItemManager : SingletonBase<ItemManager>
                 dropItem.transform.position = monsterTransform.position;
                 dropItem.transform.rotation = monsterTransform.rotation;
                 dropItem.transform.SetParent(null);
+                break; // 생성 후 break
             }
         }
     }

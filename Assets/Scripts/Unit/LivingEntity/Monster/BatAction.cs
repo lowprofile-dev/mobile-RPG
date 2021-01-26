@@ -59,6 +59,15 @@ public class BatAction : MonsterAction
         }
     }
 
+    /// <summary>
+    /// 패닉 사운드를 재생한다. (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void DoPanicSound()
+    {
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Panic " + UnityEngine.Random.Range(1, 4), 0.8f);
+        SoundManager.Instance.SetPitch(source, 1.2f);
+    }
+
     protected override bool CheckFindAnimationOver()
     {
         if (canPanic) return CheckAnimationOver("Panic", 1.0f); // 패닉이 생겼으므로 오버라이딩
@@ -87,9 +96,20 @@ public class BatAction : MonsterAction
         obj.transform.SetParent(this.transform);
         obj.transform.position = _baseMeleeAttackPos.position;
 
+        AttackSound();
+
         Attack atk = obj.GetComponent<Attack>();
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(0.3f);
+    }
+
+    /// <summary>
+    /// 몬스터 공격 소리 재생
+    /// </summary>
+    protected override void AttackSound()
+    {
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Bite 2", 0.3f);
+        SoundManager.Instance.SetPitch(source, 1.6f);
     }
 
     /////////// 캐스팅 관련 /////////////

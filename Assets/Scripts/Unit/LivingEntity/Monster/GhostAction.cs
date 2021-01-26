@@ -39,6 +39,8 @@ public class GhostAction : MonsterAction
         if (canPanic)
         {
             _monster.myAnimator.SetTrigger("Panic");
+            AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Find Type 2-" + UnityEngine.Random.Range(1, 4), 0.7f);
+            SoundManager.Instance.SetPitch(source, 1.2f);
         }
     }
 
@@ -70,10 +72,26 @@ public class GhostAction : MonsterAction
         obj.transform.SetParent(this.transform);
         obj.transform.position = _baseMeleeAttackPos.position;
 
+        AttackSound();
+
         Attack atk = obj.GetComponent<Attack>();
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(0.3f);
     }
+
+    /// <summary>
+    /// 몬스터 공격 소리 재생
+    /// </summary>
+    protected override void AttackSound()
+    {
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Punch " + UnityEngine.Random.Range(1,4), 0.5f);
+        SoundManager.Instance.SetPitch(source, 1.5f);
+
+        int randomSound = UnityEngine.Random.Range(0, 10);
+        if (randomSound < 2) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Growl " + 1, 0.5f);
+        else if (randomSound < 4) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Growl " + 2, 0.5f);
+    }
+
 
     /////////// 캐스팅 관련 /////////////
 }

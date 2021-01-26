@@ -17,7 +17,7 @@ using System.Collections;
 public class GoblinAction : MonsterAction
 {
     bool _isDamaged = false;
-
+    bool _canPlayPanicSound = true;
     [SerializeField] private Transform _baseMeleeAttackPos;
     [SerializeField] private GameObject _baseMeleeAttackPrefab;
 
@@ -75,6 +75,13 @@ public class GoblinAction : MonsterAction
     protected override void FindStart()
     {
         ChangeState(MONSTER_STATE.STATE_TRACE); // 공격을 받으면 바로 추적하므로
+
+        if(_canPlayPanicSound)
+        {
+            AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Find Type 1-" + UnityEngine.Random.Range(1, 4), 0.8f);
+            SoundManager.Instance.SetPitch(source, 0.6f);
+            _canPlayPanicSound = false;
+        }
     }
 
     protected override void FindExit()
@@ -86,6 +93,7 @@ public class GoblinAction : MonsterAction
     {
         base.DoReturn();
         _isDamaged = false;
+        _canPlayPanicSound = true;
     }
 
     /////////// 추적 관련 /////////////
@@ -100,10 +108,25 @@ public class GoblinAction : MonsterAction
             obj.transform.SetParent(this.transform);
             obj.transform.position = _baseMeleeAttackPos.position;
 
+            AttackSound();
+
             Attack atk = obj.GetComponent<Attack>();
             atk.SetParent(gameObject);
             atk.PlayAttackTimer(0.3f);
         }
+    }
+
+    /// <summary>
+    /// 몬스터 공격 소리 재생
+    /// </summary>
+    protected override void AttackSound()
+    {
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Punch " + UnityEngine.Random.Range(1, 4), 0.6f);
+        SoundManager.Instance.SetPitch(source, 1.5f);
+
+        int randomSound = UnityEngine.Random.Range(0, 10);
+        if (randomSound < 2) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Growl " + 1, 0.5f);
+        else if (randomSound < 4) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Growl " + 2, 0.5f);
     }
 
     protected override void SetAttackAnimation()

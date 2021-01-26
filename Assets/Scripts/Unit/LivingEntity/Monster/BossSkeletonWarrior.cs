@@ -79,26 +79,61 @@ public class BossSkeletonWarrior : MonsterAction
         atk.OnLoad(gameObject , _ShokeWavePoint.gameObject);
     }
 
+
+    /// <summary>
+    /// 점프 어택 시 사운드 재생 (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void JumpAttackSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/ExplosionAttack", 0.4f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1,4), 0.9f);
+    }
+
     private void JumpAttackEffect()
     {
-        
         BossAttack atk = ObjectPoolManager.Instance.GetObject(JumpSkillEffect).GetComponent<BossAttack>();
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(0.5f);
         atk.OnLoad(currentTarget, currentTarget);
     }
 
+    /// <summary>
+    /// 쇼크 어택 시 사운드 재생 (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void Shock2AttackSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/LaserAttackElectro", 0.6f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/LaserAttackWhoosh", 0.6f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1, 4), 0.9f);
+    }
+
+    /// <summary>
+    /// 걷는 소리 (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void WalkSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Footstep " + UnityEngine.Random.Range(1, 4), 0.9f);
+    }
+
     private void ShockWave2Effect()
     {
-
         BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect2).GetComponent<BossAttack>();
         atk.SetParent(gameObject,_ShokeWavePoint);
         atk.PlayAttackTimer(0.5f);
         atk.OnLoad(_ShokeWavePoint.gameObject, currentTarget);
-
     }
 
-    private void DoShokeWave() //
+    /// <summary>
+    /// 쇼크 어택 시 사운드 재생 (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void ShockAttackSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/BigSlashWater", 0.6f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/BigSlashWhoosh", 0.6f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1,4), 0.9f);
+    }
+
+    private void DoShokeWave() 
     {
         MakeEffect();
 
@@ -117,8 +152,8 @@ public class BossSkeletonWarrior : MonsterAction
         //애니메이터 호출용
         _monster.myAnimator.SetTrigger("Combo1");
         currentAnimation = "Combo1";
-
     }
+
     protected override void SetAttackAnimation() // 공격 애니메이션 선정
     {       
         switch (attackType)
@@ -470,5 +505,13 @@ public class BossSkeletonWarrior : MonsterAction
     protected override void DeathExit()
     {
         base.DeathExit();
+    }
+
+    /// <summary>
+    /// 죽었을 때 나오는 사운드
+    /// </summary>
+    public override void DeathSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Die", 1f);
     }
 }

@@ -54,12 +54,15 @@ public class SoundManager : SingletonBase<SoundManager>
         for (int i = 0; i < _audioCount; i++)
         {
             _effectContainer[i] = ResourceManager.Instance.Instantiate("EffectContainer" + i, "Prefab/Etc/Container/AudioSource", transform);
+            _effectContainer[i].GetComponent<AudioSource>().spatialBlend = 0.0f;
         }
 
         _bgmContainer1 = ResourceManager.Instance.Instantiate("bgmPlayer1", "Prefab/Etc/Container/AudioSource", transform);
         _bgmContainer2 = ResourceManager.Instance.Instantiate("bgmPlayer2", "Prefab/Etc/Container/AudioSource", transform);
         _bgmContainer1.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0);
         _bgmContainer2.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0);
+        _bgmContainer1.GetComponent<AudioSource>().spatialBlend = 0.0f;
+        _bgmContainer2.GetComponent<AudioSource>().spatialBlend = 0.0f;
     }
 
     /// <summary>
@@ -298,7 +301,7 @@ public class SoundManager : SingletonBase<SoundManager>
     /// </summary>
     public void SetPitch(AudioSource source, float pitch)
     {
-        pitch = source.pitch;
+        source.pitch = pitch;
     }
 
     /// <summary>

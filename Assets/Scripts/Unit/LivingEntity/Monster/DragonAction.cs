@@ -42,8 +42,7 @@ public class DragonAction : MonsterAction
         base.IdleUpdate();
         ToStirr(); // 주변을 둘러보는 애니메이션이 추가되었으므로 오버라이딩
     }
-
-
+    
     /////////// 두리번거리기 관련 /////////////
 
     /////////// 탐색 관련 /////////////
@@ -56,6 +55,15 @@ public class DragonAction : MonsterAction
         {
             _monster.myAnimator.SetTrigger("Panic"); // 패닉이 추가되었으므로 오버라이딩
         }
+    }
+
+    /// <summary>
+    /// 패닉 사운드를 재생한다. (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void DoPanicSound()
+    {
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Panic " + UnityEngine.Random.Range(1, 4), 0.8f);
+        SoundManager.Instance.SetPitch(source, 0.8f);
     }
 
     protected override bool CheckFindAnimationOver()
@@ -91,6 +99,27 @@ public class DragonAction : MonsterAction
             Attack atk = obj.GetComponent<Attack>();
             atk.SetParent(gameObject);
             atk.PlayAttackTimer(0.3f);
+            AttackSound();
+        }
+    }
+
+    /// <summary>
+    /// 몬스터 공격 소리 재생
+    /// </summary>
+    protected override void AttackSound()
+    {
+        AudioSource source = null;
+
+        switch(_attackType)
+        {
+            case 0:
+                source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Bite 2", 0.3f);
+                SoundManager.Instance.SetPitch(source, 1.6f);
+                break;
+            case 1:
+                source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Bite 1", 0.3f);
+                SoundManager.Instance.SetPitch(source, 1.2f);
+                break;
         }
     }
 

@@ -30,11 +30,17 @@ public class ToggleClick : MonoBehaviour, IPointerDownHandler
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (transform.parent.name == "Mastery Card 1")
-        {
-            mastery.UpSkillOn();
-        }
+        SetMasterySound();
+        if (transform.parent.name == "Mastery Card 1") mastery.UpSkillOn();
         else mastery.DownSkillOn();
     }
 
+    /// <summary>
+    /// 마스터리 선택 시 나오는 사운드
+    /// </summary>
+    private void SetMasterySound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SetMastery", 0.9f);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightHigh1", 0.3f);
+    }
 }

@@ -176,10 +176,8 @@ public class MasteryScript : MonoBehaviour
     }
 
     /// <summary>
-    /// 
     /// 해금 레벨이 안되었을 경우 버튼의 입력을 패널을 추가하여 막아주고,
     /// 해금 레벨이 되었을 경우 패널을 없애서 입력을 받을 수 있도록 해주는 함수 
-    /// 
     /// </summary>
     public void ToggleCheck()
     {
@@ -188,6 +186,7 @@ public class MasteryScript : MonoBehaviour
             upPanel.SetActive(true);
             downPanel.SetActive(true);
         }
+
         else
         {
             if (levelLimit <= MasteryManager.Instance.currentMastery.currentMasteryLevel)
@@ -232,6 +231,7 @@ public class MasteryScript : MonoBehaviour
         masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = upSkill.transform.GetChild(0).GetComponent<Image>().sprite;
         masteryInfo.SetActive(true);
     }
+    
     //public void UpSkillMouseOff()
     //{
     //    masteryInfo.SetActive(false);
@@ -247,12 +247,10 @@ public class MasteryScript : MonoBehaviour
         masteryInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryDescription;
         masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = downSkill.transform.GetChild(0).GetComponent<Image>().sprite;
         masteryInfo.SetActive(true);
-
     }
 
     //public void DownSkillMouseOff()
     //{
     //    masteryInfo.SetActive(false);
     //}
-
 }

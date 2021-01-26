@@ -140,7 +140,6 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     /// </summary>
     public void ToggleCardView()
     {
-        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickMedium01", 1.0f);
         _cardBtn.gameObject.SetActive(!_cardBtn.gameObject.activeSelf);
     }
 
@@ -288,11 +287,15 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
                 // 카드들의 데이터를 갱신
             }
 
+            _parentView.cntPointerArea._cardBtn.transform.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+            _cardBtn.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+            // 카드들의 위치를 0로
+
             _parentView.BingoCheck(); // 빙고 체크
             SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardReplace", 0.9f);
         }
 
-        _cardBtn.transform.position = _initCardPos; // 위치를 되돌린다.
+        else _cardBtn.transform.GetComponent<RectTransform>().anchoredPosition = Vector3.zero; // 마우스 포인터가 방에 존재하지 않으면 (위치를 되돌린다.)
         _cardBtn.GetComponent<Image>().raycastTarget = true;
         _cardBtn.targetGraphic.raycastTarget = true;
     }

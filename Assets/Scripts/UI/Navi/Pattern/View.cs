@@ -91,9 +91,11 @@ public class View : MonoBehaviour
     }
 
     protected virtual void TutorialClick(){
+        SoundManager.Instance.PlayEffect(SoundType.UI,"UI/ClickPage", 0.9f);
         tutorialPage.SetActive(true);
     }
     protected virtual void TutorialExit(){
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickPage", 0.9f);
         tutorialPage.SetActive(false);
     }
 }

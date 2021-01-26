@@ -822,6 +822,7 @@ public class Player : LivingEntity
         _isdead = true;
 
         myAnimator.SetTrigger("Die");
+
         _CCManager.Release();
         _DebuffManager.Release();
 

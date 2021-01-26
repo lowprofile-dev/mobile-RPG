@@ -16,7 +16,6 @@ public class DungeonEntrance : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
-            UINaviationManager.Instance.ToggleCardUIView();
+        if (other.tag == "Player") UINaviationManager.Instance.OpenSubUIView("CardUIView");
     }
 }
