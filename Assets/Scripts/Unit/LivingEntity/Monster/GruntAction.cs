@@ -8,17 +8,22 @@
 */
 ////////////////////////////////////////////////////
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GruntAction : MonsterAction
 {
     bool canPanic;
-    enum GRUNTATTACKTYPE {DEFALUT_ATTACK , SHOULDER_BASH , SPIN , SLAM }; // 4가지 공격패턴
+    enum GRUNTATTACKTYPE { DEFALUT_ATTACK, SHOULDER_BASH, SPIN, SLAM }; // 4가지 공격패턴
+    enum GRUNTSIZE { BIG, MEDIUM };
+
     GRUNTATTACKTYPE atktype;
 
+    [Header("Attack")]
     [SerializeField] private Transform _baseMeleeAttackPos; //공격하는 pos
     [SerializeField] private GameObject _baseMeleeAttackPrefab; //공격 콜라이더 오브젝트
+
+    [Header("Etc")]
+    [SerializeField] private GRUNTSIZE _gruntSize;
 
     /////////// 탐색 관련 /////////////
     public override void InitObject()
@@ -40,16 +45,16 @@ public class GruntAction : MonsterAction
     /// <summary>
     /// 패닉일때 소리
     /// </summary>
-    private void DoPanicSound(string monsterName)
+    private void DoPanicSound()
     {
-        if(monsterName.Equals("GruntBig"))
+        switch (_gruntSize)
         {
-            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Panic " + UnityEngine.Random.Range(1, 3), 0.6f);
-        }
-
-        else if (monsterName.Equals("GruntMedium"))
-        {
-            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Panic " + UnityEngine.Random.Range(1, 4), 0.6f);
+            case GRUNTSIZE.BIG:
+                SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Panic " + UnityEngine.Random.Range(1, 3), 0.6f);
+                break;
+            case GRUNTSIZE.MEDIUM:
+                SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Panic " + UnityEngine.Random.Range(1, 4), 0.6f);
+                break;
         }
     }
 
@@ -68,7 +73,7 @@ public class GruntAction : MonsterAction
     protected override void FindExit()
     {
         base.FindExit();
-        canPanic = false;   
+        canPanic = false;
     }
 
     protected override void DoReturn()
@@ -79,21 +84,21 @@ public class GruntAction : MonsterAction
 
     protected override void DoAttack()
     {
-      GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-      obj.transform.SetParent(this.transform);
-      obj.transform.position = _baseMeleeAttackPos.position;
+        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+        obj.transform.SetParent(transform);
+        obj.transform.position = _baseMeleeAttackPos.position;
 
-      Attack atk = obj.GetComponent<Attack>();
-      atk.SetParent(gameObject);
-      atk.PlayAttackTimer(0.3f);
-        
+        Attack atk = obj.GetComponent<Attack>();
+        atk.SetParent(gameObject);
+        atk.PlayAttackTimer(0.3f);
+
     }
 
     protected override void CastStart()
     {
         int proc = Random.Range(0, 100);
 
-        if(proc <= 50)
+        if (proc <= 50)
         {
             atktype = GRUNTATTACKTYPE.SPIN;
         }
@@ -128,7 +133,7 @@ public class GruntAction : MonsterAction
         {
             atktype = GRUNTATTACKTYPE.DEFALUT_ATTACK;
         }
-        else if(proc <= 50)
+        else if (proc <= 50)
         {
             atktype = GRUNTATTACKTYPE.SHOULDER_BASH;
         }
@@ -146,27 +151,29 @@ public class GruntAction : MonsterAction
     /// <summary>
     /// 휘두르기 시작할 때 소리
     /// </summary>
-    private void AttackSoundWhooshStart(string monsterName)
+    private void AttackSoundWhooshStart()
     {
-        if (monsterName.Equals("GruntBig"))
+        switch (_gruntSize)
         {
-            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh Start " + UnityEngine.Random.Range(1, 4), 0.9f);
-        }
-
-        else if(monsterName.Equals("GruntMedium"))
-        {
-            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Whoosh " + UnityEngine.Random.Range(1, 6), 0.9f);
+            case GRUNTSIZE.BIG:
+                SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh Start " + UnityEngine.Random.Range(1, 4), 0.9f);
+                break;
+            case GRUNTSIZE.MEDIUM:
+                SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Whoosh " + UnityEngine.Random.Range(1, 6), 0.9f);
+                break;
         }
     }
 
     /// <summary>
     /// 휘두른 후의 소리
     /// </summary>
-    private void AttackSoundWhooshAfter(string monsterName)
+    private void AttackSoundWhooshAfter()
     {
-        if (monsterName.Equals("GruntBig"))
+        switch (_gruntSize)
         {
-            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh " + UnityEngine.Random.Range(1, 6), 1);
+            case GRUNTSIZE.BIG:
+                SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh " + UnityEngine.Random.Range(1, 6), 1);
+                break;
         }
     }
 
@@ -185,7 +192,7 @@ public class GruntAction : MonsterAction
             {
 
                 yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
- 
+
                 SetAttackAnimation();
 
                 LookTarget();
@@ -199,14 +206,14 @@ public class GruntAction : MonsterAction
                 _readyCast = false;
                 if (!_readyCast && ToCast()) break;
             }
-           
+
         }
     }
 
     protected override void SetAttackType()
     {
         if (_readyCast) return;
-        
+
     }
 
     protected override void SetAttackAnimation()
@@ -267,4 +274,19 @@ public class GruntAction : MonsterAction
         _monster.myAnimator.SetTrigger("Laugh");
     }
 
+    /// <summary>
+    /// 죽었을때 소리
+    /// </summary>
+    public override void DeathSound()
+    {
+        switch (_gruntSize)
+        {
+            case GRUNTSIZE.BIG:
+                SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Death " + UnityEngine.Random.Range(1, 3), 0.8f);
+                break;
+            case GRUNTSIZE.MEDIUM:
+                SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Die" + UnityEngine.Random.Range(1, 3), 0.8f);
+                break;
+        }
+    }
 }

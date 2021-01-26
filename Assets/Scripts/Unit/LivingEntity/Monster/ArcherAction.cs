@@ -7,13 +7,12 @@
  */
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ArcherAction : MonsterAction
 {
     bool canPanic;
-    enum ARCHERATTACKTYPE { ATTACK, WHACK, SHOT, RAPID_SHOT};
+    enum ARCHERATTACKTYPE { ATTACK, WHACK, SHOT, RAPID_SHOT };
     ARCHERATTACKTYPE atktype;
 
     [SerializeField] private Transform _baseRangeAttackPos;
@@ -87,7 +86,7 @@ public class ArcherAction : MonsterAction
         if (atktype == ARCHERATTACKTYPE.WHACK)
         {
             GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-            obj.transform.SetParent(this.transform);
+            obj.transform.SetParent(transform);
             obj.transform.position = _baseMeleeAttackPos.position;
             obj.transform.LookAt(_target.transform);
 
@@ -98,7 +97,7 @@ public class ArcherAction : MonsterAction
         else
         {
             GameObject obj = ObjectPoolManager.Instance.GetObject(_baseRangeAttackPrefab, _baseRangeAttackPos.position, _baseRangeAttackPos.rotation);
-            obj.transform.SetParent(this.transform);
+            obj.transform.SetParent(transform);
             //obj.transform.position = _baseRangeAttackPos.position;
             obj.transform.LookAt(_target.transform);
             obj.GetComponent<Arrow>().Launch();
@@ -173,7 +172,7 @@ public class ArcherAction : MonsterAction
         base.AttackStart();
     }
 
-    
+
 
     protected override void AttackExit()
     {
@@ -277,5 +276,13 @@ public class ArcherAction : MonsterAction
     protected override void KillStart()
     {
         _monster.myAnimator.SetTrigger("Laugh");
+    }
+
+    /// <summary>
+    /// 죽었을때 소리
+    /// </summary>
+    public override void DeathSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Die " + UnityEngine.Random.Range(1, 3), 0.8f);
     }
 }
