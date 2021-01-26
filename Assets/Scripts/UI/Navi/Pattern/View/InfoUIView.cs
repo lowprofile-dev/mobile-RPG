@@ -52,6 +52,7 @@ public class InfoUIView : View
     private void OnClick()
     {
         UINaviationManager.Instance.PopToNav(name);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     // Update is called once per frame

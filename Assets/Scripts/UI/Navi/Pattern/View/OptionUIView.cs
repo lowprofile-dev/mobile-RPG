@@ -45,11 +45,12 @@ public class OptionUIView : View
     }
 
     /// <summary>
-    /// 게임 확인
+    /// 뷰 팝업 제거
     /// </summary>
     private void QuitView()
     {
         UINaviationManager.Instance.PopToNav("SubUI_OptionView");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     /// <summary>
@@ -61,6 +62,7 @@ public class OptionUIView : View
         {
             Player.Instance.ChangeState(PLAYERSTATE.PS_IDLE);
             UINaviationManager.Instance.PopToNav("SubUI_OptionView");
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
             UILoaderManager.Instance.LoadVillage();
         }
     }

@@ -100,5 +100,6 @@ public class InventoryUIView : View
     {
         UINaviationManager.Instance.PopToNav("SubUI_Inventory");
         Player.Instance.FaceCam.InitFaceCam(Player.Instance.playerAvater);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 }

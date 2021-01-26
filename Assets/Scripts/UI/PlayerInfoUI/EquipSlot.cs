@@ -57,8 +57,9 @@ public class EquipSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         itemDetail.SetActive(true);
         itemDetail.GetComponent<EquipDetail>().LoadData(itemData, icon);
         itemDetail.transform.position = pos.position;
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 0.9f);
     }
-        public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData)
     {
         itemDetail.SetActive(false);
     }

@@ -43,6 +43,7 @@ public class PurchaseShopUIView : View
     private void ReturnToMain()
     {
         UINaviationManager.Instance.PopToNav("SubUI_PurchaseShopUIView");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     private void PurchaseCoin()

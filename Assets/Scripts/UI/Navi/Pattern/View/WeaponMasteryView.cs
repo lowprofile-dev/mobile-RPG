@@ -92,12 +92,13 @@ public class WeaponMasteryView : View
     private void ExitButtonClick()
     {
         UINaviationManager.Instance.PopToNav("SubUI_WeaponMasteryView");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     /// <summary>
     /// 각 무기별 스킬 스크립트 초기화
     /// </summary>
- 
+
     private void ScriptInit()
     {
         for(int i =0; i <4; i++)
