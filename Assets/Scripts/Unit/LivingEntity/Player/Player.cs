@@ -165,7 +165,7 @@ public class Player : LivingEntity
         else weaponManager.SetWeapon(weaponManager.GetWeaponName());
 
         SetUpPlayerCamera();
-
+        MasteryManager.Instance.UpdateCurrentExp();
         playerOutlinable = gameObject.GetComponent<EPOOutline.Outlinable>();
         InitOutline();
     }
