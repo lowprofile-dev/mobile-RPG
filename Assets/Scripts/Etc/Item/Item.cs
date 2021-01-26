@@ -37,7 +37,8 @@ public class Item : MonoBehaviour
 
     private void DisableItem()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 
     /// <summary>
