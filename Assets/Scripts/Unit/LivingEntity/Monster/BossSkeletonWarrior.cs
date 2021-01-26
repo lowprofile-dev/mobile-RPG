@@ -86,7 +86,7 @@ public class BossSkeletonWarrior : MonsterAction
     private void JumpAttackSound()
     {
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/ExplosionAttack", 0.4f);
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1,4), 0.9f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1,4), 1f);
     }
 
     private void JumpAttackEffect()
@@ -102,9 +102,9 @@ public class BossSkeletonWarrior : MonsterAction
     /// </summary>
     private void Shock2AttackSound()
     {
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/LaserAttackElectro", 0.6f);
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/LaserAttackWhoosh", 0.6f);
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1, 4), 0.9f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/LaserAttackElectro", 0.5f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/LaserAttackWhoosh", 0.5f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1, 4), 1f);
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ public class BossSkeletonWarrior : MonsterAction
     /// </summary>
     private void WalkSound()
     {
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Footstep " + UnityEngine.Random.Range(1, 4), 0.9f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Footstep " + UnityEngine.Random.Range(1, 4), 1f);
     }
 
     private void ShockWave2Effect()
@@ -128,9 +128,9 @@ public class BossSkeletonWarrior : MonsterAction
     /// </summary>
     private void ShockAttackSound()
     {
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/BigSlashWater", 0.6f);
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/BigSlashWhoosh", 0.6f);
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1,4), 0.9f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/BigSlashWater", 0.5f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/BigSlashWhoosh", 0.5f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1,4), 1f);
     }
 
     private void DoShokeWave() 
