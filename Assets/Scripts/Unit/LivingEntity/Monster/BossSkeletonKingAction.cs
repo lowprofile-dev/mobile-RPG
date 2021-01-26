@@ -281,7 +281,7 @@ public class BossSkeletonKingAction : MonsterAction
     {
         foreach (var item in monsterList)
         {
-            if (item == null)
+            if (item.activeSelf == false)
             {
                 monsterList.Remove(item);
                 break;
@@ -430,13 +430,13 @@ public class BossSkeletonKingAction : MonsterAction
         {
             int rnd = UnityEngine.Random.Range(0, 1);
             GameObject mon;
-            if (rnd == 0) mon = Instantiate(skeleton_grunt);
-            else mon = Instantiate(skeleton_sword);
+            if (rnd == 0) mon = ObjectPoolManager.Instance.GetObject(skeleton_grunt);
+            else mon = ObjectPoolManager.Instance.GetObject(skeleton_sword);
 
-            mon.GetComponent<NavMeshAgent>().enabled = false;
             mon.transform.position = SpawnPoints.Points[i].TransformPoint(0, 0, 0);
-            monster.transform.localRotation = Quaternion.identity;
-            mon.GetComponent<NavMeshAgent>().enabled = true;
+            monster.GetComponent<MonsterAction>().parentRoom = parentRoom;
+            mon.GetComponent<Monster>().InitMonster();
+            mon.GetComponent<MonsterAction>().SpawnPos = SpawnPoints.Points[i].TransformPoint(0, 0, 0);
             monsterList.Add(mon);
         }
         IsSummonSpawn = false;

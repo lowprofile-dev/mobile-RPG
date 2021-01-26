@@ -19,6 +19,6 @@ public class Arrow : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
-            gameObject.SetActive(false);
+            ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }
