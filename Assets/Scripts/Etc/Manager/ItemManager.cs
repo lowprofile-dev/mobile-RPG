@@ -81,7 +81,6 @@ public class ItemManager : SingletonBase<ItemManager>
     /// </summary>
     private void LoadCurrentItems()
     {
-        PlayerPrefs.DeleteKey("LoadCurrentItemCount");
         PlayerPrefs.SetInt("LoadCurrentItemCount", PlayerPrefs.GetInt("LoadCurrentItemCount", 0));
         if (PlayerPrefs.GetInt("LoadCurrentItemCount") == 0)
         {
