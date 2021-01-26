@@ -30,12 +30,8 @@ public class ExpBar : MonoBehaviour
     }
     void Update()
     {
-        if(saveExp != WeaponManager.Instance._weaponDic[name].exp)
-        {
-            float ratio = ((float)WeaponManager.Instance._weaponDic[name].exp / (float)WeaponManager.Instance._weaponDic[name].expMax);
-            saveExp = WeaponManager.Instance._weaponDic[name].exp;
-            if (image)
-                image.fillAmount = ratio;
-        }
+        float ratio = ((float)WeaponManager.Instance._weaponDic[name].exp / (float)WeaponManager.Instance._weaponDic[name].expMax);
+        if (image)
+            image.fillAmount = ratio;
     }
 }

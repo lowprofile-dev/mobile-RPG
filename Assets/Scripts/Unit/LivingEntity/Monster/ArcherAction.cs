@@ -40,6 +40,14 @@ public class ArcherAction : MonsterAction
         }
     }
 
+    /// <summary>
+    /// 패닉일때 소리
+    /// </summary>
+    private void DoPanicSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Panic " + UnityEngine.Random.Range(1, 4), 0.6f);
+    }
+
     protected override bool CheckFindAnimationOver()
     {
         if (canPanic) return CheckAnimationOver("Panic", 1.0f);
@@ -99,7 +107,6 @@ public class ArcherAction : MonsterAction
             atk.SetParent(gameObject);
             atk.PlayAttackTimer(5f);
         }
-
     }
 
     protected override void CastStart()
@@ -134,6 +141,7 @@ public class ArcherAction : MonsterAction
             ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
     }
+
     protected override void CastExit()
     {
         base.CastExit();
@@ -165,10 +173,13 @@ public class ArcherAction : MonsterAction
         base.AttackStart();
     }
 
+    
+
     protected override void AttackExit()
     {
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
+
     protected override IEnumerator AttackTarget()
     {
         while (true)
@@ -181,8 +192,6 @@ public class ArcherAction : MonsterAction
                 yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
                 SetAttackAnimation();
-
-                // 사운드 재생
 
                 StartCoroutine(DoAttackAction());
 
@@ -222,7 +231,20 @@ public class ArcherAction : MonsterAction
         }
     }
 
+    private void BowWrackSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh Start " + UnityEngine.Random.Range(1, 4), 1.0f);
+    }
 
+    private void BowShotSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Bow Fire " + UnityEngine.Random.Range(1, 4), 0.9f);
+    }
+
+    private void BowDrawSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Bow Draw " + UnityEngine.Random.Range(1, 4), 0.9f);
+    }
 
     protected override void IdleStart()
     {

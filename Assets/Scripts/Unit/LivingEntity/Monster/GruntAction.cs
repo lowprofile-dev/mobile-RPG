@@ -37,6 +37,22 @@ public class GruntAction : MonsterAction
         }
     }
 
+    /// <summary>
+    /// 패닉일때 소리
+    /// </summary>
+    private void DoPanicSound(string monsterName)
+    {
+        if(monsterName.Equals("GruntBig"))
+        {
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Panic " + UnityEngine.Random.Range(1, 3), 0.6f);
+        }
+
+        else if (monsterName.Equals("GruntMedium"))
+        {
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Panic " + UnityEngine.Random.Range(1, 4), 0.6f);
+        }
+    }
+
     protected override bool CheckFindAnimationOver()
     {
         if (canPanic) return CheckAnimationOver("Panic", 1.0f);
@@ -63,7 +79,6 @@ public class GruntAction : MonsterAction
 
     protected override void DoAttack()
     {
-       
       GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
       obj.transform.SetParent(this.transform);
       obj.transform.position = _baseMeleeAttackPos.position;
@@ -127,6 +142,34 @@ public class GruntAction : MonsterAction
         }
         base.AttackStart();
     }
+
+    /// <summary>
+    /// 휘두르기 시작할 때 소리
+    /// </summary>
+    private void AttackSoundWhooshStart(string monsterName)
+    {
+        if (monsterName.Equals("GruntBig"))
+        {
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh Start " + UnityEngine.Random.Range(1, 4), 0.9f);
+        }
+
+        else if(monsterName.Equals("GruntMedium"))
+        {
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Whoosh " + UnityEngine.Random.Range(1, 6), 0.9f);
+        }
+    }
+
+    /// <summary>
+    /// 휘두른 후의 소리
+    /// </summary>
+    private void AttackSoundWhooshAfter(string monsterName)
+    {
+        if (monsterName.Equals("GruntBig"))
+        {
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh " + UnityEngine.Random.Range(1, 6), 1);
+        }
+    }
+
 
     protected override void AttackExit()
     {

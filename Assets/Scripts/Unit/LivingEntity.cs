@@ -39,12 +39,10 @@ public class LivingEntity : Unit
     public float MAXspeed { get { return _maxSpeed; } set { _maxSpeed = value; } }
     public CCManager CCManager { get { return _CCManager; } set { _CCManager = value; } }
 
-
-
+    protected virtual void OnEnable() { }
     protected virtual void Start()
     {
         InitObject();
-        
     }
 
     protected virtual void Update()

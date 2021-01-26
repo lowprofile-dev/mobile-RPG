@@ -3,7 +3,7 @@
     class DungeonRoom
     
     담당자 : 김기정
-    부 담당자 :
+    부 담당자 : 안영훈
  */
 
 using System;
@@ -42,7 +42,7 @@ public class DungeonRoom : MonoBehaviour
     [SerializeField] GameObject bossSpawnPoint;
     private List<GameObject> doorways = new List<GameObject>();
     private List<GameObject> doors = new List<GameObject>();
-    private List<GameObject> monsters = new List<GameObject>();
+    private List<GameObject> monsters = new List<GameObject>(); public List<GameObject> MonsterList { get { return monsters; } }
     private List<GameObject> lights = new List<GameObject>();
     private List<GameObject> minimapIcons = new List<GameObject>();
     System.Random random = new System.Random();
@@ -100,11 +100,13 @@ public class DungeonRoom : MonoBehaviour
     {
         for (int i = monsters.Count-1; i >= 0; i--)
         {
-            Destroy(monsters[i]);
+            ///Destroy(monsters[i]);
+            ObjectPoolManager.Instance.ReturnObject(monsters[i]);
         }
         for (int i = doors.Count - 1; i >= 0; i--)
         {
-            Destroy(doors[i]);
+            //Destroy(doors[i]);
+            ObjectPoolManager.Instance.ReturnObject(doors[i]);
         }
     }
 
@@ -303,7 +305,7 @@ public class DungeonRoom : MonoBehaviour
             if (monsters[i] == null) continue;
             if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center))
             {
-                monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 7, 0);
+                monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 1, 0);
             }
         }
     }
@@ -407,10 +409,11 @@ public class DungeonRoom : MonoBehaviour
         SoundManager.Instance.PlayBGM("BossBGM", 0.6f);
         GameObject boss = dungeonManager.SpawnBoss(bossSpawnPoint.transform);
         boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);
+        boss.GetComponent<MonsterAction>().parentRoom = this;
+        boss.GetComponent<Monster>().InitMonster();
         boss.transform.LookAt(Player.Instance.gameObject.transform);
         boss.transform.SetParent(null);
         monsters.Add(boss);
-        boss.GetComponent<MonsterAction>().parentRoom = this;
         nMonsterSpawned++;
         CameraManager.Instance.CameraSetTarget(boss);
     }
@@ -474,10 +477,14 @@ public class DungeonRoom : MonoBehaviour
             nMonsterAlive++;
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
             monsterIndex = random.Next(dungeonManager.currentStageMonsterPrefabs.Count);
-            var monster = Instantiate(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
+            //var monster = Instantiate(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
+            GameObject monster = ObjectPoolManager.Instance.GetObject(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
             monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
-            nMonsterSpawned += 1;
             monster.GetComponent<MonsterAction>().parentRoom = this;
+            monster.GetComponent<Monster>().InitMonster();
+            //monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
+            nMonsterSpawned += 1;
+            monster.GetComponent<MonsterAction>().SpawnPos = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
             monsters.Add(monster);
         }
     }
