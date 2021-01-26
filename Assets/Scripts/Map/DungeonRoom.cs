@@ -477,12 +477,10 @@ public class DungeonRoom : MonoBehaviour
             nMonsterAlive++;
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
             monsterIndex = random.Next(dungeonManager.currentStageMonsterPrefabs.Count);
-            //var monster = Instantiate(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
             GameObject monster = ObjectPoolManager.Instance.GetObject(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
             monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
             monster.GetComponent<MonsterAction>().parentRoom = this;
             monster.GetComponent<Monster>().InitMonster();
-            //monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
             nMonsterSpawned += 1;
             monster.GetComponent<MonsterAction>().SpawnPos = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
             monsters.Add(monster);

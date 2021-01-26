@@ -205,8 +205,7 @@ public class GruntAction : MonsterAction
 
     protected override void SetAttackType()
     {
-        if (_readyCast) return;
-        
+        if (_readyCast) return;      
     }
 
     protected override void SetAttackAnimation()
@@ -245,11 +244,11 @@ public class GruntAction : MonsterAction
         base.IdleExit();
     }
 
-    protected override IEnumerator SpawnDissolve()
-    {
-        yield return null;
-        ChangeState(MONSTER_STATE.STATE_IDLE);
-    }
+    //protected override IEnumerator SpawnDissolve()
+    //{
+    //    yield return null;
+    //    ChangeState(MONSTER_STATE.STATE_IDLE);
+    //}
 
     protected override void TraceStart()
     {
