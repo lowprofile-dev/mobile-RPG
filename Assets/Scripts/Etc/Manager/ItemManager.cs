@@ -334,6 +334,7 @@ public class ItemManager : SingletonBase<ItemManager>
     /// <param name="itemData">갈아낄 아이템 데이터</param>
     public void SetItemToPlayer(ItemData itemData)
     {
+        UnequipItems();
         switch (itemData.itemType)
         {
             case "Armor":
@@ -428,13 +429,21 @@ public class ItemManager : SingletonBase<ItemManager>
 
     private void EquipItems()
     {
-        statusManager.multiplicationStatus = new MultiplicationStatus();
-        statusManager.additionStatus = new AdditionStatus();
         EquipArmor(currentItemKeys.ArmorKey);
         EquipBottom(currentItemKeys.BottomKey);
         EquipHelmet(currentItemKeys.HelmetKey);
         EquipGloves(currentItemKeys.GlovesKey);
         EquipBoot(currentItemKeys.BootKey);
+        statusManager.UpdateFinalStatus();
+    }
+
+    private void UnequipItems()
+    {
+        UnequipArmor(currentItemKeys.ArmorKey);
+        UnequipBottom(currentItemKeys.BottomKey);
+        UnequipHelmet(currentItemKeys.HelmetKey);
+        UnequipGloves(currentItemKeys.GlovesKey);
+        UnequipBoot(currentItemKeys.BootKey);
         statusManager.UpdateFinalStatus();
     }
 
@@ -462,7 +471,7 @@ public class ItemManager : SingletonBase<ItemManager>
     private void EquipBottom(int bottomKey)
     {
         statusManager.additionStatus.stamina += itemDictionary[bottomKey].stamina;
-        statusManager.additionStatus.staminaRecovery += (1 + itemDictionary[bottomKey].staminaRecovery);
+        statusManager.additionStatus.staminaRecovery += (itemDictionary[bottomKey].staminaRecovery);
         statusManager.additionStatus.hp += itemDictionary[bottomKey].hp;
         statusManager.additionStatus.hpRecovery += itemDictionary[bottomKey].hpRecovery;
     }
@@ -472,6 +481,42 @@ public class ItemManager : SingletonBase<ItemManager>
         statusManager.additionStatus.hp += itemDictionary[armorKey].hpIncreaseRate;
         statusManager.additionStatus.armor += itemDictionary[armorKey].armor;
         statusManager.additionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
+    }
+
+    private void UnequipBoot(int bootKey)
+    {
+        statusManager.multiplicationStatus.moveSpeed -= itemDictionary[bootKey].moveSpeed;
+        statusManager.multiplicationStatus.dashCooldown -= itemDictionary[bootKey].dashCooldown;
+        statusManager.multiplicationStatus.dashStamina -= itemDictionary[bootKey].dashStamina;
+    }
+
+    private void UnequipGloves(int glovesKey)
+    {
+        statusManager.additionStatus.attackDamage -= itemDictionary[glovesKey].attackDamage;
+        statusManager.multiplicationStatus.attackSpeed -= itemDictionary[glovesKey].attackSpeed;
+        statusManager.multiplicationStatus.attackCooldown -= itemDictionary[glovesKey].attackCooldown;
+    }
+
+    private void UnequipHelmet(int helmetKey)
+    {
+        statusManager.additionStatus.rigidresistance -= itemDictionary[helmetKey].rigidresistance;
+        statusManager.additionStatus.stunresistance -= itemDictionary[helmetKey].stunresistance;
+        statusManager.additionStatus.fallresistance -= itemDictionary[helmetKey].fallresistance;
+    }
+
+    private void UnequipBottom(int bottomKey)
+    {
+        statusManager.additionStatus.stamina -= itemDictionary[bottomKey].stamina;
+        statusManager.additionStatus.staminaRecovery -= (itemDictionary[bottomKey].staminaRecovery);
+        statusManager.additionStatus.hp -= itemDictionary[bottomKey].hp;
+        statusManager.additionStatus.hpRecovery -= itemDictionary[bottomKey].hpRecovery;
+    }
+
+    private void UnequipArmor(int armorKey)
+    {
+        statusManager.additionStatus.hp -= itemDictionary[armorKey].hpIncreaseRate;
+        statusManager.additionStatus.armor -= itemDictionary[armorKey].armor;
+        statusManager.additionStatus.magicResistance -= itemDictionary[armorKey].magicResistance;
     }
 
     /// <summary>
