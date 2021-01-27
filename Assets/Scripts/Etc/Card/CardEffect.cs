@@ -87,10 +87,10 @@ public class CardEffect
             originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
             StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
         }
-        else if (effectData.id == 21) // 남은 적 체력에 비례한 플레이어의 추가 데미지 (미구현)
+        else if (effectData.id == 21) // 남은 적 체력에 비례한 플레이어의 추가 데미지
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
-            StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
+            Player.Instance.canDealProportional = true;
+            Player.Instance.proportionalDamage = gradeNum[level] / 100.0f;
         }
 
         else if (effectData.id == 26) // 플레이어의 체력이 100%일 때 데미지 증가
@@ -101,29 +101,23 @@ public class CardEffect
                 StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
             }
         }
-        else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화 (미구현)
+        else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화
         {
-            if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
+            if (Player.Instance.hasSpellStrike)
             {
                 originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
                 StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
             }
         }
-        else if (effectData.id == 31) // 적 체력 80% 이상일 때, 적 받는 데미지 증가 (미구현)
+        else if (effectData.id == 31) // 적 체력 80% 이상일 때, 적 받는 데미지 증가
         {
-            if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
-            {
-                originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
-                StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
-            }
+            Player.Instance.canDealGiant = true;
+            Player.Instance.giantDamage = gradeNum[level] / 100.0f;
         }
-        else if (effectData.id == 38) // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가 (미구현)
+        else if (effectData.id == 38) // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가
         {
-            if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
-            {
-                originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
-                StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
-            }
+            Player.Instance.canDealAnnoyed = true;
+            Player.Instance.annoyedDamage = gradeNum[level] / 100.0f;
         }
         else if (effectData.id == 40) // 스테미너 감소
         {
@@ -178,6 +172,26 @@ public class CardEffect
                     StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
             }
         }
+        else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화
+        {
+            if (Player.Instance.hasSpellStrike)
+            {
+                if (originalValues.Count == 0)
+                {
+                    originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
+                    StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
+                }
+                else if (StatusManager.Instance.finalStatus.attackDamage == originalValues[0])
+                {
+                    StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
+                }
+            }
+            else
+            {
+                if (originalValues.Count > 0)
+                    StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
+            }
+        }
     }
 
     public virtual void EndEffect()
@@ -208,34 +222,25 @@ public class CardEffect
             {
                 StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
             }
-            else if (effectData.id == 21) // 남은 적 체력에 비례한 플레이어의 추가 데미지 (미구현)
+            else if (effectData.id == 21) // 남은 적 체력에 비례한 플레이어의 추가 데미지
             {
-                StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
+                Player.Instance.canDealProportional = false;
             }
             else if (effectData.id == 26) // 플레이어의 체력이 100%일 때 데미지 증가
             {
                 StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
             }
-            else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화 (미구현)
+            else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화
             {
-                if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
-                {
-                    StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-                }
+                StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
             }
-            else if (effectData.id == 31) // 적 체력 80% 이상일 때, 적 받는 데미지 증가 (미구현)
+            else if (effectData.id == 31) // 적 체력 80% 이상일 때, 적 받는 데미지 증가
             {
-                if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
-                {
-                    StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-                }
+                Player.Instance.canDealGiant = false;
             }
-            else if (effectData.id == 38) // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가 (미구현)
+            else if (effectData.id == 38) // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가
             {
-                if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
-                {
-                    StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-                }
+                Player.Instance.canDealAnnoyed = false;
             }
             else if (effectData.id == 40) // 스테미너 감소
             {
