@@ -43,6 +43,7 @@ public class Player : LivingEntity
     private StatusManager _statusManager;                               // 스테이터스 매니저
     private EPOOutline.Outlinable playerOutlinable;                     // 아웃라이너
 
+
     [Header("상태 관련")]
     bool _isdead = false;                                   // 사망 여부
 
@@ -79,6 +80,7 @@ public class Player : LivingEntity
     private int _cntSkillType;                          // 현재 사용하는 스킬 정보
     public int currentCombo;                            // 현재 콤보 수
     private bool _canConnectCombo;                      // 콤보를 더 이을 수 있는지
+    public bool hasSpellStrike = false;                            // 스킬 사용 이후 1회 평타 강화
 
     [Header("무기 관련")]
     public bool weaponChanged = false;                  // 무기가 바뀌었는지 여부
@@ -118,7 +120,15 @@ public class Player : LivingEntity
     public ItemManager itemManager { get { return _itemManager; } }
     public StatusManager statusManager { get { return _statusManager; } }
 
-
+    [Header("카드 관련")]
+    public float proportionalDamage;
+    public float giantDamage;
+    public float annoyedDamage;
+    public bool canDealProportional = false;                                // 몬스터 남은 체력 비례 데미지
+    public bool canDealGiant = false;                                       // 몬스터 체력 80% 이상일 때 데미지 증가
+    public bool canDealAnnoyed = false;                                     // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가
+    public bool isAnnoyed = false;
+    public float annoyedTime = 0f;
 
 
     ///////////////// 베이스 //////////////////
@@ -181,6 +191,8 @@ public class Player : LivingEntity
         UpdateState();
         MasteryApply();
         ApplyGravity();
+        if (isAnnoyed)
+            annoyedTime += Time.deltaTime;
     }
     
 
@@ -445,6 +457,7 @@ public class Player : LivingEntity
     /// </summary>
     public void EndAttack()
     {
+        hasSpellStrike = false;
         InitAttack();
         ChangeState(PLAYERSTATE.PS_IDLE);
     }
@@ -682,6 +695,7 @@ public class Player : LivingEntity
         myAnimator.ResetTrigger("SkillB");
         myAnimator.ResetTrigger("SkillC");
         myAnimator.ResetTrigger("SkillBAttack");
+        hasSpellStrike = true;
     }
 
     /// <summary>
@@ -1392,6 +1406,8 @@ public class Player : LivingEntity
         base.Damaged(damage);
         AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.6f);
         SoundManager.Instance.SetPitch(source, 1.5f);
+        isAnnoyed = true;
+        annoyedTime = 0f;
     }
 
     public void RestoreHP(float restoreHp)
