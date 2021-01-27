@@ -108,6 +108,8 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler/*, IPointerUpHandler*
 
     private void EquipItem()
     {
+        if (itemData == null)
+            return;
         itemManager.SetItemToPlayer(itemData);
         SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ItemEquip2", 0.9f);
     }

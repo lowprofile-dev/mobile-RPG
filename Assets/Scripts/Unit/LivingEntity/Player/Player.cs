@@ -1062,8 +1062,8 @@ public class Player : LivingEntity
         {
             if (masterySet[1] == false)
             {
-                statusManager.finalStatus.attackDamage *= statusManager.playerStatus.attackDamage *1.2f;
-                statusManager.finalStatus.magicDamage *= statusManager.playerStatus.magicDamage * 1.2f;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage *1.1f;
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.1f;
                 statusManager.finalStatus.armor = statusManager.playerStatus.armor;
                 statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance;
                 masterySet[1] = true;
