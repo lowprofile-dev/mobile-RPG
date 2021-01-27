@@ -69,13 +69,11 @@ public class CardEffect
         }
         else if (effectData.id == 4) // 소모 스테미너 감소
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.dashStamina);
-            StatusManager.Instance.finalStatus.dashStamina -= StatusManager.Instance.finalStatus.dashStamina * gradeNum[level] / 100.0f;
+            StatusManager.Instance.multiplicationStatus.dashStamina += gradeNum[level];
         }
         else if (effectData.id == 5) // 소모 스테미너 증가
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.dashStamina);
-            StatusManager.Instance.finalStatus.dashStamina += StatusManager.Instance.finalStatus.dashStamina * gradeNum[level] / 100.0f;
+            StatusManager.Instance.multiplicationStatus.dashStamina -= gradeNum[level];
         }
         else if (effectData.id == 6) // 대쉬 속도 증가
         {
@@ -84,8 +82,7 @@ public class CardEffect
         }
         else if (effectData.id == 15) // 플레이어의 데미지 증가
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
-            StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
+            StatusManager.Instance.multiplicationStatus.attackDamage += gradeNum[level];
         }
         else if (effectData.id == 21) // 남은 적 체력에 비례한 플레이어의 추가 데미지
         {
@@ -97,17 +94,18 @@ public class CardEffect
         {
             if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
             {
-                originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
-                StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
+                Player.Instance.canDealFullHealth = true;
+                Player.Instance.fullHealthDamage = gradeNum[level] / 100.0f;
+            }
+            else
+            {
+                Player.Instance.canDealFullHealth = false;
             }
         }
         else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화
         {
-            if (Player.Instance.hasSpellStrike)
-            {
-                originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
-                StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
-            }
+            Player.Instance.canDealSpellStrike = true;
+            Player.Instance.spellStrikeDamage = gradeNum[level] / 100.0f;
         }
         else if (effectData.id == 31) // 적 체력 80% 이상일 때, 적 받는 데미지 증가
         {
@@ -121,35 +119,28 @@ public class CardEffect
         }
         else if (effectData.id == 40) // 스테미너 감소
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.maxStamina);
-            StatusManager.Instance.finalStatus.maxStamina -= gradeNum[level];
+            StatusManager.Instance.additionStatus.stamina -= gradeNum[level];
         }
         else if (effectData.id == 43) // 스테미너 증가
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.maxStamina);
-            StatusManager.Instance.finalStatus.maxStamina += gradeNum[level];
+            StatusManager.Instance.additionStatus.stamina += gradeNum[level];
         }
         else if (effectData.id == 53) // 플레이어 가하는 데미지 & 받는 데미지 증가
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
-            originalValues.Add(StatusManager.Instance.finalStatus.armor);
-            StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
-            StatusManager.Instance.finalStatus.armor -= StatusManager.Instance.finalStatus.armor * gradeNum[level] / 100.0f;
+            StatusManager.Instance.multiplicationStatus.attackDamage += gradeNum[level];
+            StatusManager.Instance.multiplicationStatus.armorIncreaseRate -= gradeNum[level];
         }
         else if (effectData.id == 58) // 회피 소모 스테미너 감소
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.dashStamina);
-            StatusManager.Instance.finalStatus.dashStamina -= StatusManager.Instance.finalStatus.dashStamina * gradeNum[level] / 100.0f;
+            StatusManager.Instance.multiplicationStatus.dashStamina -= gradeNum[level];
         }
         else if (effectData.id == 59) // 플레이어 받는 데미지 증가
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.armor);
-            StatusManager.Instance.finalStatus.armor -= StatusManager.Instance.finalStatus.armor * gradeNum[level] / 100.0f;
+            StatusManager.Instance.multiplicationStatus.armorIncreaseRate -= gradeNum[level];
         }
         else if (effectData.id == 61) // 플레이어 체력 증가
         {
-            originalValues.Add(StatusManager.Instance.finalStatus.maxHp);
-            StatusManager.Instance.finalStatus.maxHp += StatusManager.Instance.finalStatus.maxHp * gradeNum[level] / 100.0f;
+            StatusManager.Instance.multiplicationStatus.hpIncreaseRate += gradeNum[level];
         }
 
         CardManager.Instance.activeEffects.Add(this); // 활성화 리스트에 이펙트 추가
@@ -161,112 +152,86 @@ public class CardEffect
         {
             if (Player.Instance.Hp == StatusManager.Instance.finalStatus.maxHp)
             {
-                if (originalValues.Count == 0)
-                    originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
-                StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-                StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
+                Player.Instance.canDealFullHealth = true;
+                Player.Instance.fullHealthDamage = gradeNum[level] / 100.0f;
             }
             else
             {
-                if (originalValues.Count > 0)
-                    StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-            }
-        }
-        else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화
-        {
-            if (Player.Instance.hasSpellStrike)
-            {
-                if (originalValues.Count == 0)
-                {
-                    originalValues.Add(StatusManager.Instance.finalStatus.attackDamage);
-                    StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
-                }
-                else if (StatusManager.Instance.finalStatus.attackDamage == originalValues[0])
-                {
-                    StatusManager.Instance.finalStatus.attackDamage += StatusManager.Instance.finalStatus.attackDamage * gradeNum[level] / 100.0f;
-                }
-            }
-            else
-            {
-                if (originalValues.Count > 0)
-                    StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
+                Player.Instance.canDealFullHealth = false;
             }
         }
     }
 
     public virtual void EndEffect()
     {
-        if (originalValues.Count > 0)
+        if (effectData.id == 2) // 대쉬 길이 감소
         {
-            if (effectData.id == 2) // 대쉬 길이 감소
-            {
-                Player.Instance.dashSpeed = originalValues[0];
-            }
-            else if (effectData.id == 3) // 대쉬 길이 증가
-            {
-                Player.Instance.dashSpeed = originalValues[0];
-            }
-            else if (effectData.id == 4) // 소모 스테미너 감소
-            {
-                StatusManager.Instance.finalStatus.dashStamina = originalValues[0];
-            }
-            else if (effectData.id == 5) // 소모 스테미너 증가
-            {
-                StatusManager.Instance.finalStatus.dashStamina = originalValues[0];
-            }
-            else if (effectData.id == 6) // 대쉬 속도 증가
-            {
-                Player.Instance.dashSpeed = originalValues[0];
-            }
-            else if (effectData.id == 15) // 플레이어의 데미지 증가
-            {
-                StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-            }
-            else if (effectData.id == 21) // 남은 적 체력에 비례한 플레이어의 추가 데미지
-            {
-                Player.Instance.canDealProportional = false;
-            }
-            else if (effectData.id == 26) // 플레이어의 체력이 100%일 때 데미지 증가
-            {
-                StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-            }
-            else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화
-            {
-                StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-            }
-            else if (effectData.id == 31) // 적 체력 80% 이상일 때, 적 받는 데미지 증가
-            {
-                Player.Instance.canDealGiant = false;
-            }
-            else if (effectData.id == 38) // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가
-            {
-                Player.Instance.canDealAnnoyed = false;
-            }
-            else if (effectData.id == 40) // 스테미너 감소
-            {
-                StatusManager.Instance.finalStatus.maxStamina = originalValues[0];
-            }
-            else if (effectData.id == 43) // 스테미너 증가
-            {
-                StatusManager.Instance.finalStatus.maxStamina = originalValues[0];
-            }
-            else if (effectData.id == 53) // 플레이어 가하는 데미지 & 받는 데미지 증가
-            {
-                StatusManager.Instance.finalStatus.attackDamage = originalValues[0];
-                StatusManager.Instance.finalStatus.armor = originalValues[1];
-            }
-            else if (effectData.id == 58) // 회피 소모 스테미너 감소
-            {
-                StatusManager.Instance.finalStatus.dashStamina = originalValues[0];
-            }
-            else if (effectData.id == 59) // 플레이어 받는 데미지 증가
-            {
-                StatusManager.Instance.finalStatus.armor = originalValues[0];
-            }
-            else if (effectData.id == 61) // 플레이어 체력 증가
-            {
-                StatusManager.Instance.finalStatus.maxHp = originalValues[0];
-            }
+            Player.Instance.dashSpeed = originalValues[0];
+        }
+        else if (effectData.id == 3) // 대쉬 길이 증가
+        {
+            Player.Instance.dashSpeed = originalValues[0];
+        }
+        else if (effectData.id == 4) // 소모 스테미너 감소
+        {
+            StatusManager.Instance.multiplicationStatus.dashStamina -= gradeNum[level];
+        }
+        else if (effectData.id == 5) // 소모 스테미너 증가
+        {
+            StatusManager.Instance.multiplicationStatus.dashStamina += gradeNum[level];
+        }
+        else if (effectData.id == 6) // 대쉬 속도 증가
+        {
+            Player.Instance.dashSpeed = originalValues[0];
+        }
+        else if (effectData.id == 15) // 플레이어의 데미지 증가
+        {
+            StatusManager.Instance.multiplicationStatus.attackDamage -= gradeNum[level];
+        }
+        else if (effectData.id == 21) // 남은 적 체력에 비례한 플레이어의 추가 데미지
+        {
+            Player.Instance.canDealProportional = false;
+        }
+        else if (effectData.id == 26) // 플레이어의 체력이 100%일 때 데미지 증가
+        {
+            Player.Instance.canDealFullHealth = false;
+        }
+        else if (effectData.id == 30) // 스킬 사용 이후 1회 평타 강화
+        {
+            Player.Instance.canDealSpellStrike = false;
+        }
+        else if (effectData.id == 31) // 적 체력 80% 이상일 때, 적 받는 데미지 증가
+        {
+            Player.Instance.canDealGiant = false;
+        }
+        else if (effectData.id == 38) // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가
+        {
+            Player.Instance.canDealAnnoyed = false;
+        }
+        else if (effectData.id == 40) // 스테미너 감소
+        {
+            StatusManager.Instance.additionStatus.stamina += gradeNum[level];
+        }
+        else if (effectData.id == 43) // 스테미너 증가
+        {
+            StatusManager.Instance.additionStatus.stamina -= gradeNum[level];
+        }
+        else if (effectData.id == 53) // 플레이어 가하는 데미지 & 받는 데미지 증가
+        {
+            StatusManager.Instance.multiplicationStatus.attackDamage -= gradeNum[level];
+            StatusManager.Instance.multiplicationStatus.armorIncreaseRate += gradeNum[level];
+        }
+        else if (effectData.id == 58) // 회피 소모 스테미너 감소
+        {
+            StatusManager.Instance.multiplicationStatus.dashStamina += gradeNum[level];
+        }
+        else if (effectData.id == 59) // 플레이어 받는 데미지 증가
+        {
+            StatusManager.Instance.multiplicationStatus.armorIncreaseRate += gradeNum[level];
+        }
+        else if (effectData.id == 61) // 플레이어 체력 증가
+        {
+            StatusManager.Instance.multiplicationStatus.hpIncreaseRate -= gradeNum[level];
         }
         CardManager.Instance.activeEffects.Remove(this);
     }

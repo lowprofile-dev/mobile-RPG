@@ -33,6 +33,11 @@ public class BleedingDebuff : Debuff
         txt.transform.localPosition = Vector3.zero;
         txt.transform.rotation = Quaternion.identity;
         txt.GetComponent<DamageText>().PlayText("출혈!", "player");
+
+        effect = ObjectPoolManager.Instance.GetObject("Effect/DebuffEffect/BleedingDebuffEffet");
+        effect.transform.SetParent(target.gameObject.transform);
+        effect.transform.localPosition = Vector3.zero;
+        effect.transform.rotation = Quaternion.identity;
     }
 
     public override void Update() // 디버프 지속시간 계산

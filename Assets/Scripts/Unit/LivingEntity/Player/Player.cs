@@ -80,7 +80,6 @@ public class Player : LivingEntity
     private int _cntSkillType;                          // 현재 사용하는 스킬 정보
     public int currentCombo;                            // 현재 콤보 수
     private bool _canConnectCombo;                      // 콤보를 더 이을 수 있는지
-    public bool hasSpellStrike = false;                            // 스킬 사용 이후 1회 평타 강화
 
     [Header("무기 관련")]
     public bool weaponChanged = false;                  // 무기가 바뀌었는지 여부
@@ -121,12 +120,17 @@ public class Player : LivingEntity
     public StatusManager statusManager { get { return _statusManager; } }
 
     [Header("카드 관련")]
+    public float fullHealthDamage;
     public float proportionalDamage;
     public float giantDamage;
     public float annoyedDamage;
-    public bool canDealProportional = false;                                // 몬스터 남은 체력 비례 데미지
-    public bool canDealGiant = false;                                       // 몬스터 체력 80% 이상일 때 데미지 증가
-    public bool canDealAnnoyed = false;                                     // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가
+    public float spellStrikeDamage;
+    public bool canDealFullHealth;              // 플레이어의 체력이 100%일 때 데미지 증가
+    public bool canDealProportional = false;    // 몬스터 남은 체력 비례 데미지
+    public bool canDealGiant = false;           // 몬스터 체력 80% 이상일 때 데미지 증가
+    public bool canDealAnnoyed = false;         // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가
+    public bool canDealSpellStrike = false;
+    public bool hasSpellStrike = false;         // 스킬 사용 이후 1회 평타 강화
     public bool isAnnoyed = false;
     public float annoyedTime = 0f;
 
@@ -1062,8 +1066,8 @@ public class Player : LivingEntity
         {
             if (masterySet[1] == false)
             {
-                statusManager.finalStatus.attackDamage *= statusManager.playerStatus.attackDamage *1.2f;
-                statusManager.finalStatus.magicDamage *= statusManager.playerStatus.magicDamage * 1.2f;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage *1.1f;
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.1f;
                 statusManager.finalStatus.armor = statusManager.playerStatus.armor;
                 statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance;
                 masterySet[1] = true;
