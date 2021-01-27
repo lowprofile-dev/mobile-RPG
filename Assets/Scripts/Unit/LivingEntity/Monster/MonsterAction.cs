@@ -90,6 +90,13 @@ public class MonsterAction : MonoBehaviour
     /// <summary>
     /// 오브젝트 초기화
     /// </summary>
+
+    private void OnDestroy()
+    {
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
+    }
+
+
     private void OnDisable()
     {
         //if(parentRoom != null) parentRoom.MonsterList.Remove(gameObject);

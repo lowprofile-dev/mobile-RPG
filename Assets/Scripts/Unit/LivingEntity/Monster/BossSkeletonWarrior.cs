@@ -32,7 +32,7 @@ public class BossSkeletonWarrior : MonsterAction
     [SerializeField] private Transform _ShokeWavePoint; //레이저 나가는 pos
 
     string currentAnimation;
-    
+
     protected override void DoAttack() // 공격 애니메이션 지점에서 공격이 ON됨
     {
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
@@ -484,6 +484,7 @@ public class BossSkeletonWarrior : MonsterAction
 
     protected override void KillStart()
     {
+        StopAllCoroutines();
         _monster.myAnimator.SetTrigger("Laugh");
     }
 
