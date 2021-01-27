@@ -38,9 +38,9 @@ public class InfoUIView : View
         base.UIExit();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        //LoadCurrentEquip();
+        base.OnEnable();
     }
 
     private void Awake()

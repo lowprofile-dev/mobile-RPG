@@ -54,8 +54,9 @@ public class ShopUIView : View
         if (itemManager == null) itemManager = ItemManager.Instance;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         itemBag.SetActive(false);
         itemManager.ResetCart();
         LoadPlayerInventory();

@@ -23,6 +23,7 @@ public enum VIEWTYPE
 public class View : MonoBehaviour
 {
     protected VIEWTYPE viewtype;
+    private UIAnimator _animator;
     [SerializeField] private string _viewName;
 
     // 튜토리얼 관련
@@ -34,10 +35,10 @@ public class View : MonoBehaviour
     public string viewName { get { return _viewName; } }
 
 
-
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _viewName = gameObject.name;
+        _animator = GetComponent<UIAnimator>();
     }
 
     void Update()
@@ -63,8 +64,9 @@ public class View : MonoBehaviour
     {
         gameObject.SetActive(true);
         viewtype = VIEWTYPE.VIEWTYPE_ISAPPEARING;
-        
         viewtype = VIEWTYPE.VIEWTYPE_APPEARED;
+
+        if (_animator != null) _animator.FadeInWithUp();
     }
 
     public virtual void UIUpdate()

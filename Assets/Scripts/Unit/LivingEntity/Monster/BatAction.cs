@@ -64,8 +64,8 @@ public class BatAction : MonsterAction
     /// </summary>
     private void DoPanicSound()
     {
-        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Panic " + UnityEngine.Random.Range(1, 4), 0.8f);
-        SoundManager.Instance.SetPitch(source, 1.2f);
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Panic " + UnityEngine.Random.Range(1, 4), 0.5f);
+        SoundManager.Instance.SetPitch(source, 0.8f);
     }
 
     protected override bool CheckFindAnimationOver()

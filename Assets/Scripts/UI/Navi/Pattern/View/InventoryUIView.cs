@@ -44,8 +44,9 @@ public class InventoryUIView : View
         quitBtn.onClick.AddListener( delegate{ OnClickQuitButton(); });
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         LoadPlayerInventory();
         gold.text = ItemManager.Instance.currentItems.gold.ToString();
         coin.text = ItemManager.Instance.currentItems.coin.ToString();

@@ -62,8 +62,8 @@ public class DragonAction : MonsterAction
     /// </summary>
     private void DoPanicSound()
     {
-        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Panic " + UnityEngine.Random.Range(1, 4), 0.8f);
-        SoundManager.Instance.SetPitch(source, 0.8f);
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Panic " + UnityEngine.Random.Range(1, 4), 0.5f);
+        SoundManager.Instance.SetPitch(source, 0.7f);
     }
 
     protected override bool CheckFindAnimationOver()
