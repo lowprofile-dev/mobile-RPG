@@ -27,7 +27,6 @@ public class SlowDebuff : Debuff
     {
         tag = target.tag;
         this.slowingFactor = slowingFactor;
-        defalutSpeed = Player.Instance.statusManager.finalStatus.moveSpeed;
         //슬로우 디버프 텍스트 출력
         GameObject txt = ObjectPoolManager.Instance.GetObject("UI/DamageTEXT");
         txt.transform.SetParent(target.gameObject.transform);
@@ -51,7 +50,8 @@ public class SlowDebuff : Debuff
                 {
                     if (tag == "Player")
                     {
-                        Player.Instance.statusManager.finalStatus.moveSpeed -= (Player.Instance.statusManager.finalStatus.moveSpeed * slowingFactor) / 100f;
+                        //Player.Instance.statusManager.finalStatus.moveSpeed -= (Player.Instance.statusManager.finalStatus.moveSpeed * slowingFactor) / 100f;
+                        Player.Instance.SlowingFactor = slowingFactor;
                     }
                 }
             }
@@ -63,11 +63,8 @@ public class SlowDebuff : Debuff
     {
         if (target != null)
         {
-            if (tag == "Player") Player.Instance.statusManager.finalStatus.moveSpeed = defalutSpeed;
-            else
-            {
-                target.setSpeed(target.MAXspeed);
-            }
+            //if (tag == "Player") Player.Instance.statusManager.finalStatus.moveSpeed = defalutSpeed;
+            Player.Instance.SlowingFactor = 0f;
             base.Remove();
         }
     }

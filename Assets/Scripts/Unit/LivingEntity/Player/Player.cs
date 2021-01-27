@@ -46,6 +46,7 @@ public class Player : LivingEntity
 
     [Header("상태 관련")]
     bool _isdead = false;                                   // 사망 여부
+    private float _slowingFactor = 0f; public float SlowingFactor { get { return _slowingFactor; } set { _slowingFactor = value; } }
 
     [Header("움직임")]
     [SerializeField] private float turnSmoothTime = 0.1f;   // 부드럽게 움직이는 시간
@@ -844,6 +845,7 @@ public class Player : LivingEntity
 
         _CCManager.Release();
         _DebuffManager.Release();
+        _slowingFactor = 0f;
 
         if (resurrection == false)
         {
@@ -1054,7 +1056,6 @@ public class Player : LivingEntity
     //마스터리 강화 관련 
     private void MasteryApply()
     {
-
         //카드 리롤 확률 증가
         //CardManager.cs 187
 
@@ -1127,7 +1128,7 @@ public class Player : LivingEntity
         {
             if (masterySet[3] == false)
             {
-                statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed * 2f;
+                statusManager.finalStatus.moveSpeed = (statusManager.playerStatus.moveSpeed * 2f) - (((statusManager.playerStatus.moveSpeed * 2f) * _slowingFactor) / 100f);
                 statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
                 masterySet[3] = true;
             }
@@ -1137,7 +1138,7 @@ public class Player : LivingEntity
         {
             if (masterySet[3] == false)
             {
-                statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed * 1.2f;
+                statusManager.finalStatus.attackSpeed = (statusManager.playerStatus.attackSpeed * 1.2f) - (((statusManager.playerStatus.moveSpeed * 1.2f) * _slowingFactor) / 100f);
                 statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
 
                 masterySet[3] = true;
@@ -1145,7 +1146,7 @@ public class Player : LivingEntity
         }
         else
         {
-            statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
+            statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed - ((statusManager.playerStatus.moveSpeed * _slowingFactor) / 100f);
             statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
         }
 
