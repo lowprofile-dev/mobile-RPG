@@ -81,6 +81,7 @@ public class Player : LivingEntity
     private int _cntSkillType;                          // 현재 사용하는 스킬 정보
     public int currentCombo;                            // 현재 콤보 수
     private bool _canConnectCombo;                      // 콤보를 더 이을 수 있는지
+    private bool _canWalkAttackFrezzing;                // 공격상태에서 걸을 수 있게 되는 시점
 
     [Header("무기 관련")]
     public bool weaponChanged = false;                  // 무기가 바뀌었는지 여부
@@ -173,6 +174,7 @@ public class Player : LivingEntity
 
         myAnimator = GetComponent<Animator>();
 
+        _canWalkAttackFrezzing = true;
         _cntState = PLAYERSTATE.PS_IDLE;
         EnterState();
 
@@ -465,6 +467,7 @@ public class Player : LivingEntity
         hasSpellStrike = false;
         InitAttack();
         ChangeState(PLAYERSTATE.PS_IDLE);
+        UnlockAttackFreeze();
     }
 
     /// <summary>
@@ -510,10 +513,20 @@ public class Player : LivingEntity
     }
 
     /// <summary>
+    /// 공격상태에서 다시 움직일 수 있게 해준다.
+    /// </summary>
+    public void UnlockAttackFreeze()
+    {
+        _canWalkAttackFrezzing = true;
+    }
+
+    /// <summary>
     /// 현재 콤보 상태에 따라 공격 애니메이션을 재생한다.
     /// </summary>
     private void SetAttackAnimationTrigger()
     {
+        _canWalkAttackFrezzing = false;
+
         switch (currentCombo)
         {
             case 1: myAnimator.SetTrigger("Attack01"); break;
@@ -533,6 +546,7 @@ public class Player : LivingEntity
 
     public void AttackExit()
     {
+        UnlockAttackFreeze();
         InitAttack();
     }
 
@@ -888,7 +902,7 @@ public class Player : LivingEntity
     {
         if (GetMove())
         {
-            if (_cntState == PLAYERSTATE.PS_IDLE)
+            if (_cntState == PLAYERSTATE.PS_IDLE || (_cntState == PLAYERSTATE.PS_ATTACK && _canWalkAttackFrezzing))
             {
                 ChangeState(PLAYERSTATE.PS_MOVE);
             }
