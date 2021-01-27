@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7772480141173017991}
   - component: {fileID: 7772480141173017990}
   - component: {fileID: 7772480141173017989}
+  - component: {fileID: 3331574578136885035}
   m_Layer: 0
   m_Name: DragonBaseAttack 1
   m_TagString: MonsterAttack
@@ -48,7 +49,7 @@ MonoBehaviour:
   _particleEffectPrefab: {fileID: 0}
   _useFixedDmg: 0
   _useMeleeDmg: 1
-  _damage: 1.2
+  _damage: 1
 --- !u!65 &7772480141173017989
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -62,3 +63,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3331574578136885035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7772480141173017988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67822e4c6a407446a4be89a22176740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debuffDuration: 3
+  proc: 100
+  slowingFactor: 90
