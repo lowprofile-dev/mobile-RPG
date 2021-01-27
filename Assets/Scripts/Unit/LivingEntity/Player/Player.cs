@@ -1130,6 +1130,7 @@ public class Player : LivingEntity
             statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
             statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
         }
+
         //골드 획득량 증가 미구현 && 아이템 확률 증가 통합
         //DungeonRoom.cs 207
 
@@ -1389,7 +1390,7 @@ public class Player : LivingEntity
     public override void Damaged(float damage)
     {
         base.Damaged(damage);
-        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.4f);
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.6f);
         SoundManager.Instance.SetPitch(source, 1.5f);
     }
 
@@ -1467,6 +1468,4 @@ public class Player : LivingEntity
         }
         else weaponChanged = false;
     }
-
-
 }

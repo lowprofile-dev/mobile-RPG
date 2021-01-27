@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// 카드 UI
@@ -348,9 +349,9 @@ public class CardUIView : View
             SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 1.0f);
         }
 
-        foreach (int nums in bingoNums) // 세트임을 알리고 효과를 켠다.
+        for(int i=0; i<bingoNums.Count; i++) // 세트임을 알리고 효과를 켠다.
         {
-            _roomAreaImg[nums].OnOffBingoEffect(true);
+            _roomAreaImg[bingoNums.ElementAt(i)].OnOffBingoEffect(true);
         }
     }
 

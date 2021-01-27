@@ -1032,7 +1032,7 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public void DamagedSound()
     {
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.6f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.8f);
     }
 
     /// <summary>

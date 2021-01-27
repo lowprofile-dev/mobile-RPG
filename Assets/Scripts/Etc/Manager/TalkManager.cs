@@ -16,6 +16,7 @@ using UnityEngine;
 using CSVReader;
 using Newtonsoft.Json;
 using System.IO;
+using System.Linq;
 
 [System.Serializable]
 public class TalkManager : SingletonBase<TalkManager>
@@ -72,17 +73,17 @@ public class TalkManager : SingletonBase<TalkManager>
         table = CSVReader.Reader.ReadCSVToTable("CSVData/NPCData");
         _csvNpcData = table.TableToDictionary<int, NpcData>(); // NPC 데이터
 
-        foreach (TalkData data in _csvTalkData.Values) // TalkData -> Talk
+        for(int i=0; i<_csvTalkData.Count; i++) // TalkData -> Talk
         {
             Talk talk = new Talk();
-            talk.ParsingConvData(data);
+            talk.ParsingConvData(_csvTalkData.Values.ElementAt(i));
             talkDatas[talk.talkData.convId] = talk;
         }
 
-        foreach (QuestData data in _csvQuestData.Values) // QuestData -> Quest
+        for(int i=0; i<_csvQuestData.Count; i++) // QuestData -> Quest
         {
             Quest quest = new Quest();
-            quest.ParsingQuestData(data);
+            quest.ParsingQuestData(_csvQuestData.Values.ElementAt(i));
             questDatas[quest.id] = quest;
         }
     }
@@ -96,8 +97,10 @@ public class TalkManager : SingletonBase<TalkManager>
     /// </summary>
     public void FindInitStartQuest()
     {
-        foreach(Quest quest in questDatas.Values)
+        Quest quest = null;
+        for (int i = 0; i < questDatas.Count; i++)
         {
+            quest = questDatas.Values.ElementAt(i);
             if(quest.neededQuestList[0].Equals("-")) quest.canStart = true;
         }
     }
@@ -108,8 +111,10 @@ public class TalkManager : SingletonBase<TalkManager>
     /// </summary>
     public void SetTalkCheckers()
     {
-        foreach (NpcData npcData in _csvNpcData.Values)
+        NpcData npcData = null;
+        for (int i=0; i<_csvNpcData.Count; i++)
         {
+            npcData = _csvNpcData.Values.ElementAt(i);
             talkCheckers[npcData.id] = new TalkChecker(npcData.id);
         }
     }
@@ -124,9 +129,9 @@ public class TalkManager : SingletonBase<TalkManager>
     /// </summary>
     public void CheckQuestIsOn()
     {
-        foreach (TalkChecker talkChecker in talkCheckers.Values)
+        for(int i=0; i<talkCheckers.Count; i++)
         {
-            talkChecker.CheckQuestIsOn();
+            talkCheckers.Values.ElementAt(i).CheckQuestIsOn();
         }
     }
 
@@ -135,9 +140,9 @@ public class TalkManager : SingletonBase<TalkManager>
     /// </summary>
     public void SetQuestCondition(int condition, int conditionId, int conditionNumber)
     {
-        foreach (Quest quest in currentQuests.Values)
+        for (int i=0; i<currentQuests.Count; i++)
         {
-            quest.UpdateQuestCondition(condition, conditionId, conditionNumber);
+            currentQuests.Values.ElementAt(i).UpdateQuestCondition(condition, conditionId, conditionNumber);
         }
 
         CheckQuestIsOn();
@@ -197,8 +202,10 @@ public class TalkManager : SingletonBase<TalkManager>
     {
         currentQuests.Clear();
         endedQuests.Clear();
-        foreach (Quest quest in questDatas.Values)
+        Quest quest = null;
+        for (int i=0; i<questDatas.Count; i++)
         {
+            quest = questDatas.Values.ElementAt(i);
             if (quest.isEnd) endedQuests.Add(quest.id, quest);
             else if (quest.isOn) currentQuests.Add(quest.id, quest);
         }
