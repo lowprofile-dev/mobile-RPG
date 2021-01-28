@@ -7,20 +7,16 @@
  */
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ArcherAction : MonsterAction
 {
     bool canPanic;
-    enum ARCHERATTACKTYPE { ATTACK, WHACK, SHOT, RAPID_SHOT};
+    enum ARCHERATTACKTYPE { ATTACK, WHACK, SHOT, RAPID_SHOT };
     ARCHERATTACKTYPE atktype;
 
     [SerializeField] private Transform _baseRangeAttackPos;
     [SerializeField] private GameObject _baseRangeAttackPrefab;
-
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
 
     Collider _baseAtkCollision;
     /////////// 탐색 관련 /////////////
@@ -40,6 +36,14 @@ public class ArcherAction : MonsterAction
         }
     }
 
+    /// <summary>
+    /// 패닉일때 소리
+    /// </summary>
+    private void DoPanicSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Panic " + UnityEngine.Random.Range(1, 4), 0.6f);
+    }
+
     protected override bool CheckFindAnimationOver()
     {
         if (canPanic) return CheckAnimationOver("Panic", 1.0f);
@@ -57,7 +61,7 @@ public class ArcherAction : MonsterAction
     {
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
-            ChangeState(MONSTER_STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_CAST);
         }
     }
 
@@ -79,7 +83,7 @@ public class ArcherAction : MonsterAction
         if (atktype == ARCHERATTACKTYPE.WHACK)
         {
             GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-            obj.transform.SetParent(this.transform);
+            obj.transform.SetParent(transform);
             obj.transform.position = _baseMeleeAttackPos.position;
             obj.transform.LookAt(_target.transform);
 
@@ -90,7 +94,7 @@ public class ArcherAction : MonsterAction
         else
         {
             GameObject obj = ObjectPoolManager.Instance.GetObject(_baseRangeAttackPrefab, _baseRangeAttackPos.position, _baseRangeAttackPos.rotation);
-            obj.transform.SetParent(this.transform);
+            obj.transform.SetParent(null);
             //obj.transform.position = _baseRangeAttackPos.position;
             obj.transform.LookAt(_target.transform);
             obj.GetComponent<Arrow>().Launch();
@@ -99,7 +103,8 @@ public class ArcherAction : MonsterAction
             atk.SetParent(gameObject);
             atk.PlayAttackTimer(5f);
         }
-
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     protected override void CastStart()
@@ -108,97 +113,32 @@ public class ArcherAction : MonsterAction
 
         if (_distance < 3)
         {
-            atktype = ARCHERATTACKTYPE.WHACK;
-        }
-        else
-        {
-            if (proc <= 50)
-            {
-                atktype = ARCHERATTACKTYPE.SHOT;
-            }
-            else
-            {
-                atktype = ARCHERATTACKTYPE.RAPID_SHOT;
-            }
-        }
-    }
-    protected override void DoCastingAction()
-    {
-        _cntCastTime += Time.deltaTime;
-        _bar.CastUpdate();
-
-        if (_cntCastTime >= _castTime)
-        {
-            _cntCastTime = 0;
-            _readyCast = true;
-            ChangeState(MONSTER_STATE.STATE_ATTACK);
-        }
-    }
-    protected override void CastExit()
-    {
-        base.CastExit();
-    }
-
-    protected override void AttackStart()
-    {
-        int proc = Random.Range(0, 100);
-
-        if (_distance < 3)
-        {
+            _castTime = 1f;
             atktype = ARCHERATTACKTYPE.WHACK;
         }
         else if (_distance < 7)
         {
             if (proc <= 50)
             {
+                _castTime = 1f;
                 atktype = ARCHERATTACKTYPE.ATTACK;
             }
             else if (proc <= 80)
             {
+                _castTime = 1f;
                 atktype = ARCHERATTACKTYPE.SHOT;
             }
             else if (proc <= 100)
             {
+                _castTime = 1.5f;
                 atktype = ARCHERATTACKTYPE.RAPID_SHOT;
             }
-        }
-        base.AttackStart();
-    }
-
-    protected override void AttackExit()
-    {
-        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-    }
-    protected override IEnumerator AttackTarget()
-    {
-        while (true)
-        {
-            yield return null;
-
-            if (CanAttackState())
-            {
-
-                yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-
-                SetAttackAnimation();
-
-                // 사운드 재생
-
-                StartCoroutine(DoAttackAction());
-
-                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime / 2);
-
-                _readyCast = false;
-                if (!_readyCast && ToCast()) break;
-            }
-
         }
     }
 
     protected override void SetAttackType()
     {
         if (_readyCast) return;
-
     }
 
     protected override void SetAttackAnimation()
@@ -222,19 +162,19 @@ public class ArcherAction : MonsterAction
         }
     }
 
-
-
-    protected override void IdleStart()
+    private void BowWrackSound()
     {
-        base.IdleStart();
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh Start " + UnityEngine.Random.Range(1, 4), 1.0f);
     }
-    protected override void IdleUpdate()
+
+    private void BowShotSound()
     {
-        base.IdleUpdate();
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Bow Fire " + UnityEngine.Random.Range(1, 4), 0.9f);
     }
-    protected override void IdleExit()
+
+    private void BowDrawSound()
     {
-        base.IdleExit();
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Bow Draw " + UnityEngine.Random.Range(1, 4), 0.9f);
     }
 
     protected override IEnumerator SpawnDissolve()
@@ -243,17 +183,15 @@ public class ArcherAction : MonsterAction
         ChangeState(MONSTER_STATE.STATE_IDLE);
     }
 
-    protected override void TraceStart()
-    {
-        base.TraceStart();
-    }
-    protected override void TraceUpdate()
-    {
-        base.TraceUpdate();
-    }
-
     protected override void KillStart()
     {
         _monster.myAnimator.SetTrigger("Laugh");
+    }
+    /// <summary>
+    /// 죽었을때 소리
+    /// </summary>
+    public override void DeathSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Die " + UnityEngine.Random.Range(1, 3), 0.8f);
     }
 }

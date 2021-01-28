@@ -4,7 +4,6 @@
     class BossSkeletonWarrior
     
     담당자 : 안영훈
-    부 담당자 : 
 */
 ////////////////////////////////////////////////////
 using UnityEngine;
@@ -17,25 +16,18 @@ public class BossSkeletonWarrior : MonsterAction
 {
     enum AttackType { JUMP_ATTACK , SHOCK_WAVE, SHOCK_WAVE2, DASH_ATTACK , LEFT_ATTACK}
 
-    [SerializeField] private Transform _baseMeleeAttackPos; // 기본 공격 pos
-    [SerializeField] private GameObject _baseMeleeAttackPrefab; //기본 공격 프리팹
-
     AttackType attackType;
+    [Header("스킬 이펙트 , 범위")]
     [SerializeField] private GameObject JumpSkillRange; //점프 스킬 경고선 범위
     [SerializeField] private GameObject ShokeSkillRange; //가르기 스킬 경고선 범위
     [SerializeField] private GameObject ShokeSkillRange2; //레이저 스킬 경고선 범위
-
     [SerializeField] private GameObject JumpSkillEffect;   //점프 스킬 이펙트
     [SerializeField] private GameObject ShokeSkillEffect1; //가르기 스킬 이펙트
     [SerializeField] private GameObject ShokeSkillEffect2; //레이저 스킬 이펙트
+
     private GameObject currentTarget; // 현재 타겟
     [SerializeField] private Transform _ShokeWavePoint; //레이저 나가는 pos
 
-    private float velocity;
-    private float angle;
-
-    string currentAnimation;
-    
     protected override void DoAttack() // 공격 애니메이션 지점에서 공격이 ON됨
     {
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
@@ -71,7 +63,7 @@ public class BossSkeletonWarrior : MonsterAction
                 break;
         }
     }
-    private void ShockWave1Effect()
+    private void ShockWave1Effect() //가르기 공격 이펙트
     {
         BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect1).GetComponent<BossAttack>();
         atk.SetParent(gameObject, _ShokeWavePoint);
@@ -79,26 +71,61 @@ public class BossSkeletonWarrior : MonsterAction
         atk.OnLoad(gameObject , _ShokeWavePoint.gameObject);
     }
 
-    private void JumpAttackEffect()
+
+    /// <summary>
+    /// 점프 어택 시 사운드 재생 (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void JumpAttackSound()
     {
-        
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/ExplosionAttack", 0.4f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1,4), 1f);
+    }
+
+    private void JumpAttackEffect() // 내려찍기 스킬 이펙트
+    {
         BossAttack atk = ObjectPoolManager.Instance.GetObject(JumpSkillEffect).GetComponent<BossAttack>();
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(0.5f);
         atk.OnLoad(currentTarget, currentTarget);
     }
 
-    private void ShockWave2Effect()
+    /// <summary>
+    /// 쇼크 어택 시 사운드 재생 (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void Shock2AttackSound()
     {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/LaserAttackElectro", 0.5f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/LaserAttackWhoosh", 0.5f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1, 4), 1f);
+    }
 
+    /// <summary>
+    /// 걷는 소리 (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void WalkSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Footstep " + UnityEngine.Random.Range(1, 4), 1f);
+    }
+
+    private void ShockWave2Effect() // 레이저 패턴 이펙트
+    {
         BossAttack atk = ObjectPoolManager.Instance.GetObject(ShokeSkillEffect2).GetComponent<BossAttack>();
         atk.SetParent(gameObject,_ShokeWavePoint);
         atk.PlayAttackTimer(0.5f);
         atk.OnLoad(_ShokeWavePoint.gameObject, currentTarget);
-
     }
 
-    private void DoShokeWave() //
+    /// <summary>
+    /// 쇼크 어택 시 사운드 재생 (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void ShockAttackSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/BigSlashWater", 0.5f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/BigSlashWhoosh", 0.5f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Attack" + UnityEngine.Random.Range(1,4), 1f);
+    }
+
+    private void DoShokeWave() // 쇼크 스킬 발동
     {
         MakeEffect();
 
@@ -112,34 +139,28 @@ public class BossSkeletonWarrior : MonsterAction
         currentTarget = _target;
         ChangeState(MONSTER_STATE.STATE_TRACE);
     }
+
     protected void ComboAttack()
     {
         //애니메이터 호출용
         _monster.myAnimator.SetTrigger("Combo1");
-        currentAnimation = "Combo1";
-
     }
+
     protected override void SetAttackAnimation() // 공격 애니메이션 선정
     {       
         switch (attackType)
         {
             case AttackType.JUMP_ATTACK:
                 _monster.myAnimator.SetTrigger("Attack0");
-                currentAnimation = "Attack0";
                 break;
             case AttackType.SHOCK_WAVE:
                 _monster.myAnimator.SetTrigger("Attack1");
-                currentAnimation = "Attack1";
                 break;
             case AttackType.SHOCK_WAVE2:
                 _monster.myAnimator.SetTrigger("Attack2");
-                currentAnimation = "Attack2";
                 break;
             case AttackType.DASH_ATTACK:
                 _monster.myAnimator.SetTrigger("Combo1");
-                currentAnimation = "Combo1";
-                break;
-            case AttackType.LEFT_ATTACK:
                 break;
             default:
                 break;
@@ -175,6 +196,7 @@ public class BossSkeletonWarrior : MonsterAction
     {
         base.SpawnExit();
     }
+
     private void AttackCorotineInit()
     {
         _attackCoroutine = null;
@@ -208,7 +230,7 @@ public class BossSkeletonWarrior : MonsterAction
         }
         else if (proc <= 75)
         {
-            _castTime = 0f;
+            _castTime = 1f;
             attackType = AttackType.SHOCK_WAVE2;
         }
         else
@@ -267,28 +289,21 @@ public class BossSkeletonWarrior : MonsterAction
     }
 
     protected override IEnumerator AttackTarget()
-    {
+    {     
+       yield return null;
 
-        while (true)
-        {
-            yield return null;
+       AttackAction();
+       
+       yield return new WaitForSeconds(_attackSpeed);
+       SetAttackAnimation();
+       
+       // 사운드 재생
 
-            AttackAction();
-            
-            yield return new WaitForSeconds(_attackSpeed);
-            SetAttackAnimation();
-            
-            // 사운드 재생
+       yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-            yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+       _readyCast = false;
 
-            _readyCast = false;
-            //if (!_readyCast && ToCast()) break;
-            ChangeState(MONSTER_STATE.STATE_TRACE);
-
-            break;
-            
-        }
+       ChangeState(MONSTER_STATE.STATE_TRACE);        
     }
 
     private void AttackAction() // 공격 패턴 선정
@@ -331,7 +346,6 @@ public class BossSkeletonWarrior : MonsterAction
         transform.LookAt(_target.transform.position);
 
         _monster.myAnimator.SetTrigger("Attack3");
-        currentAnimation = "Attack3";
 
         GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
         obj.transform.SetParent(this.transform);
@@ -452,6 +466,7 @@ public class BossSkeletonWarrior : MonsterAction
 
     protected override void KillStart()
     {
+        StopAllCoroutines();
         _monster.myAnimator.SetTrigger("Laugh");
     }
 
@@ -470,5 +485,13 @@ public class BossSkeletonWarrior : MonsterAction
     protected override void DeathExit()
     {
         base.DeathExit();
+    }
+
+    /// <summary>
+    /// 죽었을 때 나오는 사운드
+    /// </summary>
+    public override void DeathSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/BossSkeleton/Die", 1f);
     }
 }

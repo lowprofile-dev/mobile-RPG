@@ -54,8 +54,9 @@ public class ShopUIView : View
         if (itemManager == null) itemManager = ItemManager.Instance;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         itemBag.SetActive(false);
         itemManager.ResetCart();
         LoadPlayerInventory();
@@ -96,6 +97,7 @@ public class ShopUIView : View
     private void OnClickExitShotButton()
     {
         UINaviationManager.Instance.PopToNav("SubUI_ShopBase");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     public void LoadPlayerInventory()

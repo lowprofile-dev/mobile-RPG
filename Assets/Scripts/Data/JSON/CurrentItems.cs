@@ -43,18 +43,18 @@ public class CurrentItems
         this.gold = 5000;
         this.coin = 50;
         this.gem = 10;
-        this.headAccesoriesIndex = 7;
-        this.leftElbowIndex = 48;
-        this.rightElbowIndex = 48;
-        this.leftShoulderIndex = 48;
-        this.rightShoulderIndex = 48;
-        this.chestIndex = 54;
-        this.spineIndex = 54;
-        this.lowerSpineIndex = 54;
-        this.leftKneeIndex = 51;
-        this.rightKneeIndex = 51;
-        this.leftHipIndex = 51;
-        this.rightHipIndex = 51;
+        this.headAccesoriesIndex = 0;
+        this.leftElbowIndex = 0;
+        this.rightElbowIndex = 0;
+        this.leftShoulderIndex = 0;
+        this.rightShoulderIndex = 0;
+        this.chestIndex = 0;
+        this.spineIndex = 0;
+        this.lowerSpineIndex = 0;
+        this.leftKneeIndex = 0;
+        this.rightKneeIndex = 0;
+        this.leftHipIndex = 0;
+        this.rightHipIndex = 0;
     }
 }
 

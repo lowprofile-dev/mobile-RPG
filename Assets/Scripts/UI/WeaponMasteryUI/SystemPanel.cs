@@ -47,7 +47,8 @@ public class SystemPanel : MonoBehaviour
     /// </summary>
     public void FadeOutStart()
     {
-        AudioSource sound = SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 0.9f);
+        SoundManager.Instance.StopEffect("SpecialText");
+        AudioSource sound = SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 0.7f);
         SoundManager.Instance.SetAudioReverbEffect(sound, AudioReverbPreset.Cave);
 
         if(sequence != null) sequence.Kill();

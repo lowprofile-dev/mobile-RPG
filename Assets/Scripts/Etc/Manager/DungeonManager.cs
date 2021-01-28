@@ -3,7 +3,7 @@
     class DungeonManager
     
     담당자 : 김기정
-    부 담당자 :
+    부 담당자 : 안영훈
  */
 
 using UnityEngine;
@@ -151,7 +151,8 @@ public class DungeonManager : MonoBehaviour
     /// </summary>
     public GameObject SpawnBoss(Transform tr)
     {
-        GameObject boss = Instantiate(BossPrefabs[dungeonStage-1]);        
+        GameObject boss = ObjectPoolManager.Instance.GetObject(BossPrefabs[dungeonStage - 1]);
+        //Instantiate(BossPrefabs[dungeonStage-1]);        
         return boss;
     }
 

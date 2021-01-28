@@ -76,8 +76,10 @@ public class CardManager : SingletonBase<CardManager>
         Table table = CSVReader.Reader.ReadCSVToTable("CSVData/CardData");
         _csvCardData = table.TableToDictionary<int, CardData>();
 
-        foreach (CardData data in _csvCardData.Values)
+        CardData data = null;
+        for (int i=0; i<_csvCardData.Count; i++)
         {
+            data = _csvCardData.Values.ElementAt(i);
             _cardData[data.id] = new Card(data);
             _cardData[data.id].ParsingCardData();
         }
@@ -91,8 +93,10 @@ public class CardManager : SingletonBase<CardManager>
         Table table = CSVReader.Reader.ReadCSVToTable("CSVData/CardEffectData");
         _csvEffectData = table.TableToDictionary<int, CardEffectData>();
 
-        foreach (CardEffectData data in _csvEffectData.Values)
+        CardEffectData data = null;
+        for (int i=0; i<_csvEffectData.Count; i++)
         {
+            data = _csvEffectData.Values.ElementAt(i);
             _effectData[data.id] = new CardEffect(data);
             _effectData[data.id].ParsingEffectData();
         }

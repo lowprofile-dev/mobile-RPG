@@ -45,6 +45,7 @@ public class MasterUIView : View
     {
         UIManager.Instance.playerUIView.SetEffectList();
         UINaviationManager.Instance.PopToNav("SubUI_MasteryView");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     void Update()

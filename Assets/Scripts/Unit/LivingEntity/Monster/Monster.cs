@@ -53,7 +53,6 @@ public class Monster : LivingEntity
     public GameObject avatarObject { get { return _avatarObject; } }
     public EnemySliderBar hpbarObject { get { return _hpbarObject; } }
 
-
     protected override void Start()
     {
         base.Start();
@@ -67,12 +66,23 @@ public class Monster : LivingEntity
         base.Update();       
     }
 
-    protected override void InitObject()
+    //protected override void InitObject()
+    //{
+    //    base.InitObject();
+    //    gameObject.GetComponent<Collider>().enabled = true;
+    //    myAnimator = GetComponent<Animator>();
+
+    //    _hp = _initHp;
+    //    _monsterAction = GetComponent<MonsterAction>();
+    //    _monsterAction.InitObject();
+    //}
+
+    public void InitMonster()
     {
-        base.InitObject();
+        gameObject.GetComponent<Collider>().enabled = true;
         myAnimator = GetComponent<Animator>();
 
-        _hp = _initHp;
+        //_hp = _initHp;
         _monsterAction = GetComponent<MonsterAction>();
         _monsterAction.InitObject();
     }

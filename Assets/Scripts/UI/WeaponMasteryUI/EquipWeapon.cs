@@ -35,18 +35,17 @@ public class EquipWeapon : MonoBehaviour
     /// </summary>
     public void onbuttonClick()
     {
-        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/WeaponEquip", 0.8f);
-
         if (name == "SWORD" || name == "WAND")
         {
-
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/WeaponEquip", 0.8f);
             systemPanel.SetText(name + " 착용 !");
             WeaponManager.Instance.SetWeapon(name);
+            systemPanel.FadeOutStart();
         }
+
         else
         {
-            systemPanel.SetText("아직 준비 중입니다.");
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/Locker", 0.8f);
         }
-        systemPanel.FadeOutStart();
     }
 }

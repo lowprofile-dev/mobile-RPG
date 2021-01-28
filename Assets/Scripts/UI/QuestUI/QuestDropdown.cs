@@ -11,6 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -35,6 +36,7 @@ public class QuestDropdown : SingletonBase<QuestDropdown>
     /// </summary>
     private void ToggleDropdown()
     {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 0.9f);
         questContainer.gameObject.SetActive(!questContainer.gameObject.activeSelf);
         SetQuestUIData();
     }
@@ -53,15 +55,13 @@ public class QuestDropdown : SingletonBase<QuestDropdown>
     /// </summary>
     public void SetQuestUIData()
     {
-        foreach(QuestPanel panel in panels) panel.DestroyPanel();
+
+        for (int i = 0; i < panels.Count; i++) panels.ElementAt(i).DestroyPanel();
         panels.Clear();
 
         Dictionary<string, Quest> dics = TalkManager.Instance.currentQuests;
 
-        foreach(Quest quest in dics.Values)
-        {
-            AddPanel(quest);
-        }
+        for(int i=0; i<dics.Count; i++) AddPanel(dics.Values.ElementAt(i));
     }
 
     /// <summary>

@@ -43,7 +43,7 @@ public class MonsterAction : MonoBehaviour
     
     protected float _distance;                      // 타겟과의 거리
     protected float _traceTimer;                    // 추적 이후 경과한 시간
-    protected Vector3 _spawnPosition;               // 스폰된 위치
+    protected Vector3 _spawnPosition; public Vector3 SpawnPos { get { return _spawnPosition; } set { _spawnPosition = value; } }               // 스폰된 위치
     protected Vector3 _patrolPos;                   // 정찰할 위치
     protected float _idleTime;                      // Idle에서 경과한 시간
     protected bool _isImmune;                       // 무적 여부
@@ -73,6 +73,10 @@ public class MonsterAction : MonoBehaviour
     [Header("UI")]
     [SerializeField] protected EnemySliderBar _bar;
 
+    [Header("공격 관련")]
+    [SerializeField] protected Transform _baseMeleeAttackPos;
+    [SerializeField] protected GameObject _baseMeleeAttackPrefab;
+
     private float attackedTime = 0.1f;                   
     private float counter = 0f;                          
     public DungeonRoom parentRoom = null;               // 이 몬스터가 속한 던전 방
@@ -88,18 +92,22 @@ public class MonsterAction : MonoBehaviour
     /// <summary>
     /// 오브젝트 초기화
     /// </summary>
+
+    private void OnDestroy()
+    {
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
+    }
+
     public virtual void InitObject()
     {
-       
         _isImmune = false;
         CachingObject();
         _traceTimer = 0;
-        _spawnPosition = transform.position;
         InitStatus();
         InitState();
         var _mon = this;
         _monster.CCManager = new CCManager(ref _mon, "monster");
-
+        _bar.HpUpdate();
     }
 
     protected virtual void InitStatus()
@@ -115,8 +123,7 @@ public class MonsterAction : MonoBehaviour
         {
             currentStage = 1;
         }
-
-        _monster.initHp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp * currentStage;
+        _monster.Hp = _monster.initHp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp * currentStage;
         _findRange = MonsterManager.Instance.MonsterDictionary[_monster.id].findrange;
         _attackRange = MonsterManager.Instance.MonsterDictionary[_monster.id].attackrange;
         _limitTraceRange = MonsterManager.Instance.MonsterDictionary[_monster.id].LimitTraceRange;
@@ -556,7 +563,7 @@ public class MonsterAction : MonoBehaviour
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
             _navMeshAgent.isStopped = true;
-            ChangeState(MONSTER_STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_CAST);
         }
     }
 
@@ -601,17 +608,12 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void AttackStart()
     {
-        if(!_readyCast && ToCast()) return;
-        else _attackCoroutine = StartCoroutine(AttackTarget());
+         _attackCoroutine = StartCoroutine(AttackTarget());
     }
 
     protected virtual void AttackUpdate()
-    {
-        // 타겟과의 거리가 공격 범위보다 커지면
-        if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
-        {
-            ChangeState(MONSTER_STATE.STATE_IDLE);
-        }
+    { 
+        
     }
 
     /// <summary>
@@ -619,34 +621,18 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual IEnumerator AttackTarget()
     {
-        while (true)
-        {
-            yield return null;
-            
+        yield return null;   
 
-            if (CanAttackState())
-            {
-
-                yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-                SetAttackType();
-                SetAttackAnimation();
-                
-                LookTarget();
-
-                // 사운드 재생
-
-                StartCoroutine(DoAttackAction());
-
-                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-
-                ResetAttackAnimation();
-                _monster.myAnimator.ResetTrigger("Attack"); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
-
-                _attackType = 0;
-                _readyCast = false;
-                if(!_readyCast && ToCast()) break;
-            }
-        }
+        //yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        //SetAttackType();
+        SetAttackAnimation();       
+        LookTarget();
+           
+        StartCoroutine(DoAttackAction());
+       
+        yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+       
+        ResetAttackAnimation();
     }
 
     protected virtual void SetAttackType()
@@ -695,13 +681,27 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void DoAttack()
     {
-        // DO NOTHING
+        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+        obj.transform.SetParent(this.transform);
+        obj.transform.position = _baseMeleeAttackPos.position;
+
+        Attack atk = obj.GetComponent<Attack>();
+        atk.SetParent(gameObject);
+        atk.PlayAttackTimer(0.3f);
+        AttackSound();
+
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     protected virtual void AttackExit()
     {
-        _monster.myAnimator.ResetTrigger("Attack");
         if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
+    }
+
+    protected virtual void AttackSound()
+    {
+        // DO NOTHING
     }
 
     /// <summary>
@@ -724,9 +724,8 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void LookTarget()
     {
-        transform.LookAt(_target.transform);
+        //transform.LookAt(_target.transform);
     }
-
     /////////// 캐스트 관련////////////
 
     protected virtual void CastStart()
@@ -751,7 +750,6 @@ public class MonsterAction : MonoBehaviour
         {
             _cntCastTime = 0;
             _readyCast = true;
-            _attackType = 1;
             ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
     }
@@ -881,21 +879,29 @@ public class MonsterAction : MonoBehaviour
 
         _monster.CCManager.Release();
         _monster.DebuffManager.Release();
-        if (parentRoom != null) parentRoom.MonsterDeathCheck();
+
+        if (parentRoom != null)
+        {
+            parentRoom.MonsterList.Remove(gameObject);
+            parentRoom.MonsterDeathCheck();
+        }
+
         TalkManager.Instance.SetQuestCondition(1, monster.id, 1);
 
         DeathSound();
         StopAllCoroutines();
         StartCoroutine(DoDeathAction());
 
-        Invoke("DestroyMonster", 3f);
+        //StartCoroutine("DestroyMonster");
     }
 
-    private void DestroyMonster()
+    private IEnumerator DestroyMonster()
     {
-        _bar.gameObject.SetActive(true);
-
-        DestroyImmediate(gameObject);
+        yield return new WaitForSeconds(3f);
+        _bar.gameObject.SetActive(false);
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
+        StopAllCoroutines();
+        //DestroyImmediate(gameObject);
     }
 
     /// <summary>
@@ -909,7 +915,7 @@ public class MonsterAction : MonoBehaviour
         while (true)
         {
             yield return null;
-            if (CheckAnimationOver("Die", 1.0f)) break;
+            if (CheckAnimationOver("Die", 1.0f) || !_monster.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Die")) break;
         }
 
         SetDeathProduction();
@@ -922,10 +928,17 @@ public class MonsterAction : MonoBehaviour
     {
         _outlinable.enabled = false;
 
-        transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => { DestroyImmediate(gameObject); });
+        transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => {
+            _navMeshAgent.enabled = false;
+            _currentState = MONSTER_STATE.STATE_NULL;
+            transform.position = Vector3.zero;
+            _monster.Hp = 1000;
+            ObjectPoolManager.Instance.ReturnObject(gameObject);
+        });
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
 
         _bar.gameObject.SetActive(false);
+        
 
         if (_fadeOutRedTween != null) _fadeOutRedTween.Kill();
     }
@@ -960,6 +973,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void DeathExit()
     {
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 
 
@@ -1009,13 +1023,13 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     public void DamagedSound()
     {
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.75f);
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.8f);
     }
 
     /// <summary>
     /// 죽었을 때 나오는 사운드 (공용)
     /// </summary>
-    public void DeathSound()
+    public virtual void DeathSound()
     {
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Die " + UnityEngine.Random.Range(1, 3), 0.75f);
     }

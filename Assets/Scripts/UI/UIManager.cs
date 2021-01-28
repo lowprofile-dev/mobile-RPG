@@ -29,12 +29,11 @@ public class UIManager : SingletonBase<UIManager>
     {
         playerUIView = GameObject.FindGameObjectWithTag("View").transform.Find("PlayerUI_View").GetComponent<PlayerUIView>();
 
-        Transform playerView = GameObject.Find("PlayerUI_View").transform;
-        InvincibleBtn = playerView.Find("InvincibleFrame").GetComponent<Button>();
-        SkillAbtn = playerView.Find("SkillA").GetComponent<Button>();
-        SkillBbtn = playerView.Find("SkillB").GetComponent<Button>();
-        SkillCbtn = playerView.Find("SkillC").GetComponent<Button>();
-        InventoryBtn = playerView.Find("Inventory").GetComponent<Button>();
+        InvincibleBtn = playerUIView.invincibleBtn;
+        SkillAbtn = playerUIView.skillAButton;
+        SkillBbtn = playerUIView.skillBButton;
+        SkillCbtn = playerUIView.skillCButton;
+        InventoryBtn = playerUIView.inventoryButton;
 
         AddListenerToUI();
     }

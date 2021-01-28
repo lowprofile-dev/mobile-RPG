@@ -5,153 +5,107 @@
     
     담당자 : 안영훈
 
+    모히칸 스켈레톤 몬스터
+
 */
 ////////////////////////////////////////////////////
-using UnityEngine;
-using UnityEngine.AI;
-using System.Collections.Generic;
 using System.Collections;
-using System;
-using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class SkeletonAction : MonsterAction
 {
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-    string currentAnimation;
+    bool canPanic;
+    enum MOHICANATTACKTYPE { LEFT_ATTACK , RIGHT_ATTACK , SLAM} // 3가지 공격패턴
+    MOHICANATTACKTYPE atktype;
 
-    protected override void DoAttack()
+    /////////// 탐색 관련 /////////////
+    public override void InitObject()
     {
-        //base.DoAttack();
-        
-        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        obj.transform.SetParent(this.transform);
-        obj.transform.position = _baseMeleeAttackPos.position;
-
-        Attack atk = obj.GetComponent<Attack>();
-        atk.SetParent(gameObject);
-        atk.PlayAttackTimer(0.3f);
-       
+        base.InitObject();
+        canPanic = true;
     }
-    protected override IEnumerator AttackTarget()
+
+    protected override void FindStart()
     {
+        base.FindStart();
 
-        while (true)
+        if (canPanic)
         {
-            yield return null;
+            _monster.myAnimator.SetTrigger("Panic");
+        }
+    }
 
-            if (CanAttackState())
-            {
+    protected override bool CheckFindAnimationOver()
+    {
+        if (canPanic) return CheckAnimationOver("Panic", 1.0f);
+        else return true;
+    }
 
-                yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-                SetAttackType();
-                SetAttackAnimation();
+    protected override void FindPlayer()
+    {
+        //base.FindPlayer();
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
+    }
 
-                LookTarget();
+    protected override void FindExit()
+    {
+        base.FindExit();
+        canPanic = false;
+    }
 
-                StartCoroutine(DoAttackAction());
+    protected override void DoReturn()
+    {
+        base.DoReturn();
+        canPanic = true;
+    }
 
-                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime/2);
+    protected override void CastStart()
+    {
+        //_monster.myAnimator.SetTrigger("Idle");
 
-                _monster.myAnimator.SetTrigger("Idle");
+        int proc = Random.Range(0, 100);
 
-                _readyCast = false;
-                if (!_readyCast && ToCast()) break;
-            }
-
-            else
-            {
-                ChangeState(MONSTER_STATE.STATE_TRACE);
-                break;
-            }
+        if (proc <= 35)
+        {
+            _castTime = 1.5f;
+            atktype = MOHICANATTACKTYPE.LEFT_ATTACK;
+        }
+        else if (proc <= 70)
+        {
+            _castTime = 1.5f;
+            atktype = MOHICANATTACKTYPE.RIGHT_ATTACK;
+        }
+        else
+        {
+            _castTime = 2f;
+            atktype = MOHICANATTACKTYPE.SLAM;
         }
     }
 
     protected override void SetAttackAnimation()
     {
-        transform.LookAt(_target.transform);
-        _navMeshAgent.isStopped = true;
-
-        if (_attackType == 0)
+        switch (atktype)
         {
-            _monster.myAnimator.SetTrigger("Attack0");
-            currentAnimation = "Attack0";
-        }
-        else if(_attackType == 1)
-        {
-            _monster.myAnimator.SetTrigger("Attack1");
-            currentAnimation = "Attack1";
-        }
-        else
-        {
-            _monster.myAnimator.SetTrigger("Attack2");
-            currentAnimation = "Attack2";
+            case MOHICANATTACKTYPE.RIGHT_ATTACK:
+                _monster.myAnimator.SetTrigger("Attack0");
+                break;
+            case MOHICANATTACKTYPE.LEFT_ATTACK:
+                _monster.myAnimator.SetTrigger("Attack1");
+                break;         
+            case MOHICANATTACKTYPE.SLAM:
+                _monster.myAnimator.SetTrigger("Attack2");
+                break;
+            default:
+                break;
         }
     }
-    protected override void SpawnStart()
-    {
-        ChangeState(MONSTER_STATE.STATE_IDLE);
-    }
-
-    protected override void SpawnExit()
-    {
-        base.SpawnExit();
-    }
-
-    protected override void DoCastingAction()
-    {
-        _cntCastTime += Time.deltaTime;
-        _bar.CastUpdate();
-
-        if (_cntCastTime >= _castTime)
-        {
-            _cntCastTime = 0;
-            _readyCast = true;
-            _attackType = 2;
-            ChangeState(MONSTER_STATE.STATE_ATTACK);
-        }
-
-    }
-    protected override void AttackStart()
-    {
-        base.AttackStart();
-       // _monster.myAnimator.SetTrigger("Idle");
-    }
-    protected override void LookTarget()
-    {
-       
-    }
-
-    protected override void SetAttackType()
-    {
-        if (_readyCast) return;
-
-        int proc = UnityEngine.Random.Range(0, 2);
-
-        if (proc == 0)
-        {
-            _attackType = 0;
-        }
-        else
-        {
-            _attackType = 1;
-        }
-    }
-
-    protected override void AttackExit()
-    {
-        _navMeshAgent.isStopped = false;
-        _monster.myAnimator.ResetTrigger(currentAnimation);
-        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-        
-    }
-    protected override void IdleStart()
-    {
-        ChangeState(MONSTER_STATE.STATE_TRACE);
-    }
+    protected override void LookTarget() { }
 
     protected override void KillStart()
     {
         _monster.myAnimator.SetTrigger("Laugh");
     }
+
 }

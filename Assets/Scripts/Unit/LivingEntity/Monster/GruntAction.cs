@@ -17,9 +17,6 @@ public class GruntAction : MonsterAction
     enum GRUNTATTACKTYPE {DEFALUT_ATTACK , SHOULDER_BASH , SPIN , SLAM }; // 4가지 공격패턴
     GRUNTATTACKTYPE atktype;
 
-    [SerializeField] private Transform _baseMeleeAttackPos; //공격하는 pos
-    [SerializeField] private GameObject _baseMeleeAttackPrefab; //공격 콜라이더 오브젝트
-
     /////////// 탐색 관련 /////////////
     public override void InitObject()
     {
@@ -37,6 +34,22 @@ public class GruntAction : MonsterAction
         }
     }
 
+    /// <summary>
+    /// 패닉일때 소리
+    /// </summary>
+    private void DoPanicSound(string monsterName)
+    {
+        if(monsterName.Equals("GruntBig"))
+        {
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Panic " + UnityEngine.Random.Range(1, 3), 0.6f);
+        }
+
+        else if (monsterName.Equals("GruntMedium"))
+        {
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Panic " + UnityEngine.Random.Range(1, 4), 0.6f);
+        }
+    }
+
     protected override bool CheckFindAnimationOver()
     {
         if (canPanic) return CheckAnimationOver("Panic", 1.0f);
@@ -45,6 +58,7 @@ public class GruntAction : MonsterAction
 
     protected override void FindPlayer()
     {
+        base.FindPlayer();
         _navMeshAgent.isStopped = false;
         ChangeState(MONSTER_STATE.STATE_TRACE);
     }
@@ -60,31 +74,30 @@ public class GruntAction : MonsterAction
         base.DoReturn();
         canPanic = true;
     }
-
-    protected override void DoAttack()
-    {
-       
-      GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-      obj.transform.SetParent(this.transform);
-      obj.transform.position = _baseMeleeAttackPos.position;
-
-      Attack atk = obj.GetComponent<Attack>();
-      atk.SetParent(gameObject);
-      atk.PlayAttackTimer(0.3f);
-        
-    }
-
     protected override void CastStart()
     {
+
         int proc = Random.Range(0, 100);
 
-        if(proc <= 50)
+        if (proc <= 25)
         {
-            atktype = GRUNTATTACKTYPE.SPIN;
+            _castTime = 1.5f;
+            atktype = GRUNTATTACKTYPE.DEFALUT_ATTACK;
+        }
+        else if (proc <= 50)
+        {
+            _castTime = 1.5f;
+            atktype = GRUNTATTACKTYPE.SHOULDER_BASH;
+        }
+        else if (proc <= 75)
+        {
+            _castTime = 2.5f;
+            atktype = GRUNTATTACKTYPE.SLAM;
         }
         else
         {
-            atktype = GRUNTATTACKTYPE.SLAM;
+            _castTime = 2.5f;
+            atktype = GRUNTATTACKTYPE.SPIN;
         }
 
     }
@@ -105,65 +118,31 @@ public class GruntAction : MonsterAction
         base.CastExit();
     }
 
-    protected override void AttackStart()
+    /// <summary>
+    /// 휘두르기 시작할 때 소리
+    /// </summary>
+    private void AttackSoundWhooshStart(string monsterName)
     {
-        int proc = Random.Range(0, 100);
-
-        if (proc <= 25)
+        if (monsterName.Equals("GruntBig"))
         {
-            atktype = GRUNTATTACKTYPE.DEFALUT_ATTACK;
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh Start " + UnityEngine.Random.Range(1, 4), 0.9f);
         }
-        else if(proc <= 50)
+
+        else if(monsterName.Equals("GruntMedium"))
         {
-            atktype = GRUNTATTACKTYPE.SHOULDER_BASH;
-        }
-        else if (proc <= 75)
-        {
-            atktype = GRUNTATTACKTYPE.SLAM;
-        }
-        else
-        {
-            atktype = GRUNTATTACKTYPE.SPIN;
-        }
-        base.AttackStart();
-    }
-
-    protected override void AttackExit()
-    {
-        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-    }
-    protected override IEnumerator AttackTarget()
-    {
-        while (true)
-        {
-            yield return null;
-
-            if (CanAttackState())
-            {
-
-                yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
- 
-                SetAttackAnimation();
-
-                LookTarget();
-
-                // 사운드 재생
-
-                StartCoroutine(DoAttackAction());
-
-                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime / 2);
-
-                _readyCast = false;
-                if (!_readyCast && ToCast()) break;
-            }
-           
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Whoosh " + UnityEngine.Random.Range(1, 6), 0.9f);
         }
     }
 
-    protected override void SetAttackType()
+    /// <summary>
+    /// 휘두른 후의 소리
+    /// </summary>
+    private void AttackSoundWhooshAfter(string monsterName)
     {
-        if (_readyCast) return;
-        
+        if (monsterName.Equals("GruntBig"))
+        {
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh " + UnityEngine.Random.Range(1, 6), 1);
+        }
     }
 
     protected override void SetAttackAnimation()
@@ -185,36 +164,6 @@ public class GruntAction : MonsterAction
             default:
                 break;
         }
-    }
-
-
-
-    protected override void IdleStart()
-    {
-        base.IdleStart();
-    }
-    protected override void IdleUpdate()
-    {
-        base.IdleUpdate();
-    }
-    protected override void IdleExit()
-    {
-        base.IdleExit();
-    }
-
-    protected override IEnumerator SpawnDissolve()
-    {
-        yield return null;
-        ChangeState(MONSTER_STATE.STATE_IDLE);
-    }
-
-    protected override void TraceStart()
-    {
-        base.TraceStart();
-    }
-    protected override void TraceUpdate()
-    {
-        base.TraceUpdate();
     }
 
     protected override void LookTarget() { }

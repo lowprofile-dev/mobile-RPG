@@ -27,6 +27,11 @@ public class SoundManager : SingletonBase<SoundManager>
     private GameObject      _bgmContainer2;
     private GameObject[]    _effectContainer;
 
+    // 이펙트 캐싱
+    private SoundInfor[]    _soundInfors;
+    private AudioSource[]   _audioSources;
+
+
     // 각 사운드의 음량
     public float _masterVolume  = 1.0f;
     public float _bgmVolume     = 1.0f;
@@ -50,16 +55,25 @@ public class SoundManager : SingletonBase<SoundManager>
     public void InitSound()
     {
         _effectContainer = new GameObject[_audioCount];
+        _soundInfors = new SoundInfor[_audioCount];
+        _audioSources = new AudioSource[_audioCount];
 
         for (int i = 0; i < _audioCount; i++)
         {
             _effectContainer[i] = ResourceManager.Instance.Instantiate("EffectContainer" + i, "Prefab/Etc/Container/AudioSource", transform);
+
+            _audioSources[i] = _effectContainer[i].GetComponent<AudioSource>();
+            _audioSources[i].spatialBlend = 0.0f;
+
+            _soundInfors[i] = _effectContainer[i].GetComponent<SoundInfor>();
         }
 
         _bgmContainer1 = ResourceManager.Instance.Instantiate("bgmPlayer1", "Prefab/Etc/Container/AudioSource", transform);
         _bgmContainer2 = ResourceManager.Instance.Instantiate("bgmPlayer2", "Prefab/Etc/Container/AudioSource", transform);
-        _bgmContainer1.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0);
-        _bgmContainer2.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0);
+        _bgmContainer1.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0, "", 0);
+        _bgmContainer2.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, 0, "", 0);
+        _bgmContainer1.GetComponent<AudioSource>().spatialBlend = 0.0f;
+        _bgmContainer2.GetComponent<AudioSource>().spatialBlend = 0.0f;
     }
 
     /// <summary>
@@ -85,14 +99,14 @@ public class SoundManager : SingletonBase<SoundManager>
         {
             startSource = _bgmContainer2.GetComponent<AudioSource>();
             endSource = _bgmContainer1.GetComponent<AudioSource>();
-            _bgmContainer2.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, Time.realtimeSinceStartup);
+            _bgmContainer2.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, Time.realtimeSinceStartup, soundPath, vol);
         }
 
         else
         {
             startSource = _bgmContainer1.GetComponent<AudioSource>();
             endSource = _bgmContainer2.GetComponent<AudioSource>();
-            _bgmContainer1.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, Time.realtimeSinceStartup);
+            _bgmContainer1.GetComponent<SoundInfor>().SetInfor(SoundType.BGM, Time.realtimeSinceStartup, soundPath, vol);
         }
 
         startSource.clip = Resources.Load(_bgmPath + soundPath) as AudioClip;
@@ -212,8 +226,7 @@ public class SoundManager : SingletonBase<SoundManager>
 
         for (int i = 0; i < _audioCount; i++) // 전체를 돌며 정지된 사운드나 빈 clip을 찾는다.
         {
-            AudioSource currentSource = _effectContainer[i].GetComponent<AudioSource>();
-            if (currentSource.clip == null || !currentSource.isPlaying)
+            if (_audioSources[i].clip == null || !_audioSources[i].isPlaying)
             {
                 findPos = true;
                 targetPos = i;
@@ -226,12 +239,9 @@ public class SoundManager : SingletonBase<SoundManager>
 
             for (int i = 0; i < _audioCount; i++)
             {
-                AudioSource currentSource = _effectContainer[i].GetComponent<AudioSource>();
-                SoundInfor currentInfor = currentSource.GetComponent<SoundInfor>();
-
-                if (currentSource.GetComponent<SoundInfor>().StartTime < minStartTime)
+                if (_soundInfors[i].startTime < minStartTime)
                 {
-                    minStartTime = currentInfor.StartTime;
+                    minStartTime = _soundInfors[i].startTime;
                     targetPos = i;
                 }
             }
@@ -247,11 +257,11 @@ public class SoundManager : SingletonBase<SoundManager>
     {
         for(int i=0; i<_effectContainer.Length; i++)
         {
-            if(_effectContainer[i].GetComponent<AudioSource>().isPlaying)
+            if(_audioSources[i].isPlaying)
             {
-                if(_effectContainer[i].GetComponent<AudioSource>().clip.name.Equals(name))
+                if(_audioSources[i].clip.name.Equals(name))
                 {
-                    _effectContainer[i].GetComponent<AudioSource>().Stop();
+                    _audioSources[i].Stop();
                 }
             }
         }
@@ -261,20 +271,23 @@ public class SoundManager : SingletonBase<SoundManager>
     public AudioSource PlayEffect(SoundType type, string soundPath, float volume = 1.0f, float distance = 0f, bool isLoop = false)
     {
         int targetPos = FindEffectContainerPosition();
+        AudioSource targetSource = _audioSources[targetPos];
 
-        AudioSource targetSource = _effectContainer[targetPos].GetComponent<AudioSource>();
+        float currentVolume = 0.0f;
+        int soundCount = 0;
+        (soundCount, currentVolume) = GetEqualEffectSounds(soundPath);
 
         switch (type)
         {
             case SoundType.EFFECT:
                 targetSource.clip = Resources.Load(_effectPath + soundPath) as AudioClip;
-                targetSource.volume = _masterVolume * _effectVolume * volume * ((distance > _minDistanceVolume) ? (_minDistanceVolume / distance) : 1); // distance가 최소 distanceVolume보다 크면 거리에 비례한 적은 소리를 배출하도록 한다.
-                _effectContainer[targetPos].GetComponent<SoundInfor>().SetInfor(SoundType.EFFECT, Time.realtimeSinceStartup);
+                targetSource.volume = _masterVolume * _effectVolume * GetNewtonSoundVolume(volume, currentVolume, soundCount) * ((distance > _minDistanceVolume) ? (_minDistanceVolume / distance) : 1); // distance가 최소 distanceVolume보다 크면 거리에 비례한 적은 소리를 배출하도록 한다.
+                _soundInfors[targetPos].SetInfor(SoundType.EFFECT, Time.realtimeSinceStartup, soundPath, volume);
                 break;
             case SoundType.UI:
                 targetSource.clip = Resources.Load(_effectPath + soundPath) as AudioClip;
-                targetSource.volume = _masterVolume * _uiVolume * volume; // ui는 어디서든 volume만큼의 소리를 낸다.
-                _effectContainer[targetPos].GetComponent<SoundInfor>().SetInfor(SoundType.UI, Time.realtimeSinceStartup);
+                targetSource.volume = _masterVolume * _uiVolume * GetNewtonSoundVolume(volume, currentVolume, soundCount); // ui는 어디서든 volume만큼의 소리를 낸다.
+                _soundInfors[targetPos].SetInfor(SoundType.UI, Time.realtimeSinceStartup, soundPath, volume);
                 break;
         }
 
@@ -290,6 +303,43 @@ public class SoundManager : SingletonBase<SoundManager>
         return targetSource;
     }
 
+    /// <summary>
+    /// 최근에 재생된 같은 사운드들의 개수를 체크, 해당 사운드들의 사운드 합을 구한다.
+    /// </summary>
+    public (int count, float volume) GetEqualEffectSounds(string soundPath)
+    {
+        int count = 0;
+        float volume = 0;
+        SoundInfor infor = null;
+        for(int i=0; i<_effectContainer.Length; i++)
+        {
+            infor = _soundInfors[i];
+
+            if (infor.path != null && infor.path.Equals(soundPath) && _audioSources[i].isPlaying && _audioSources[i].time < 0.1f)
+            {
+                volume += _soundInfors[i].initVolume;
+                count++;
+            }
+        }
+
+        return (count, volume);
+    }
+
+    /// <summary>
+    /// 볼륨 1보다 값이 넘어가 소리가 깨지지 않도록 보완하는 작업
+    /// </summary>
+    public float GetNewtonSoundVolume(float volume, float currentVolume, int count)
+    {
+        float resultVolume = 1f;
+
+        if (currentVolume > 1) return 0; // 볼륨이 1 이상이면 이 사운드의 볼륨을 0으로 한다.
+        else resultVolume = volume * Mathf.Pow(0.5f, count); // 볼륨이 1보다 작으면 0.5 * count^2를 곱하여 사운드 합이 1을 넘게 하지 않도록 한다.
+
+
+        if (resultVolume + currentVolume > 1) resultVolume = 1 - currentVolume;
+
+        return resultVolume;
+    }
 
     ////////// 사운드 연출 //////////
 
@@ -298,7 +348,7 @@ public class SoundManager : SingletonBase<SoundManager>
     /// </summary>
     public void SetPitch(AudioSource source, float pitch)
     {
-        pitch = source.pitch;
+        source.pitch = pitch;
     }
 
     /// <summary>
@@ -390,8 +440,7 @@ public class SoundManager : SingletonBase<SoundManager>
 
         for (int i=0; i<_audioCount; i++)
         {
-            if(_effectContainer[i].GetComponent<SoundInfor>().SoundType == SoundType.EFFECT && _effectContainer[i].GetComponent<AudioSource>().isPlaying)
-                _effectContainer[i].GetComponent<AudioSource>().volume *= (volume / _effectVolume);
+            if(_soundInfors[i].soundType == SoundType.EFFECT && _audioSources[i].isPlaying) _audioSources[i].volume *= (volume / _effectVolume);
         }
 
         _effectVolume = volume;
@@ -404,8 +453,7 @@ public class SoundManager : SingletonBase<SoundManager>
 
         for (int i = 0; i < _audioCount; i++)
         {
-            if (_effectContainer[i].GetComponent<SoundInfor>().SoundType == SoundType.UI && _effectContainer[i].GetComponent<AudioSource>().isPlaying)
-                _effectContainer[i].GetComponent<AudioSource>().volume *= (volume / _uiVolume);
+            if (_soundInfors[i].soundType == SoundType.UI && _audioSources[i].isPlaying) _audioSources[i].volume *= (volume / _uiVolume);
         }
 
         _uiVolume = volume;
@@ -420,8 +468,8 @@ public class SoundManager : SingletonBase<SoundManager>
 
         for (int i = 0; i < _audioCount; i++)
         {
-            if (_effectContainer[i].GetComponent<AudioSource>().isPlaying)
-                _effectContainer[i].GetComponent<AudioSource>().volume *= (volume / _masterVolume);
+            if (_audioSources[i].isPlaying)
+                _audioSources[i].volume *= (volume / _masterVolume);
         }
 
         _masterVolume = volume;

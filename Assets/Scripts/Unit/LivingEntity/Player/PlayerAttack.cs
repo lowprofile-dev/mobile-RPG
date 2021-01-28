@@ -125,7 +125,28 @@ public class PlayerAttack: MonoBehaviour
     /// </summary>
     public virtual float DoDamage(MonsterAction monster)
     {
-        return monster.DamageCheck(_useFixedDmg ? _damage : _damage * StatusManager.Instance.GetFinalDamageRandomly());
+        float finalDamage = _useFixedDmg ? _damage : _damage * StatusManager.Instance.GetFinalDamageRandomly();
+        if (Player.Instance.canDealFullHealth)
+        {
+            finalDamage += _damage * Player.Instance.fullHealthDamage;
+        }
+        if (Player.Instance.canDealProportional)
+        {
+            finalDamage += monster.monster.Hp * Player.Instance.proportionalDamage;
+        }
+        if (Player.Instance.canDealGiant && monster.monster.Hp / monster.monster.initHp >= 0.8f)
+        {
+            finalDamage += _damage * Player.Instance.giantDamage;
+        }
+        if (Player.Instance.canDealAnnoyed && Player.Instance.isAnnoyed && Player.Instance.annoyedTime <= 2.0f)
+        {
+            finalDamage += _damage * Player.Instance.annoyedDamage;
+        }
+        if (Player.Instance.canDealSpellStrike && Player.Instance.hasSpellStrike)
+        {
+            finalDamage += _damage * Player.Instance.spellStrikeDamage;
+        }
+        return monster.DamageCheck(finalDamage);
     }
 
     /// <summary>

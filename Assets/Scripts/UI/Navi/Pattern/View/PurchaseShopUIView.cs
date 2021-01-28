@@ -43,6 +43,7 @@ public class PurchaseShopUIView : View
     private void ReturnToMain()
     {
         UINaviationManager.Instance.PopToNav("SubUI_PurchaseShopUIView");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     private void PurchaseCoin()
@@ -119,5 +120,21 @@ public class PurchaseShopUIView : View
     {
         SystemPanel.instance.SetText("현재 구매가 불가합니다.");
         SystemPanel.instance.FadeOutStart();
+    }
+
+    public override void UIStart()
+    {
+        base.UIStart();
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/OpenShop", 0.9f);
+    }
+
+    public override void UIUpdate()
+    {
+        base.UIUpdate();
+    }
+
+    public override void UIExit()
+    {
+        base.UIExit();
     }
 }

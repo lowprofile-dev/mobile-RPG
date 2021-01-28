@@ -79,6 +79,16 @@ public class UINaviationManager : SingletonBase<UINaviationManager>
 
     //////////// 씬 별 UI 토글 /////////////
 
+    /// <summary>
+    /// 해당 SubUIView를 켠다. (다만 이미 네비게이션에 존재할 시엔 무시)
+    /// </summary>
+    public void OpenSubUIView(string name)
+    {
+        string viewName = "SubUI_" + name;
+        if (FindTargetIsInNav(viewName)) return;
+        else PushToNav(viewName);
+    }
+
     public void ToggleCardUIView()
     {
         if (FindTargetIsInNav("SubUI_CardUIView")) PopToNav("SubUI_CardUIView");

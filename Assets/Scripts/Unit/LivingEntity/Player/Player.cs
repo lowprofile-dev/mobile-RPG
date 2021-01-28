@@ -43,8 +43,10 @@ public class Player : LivingEntity
     private StatusManager _statusManager;                               // 스테이터스 매니저
     private EPOOutline.Outlinable playerOutlinable;                     // 아웃라이너
 
+
     [Header("상태 관련")]
     bool _isdead = false;                                   // 사망 여부
+    private float _slowingFactor = 0f; public float SlowingFactor { get { return _slowingFactor; } set { _slowingFactor = value; } }
 
     [Header("움직임")]
     [SerializeField] private float turnSmoothTime = 0.1f;   // 부드럽게 움직이는 시간
@@ -72,12 +74,14 @@ public class Player : LivingEntity
     [Header("마스터리 관련")]
     public bool[] masterySet = new bool[10];            // 마스터리 활성화 정보
     private bool resurrection = false;                  // 부활
+    private bool rage = false;                  // 부활
 
     [Header("공격 관련")]
     [SerializeField] public Transform skillPoint;       // 스킬 발사 지점
     private int _cntSkillType;                          // 현재 사용하는 스킬 정보
     public int currentCombo;                            // 현재 콤보 수
     private bool _canConnectCombo;                      // 콤보를 더 이을 수 있는지
+    private bool _canWalkAttackFrezzing;                // 공격상태에서 걸을 수 있게 되는 시점
 
     [Header("무기 관련")]
     public bool weaponChanged = false;                  // 무기가 바뀌었는지 여부
@@ -117,7 +121,20 @@ public class Player : LivingEntity
     public ItemManager itemManager { get { return _itemManager; } }
     public StatusManager statusManager { get { return _statusManager; } }
 
-
+    [Header("카드 관련")]
+    public float fullHealthDamage;
+    public float proportionalDamage;
+    public float giantDamage;
+    public float annoyedDamage;
+    public float spellStrikeDamage;
+    public bool canDealFullHealth;              // 플레이어의 체력이 100%일 때 데미지 증가
+    public bool canDealProportional = false;    // 몬스터 남은 체력 비례 데미지
+    public bool canDealGiant = false;           // 몬스터 체력 80% 이상일 때 데미지 증가
+    public bool canDealAnnoyed = false;         // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가
+    public bool canDealSpellStrike = false;
+    public bool hasSpellStrike = false;         // 스킬 사용 이후 1회 평타 강화
+    public bool isAnnoyed = false;
+    public float annoyedTime = 0f;
 
 
     ///////////////// 베이스 //////////////////
@@ -157,6 +174,7 @@ public class Player : LivingEntity
 
         myAnimator = GetComponent<Animator>();
 
+        _canWalkAttackFrezzing = true;
         _cntState = PLAYERSTATE.PS_IDLE;
         EnterState();
 
@@ -165,7 +183,7 @@ public class Player : LivingEntity
         else weaponManager.SetWeapon(weaponManager.GetWeaponName());
 
         SetUpPlayerCamera();
-
+        MasteryManager.Instance.UpdateCurrentExp();
         playerOutlinable = gameObject.GetComponent<EPOOutline.Outlinable>();
         InitOutline();
     }
@@ -180,6 +198,8 @@ public class Player : LivingEntity
         UpdateState();
         MasteryApply();
         ApplyGravity();
+        if (isAnnoyed)
+            annoyedTime += Time.deltaTime;
     }
     
 
@@ -444,8 +464,10 @@ public class Player : LivingEntity
     /// </summary>
     public void EndAttack()
     {
+        hasSpellStrike = false;
         InitAttack();
         ChangeState(PLAYERSTATE.PS_IDLE);
+        UnlockAttackFreeze();
     }
 
     /// <summary>
@@ -491,10 +513,20 @@ public class Player : LivingEntity
     }
 
     /// <summary>
+    /// 공격상태에서 다시 움직일 수 있게 해준다.
+    /// </summary>
+    public void UnlockAttackFreeze()
+    {
+        _canWalkAttackFrezzing = true;
+    }
+
+    /// <summary>
     /// 현재 콤보 상태에 따라 공격 애니메이션을 재생한다.
     /// </summary>
     private void SetAttackAnimationTrigger()
     {
+        _canWalkAttackFrezzing = false;
+
         switch (currentCombo)
         {
             case 1: myAnimator.SetTrigger("Attack01"); break;
@@ -514,6 +546,7 @@ public class Player : LivingEntity
 
     public void AttackExit()
     {
+        UnlockAttackFreeze();
         InitAttack();
     }
 
@@ -681,6 +714,7 @@ public class Player : LivingEntity
         myAnimator.ResetTrigger("SkillB");
         myAnimator.ResetTrigger("SkillC");
         myAnimator.ResetTrigger("SkillBAttack");
+        hasSpellStrike = true;
     }
 
     /// <summary>
@@ -822,8 +856,10 @@ public class Player : LivingEntity
         _isdead = true;
 
         myAnimator.SetTrigger("Die");
+
         _CCManager.Release();
         _DebuffManager.Release();
+        _slowingFactor = 0f;
 
         if (resurrection == false)
         {
@@ -866,7 +902,7 @@ public class Player : LivingEntity
     {
         if (GetMove())
         {
-            if (_cntState == PLAYERSTATE.PS_IDLE)
+            if (_cntState == PLAYERSTATE.PS_IDLE || (_cntState == PLAYERSTATE.PS_ATTACK && _canWalkAttackFrezzing))
             {
                 ChangeState(PLAYERSTATE.PS_MOVE);
             }
@@ -1034,7 +1070,6 @@ public class Player : LivingEntity
     //마스터리 강화 관련 
     private void MasteryApply()
     {
-
         //카드 리롤 확률 증가
         //CardManager.cs 187
 
@@ -1046,61 +1081,87 @@ public class Player : LivingEntity
         {
             if (masterySet[1] == false)
             {
-                StatusManager.Instance.finalStatus.attackDamage *= 1.1f;
-                StatusManager.Instance.finalStatus.magicDamage *= 1.1f;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage *1.1f;
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.1f;
+                statusManager.finalStatus.armor = statusManager.playerStatus.armor;
+                statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance;
                 masterySet[1] = true;
             }
-
-
         }
         //방어력 증가 부분
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
+        else if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
         {
             if (masterySet[1] == false)
             {
-                statusManager.finalStatus.armor *= 1.1f;
-                statusManager.finalStatus.magicResistance *= 1.1f;
+                statusManager.finalStatus.armor = statusManager.playerStatus.armor * 1.1f;
+                statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance * 1.1f;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage;
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage;
                 masterySet[1] = true;
             }
+
         }
+        else
+        {
+            statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage;
+            statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage;
+            statusManager.finalStatus.armor = statusManager.playerStatus.armor;
+            statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance;
+        }
+
         // 체력 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == -1)
         {
             if (masterySet[2] == false)
             {
-                statusManager.finalStatus.hpRecovery *= 1.2f;
+                statusManager.finalStatus.hpRecovery = statusManager.playerStatus.hpRecovery * 1.2f;
+                statusManager.finalStatus.staminaRecovery = statusManager.playerStatus.staminaRecovery;
+
                 masterySet[2] = true;
             }
 
         }
         //기력 증가
-
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
+        else if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
         {
             if (masterySet[2] == false)
             {
-                statusManager.finalStatus.staminaRecovery *= 1.2f;
+                statusManager.finalStatus.staminaRecovery = statusManager.playerStatus.staminaRecovery * 1.2f;
+                statusManager.finalStatus.hpRecovery = statusManager.playerStatus.hpRecovery;
                 masterySet[2] = true;
             }
-
         }
+        else
+        {
+            statusManager.finalStatus.hpRecovery = statusManager.playerStatus.hpRecovery;
+            statusManager.finalStatus.staminaRecovery = statusManager.playerStatus.staminaRecovery;
+        }
+
         //이속 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == -1)
         {
             if (masterySet[3] == false)
             {
-                statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed * 2f;
+                statusManager.finalStatus.moveSpeed = (statusManager.playerStatus.moveSpeed * 2f) - (((statusManager.playerStatus.moveSpeed * 2f) * _slowingFactor) / 100f);
+                statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
                 masterySet[3] = true;
             }
         }
         //공속 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
+        else if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
         {
             if (masterySet[3] == false)
             {
-                statusManager.finalStatus.attackSpeed *= 1.2f;
+                statusManager.finalStatus.attackSpeed = (statusManager.playerStatus.attackSpeed * 1.2f) - (((statusManager.playerStatus.moveSpeed * 1.2f) * _slowingFactor) / 100f);
+                statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
+
                 masterySet[3] = true;
             }
+        }
+        else
+        {
+            statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed - ((statusManager.playerStatus.moveSpeed * _slowingFactor) / 100f);
+            statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
         }
 
         //골드 획득량 증가 미구현 && 아이템 확률 증가 통합
@@ -1120,6 +1181,7 @@ public class Player : LivingEntity
         {
             if (masterySet[6] == false)
             {
+                statusManager.finalStatus.dashStamina = statusManager.playerStatus.dashStamina;
                 masterySet[6] = true;
             }
         }
@@ -1128,12 +1190,21 @@ public class Player : LivingEntity
         {
             if (masterySet[6] == false)
             {
-                statusManager.playerStatus.dashStamina *= 0.8f;
+                statusManager.finalStatus.dashStamina = statusManager.playerStatus.dashStamina * 0.8f;
                 masterySet[6] = true;
             }
         }
         //기본공격 10% 강화, hp 2% 흡수
         // PlayerAttack.cs 76;
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)
+        {
+            if (masterySet[7] == false)
+            {
+                weaponManager.WeaponCoolTimeincrease();
+                masterySet[7] = true;
+            }
+
+        }
 
         //스킬 쿨타임 1초 감소
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == 1)
@@ -1150,7 +1221,8 @@ public class Player : LivingEntity
         {
             if (masterySet[8] == false)
             {
-                statusManager.finalStatus.attackDamage *= 1.4f;
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage ;
+                statusManager.finalStatus.attackDamage *= statusManager.playerStatus.attackDamage * 1.4f;
                 masterySet[8] = true;
             }
         }
@@ -1161,23 +1233,33 @@ public class Player : LivingEntity
             {
                 if (masterySet[8] == false)
                 {
-                    statusManager.finalStatus.magicDamage *= 1.4f;
+                    statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.4f;
+                    statusManager.finalStatus.attackDamage *= statusManager.playerStatus.attackDamage;
+
                     masterySet[8] = true;
                 }
             }
         }
 
-        // HP 10% 이하 물리/마법 공격력 30% 증가
+        // HP 20% 이하 물리/마법 공격력 30% 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == -1)
         {
             if (masterySet[9] == false)
             {
-                if (statusManager.GetCurrentHpPercent() <= 0.2f)
-                {
-                    statusManager.finalStatus.attackDamage *= 1.3f;
-                    statusManager.finalStatus.magicDamage *= 1.3f;
-                }
+                rage = true;
+                resurrection = false;
                 masterySet[9] = true;
+            }
+
+            if(statusManager.GetCurrentHpPercent()<= 0.2)
+            {
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.3f;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage * 1.3f;
+            }
+            else
+            {
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage;
             }
         }
 
@@ -1187,6 +1269,7 @@ public class Player : LivingEntity
         {
             if (masterySet[9] == false)
             {
+                rage = false;
                 resurrection = true;
                 masterySet[9] = true;
             }
@@ -1337,6 +1420,15 @@ public class Player : LivingEntity
     ///////////////// 기타 캐릭터 기능들 //////////////////
 
 
+    public override void Damaged(float damage)
+    {
+        base.Damaged(damage);
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.6f);
+        SoundManager.Instance.SetPitch(source, 1.5f);
+        isAnnoyed = true;
+        annoyedTime = 0f;
+    }
+
     public void RestoreHP(float restoreHp)
     {
         if(_cntState != PLAYERSTATE.PS_DIE && restoreHp != 0)
@@ -1411,6 +1503,4 @@ public class Player : LivingEntity
         }
         else weaponChanged = false;
     }
-
-
 }

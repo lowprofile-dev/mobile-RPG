@@ -4,7 +4,7 @@
     class DragonAction
     
     담당자 : 이신홍
-    부 담당자 : 
+    부 담당자 : 안영훈
 
     드래곤의 행동을 정의한다.
 */
@@ -16,12 +16,6 @@ using UnityEngine;
 public class DragonAction : MonsterAction
 {
     bool canPanic;
-
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-
-    Collider _baseAtkCollision;
-
 
     /////////// 기본 /////////////
     
@@ -42,8 +36,7 @@ public class DragonAction : MonsterAction
         base.IdleUpdate();
         ToStirr(); // 주변을 둘러보는 애니메이션이 추가되었으므로 오버라이딩
     }
-
-
+    
     /////////// 두리번거리기 관련 /////////////
 
     /////////// 탐색 관련 /////////////
@@ -56,6 +49,30 @@ public class DragonAction : MonsterAction
         {
             _monster.myAnimator.SetTrigger("Panic"); // 패닉이 추가되었으므로 오버라이딩
         }
+    }
+    protected override void CastStart()
+    {
+
+        int proc = Random.Range(0, 100);
+        if(proc <= 30)
+        {
+            _castTime = 2f;
+            _attackType = 1;
+        }
+        else
+        {
+            _castTime = 1f;
+            _attackType = 0;
+        }
+    }
+
+    /// <summary>
+    /// 패닉 사운드를 재생한다. (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void DoPanicSound()
+    {
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Panic " + UnityEngine.Random.Range(1, 4), 0.5f);
+        SoundManager.Instance.SetPitch(source, 0.7f);
     }
 
     protected override bool CheckFindAnimationOver()
@@ -82,15 +99,37 @@ public class DragonAction : MonsterAction
 
     protected override void DoAttack()
     {
-        if(_attackType == 0 || _attackType == 1) // 공격 타입 2개
-        {
-            GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-            obj.transform.SetParent(this.transform);
-            obj.transform.position = _baseMeleeAttackPos.position;
+        
+         GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+         obj.transform.SetParent(this.transform);
+         obj.transform.position = _baseMeleeAttackPos.position;
 
-            Attack atk = obj.GetComponent<Attack>();
-            atk.SetParent(gameObject);
-            atk.PlayAttackTimer(0.3f);
+         Attack atk = obj.GetComponent<Attack>();
+         atk.SetParent(gameObject);
+         atk.PlayAttackTimer(0.3f);
+         AttackSound();
+        
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
+    }
+
+    /// <summary>
+    /// 몬스터 공격 소리 재생
+    /// </summary>
+    protected override void AttackSound()
+    {
+        AudioSource source = null;
+
+        switch(_attackType)
+        {
+            case 0:
+                source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Bite 2", 0.3f);
+                SoundManager.Instance.SetPitch(source, 1.6f);
+                break;
+            case 1:
+                source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Bite 1", 0.3f);
+                SoundManager.Instance.SetPitch(source, 1.2f);
+                break;
         }
     }
 

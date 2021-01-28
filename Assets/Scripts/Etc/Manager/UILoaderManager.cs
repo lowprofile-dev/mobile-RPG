@@ -30,7 +30,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
     public void InitUILoaderManager()
     {
         _playerUI = GameObject.Find("PlayerUI_View");
-        _nameText = GameObject.Find("NamePanel").transform.Find("BossNameText").GetComponent<TextMeshProUGUI>();
+        _nameText = GameObject.Find("NamePanel").transform.Find("Panel").transform.Find("BossNameText").GetComponent<TextMeshProUGUI>();
         _nameText.text = "";
     }
 
