@@ -17,9 +17,6 @@ public class GruntAction : MonsterAction
     enum GRUNTATTACKTYPE {DEFALUT_ATTACK , SHOULDER_BASH , SPIN , SLAM }; // 4가지 공격패턴
     GRUNTATTACKTYPE atktype;
 
-    [SerializeField] private Transform _baseMeleeAttackPos; //공격하는 pos
-    [SerializeField] private GameObject _baseMeleeAttackPrefab; //공격 콜라이더 오브젝트
-
     /////////// 탐색 관련 /////////////
     public override void InitObject()
     {
@@ -77,25 +74,8 @@ public class GruntAction : MonsterAction
         base.DoReturn();
         canPanic = true;
     }
-
-    protected override void DoAttack()
-    {
-      GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-      obj.transform.SetParent(this.transform);
-      obj.transform.position = _baseMeleeAttackPos.position;
-
-      Attack atk = obj.GetComponent<Attack>();
-      atk.SetParent(gameObject);
-      atk.PlayAttackTimer(0.3f);
-
-      _navMeshAgent.isStopped = false;
-      ChangeState(MONSTER_STATE.STATE_TRACE);
-
-    }
-
     protected override void CastStart()
     {
-        //_monster.myAnimator.SetTrigger("Idle");
 
         int proc = Random.Range(0, 100);
 

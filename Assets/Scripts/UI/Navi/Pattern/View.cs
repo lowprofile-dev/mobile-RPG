@@ -39,6 +39,7 @@ public class View : MonoBehaviour
     {
         _viewName = gameObject.name;
         _animator = GetComponent<UIAnimator>();
+        if(_animator != null) _animator.SetupUIAnimator();
     }
 
     void Update()
@@ -66,7 +67,13 @@ public class View : MonoBehaviour
         viewtype = VIEWTYPE.VIEWTYPE_ISAPPEARING;
         viewtype = VIEWTYPE.VIEWTYPE_APPEARED;
 
-        if (_animator != null) _animator.FadeInWithUp();
+        if (_animator != null)
+        {
+            _animator.ResetFinalSequence();
+            Sequence seq = _animator.FadeInWithUp();
+            _animator.AppendSequence(seq);
+            _animator.FinalPlay();
+        }
     }
 
     public virtual void UIUpdate()

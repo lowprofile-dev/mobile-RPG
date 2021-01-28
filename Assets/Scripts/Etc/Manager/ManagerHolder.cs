@@ -30,6 +30,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     [HideInInspector] public ItemManager itemManager;
     [HideInInspector] public GlobalDefine globalDefine;
     [HideInInspector] public MonsterManager monsterManager;
+    [HideInInspector] public AdManager adManager;
 
     private void Start()
     {
@@ -44,7 +45,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     private void SetProjectSettings()
     {
         Screen.SetResolution(848, 480, true);
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 40;
         Random.InitState((int)(System.DateTime.Now.Ticks));
     }
 
@@ -77,6 +78,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         statusManager = (StatusManager)AddManager<StatusManager>();
         itemManager = (ItemManager)AddManager<ItemManager>();
         monsterManager = (MonsterManager)AddManager<MonsterManager>();
+        adManager = (AdManager)AddManager<AdManager>();
     }
 
     /// <summary>

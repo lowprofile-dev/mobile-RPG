@@ -73,6 +73,10 @@ public class MonsterAction : MonoBehaviour
     [Header("UI")]
     [SerializeField] protected EnemySliderBar _bar;
 
+    [Header("공격 관련")]
+    [SerializeField] protected Transform _baseMeleeAttackPos;
+    [SerializeField] protected GameObject _baseMeleeAttackPrefab;
+
     private float attackedTime = 0.1f;                   
     private float counter = 0f;                          
     public DungeonRoom parentRoom = null;               // 이 몬스터가 속한 던전 방
@@ -82,8 +86,6 @@ public class MonsterAction : MonoBehaviour
     public NavMeshAgent NavMeshAgent { get { return _navMeshAgent; } }
     public GameObject Target { get { return _target; } }
     public MONSTER_STATE currentState { get { return _currentState; } }
-
-    protected float velocity, angle;
 
     /////////// 기본 ////////////
 
@@ -606,18 +608,12 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void AttackStart()
     {
-       // if(!_readyCast && ToCast()) return;
-        //else _attackCoroutine = StartCoroutine(AttackTarget());
          _attackCoroutine = StartCoroutine(AttackTarget());
     }
 
     protected virtual void AttackUpdate()
     { 
-        //// 타겟과의 거리가 공격 범위보다 커지면
-        //if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
-        //{
-        //    ChangeState(MONSTER_STATE.STATE_IDLE);
-        //}
+        
     }
 
     /// <summary>
@@ -628,17 +624,15 @@ public class MonsterAction : MonoBehaviour
         yield return null;   
 
         //yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-        SetAttackType();
+        //SetAttackType();
         SetAttackAnimation();       
         LookTarget();
-       
-        // 사운드 재생     
+           
         StartCoroutine(DoAttackAction());
        
         yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
        
         ResetAttackAnimation();
-        //_monster.myAnimator.ResetTrigger("Attack"); // 애니메이션의 재시작 부분에 Attack이 On이 되야함. 
     }
 
     protected virtual void SetAttackType()
@@ -687,12 +681,21 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void DoAttack()
     {
-        // DO NOTHING
+        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+        obj.transform.SetParent(this.transform);
+        obj.transform.position = _baseMeleeAttackPos.position;
+
+        Attack atk = obj.GetComponent<Attack>();
+        atk.SetParent(gameObject);
+        atk.PlayAttackTimer(0.3f);
+        AttackSound();
+
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     protected virtual void AttackExit()
     {
-        //_monster.myAnimator.ResetTrigger("Attack");
         if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
 
