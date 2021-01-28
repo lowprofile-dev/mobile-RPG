@@ -98,8 +98,8 @@ public class DungeonRoom : MonoBehaviour
     {
         for (int i = monsters.Count - 1; i >= 0; i--)
         {
-            ///Destroy(monsters[i]);
-            ObjectPoolManager.Instance.ReturnObject(monsters[i]);
+            Destroy(monsters[i]);
+            //ObjectPoolManager.Instance.ReturnObject(monsters[i]);
         }
         for (int i = doors.Count - 1; i >= 0; i--)
         {

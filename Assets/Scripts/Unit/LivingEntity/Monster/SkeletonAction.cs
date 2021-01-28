@@ -47,6 +47,7 @@ public class SkeletonAction : MonsterAction
 
     protected override void FindPlayer()
     {
+        //base.FindPlayer();
         _navMeshAgent.isStopped = false;
         ChangeState(MONSTER_STATE.STATE_TRACE);
     }
@@ -73,81 +74,31 @@ public class SkeletonAction : MonsterAction
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(0.3f);
 
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     protected override void CastStart()
     {
-        atktype = MOHICANATTACKTYPE.SLAM;
-    }
-    protected override void DoCastingAction()
-    {
-        _cntCastTime += Time.deltaTime;
-        _bar.CastUpdate();
+        //_monster.myAnimator.SetTrigger("Idle");
 
-        if (_cntCastTime >= _castTime)
-        {
-            _cntCastTime = 0;
-            _readyCast = true;
-            ChangeState(MONSTER_STATE.STATE_ATTACK);
-        }
-    }
-    protected override void CastExit()
-    {
-        base.CastExit();
-    }
-
-    protected override void AttackStart()
-    {
         int proc = Random.Range(0, 100);
 
-        if (proc <= 50)
+        if (proc <= 35)
         {
+            _castTime = 1.5f;
             atktype = MOHICANATTACKTYPE.LEFT_ATTACK;
         }
-        else if (proc <= 100)
+        else if (proc <= 70)
         {
+            _castTime = 1.5f;
             atktype = MOHICANATTACKTYPE.RIGHT_ATTACK;
         }
-        if(_readyCast) atktype = MOHICANATTACKTYPE.SLAM;
-
-        base.AttackStart();
-    }
-
-    protected override void AttackExit()
-    {
-        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-    }
-    protected override IEnumerator AttackTarget()
-    {
-        while (true)
+        else
         {
-            yield return null;
-
-            if (CanAttackState())
-            {
-
-                yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-
-                SetAttackAnimation();
-
-                LookTarget();
-
-                // 사운드 재생
-
-                StartCoroutine(DoAttackAction());
-
-                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime / 2);
-
-                _readyCast = false;
-                if (!_readyCast && ToCast()) break;
-            }
-
+            _castTime = 2f;
+            atktype = MOHICANATTACKTYPE.SLAM;
         }
-    }
-
-    protected override void SetAttackType()
-    {
-        if (_readyCast) return;
     }
 
     protected override void SetAttackAnimation()
@@ -167,37 +118,6 @@ public class SkeletonAction : MonsterAction
                 break;
         }
     }
-
-
-
-    protected override void IdleStart()
-    {
-        base.IdleStart();
-    }
-    protected override void IdleUpdate()
-    {
-        base.IdleUpdate();
-    }
-    protected override void IdleExit()
-    {
-        base.IdleExit();
-    }
-
-    //protected override IEnumerator SpawnDissolve()
-    //{
-    //    yield return null;
-    //    ChangeState(MONSTER_STATE.STATE_IDLE);
-    //}
-
-    protected override void TraceStart()
-    {
-        base.TraceStart();
-    }
-    protected override void TraceUpdate()
-    {
-        base.TraceUpdate();
-    }
-
     protected override void LookTarget() { }
 
     protected override void KillStart()

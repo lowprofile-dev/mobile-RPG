@@ -96,22 +96,11 @@ public class MonsterAction : MonoBehaviour
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 
-
-    private void OnDisable()
-    {
-        //if(parentRoom != null) parentRoom.MonsterList.Remove(gameObject);
-        _navMeshAgent.enabled = false;
-        transform.rotation = Quaternion.identity;
-        transform.position = Vector3.zero;
-        _currentState = MONSTER_STATE.STATE_NULL;
-        //_monster.Hp = 500;
-    }
     public virtual void InitObject()
     {
         _isImmune = false;
         CachingObject();
         _traceTimer = 0;
-        //_spawnPosition = transform.position;
         InitStatus();
         InitState();
         var _mon = this;
@@ -572,7 +561,7 @@ public class MonsterAction : MonoBehaviour
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
             _navMeshAgent.isStopped = true;
-            ChangeState(MONSTER_STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_CAST);
         }
     }
 
@@ -617,17 +606,18 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void AttackStart()
     {
-        if(!_readyCast && ToCast()) return;
-        else _attackCoroutine = StartCoroutine(AttackTarget());
+       // if(!_readyCast && ToCast()) return;
+        //else _attackCoroutine = StartCoroutine(AttackTarget());
+         _attackCoroutine = StartCoroutine(AttackTarget());
     }
 
     protected virtual void AttackUpdate()
     { 
-        // 타겟과의 거리가 공격 범위보다 커지면
-        if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
-        {
-            ChangeState(MONSTER_STATE.STATE_IDLE);
-        }
+        //// 타겟과의 거리가 공격 범위보다 커지면
+        //if (Vector3.Distance(_target.transform.position, _monster.transform.position) > _attackRange)
+        //{
+        //    ChangeState(MONSTER_STATE.STATE_IDLE);
+        //}
     }
 
     /// <summary>
@@ -635,34 +625,20 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual IEnumerator AttackTarget()
     {
-        while (true)
-        {
-            yield return null;
-            
+        yield return null;   
 
-            if (CanAttackState())
-            {
-
-                yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-                SetAttackType();
-                SetAttackAnimation();
-                
-                LookTarget();
-
-                // 사운드 재생
-
-                StartCoroutine(DoAttackAction());
-
-                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-
-                ResetAttackAnimation();
-                _monster.myAnimator.ResetTrigger("Attack"); // 애니메이션의 재시작 부분에 Attack이 On이 되야함.
-
-                _attackType = 0;
-                _readyCast = false;
-                if(!_readyCast && ToCast()) break;
-            }
-        }
+        //yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        SetAttackType();
+        SetAttackAnimation();       
+        LookTarget();
+       
+        // 사운드 재생     
+        StartCoroutine(DoAttackAction());
+       
+        yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+       
+        ResetAttackAnimation();
+        //_monster.myAnimator.ResetTrigger("Attack"); // 애니메이션의 재시작 부분에 Attack이 On이 되야함. 
     }
 
     protected virtual void SetAttackType()
@@ -716,7 +692,7 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void AttackExit()
     {
-        _monster.myAnimator.ResetTrigger("Attack");
+        //_monster.myAnimator.ResetTrigger("Attack");
         if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
     }
 
@@ -771,7 +747,6 @@ public class MonsterAction : MonoBehaviour
         {
             _cntCastTime = 0;
             _readyCast = true;
-            _attackType = 1;
             ChangeState(MONSTER_STATE.STATE_ATTACK);
         }
     }
@@ -921,7 +896,6 @@ public class MonsterAction : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         _bar.gameObject.SetActive(false);
-        Debug.Log("호출");
         ObjectPoolManager.Instance.ReturnObject(gameObject);
         StopAllCoroutines();
         //DestroyImmediate(gameObject);
@@ -951,10 +925,15 @@ public class MonsterAction : MonoBehaviour
     {
         _outlinable.enabled = false;
 
-        transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => { ObjectPoolManager.Instance.ReturnObject(gameObject);/*DestroyImmediate(gameObject);*/ });
+        transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => {
+            _navMeshAgent.enabled = false;
+            _currentState = MONSTER_STATE.STATE_NULL;
+            ObjectPoolManager.Instance.ReturnObject(gameObject);
+        });
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
 
         _bar.gameObject.SetActive(false);
+        
 
         if (_fadeOutRedTween != null) _fadeOutRedTween.Kill();
     }

@@ -77,6 +77,9 @@ public class GhostAction : MonsterAction
         Attack atk = obj.GetComponent<Attack>();
         atk.SetParent(gameObject);
         atk.PlayAttackTimer(0.3f);
+
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     /// <summary>

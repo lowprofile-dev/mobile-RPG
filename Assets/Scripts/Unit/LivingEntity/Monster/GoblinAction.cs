@@ -102,18 +102,19 @@ public class GoblinAction : MonsterAction
 
     protected override void DoAttack()
     {
-        if (_attackType == 0 || _attackType == 1)
-        {
-            GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-            obj.transform.SetParent(this.transform);
-            obj.transform.position = _baseMeleeAttackPos.position;
+        
+        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+        obj.transform.SetParent(this.transform);
+        obj.transform.position = _baseMeleeAttackPos.position;
 
-            AttackSound();
+        AttackSound();
 
-            Attack atk = obj.GetComponent<Attack>();
-            atk.SetParent(gameObject);
-            atk.PlayAttackTimer(0.3f);
-        }
+        Attack atk = obj.GetComponent<Attack>();
+        atk.SetParent(gameObject);
+        atk.PlayAttackTimer(0.3f);
+
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     /// <summary>
@@ -142,6 +143,21 @@ public class GoblinAction : MonsterAction
     }
 
     /////////// 캐스팅 관련 /////////////
+    ///
+    protected override void CastStart()
+    {
+        int proc = Random.Range(0, 100);
+        if (proc <= 30)
+        {
+            _castTime = 2f;
+            _attackType = 1;
+        }
+        else
+        {
+            _castTime = 1f;
+            _attackType = 0;
+        }
+    }
 
     /////////// 피격 관련 /////////////
 

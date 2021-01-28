@@ -29,7 +29,7 @@ public class UIAnimator : MonoBehaviour
     {
         _transform = _targetObj.GetComponent<RectTransform>();
         _initPosition = _transform.position;
-        _canvasGroup.alpha = 0;
+        //_canvasGroup.alpha = 0;
     }
 
     public void FadeInWithUp()
