@@ -210,7 +210,6 @@ public class Player : LivingEntity
         if (isAnnoyed)
             annoyedTime += Time.deltaTime;
 
-        Debug.Log("Player 현재 속도 : " + statusManager.finalStatus.moveSpeed);
     }
 
     ///////////////// 외견 관련 //////////////////

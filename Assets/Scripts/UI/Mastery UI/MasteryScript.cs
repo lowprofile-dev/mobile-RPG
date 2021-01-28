@@ -364,7 +364,7 @@ public class MasteryScript : MonoBehaviour
        
         masteryInfo.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryName;
         masteryInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryDescription;
-        masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = upSkill.transform.GetChild(0).GetComponent<Image>().sprite;
+        masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = downSkill.transform.GetChild(0).GetComponent<Image>().sprite;
         masteryInfo.SetActive(true);
 
     }
