@@ -45,7 +45,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     private void SetProjectSettings()
     {
         Screen.SetResolution(848, 480, true);
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 40;
         Random.InitState((int)(System.DateTime.Now.Ticks));
     }
 

@@ -271,6 +271,9 @@ public class DungeonRoom : MonoBehaviour
                     minimapIcons[i].GetComponent<Image>().color = Color.black;
                     break;
             }
+            Color minimapColor = minimapIcons[i].GetComponent<Image>().color;
+            minimapColor.a = 0.5f;
+            minimapIcons[i].GetComponent<Image>().color = minimapColor;
         }
     }
 
