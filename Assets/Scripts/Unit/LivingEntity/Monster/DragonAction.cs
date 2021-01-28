@@ -4,7 +4,7 @@
     class DragonAction
     
     담당자 : 이신홍
-    부 담당자 : 
+    부 담당자 : 안영훈
 
     드래곤의 행동을 정의한다.
 */
@@ -16,12 +16,6 @@ using UnityEngine;
 public class DragonAction : MonsterAction
 {
     bool canPanic;
-
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-
-    Collider _baseAtkCollision;
-
 
     /////////// 기본 /////////////
     

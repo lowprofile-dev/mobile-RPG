@@ -18,9 +18,6 @@ public class ArcherAction : MonsterAction
     [SerializeField] private Transform _baseRangeAttackPos;
     [SerializeField] private GameObject _baseRangeAttackPrefab;
 
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-
     Collider _baseAtkCollision;
     /////////// 탐색 관련 /////////////
     public override void InitObject()
@@ -142,7 +139,6 @@ public class ArcherAction : MonsterAction
     protected override void SetAttackType()
     {
         if (_readyCast) return;
-
     }
 
     protected override void SetAttackAnimation()

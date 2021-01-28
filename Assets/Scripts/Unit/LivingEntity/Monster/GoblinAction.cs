@@ -18,11 +18,6 @@ public class GoblinAction : MonsterAction
 {
     bool _isDamaged = false;
     bool _canPlayPanicSound = true;
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-
-    Collider _baseAtkCollision;
-
 
     /////////// 기본 /////////////
 
@@ -99,24 +94,6 @@ public class GoblinAction : MonsterAction
     /////////// 추적 관련 /////////////
 
     /////////// 공격 관련 /////////////
-
-    protected override void DoAttack()
-    {
-        
-        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        obj.transform.SetParent(this.transform);
-        obj.transform.position = _baseMeleeAttackPos.position;
-
-        AttackSound();
-
-        Attack atk = obj.GetComponent<Attack>();
-        atk.SetParent(gameObject);
-        atk.PlayAttackTimer(0.3f);
-
-        _navMeshAgent.isStopped = false;
-        ChangeState(MONSTER_STATE.STATE_TRACE);
-    }
-
     /// <summary>
     /// 몬스터 공격 소리 재생
     /// </summary>
@@ -129,13 +106,17 @@ public class GoblinAction : MonsterAction
         if (randomSound < 2) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Growl " + 1, 0.5f);
         else if (randomSound < 4) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Growl " + 2, 0.5f);
     }
-
+    /// <summary>
+    /// 몬스터 공격 애니메이션 선택
+    /// </summary>
     protected override void SetAttackAnimation()
     {
         if (_attackType == 0) _monster.myAnimator.SetTrigger("Attack");
         else if (_attackType == 1) _monster.myAnimator.SetTrigger("AttackSpecial");
     }
-
+    /// <summary>
+    /// 몬스터 공격 애니메이션 리셋
+    /// </summary>
     protected override void ResetAttackAnimation()
     {
         if (_attackType == 0) _monster.myAnimator.ResetTrigger("Attack");
@@ -143,7 +124,9 @@ public class GoblinAction : MonsterAction
     }
 
     /////////// 캐스팅 관련 /////////////
-    ///
+    /// <summary>
+    /// 캐스팅이 시작되면 일정확률로 어떤 공격을 할지 정해짐
+    /// </summary>
     protected override void CastStart()
     {
         int proc = Random.Range(0, 100);
@@ -166,13 +149,13 @@ public class GoblinAction : MonsterAction
     /// </summary>
     protected override void DamagedProcess(float dmg, bool SetAnimation = true)
     {
-        _monster.Damaged(dmg);
-        _bar.HpUpdate();
+        _monster.Damaged(dmg); // 몬스터에게 데미지를 입힌다.
+        _bar.HpUpdate(); // 몬스터의 HP바를 갱신한다.
 
-        DamagedChangeState();
-        bool isDeath = DeathCheck();
+        DamagedChangeState();  // 고블린은 첫피격이 시작했을 때 부터 플레이어를 공격한다.
+        bool isDeath = DeathCheck(); // hp가 0이하인지 판별
 
-        if (isDeath) CheckDeathAndChange();
+        if (isDeath) CheckDeathAndChange(); // 죽었다고 판단될경우 사망상태로 변경하는 함수
     }
 
     /// <summary>

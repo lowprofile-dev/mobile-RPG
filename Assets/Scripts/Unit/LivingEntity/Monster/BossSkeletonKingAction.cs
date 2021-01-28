@@ -22,24 +22,25 @@ public class BossSkeletonKingAction : MonsterAction
     [SerializeField] private GameObject attackPos;
 
     AttackType attackType;
+    [Header("스킬 이펙트, 범위")]
+  
     [SerializeField] private GameObject JumpSkillRange;
-
     [SerializeField] private GameObject AttackRange;
     [SerializeField] private GameObject AttackEffect;
-
     [SerializeField] private GameObject AirSkillRange;
     [SerializeField] private GameObject AirSkillEffect;
-
     [SerializeField] private GameObject BlackHoleRange;
     [SerializeField] private GameObject BlackHoleEffect;
 
+    [Header("소환수")]
     [SerializeField] private GameObject skeleton_grunt;
     [SerializeField] private GameObject skeleton_sword;
 
-    [SerializeField] float defalutAtkCastingTime;
-    [SerializeField] float blackHoleCastingTime;
-    [SerializeField] float summonCastingTime;
-    [SerializeField] float AirSkillCastingTime;
+    [Header("스킬 캐스팅 시간")]
+    [SerializeField] private float defalutAtkCastingTime;
+    [SerializeField] private float blackHoleCastingTime;
+    [SerializeField] private float summonCastingTime;
+    [SerializeField] private float AirSkillCastingTime;
 
     BossSpawnPoint SpawnPoints = null;
     bool IsSummonSpawn = false;
@@ -203,7 +204,7 @@ public class BossSkeletonKingAction : MonsterAction
 
         int proc = UnityEngine.Random.Range(0, 100);
 
-        if (monsterList.Count == 0 && !IsSummonSpawn)
+        if (monsterList.Count == 0 && !IsSummonSpawn) // 필드에 소환된 소환수들이 없을경우
         {
             _castTime = summonCastingTime;
             attackType = AttackType.SUMMON;
@@ -304,26 +305,21 @@ public class BossSkeletonKingAction : MonsterAction
     protected override IEnumerator AttackTarget()
     {
 
-        while (true)
-        {
-            yield return null;
+       yield return null;
 
-            AttackAction();
+       AttackAction();
 
-            yield return new WaitForSeconds(_attackSpeed);
-            SetAttackAnimation();
+       yield return new WaitForSeconds(_attackSpeed);
+       SetAttackAnimation();
 
-            // 사운드 재생
+       // 사운드 재생
 
-            yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+       yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 
-            _readyCast = false;
-            //if (!_readyCast && ToCast()) break;
-            ChangeState(MONSTER_STATE.STATE_TRACE);
-
-            break;
-
-        }
+       _readyCast = false;
+       //if (!_readyCast && ToCast()) break;
+       ChangeState(MONSTER_STATE.STATE_TRACE);
+        
     }
 
     private void AttackAction()
@@ -337,8 +333,7 @@ public class BossSkeletonKingAction : MonsterAction
             case AttackType.AIR_ATTACK:
                 StartCoroutine(AirAction());
                 break;
-            case AttackType.ATTACK1:
-            case AttackType.ATTACK2:
+            case AttackType.ATTACK1: case AttackType.ATTACK2:
                 StartCoroutine(DefalutAttackAction());
                 break;
             case AttackType.BLACKHOLE:
@@ -409,7 +404,7 @@ public class BossSkeletonKingAction : MonsterAction
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/KingSkeleton/Spawn", 0.5f);
     }
 
-    private IEnumerator SummonAction()
+    private IEnumerator SummonAction() // 소환 스킬 행동
     {
         yield return null;
 
@@ -442,7 +437,7 @@ public class BossSkeletonKingAction : MonsterAction
         IsSummonSpawn = false;
     }
 
-    private IEnumerator JumpAttackAction()
+    private IEnumerator JumpAttackAction() // 내려치기 공격 행동
     {
         _navMeshAgent.stoppingDistance = 0f;
         currentTarget = _target;
@@ -461,7 +456,7 @@ public class BossSkeletonKingAction : MonsterAction
         _navMeshAgent.stoppingDistance = 3f;
     }
 
-    private IEnumerator AirAction()
+    private IEnumerator AirAction() // 폭발 공격 행동
     {
         _monster.myAnimator.SetTrigger("HoldAttack");
 
@@ -486,7 +481,7 @@ public class BossSkeletonKingAction : MonsterAction
         DoAttack();
     }
 
-    private IEnumerator DefalutAttackAction()
+    private IEnumerator DefalutAttackAction() //기본 공격 행동
     {
         yield return null;
 
@@ -497,7 +492,7 @@ public class BossSkeletonKingAction : MonsterAction
         range.GetComponent<BossSkillRange>().setFollow();
     }
 
-    private IEnumerator BlackHoleAction()
+    private IEnumerator BlackHoleAction() // 블랙홀 공격 행동
     {
         _monster.myAnimator.SetTrigger("HoldAttack");
         yield return null;
@@ -543,8 +538,6 @@ public class BossSkeletonKingAction : MonsterAction
         {
             if (_attackCoroutine == null)
                 _attackCoroutine = StartCoroutine(AttackTarget());
-            //else
-            //    ChangeState(MONSTER_STATE.STATE_IDLE);
         }
     }
 

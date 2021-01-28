@@ -19,9 +19,6 @@ public class SkeletonAction : MonsterAction
     enum MOHICANATTACKTYPE { LEFT_ATTACK , RIGHT_ATTACK , SLAM} // 3가지 공격패턴
     MOHICANATTACKTYPE atktype;
 
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-
     /////////// 탐색 관련 /////////////
     public override void InitObject()
     {
@@ -62,20 +59,6 @@ public class SkeletonAction : MonsterAction
     {
         base.DoReturn();
         canPanic = true;
-    }
-
-    protected override void DoAttack()
-    {
-        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        obj.transform.SetParent(this.transform);
-        obj.transform.position = _baseMeleeAttackPos.position;
-
-        Attack atk = obj.GetComponent<Attack>();
-        atk.SetParent(gameObject);
-        atk.PlayAttackTimer(0.3f);
-
-        _navMeshAgent.isStopped = false;
-        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     protected override void CastStart()

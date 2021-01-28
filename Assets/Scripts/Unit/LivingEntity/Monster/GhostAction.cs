@@ -7,10 +7,6 @@ using System;
 public class GhostAction : MonsterAction
 {
     bool canPanic;
-
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-
     /////////// 기본 /////////////
 
     /// <summary>
@@ -65,22 +61,6 @@ public class GhostAction : MonsterAction
     }
 
     /////////// 공격 관련 /////////////
-
-    protected override void DoAttack()
-    {
-        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        obj.transform.SetParent(this.transform);
-        obj.transform.position = _baseMeleeAttackPos.position;
-
-        AttackSound();
-
-        Attack atk = obj.GetComponent<Attack>();
-        atk.SetParent(gameObject);
-        atk.PlayAttackTimer(0.3f);
-
-        _navMeshAgent.isStopped = false;
-        ChangeState(MONSTER_STATE.STATE_TRACE);
-    }
 
     /// <summary>
     /// 몬스터 공격 소리 재생
