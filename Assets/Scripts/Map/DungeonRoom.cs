@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class DungeonRoom : MonoBehaviour
 {
@@ -282,8 +283,9 @@ public class DungeonRoom : MonoBehaviour
                     break;
             }
             Color minimapColor = minimapIcons[i].GetComponent<Image>().color;
-            minimapColor.a = 0.5f;
+            minimapColor.a = 0.7f;
             minimapIcons[i].GetComponent<Image>().color = minimapColor;
+            minimapIcons[i].SetActive(false);
         }
     }
 
@@ -319,7 +321,9 @@ public class DungeonRoom : MonoBehaviour
             if (monsters[i] == null) continue;
             if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center))
             {
+                monsters[i].GetComponent<NavMeshAgent>().enabled = false;
                 monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 1, 0);
+                monsters[i].GetComponent<NavMeshAgent>().enabled = true;
             }
         }
     }
@@ -330,6 +334,10 @@ public class DungeonRoom : MonoBehaviour
         if (bounds.Contains(dungeonManager.player.GetComponent<CapsuleCollider>().bounds.center))
         {
             hasPlayer = true;
+            for (int i = 0; i < minimapIcons.Count; i++)
+            {
+                minimapIcons[i].SetActive(true);
+            }
             if (monsterSpawnPoints.Count > 0)
                 dungeonManager.player.GetComponent<Player>().lastRoomTransformPos = monsterSpawnPoints[0].transform.TransformPoint(0, 1, 0);
             dungeonManager.player.GetComponent<Player>().currentDungeonArea = areaCode;
