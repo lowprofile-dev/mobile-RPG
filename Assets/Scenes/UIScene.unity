@@ -989,6 +989,7 @@ GameObject:
   - component: {fileID: 570760605}
   - component: {fileID: 570760604}
   - component: {fileID: 570760603}
+  - component: {fileID: 570760606}
   m_Layer: 5
   m_Name: VignettePanel
   m_TagString: Untagged
@@ -1023,7 +1024,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 570760601}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
@@ -1076,6 +1077,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: -1
   m_TargetDisplay: 0
+--- !u!225 &570760606
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570760601}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &572090469
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5013,6 +5026,8 @@ GameObject:
   - component: {fileID: 1080427937}
   - component: {fileID: 1080427939}
   - component: {fileID: 1080427938}
+  - component: {fileID: 1080427940}
+  - component: {fileID: 1080427941}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -5076,6 +5091,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080427936}
   m_CullTransparentMesh: 0
+--- !u!114 &1080427940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080427936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3e8b12de16b0c4418e2fcdccb5180b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetObj: {fileID: 1080427936}
+  _canvasGroup: {fileID: 570760606}
+--- !u!114 &1080427941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080427936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f05ae12a4ad024f9d05991a58ff53e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damagedColor: {r: 1, g: 0, b: 0, a: 1}
+  _initColor: {r: 0, g: 0, b: 0, a: 0.7019608}
+  _image: {fileID: 1080427938}
 --- !u!1001 &1241506480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7356,7 +7400,7 @@ PrefabInstance:
     - target: {fileID: 448702857554638349, guid: f4a6a68d6a1920244a74fe99f6f93c63,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -13.199951
+      value: -13.199982
       objectReference: {fileID: 0}
     - target: {fileID: 448702857751228096, guid: f4a6a68d6a1920244a74fe99f6f93c63,
         type: 3}

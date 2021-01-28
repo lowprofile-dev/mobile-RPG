@@ -1423,6 +1423,7 @@ public class Player : LivingEntity
     public override void Damaged(float damage)
     {
         base.Damaged(damage);
+        UIVignette.Instance.ShowDamagedAnimation();
         AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.6f);
         SoundManager.Instance.SetPitch(source, 1.5f);
         isAnnoyed = true;

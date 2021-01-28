@@ -119,7 +119,7 @@ public class DungeonRoom : MonoBehaviour
             {
                 case 0:
                     lights[i].GetComponent<Light>().color = Color.red;
-            lights[i].GetComponent<Light>().intensity = 6f;
+            lights[i].GetComponent<Light>().intensity = 8f;
                     break;
                 case 1:
                     ColorUtility.TryParseHtmlString("#ff7f00", out color);
@@ -145,15 +145,15 @@ public class DungeonRoom : MonoBehaviour
                 case 6:
                     ColorUtility.TryParseHtmlString("#8b00ff", out color);
                     lights[i].GetComponent<Light>().color = color;
-            lights[i].GetComponent<Light>().intensity = 4f;
+            lights[i].GetComponent<Light>().intensity = 7f;
                     break;
                 case 7:
                     lights[i].GetComponent<Light>().color = Color.white;
-            lights[i].GetComponent<Light>().intensity = 4.5f;
+            lights[i].GetComponent<Light>().intensity = 12f;
                     break;
                 case 8:
                     lights[i].GetComponent<Light>().color = Color.black;
-            lights[i].GetComponent<Light>().intensity = 4f;
+            lights[i].GetComponent<Light>().intensity = 12f;
                     break;
             }
             lights[i].GetComponent<Light>().range = 15;
