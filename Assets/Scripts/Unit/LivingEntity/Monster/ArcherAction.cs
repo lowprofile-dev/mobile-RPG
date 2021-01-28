@@ -97,7 +97,7 @@ public class ArcherAction : MonsterAction
         else
         {
             GameObject obj = ObjectPoolManager.Instance.GetObject(_baseRangeAttackPrefab, _baseRangeAttackPos.position, _baseRangeAttackPos.rotation);
-            obj.transform.SetParent(transform);
+            obj.transform.SetParent(null);
             //obj.transform.position = _baseRangeAttackPos.position;
             obj.transform.LookAt(_target.transform);
             obj.GetComponent<Arrow>().Launch();
