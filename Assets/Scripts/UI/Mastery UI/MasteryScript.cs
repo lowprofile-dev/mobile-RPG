@@ -202,7 +202,7 @@ public class MasteryScript : MonoBehaviour
                 {
                     if (masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] == 1)
                     {
-                        Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
+                        //Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
                     }
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = -1;
                 }
@@ -210,14 +210,14 @@ public class MasteryScript : MonoBehaviour
                 {
                     if (masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] == -1)
                     {
-                        Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
+                        //Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
                     }
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 1;
                 }
                 else
                 {
                     masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 0;
-                    Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
+                    //Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
                 }
                 masteryManager.SaveCurrentMastery();
             }

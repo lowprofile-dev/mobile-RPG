@@ -139,6 +139,7 @@ public class StatusManager : SingletonBase<StatusManager>
         finalStatus.attackCooldown = finalStatus.attackCooldown - (multiplicationStatus.armorIncreaseRate / 100.0f);
         finalStatus.dashCooldown = finalStatus.dashCooldown - (multiplicationStatus.dashCooldown / 100.0f);
         finalStatus.dashStamina = finalStatus.dashStamina * (1 - multiplicationStatus.dashStamina / 100f);
+        finalStatus.moveSpeed = finalStatus.moveSpeed * (1 + multiplicationStatus.moveSpeed / 100f);
     }
     
     private void LoadCurrentStatus()
