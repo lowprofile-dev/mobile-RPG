@@ -928,6 +928,8 @@ public class MonsterAction : MonoBehaviour
         transform.DOMoveY(transform.position.y - 10, 10).OnComplete(() => {
             _navMeshAgent.enabled = false;
             _currentState = MONSTER_STATE.STATE_NULL;
+            transform.position = Vector3.zero;
+            _monster.Hp = 1000;
             ObjectPoolManager.Instance.ReturnObject(gameObject);
         });
         _monster.avatarObject.GetComponent<Renderer>().material.DOFade(0, 2);
