@@ -64,7 +64,7 @@ public class ArcherAction : MonsterAction
     {
         if (Vector3.Distance(_target.transform.position, _monster.transform.position) < _attackRange)
         {
-            ChangeState(MONSTER_STATE.STATE_ATTACK);
+            ChangeState(MONSTER_STATE.STATE_CAST);
         }
     }
 
@@ -106,6 +106,8 @@ public class ArcherAction : MonsterAction
             atk.SetParent(gameObject);
             atk.PlayAttackTimer(5f);
         }
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     protected override void CastStart()
@@ -114,92 +116,26 @@ public class ArcherAction : MonsterAction
 
         if (_distance < 3)
         {
-            atktype = ARCHERATTACKTYPE.WHACK;
-        }
-        else
-        {
-            if (proc <= 50)
-            {
-                atktype = ARCHERATTACKTYPE.SHOT;
-            }
-            else
-            {
-                atktype = ARCHERATTACKTYPE.RAPID_SHOT;
-            }
-        }
-    }
-    protected override void DoCastingAction()
-    {
-        _cntCastTime += Time.deltaTime;
-        _bar.CastUpdate();
-
-        if (_cntCastTime >= _castTime)
-        {
-            _cntCastTime = 0;
-            _readyCast = true;
-            ChangeState(MONSTER_STATE.STATE_ATTACK);
-        }
-    }
-
-    protected override void CastExit()
-    {
-        base.CastExit();
-    }
-
-    protected override void AttackStart()
-    {
-        int proc = Random.Range(0, 100);
-
-        if (_distance < 3)
-        {
+            _castTime = 1f;
             atktype = ARCHERATTACKTYPE.WHACK;
         }
         else if (_distance < 7)
         {
             if (proc <= 50)
             {
+                _castTime = 1f;
                 atktype = ARCHERATTACKTYPE.ATTACK;
             }
             else if (proc <= 80)
             {
+                _castTime = 1f;
                 atktype = ARCHERATTACKTYPE.SHOT;
             }
             else if (proc <= 100)
             {
+                _castTime = 1.5f;
                 atktype = ARCHERATTACKTYPE.RAPID_SHOT;
             }
-        }
-        base.AttackStart();
-    }
-
-
-
-    protected override void AttackExit()
-    {
-        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-    }
-
-    protected override IEnumerator AttackTarget()
-    {
-        while (true)
-        {
-            yield return null;
-
-            if (CanAttackState())
-            {
-
-                yield return new WaitForSeconds(_attackSpeed - _monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-
-                SetAttackAnimation();
-
-                StartCoroutine(DoAttackAction());
-
-                yield return new WaitForSeconds(_monster.myAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime / 2);
-
-                _readyCast = false;
-                if (!_readyCast && ToCast()) break;
-            }
-
         }
     }
 
@@ -245,39 +181,16 @@ public class ArcherAction : MonsterAction
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Bow Draw " + UnityEngine.Random.Range(1, 4), 0.9f);
     }
 
-    protected override void IdleStart()
-    {
-        base.IdleStart();
-    }
-    protected override void IdleUpdate()
-    {
-        base.IdleUpdate();
-    }
-    protected override void IdleExit()
-    {
-        base.IdleExit();
-    }
-
     protected override IEnumerator SpawnDissolve()
     {
         yield return null;
         ChangeState(MONSTER_STATE.STATE_IDLE);
     }
 
-    protected override void TraceStart()
-    {
-        base.TraceStart();
-    }
-    protected override void TraceUpdate()
-    {
-        base.TraceUpdate();
-    }
-
     protected override void KillStart()
     {
         _monster.myAnimator.SetTrigger("Laugh");
     }
-
     /// <summary>
     /// 죽었을때 소리
     /// </summary>

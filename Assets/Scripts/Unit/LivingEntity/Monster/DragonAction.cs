@@ -56,6 +56,21 @@ public class DragonAction : MonsterAction
             _monster.myAnimator.SetTrigger("Panic"); // 패닉이 추가되었으므로 오버라이딩
         }
     }
+    protected override void CastStart()
+    {
+
+        int proc = Random.Range(0, 100);
+        if(proc <= 30)
+        {
+            _castTime = 2f;
+            _attackType = 1;
+        }
+        else
+        {
+            _castTime = 1f;
+            _attackType = 0;
+        }
+    }
 
     /// <summary>
     /// 패닉 사운드를 재생한다. (애니메이션 이벤트로 호출)
@@ -90,17 +105,18 @@ public class DragonAction : MonsterAction
 
     protected override void DoAttack()
     {
-        if(_attackType == 0 || _attackType == 1) // 공격 타입 2개
-        {
-            GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-            obj.transform.SetParent(this.transform);
-            obj.transform.position = _baseMeleeAttackPos.position;
+        
+         GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+         obj.transform.SetParent(this.transform);
+         obj.transform.position = _baseMeleeAttackPos.position;
 
-            Attack atk = obj.GetComponent<Attack>();
-            atk.SetParent(gameObject);
-            atk.PlayAttackTimer(0.3f);
-            AttackSound();
-        }
+         Attack atk = obj.GetComponent<Attack>();
+         atk.SetParent(gameObject);
+         atk.PlayAttackTimer(0.3f);
+         AttackSound();
+        
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     /// <summary>
