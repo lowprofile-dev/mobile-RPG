@@ -637,21 +637,21 @@ MonoBehaviour:
   _castChangePercnt: 100
   _castTime: 0
   _bar: {fileID: 453635955253956858}
-  parentRoom: {fileID: 0}
   _baseMeleeAttackPos: {fileID: 8274523028306129878}
   _baseMeleeAttackPrefab: {fileID: 7772480141173017988, guid: e189a2d3af65c8245b958a48eb4a687f,
     type: 3}
+  parentRoom: {fileID: 0}
   JumpSkillRange: {fileID: 6887708075749539812, guid: 3763658679418f34d912a92eb37befb5,
     type: 3}
   ShokeSkillRange: {fileID: 6887708075749539812, guid: 702eff2a068749f46b4838a1879940c4,
     type: 3}
   ShokeSkillRange2: {fileID: 6887708075749539812, guid: 4355c34b1e7836043bb7880b5f6e33cc,
     type: 3}
-  ShokeSkillEffect2: {fileID: 1904777774981058, guid: 6ab9bb3894d7638408892bbf700ed01e,
+  JumpSkillEffect: {fileID: 2992171377281156633, guid: 2b35f8a03ca0ed540a434f7761cdf425,
     type: 3}
   ShokeSkillEffect1: {fileID: 8637513909723141476, guid: 19005388d9b0a64418de704e6f795912,
     type: 3}
-  JumpSkillEffect: {fileID: 2992171377281156633, guid: 2b35f8a03ca0ed540a434f7761cdf425,
+  ShokeSkillEffect2: {fileID: 1904777774981058, guid: 6ab9bb3894d7638408892bbf700ed01e,
     type: 3}
   _ShokeWavePoint: {fileID: 8130928642352778609}
 --- !u!195 &1998575151520961608
@@ -698,11 +698,6 @@ MonoBehaviour:
   _initHp: 10000
   _initStemina: 0
   _monsterName: BossSkeletonPase2
-  _grade: 0
-  _race: 0
-  _size: 0
-  _spawnArea: 0
-  _attackType: 0
   _attackPattern: 0
   _description: 
   _attackTime: 0
@@ -3985,7 +3980,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
