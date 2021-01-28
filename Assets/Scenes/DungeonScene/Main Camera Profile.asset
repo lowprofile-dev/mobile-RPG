@@ -35,8 +35,8 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0
   compareLineAngle:
-    m_OverrideState: 0
-    m_Value: 1.4
+    m_OverrideState: 1
+    m_Value: -1.67
   compareLineWidth:
     m_OverrideState: 0
     m_Value: 0.002
@@ -154,23 +154,23 @@ MonoBehaviour:
     m_Value: 0
   tonemapExposurePre:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 3
   tonemapBrightnessPost:
     m_OverrideState: 0
     m_Value: 1
   saturate:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 0.68
     min: -2
     max: 3
   brightness:
-    m_OverrideState: 0
-    m_Value: 1.05
+    m_OverrideState: 1
+    m_Value: 1.432
     min: 0
     max: 2
   contrast:
-    m_OverrideState: 0
-    m_Value: 1.02
+    m_OverrideState: 1
+    m_Value: 1.018
     min: 0.5
     max: 1.5
   daltonize:
@@ -191,7 +191,7 @@ MonoBehaviour:
     showEyeDropper: 1
   colorTemp:
     m_OverrideState: 0
-    m_Value: 6550
+    m_Value: 1000
     min: 1000
     max: 40000
   colorTempBlend:
@@ -204,7 +204,7 @@ MonoBehaviour:
     m_Value: 0
   lutIntensity:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 0.977
     min: 0
     max: 1
   lutTexture:
@@ -212,17 +212,17 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   bloomIntensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.3
     min: 0
     max: 10
   bloomThreshold:
     m_OverrideState: 0
-    m_Value: 0.75
+    m_Value: 0.5
     min: 0
     max: 5
   bloomMaxBrightness:
     m_OverrideState: 0
-    m_Value: 1000
+    m_Value: 0.05
   bloomDepthAtten:
     m_OverrideState: 0
     m_Value: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
     m_Value: 0
   bloomExcludeLayers:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   bloomExclusionLayerMask:
     m_OverrideState: 0
     m_Value:
@@ -249,7 +249,7 @@ MonoBehaviour:
     m_Value: 0
   bloomResolution:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 10
     min: 1
     max: 10
   bloomCustomize:
@@ -322,18 +322,18 @@ MonoBehaviour:
     showAlpha: 1
     showEyeDropper: 1
   anamorphicFlaresIntensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.01
     min: 0
     max: 10
   anamorphicFlaresThreshold:
     m_OverrideState: 0
-    m_Value: 0.75
+    m_Value: 1.06
     min: 0
     max: 5
   anamorphicFlaresTint:
     m_OverrideState: 0
-    m_Value: {r: 0.5, g: 0.5, b: 1, a: 0}
+    m_Value: {r: 1, g: 1, b: 1, a: 0}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
@@ -342,7 +342,7 @@ MonoBehaviour:
     m_Value: 0
   anamorphicFlaresSpread:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 0.161
     min: 0.1
     max: 2
   anamorphicFlaresDepthAtten:
@@ -398,7 +398,7 @@ MonoBehaviour:
     m_Value: 30
   sunFlaresSunIntensity:
     m_OverrideState: 0
-    m_Value: 0.1
+    m_Value: 0.054
     min: 0
     max: 1
   sunFlaresSunDiskSize:
@@ -533,15 +533,15 @@ MonoBehaviour:
     max: 1
   lensDirtIntensity:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   lensDirtThreshold:
     m_OverrideState: 0
-    m_Value: 0.5
+    m_Value: 0.396
     min: 0
     max: 1
   lensDirtTexture:
     m_OverrideState: 0
-    m_Value: {fileID: 0}
+    m_Value: {fileID: 2800000, guid: 0bd567658bec947d2b4d2877ccb0faa7, type: 3}
   lensDirtSpread:
     m_OverrideState: 0
     m_Value: 3
@@ -641,7 +641,7 @@ MonoBehaviour:
     m_Value: 1
   eyeAdaptation:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   eyeAdaptationMinExposure:
     m_OverrideState: 0
     m_Value: 0.2
@@ -676,13 +676,13 @@ MonoBehaviour:
     min: 0
     max: 1
   vignettingOuterRing:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.604
     min: 0
     max: 1
   vignettingInnerRing:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.793
     min: 0
     max: 1
   vignettingFade:
@@ -720,10 +720,10 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   outline:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   outlineColor:
     m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 0.8}
+    m_Value: {r: 1, g: 0.3915094, b: 0.3915094, a: 0.8}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
@@ -743,7 +743,7 @@ MonoBehaviour:
     showEyeDropper: 1
   blurIntensity:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 0.1
     min: 0
     max: 4
   ditherIntensity:
