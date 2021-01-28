@@ -24,7 +24,7 @@ public class ShopItemSlot : MonoBehaviour
     ItemData itemData;
     ItemManager itemManager;
     GameObject itemBag;
-    GameObject ShopUI;
+    ShopUIView shopUIView;
 
     private void Awake()
     {
@@ -33,19 +33,22 @@ public class ShopItemSlot : MonoBehaviour
         itemGrade = gameObject.transform.GetChild(2).gameObject;
         ItemButton = gameObject.GetComponent<Button>();
         itemManager = ItemManager.Instance;
-        itemBag = transform.parent.parent.parent.parent.gameObject;
-        ShopUI = transform.parent.parent.parent.parent.parent.gameObject;
-        shopItemCardIndex = ShopUI.GetComponent<ShopUIView>().currentCardIndex;
-        //ItemButton.onClick.AddListener(delegate { OnClickItemSlot(); });
+    }
+
+    public void InitShopItemSlot(ShopUIView uiView)
+    {
+        itemBag = uiView.itemBag;
+        shopUIView = uiView;
+        shopItemCardIndex = shopUIView.currentCardIndex;
     }
 
     public void OnClickItemSlot()
     {
         if (itemManager == null) itemManager = ItemManager.Instance;
         itemManager.AddToCart(shopItemCardIndex, this.itemData);
-        ShopUI.GetComponent<ShopUIView>().LoadPlayerInventory();
-        ShopUI.GetComponent<ShopUIView>().LoadItemCards();
-        ShopUI.GetComponent<ShopUIView>().SetTotalPrice();
+        shopUIView.LoadPlayerInventory();
+        shopUIView.LoadItemCards();
+        shopUIView.SetTotalPrice();
 
         itemBag.SetActive(false);
     }

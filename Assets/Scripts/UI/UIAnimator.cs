@@ -19,29 +19,75 @@ public class UIAnimator : MonoBehaviour
     [SerializeField] protected CanvasGroup _canvasGroup;
 
     private RectTransform _transform;
-    private Vector3 _initPosition;
+    private Vector3 _initTransform;
 
     // 시퀀스 목록
-    private Sequence fadeInWithUpSequence;
+    public Sequence finalSequence;
+    private Sequence _fadeInWithUpSequence; 
+    private Sequence _fadeoutWithDownSequence;
+    private Sequence _xScaleUpSequence;
 
-
-    private void OnEnable()
+    public void SetupUIAnimator()
     {
         _transform = _targetObj.GetComponent<RectTransform>();
-        _initPosition = _transform.position;
-        _canvasGroup.alpha = 0;
+        _initTransform = transform.position;
+        finalSequence = DOTween.Sequence();
     }
 
-    public void FadeInWithUp()
+    public void FinalPlay()
     {
-        _canvasGroup.alpha = 0;
-        _transform.position = _initPosition;
+        finalSequence.Play();
+    }
 
-        fadeInWithUpSequence = DOTween.Sequence();
-        fadeInWithUpSequence.Join(_transform.DOMoveY(_initPosition.y - 50, 0.0f));
-        fadeInWithUpSequence.Append(_canvasGroup.DOFade(1.0f, 1.0f));
-        fadeInWithUpSequence.Join(_transform.DOMoveY(_transform.position.y, 1.0f));
-        fadeInWithUpSequence.SetEase(Ease.InSine);
-        fadeInWithUpSequence.Play();
+    public void ResetFinalSequence()
+    {
+        if(finalSequence != null)
+        {
+            finalSequence.Kill();
+            finalSequence = DOTween.Sequence();
+        }
+    }
+
+    public void AppendSequence(Sequence sequence, float interval = 0.0f)
+    {
+        if(interval != 0) finalSequence.AppendInterval(interval);
+        finalSequence.Append(sequence);
+    }
+
+    public void JoinSequence(Sequence sequence)
+    {
+        finalSequence.Join(sequence);
+    }
+
+    public Sequence FadeInWithUp()
+    {
+        if(_fadeInWithUpSequence != null) _fadeInWithUpSequence.Kill();
+        _fadeInWithUpSequence = DOTween.Sequence();
+        _fadeInWithUpSequence.Append(_transform.DOMoveY(_initTransform.y, 1.0f).From(_initTransform.y - 20, isRelative:false));
+        _fadeInWithUpSequence.Join(_canvasGroup.DOFade(1.0f, 1.0f).From(0.0f));
+        _fadeInWithUpSequence.SetEase(Ease.InSine);
+
+        return _fadeInWithUpSequence;
+    }
+
+    public Sequence FadeOutWithDown()
+    {
+        if (_fadeoutWithDownSequence != null) _fadeoutWithDownSequence.Kill();
+        _fadeoutWithDownSequence = DOTween.Sequence();
+        _fadeoutWithDownSequence.Append(_transform.DOMoveY(_initTransform.y - 20, 1.0f).From(_initTransform.y, isRelative: false));
+        _fadeoutWithDownSequence.Join(_canvasGroup.DOFade(0.0f, 1.0f).From(1.0f));
+        _fadeoutWithDownSequence.SetEase(Ease.InSine);
+
+        return _fadeoutWithDownSequence;
+    }
+
+    public Sequence XScaleUp()
+    {
+        if (_xScaleUpSequence != null) _xScaleUpSequence.Kill();
+        _xScaleUpSequence = DOTween.Sequence();
+        _xScaleUpSequence.Append(_transform.DOScaleX(1, 0.7f).From(0, isRelative: false));
+        _xScaleUpSequence.SetEase(Ease.OutExpo).easeOvershootOrAmplitude = 1.5f;
+
+        return _xScaleUpSequence;
     }
 }
