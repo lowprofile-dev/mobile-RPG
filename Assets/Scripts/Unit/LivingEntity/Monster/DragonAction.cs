@@ -4,7 +4,7 @@
     class DragonAction
     
     담당자 : 이신홍
-    부 담당자 : 
+    부 담당자 : 안영훈
 
     드래곤의 행동을 정의한다.
 */
@@ -16,12 +16,6 @@ using UnityEngine;
 public class DragonAction : MonsterAction
 {
     bool canPanic;
-
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-
-    Collider _baseAtkCollision;
-
 
     /////////// 기본 /////////////
     
@@ -54,6 +48,21 @@ public class DragonAction : MonsterAction
         if (canPanic)
         {
             _monster.myAnimator.SetTrigger("Panic"); // 패닉이 추가되었으므로 오버라이딩
+        }
+    }
+    protected override void CastStart()
+    {
+
+        int proc = Random.Range(0, 100);
+        if(proc <= 30)
+        {
+            _castTime = 2f;
+            _attackType = 1;
+        }
+        else
+        {
+            _castTime = 1f;
+            _attackType = 0;
         }
     }
 
@@ -90,17 +99,18 @@ public class DragonAction : MonsterAction
 
     protected override void DoAttack()
     {
-        if(_attackType == 0 || _attackType == 1) // 공격 타입 2개
-        {
-            GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-            obj.transform.SetParent(this.transform);
-            obj.transform.position = _baseMeleeAttackPos.position;
+        
+         GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
+         obj.transform.SetParent(this.transform);
+         obj.transform.position = _baseMeleeAttackPos.position;
 
-            Attack atk = obj.GetComponent<Attack>();
-            atk.SetParent(gameObject);
-            atk.PlayAttackTimer(0.3f);
-            AttackSound();
-        }
+         Attack atk = obj.GetComponent<Attack>();
+         atk.SetParent(gameObject);
+         atk.PlayAttackTimer(0.3f);
+         AttackSound();
+        
+        _navMeshAgent.isStopped = false;
+        ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
     /// <summary>

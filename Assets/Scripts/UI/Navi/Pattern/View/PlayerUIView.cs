@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PlayerUIView : View
 {
@@ -40,6 +41,7 @@ public class PlayerUIView : View
     [SerializeField] private Sprite[] _wandSkillImg;
     [SerializeField] private Sprite[] _bluntSkillImg;
     [SerializeField] private Button _inventoryButton;
+    [SerializeField] private GameObject buffInfo;
     private WeaponMasteryView weaponView;
 
     // property

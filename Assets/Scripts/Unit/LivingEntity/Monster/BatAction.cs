@@ -4,7 +4,7 @@
     class BatAction
     
     담당자 : 이신홍
-    부 담당자 : 
+    부 담당자 : 안영훈
 
     박쥐의 행동을 정의한다.
 */
@@ -19,11 +19,6 @@ using System;
 public class BatAction : MonsterAction
 {
     bool canPanic;
-
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-
-
 
     /////////// 기본 /////////////
 
@@ -89,20 +84,6 @@ public class BatAction : MonsterAction
     }
 
     /////////// 공격 관련 /////////////
-
-    protected override void DoAttack()
-    {
-        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        obj.transform.SetParent(this.transform);
-        obj.transform.position = _baseMeleeAttackPos.position;
-
-        AttackSound();
-
-        Attack atk = obj.GetComponent<Attack>();
-        atk.SetParent(gameObject);
-        atk.PlayAttackTimer(0.3f);
-    }
-
     /// <summary>
     /// 몬스터 공격 소리 재생
     /// </summary>
