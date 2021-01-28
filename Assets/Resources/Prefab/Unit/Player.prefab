@@ -217,7 +217,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.1
+  m_StepOffset: 1
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -244,6 +244,9 @@ MonoBehaviour:
   characterController: {fileID: 3921490016967684025}
   joystick: {fileID: 0}
   selection: {fileID: 0}
+  headId: 0
+  hairId: 45
+  headAccId: 34
   turnSmoothTime: 0.1
   cam: {fileID: 0}
   playerFollowCam: {fileID: 0}
@@ -252,7 +255,6 @@ MonoBehaviour:
   faceCam: {fileID: 0}
   _systemPanel: {fileID: 0}
   _initEvadeTime: 0.3
-  masterySet: 00000000000000000000
   skillPoint: {fileID: 362263809}
   currentCombo: 0
   weaponChanged: 0
@@ -382,7 +384,7 @@ MonoBehaviour:
       shader: {fileID: 0}
       serializedProperties: []
   frontParameters:
-    enabled: 1
+    enabled: 0
     color: {r: 0.06344805, g: 0.46226418, b: 0, a: 1}
     dilateShift: 1
     blurShift: 1

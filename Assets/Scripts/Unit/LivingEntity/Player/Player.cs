@@ -44,6 +44,12 @@ public class Player : LivingEntity
     private EPOOutline.Outlinable playerOutlinable;                     // 아웃라이너
 
 
+    [Header("외견 관련 (BASE)")]
+    [SerializeField] private int headId;
+    [SerializeField] private int hairId;
+    [SerializeField] private int headAccId;
+
+
     [Header("상태 관련")]
     bool _isdead = false;                                   // 사망 여부
     private float _slowingFactor = 0f; public float SlowingFactor { get { return _slowingFactor; } set { _slowingFactor = value; } }
@@ -170,6 +176,7 @@ public class Player : LivingEntity
         selection = GetComponent<PartSelection>();
         selection.Start();
         selection.Init();
+        SetParts();
         itemManager.SetItemToPlayer(this);
 
         myAnimator = GetComponent<Animator>();
@@ -201,7 +208,18 @@ public class Player : LivingEntity
         if (isAnnoyed)
             annoyedTime += Time.deltaTime;
     }
-    
+
+    ///////////////// 외견 관련 //////////////////
+
+    /// <summary>
+    /// 파트를 변경해준다.
+    /// </summary>
+    private void SetParts()
+    {
+        if (headId != 0) selection.ChangeHeadPart(headId);
+        if (hairId != 0) selection.ChangeHairPart(hairId);
+        if (headAccId != 0) selection.ChangeHeadAccesoriesPart(headAccId);
+    }
 
     ///////////////// 상태 관련 //////////////////
 
