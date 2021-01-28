@@ -3,7 +3,7 @@
     class DungeonManager
     
     담당자 : 김기정
-    부 담당자 :
+    부 담당자 : 안영훈
  */
 
 using UnityEngine;
@@ -53,7 +53,7 @@ public class DungeonManager : MonoBehaviour
     private void Start()
     {
         playerCurrentArea = -1;
-        CardManager.Instance._cntDungeon = this;
+        CardManager.Instance.cntDungeon = this;
         hasPlane = false;
         stagesMonsterPrefabs.Add(stage1MonsterPrefabs);
         stagesMonsterPrefabs.Add(stage2MonsterPrefabs);
@@ -151,7 +151,8 @@ public class DungeonManager : MonoBehaviour
     /// </summary>
     public GameObject SpawnBoss(Transform tr)
     {
-        GameObject boss = Instantiate(BossPrefabs[dungeonStage-1]);        
+        GameObject boss = ObjectPoolManager.Instance.GetObject(BossPrefabs[dungeonStage - 1]);
+        //Instantiate(BossPrefabs[dungeonStage-1]);        
         return boss;
     }
 
@@ -161,8 +162,8 @@ public class DungeonManager : MonoBehaviour
         if (dungeonStage == 4)
         {          
             UILoaderManager.Instance.LoadVillage();
-            CardManager.Instance._cntDungeon = null;
-            CardManager.Instance.currentStage = 0;
+            CardManager.Instance.cntDungeon = null;
+            CardManager.Instance.currentFloor = 0;
             TalkManager.Instance.SetQuestCondition(3, 1, 1);
             return;
         }
@@ -170,7 +171,7 @@ public class DungeonManager : MonoBehaviour
         if(!CardManager.Instance.isAcceptCardData)
         {
             CardManager.Instance.isAcceptCardData = true;
-            CardManager.Instance.currentStage = dungeonStage;
+            CardManager.Instance.currentFloor = dungeonStage;
             UINaviationManager.Instance.PushToNav("SubUI_CardUIView");
         }
     }

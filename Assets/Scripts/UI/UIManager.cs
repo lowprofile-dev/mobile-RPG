@@ -1,4 +1,14 @@
-﻿using System;
+﻿///////////////////////////////////////
+/*
+    File UIManager.cs
+    class UIManager : UI의 기타 기능들을 모아둔 매니저
+
+    담당자 : 안영훈
+    부 담당자 : 이신홍 
+*/
+////////////////////////////////////////////////////
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +19,6 @@ public class UIManager : SingletonBase<UIManager>
 {
     public PlayerUIView playerUIView;
 
-    //[SerializeField] private Button AttackBtn;
     [SerializeField] private Button InvincibleBtn;
     [SerializeField] private Button SkillAbtn;
     [SerializeField] private Button SkillBbtn;
@@ -20,12 +29,11 @@ public class UIManager : SingletonBase<UIManager>
     {
         playerUIView = GameObject.FindGameObjectWithTag("View").transform.Find("PlayerUI_View").GetComponent<PlayerUIView>();
 
-        Transform playerView = GameObject.Find("PlayerUI_View").transform;
-        InvincibleBtn = playerView.Find("InvincibleFrame").GetComponent<Button>();
-        SkillAbtn = playerView.Find("SkillA").GetComponent<Button>();
-        SkillBbtn = playerView.Find("SkillB").GetComponent<Button>();
-        SkillCbtn = playerView.Find("SkillC").GetComponent<Button>();
-        InventoryBtn = playerView.Find("Inventory").GetComponent<Button>();
+        InvincibleBtn = playerUIView.invincibleBtn;
+        SkillAbtn = playerUIView.skillAButton;
+        SkillBbtn = playerUIView.skillBButton;
+        SkillCbtn = playerUIView.skillCButton;
+        InventoryBtn = playerUIView.inventoryButton;
 
         AddListenerToUI();
     }
@@ -38,39 +46,24 @@ public class UIManager : SingletonBase<UIManager>
 
     void InventoryClick()
     {
-        //Debug.log("인벤토리");
         UINaviationManager.Instance.PushToNav("SubUI_Inventory");
     }
-
-    /*
-    public void OptionClick()
-    {
-        //Debug.log("옵션");
-
-        if (Time.timeScale != 0)
-        {
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Time.timeScale = 1;
-        }
-        //옵션 구현
-        //UINaviationManager.Instance.PushToNav("SubUI_Info");
-    }
-    */
-
+    
     public void InvincibleClick() //회피
     {
-        //Debug.log("회피");
-        if (!Player.Instance.isdead) Player.Instance.SetAvoidButton(true);
     }
+
     public void PlayerInfoClick()
     {
-        //Debug.log("플레이어 정보창");
         UINaviationManager.Instance.PushToNav("SubUI_Info");
     }
 
+    /// <summary>
+    /// RichText의 다양한 표현을 지원하기위한 함수
+    /// </summary>
+    /// <param name="text">string에 들어갈 내용</param>
+    /// <param name="colorName">적용할 색</param>
+    /// <param name="fontSize">폰트 크기</param>
     public string AddFontData(string text, string colorName, float fontSize = 20)
     {
         string rtnText = "";

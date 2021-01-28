@@ -1,4 +1,16 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File SkillWand03.cs
+    class SkillWand03
+    
+    얼음 벽을 생성해 넘어지게 하는 스킬
+
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using System.Collections;
 
 public class SkillWand03 : PlayerAttack

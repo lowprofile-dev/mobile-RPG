@@ -4,7 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+////////////////////////////////////////////////////
+/*
+    File MasterUIView.cs
+    class MasterUIView
 
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
 public class MasterUIView : View
 {
     [SerializeField] TextMeshProUGUI masteryLevelText;
@@ -30,18 +38,24 @@ public class MasterUIView : View
 
     }
 
+    /// <summary>
+    /// 닫기 버튼을 눌렀을 경우 팝업을 꺼주는 함수
+    /// </summary>
     private void ExitButtonClicked()
     {
         UIManager.Instance.playerUIView.SetEffectList();
         UINaviationManager.Instance.PopToNav("SubUI_MasteryView");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
-    // Update is called once per frame
     void Update()
     {
         LevelPrint();
     }
 
+    /// <summary>
+    /// 마스터리의 현재 레벨을 계속 출력해주는 함수
+    /// </summary>
     public void LevelPrint()
     {
         masteryLevelText.text = "Lv." + MasteryManager.Instance.currentMastery.currentMasteryLevel;

@@ -36,6 +36,7 @@ public class CCManager : MonoBehaviour
 
     private void OnEnable()
     {
+        currentCC = null;
         ccControl["fall"] = null;
         ccControl["stun"] = null;
         ccControl["rigid"] = null;

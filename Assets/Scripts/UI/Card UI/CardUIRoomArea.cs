@@ -1,17 +1,26 @@
-﻿using Coffee.UIEffects;
+﻿////////////////////////////////////////////////////
+/*
+    File CardUIRoomArea.cs
+    class CardUIRoomArea
+    
+    담당자 : 이신홍
+    부 담당자 : 
+
+    방 구역에 대한 카드 UI
+*/
+////////////////////////////////////////////////////
+
+using Coffee.UIEffects;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/// <summary>
-/// 방 구역에 대한 카드 UI.
-/// </summary>
 public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler, IPointerExitHandler, IEndDragHandler
 {
-    [SerializeField] private CardUIView _parentView;
-    [SerializeField] private Image _roomAreaImg;
+    [SerializeField] private CardUIView _parentView;        
+    [SerializeField] private Image _roomAreaImg;            
     [SerializeField] private Image[] _roomFramesImg;
     [SerializeField] private Image[] _roomIconsImg;
     [SerializeField] private Button _cardBtn;
@@ -57,7 +66,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         _cardBtn.GetComponent<UIDissolve>().effectFactor = 0;
 
         AlphaAllRoomCardData();
-        for (int i = 0; i < CardManager.Instance.currentStage; i++) SetRoomCardData(CardManager.Instance.dungeonCardData[i, roomNumber], i);
+        for (int i = 0; i < CardManager.Instance.currentFloor; i++) SetRoomCardData(CardManager.Instance.dungeonCardData[i, roomNumber], i);
 
         SetCurrentCardData(card);
     }
@@ -114,9 +123,9 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
         _cardIconImg.sprite = Resources.Load<Sprite>(iconPath + card.cardData.iconImg); // 카드 그림
         switch (card.level)
         {
-            case 1: _cardFrameImg.sprite = _level1Sprite; break;
-            case 2: _cardFrameImg.sprite = _level2Sprite; break;
-            case 3: _cardFrameImg.sprite = _level3Sprite; break;
+            case 0: _cardFrameImg.sprite = _level1Sprite; break;
+            case 1: _cardFrameImg.sprite = _level2Sprite; break;
+            case 2: _cardFrameImg.sprite = _level3Sprite; break;
         } // 카드 액자 (Level에 따라)
 
         _cardNameText.text = card.cardData.cardName;
@@ -131,7 +140,6 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     /// </summary>
     public void ToggleCardView()
     {
-        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickMedium01", 1.0f);
         _cardBtn.gameObject.SetActive(!_cardBtn.gameObject.activeSelf);
     }
 
@@ -160,7 +168,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
     {
         if (_rerollICONImg.gameObject.activeSelf)
         {
-            CardManager.Instance.dungeonCardData[CardManager.Instance.currentStage, roomNumber] = null;
+            CardManager.Instance.dungeonCardData[CardManager.Instance.currentFloor, roomNumber] = null;
         }
     }
 
@@ -208,7 +216,7 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
 
         _cardBtn.gameObject.SetActive(true);
 
-        CardManager.Instance.SetNewCard(roomNumber); // 해당 위치를 새로운 카드로 설정해준다.
+        CardManager.Instance.SetNewCardAtPosition(roomNumber); // 해당 위치를 새로운 카드로 설정해준다.
         InitCardRoomData(CardManager.Instance.GetCardCntStage(roomNumber)); // 해당 방의 카드 데이터를 새롭게 초기화한다.
         ReloadCardData(); // 카드 데이터를 갱신한다.
         dissolveEffect.Reverse = true;
@@ -279,11 +287,15 @@ public class CardUIRoomArea : MonoBehaviour, IDragHandler, IPointerEnterHandler,
                 // 카드들의 데이터를 갱신
             }
 
+            _parentView.cntPointerArea._cardBtn.transform.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+            _cardBtn.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+            // 카드들의 위치를 0로
+
             _parentView.BingoCheck(); // 빙고 체크
             SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardReplace", 0.9f);
         }
 
-        _cardBtn.transform.position = _initCardPos; // 위치를 되돌린다.
+        else _cardBtn.transform.GetComponent<RectTransform>().anchoredPosition = Vector3.zero; // 마우스 포인터가 방에 존재하지 않으면 (위치를 되돌린다.)
         _cardBtn.GetComponent<Image>().raycastTarget = true;
         _cardBtn.targetGraphic.raycastTarget = true;
     }

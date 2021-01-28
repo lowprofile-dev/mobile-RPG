@@ -15,19 +15,19 @@ public enum Shoptype
 
 public class ShopUIView : View
 {
-    [SerializeField] GameObject itemSlot;
-    [SerializeField] GameObject ShopTitle;
-    [SerializeField] GameObject PriceOrBudgetPanel;
-    [SerializeField] GameObject PurchaseOrSellPanel;
-    [SerializeField] GameObject itemBag;
-    [SerializeField] GameObject shopItemCardPrefab;
-    [SerializeField] GameObject[] cardslots;
+    [SerializeField] public GameObject itemSlot;
+    [SerializeField] public GameObject ShopTitle;
+    [SerializeField] public GameObject PriceOrBudgetPanel;
+    [SerializeField] public GameObject PurchaseOrSellPanel;
+    [SerializeField] public GameObject itemBag;
+    [SerializeField] public GameObject shopItemCardPrefab;
+    [SerializeField] public GameObject[] cardslots;
 
-    [SerializeField] InventoryUIView inventoryUI;
-    [SerializeField] Transform content;
-    [SerializeField] Button PurchaseOrSellBtn;
-    [SerializeField] Button ExitShopButton;
-    [SerializeField] Shoptype currentShopType = Shoptype.IMPERIALMARKET;
+    [SerializeField] public InventoryUIView inventoryUI;
+    [SerializeField] public Transform content;
+    [SerializeField] public Button PurchaseOrSellBtn;
+    [SerializeField] public Button ExitShopButton;
+    [SerializeField] public Shoptype currentShopType = Shoptype.IMPERIALMARKET;
 
     List<GameObject> itemSlots = new List<GameObject>();
     ItemManager itemManager;
@@ -54,8 +54,9 @@ public class ShopUIView : View
         if (itemManager == null) itemManager = ItemManager.Instance;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         itemBag.SetActive(false);
         itemManager.ResetCart();
         LoadPlayerInventory();
@@ -70,7 +71,9 @@ public class ShopUIView : View
             if (cardslots[i].transform.childCount == 0)
             {
                 card = Instantiate(shopItemCardPrefab, cardslots[i].transform);
+                card.GetComponent<ShopItemCard>().shopUIView = this;
                 card.GetComponent<ShopItemCard>().index = i;
+                card.GetComponent<ShopItemCard>().InitShopItemCard();
             }
             else
             {
@@ -96,6 +99,7 @@ public class ShopUIView : View
     private void OnClickExitShotButton()
     {
         UINaviationManager.Instance.PopToNav("SubUI_ShopBase");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     public void LoadPlayerInventory()
@@ -105,28 +109,29 @@ public class ShopUIView : View
         foreach (var item in itemManager.playerInventory)
         {
             ItemData itemData = itemManager.itemDictionary[item.Key];
-            GameObject slot = Instantiate(itemSlot, content);
-            slot.GetComponent<ShopItemSlot>().SetIcon(iconList[item.Key - 1]);
-            slot.GetComponent<ShopItemSlot>().SetQuantity(item.Value);
+            ShopItemSlot slot = Instantiate(itemSlot, content).GetComponent<ShopItemSlot>();
+            slot.InitShopItemSlot(this);
+            slot.SetIcon(iconList[item.Key - 1]);
+            slot.SetQuantity(item.Value);
             //slot.GetComponent<ShopItemSlot>().SetItemData(itemManager.itemDictionary[item.Key]);
             slot.GetComponent<ShopItemSlot>().SetItemData(itemManager.itemDictionary[item.Key]);
-            itemSlots.Add(slot);
+            itemSlots.Add(slot.gameObject);
             switch (itemData.itemgrade)
             {
                 case 1:
-                    slot.GetComponent<ShopItemSlot>().SetItemGrade(new Color(1, 1, 1, 0.15f));
+                    slot.SetItemGrade(new Color(1, 1, 1, 0.15f));
                     break;
                 case 2:
-                    slot.GetComponent<ShopItemSlot>().SetItemGrade(new Color(0, 1, 0, 0.15f));
+                    slot.SetItemGrade(new Color(0, 1, 0, 0.15f));
                     break;
                 case 3:
-                    slot.GetComponent<ShopItemSlot>().SetItemGrade(new Color(0, 0, 1, 0.15f));
+                    slot.SetItemGrade(new Color(0, 0, 1, 0.15f));
                     break;
                 case 4:
-                    slot.GetComponent<ShopItemSlot>().SetItemGrade(new Color(153, 50, 204, 0.15f));
+                    slot.SetItemGrade(new Color(153, 50, 204, 0.15f));
                     break;
                 case 5:
-                    slot.GetComponent<ShopItemSlot>().SetItemGrade(new Color(1, 0.92f, 0.016f, 0.15f));
+                    slot.SetItemGrade(new Color(1, 0.92f, 0.016f, 0.15f));
                     break;
             }
 

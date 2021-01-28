@@ -1,4 +1,23 @@
-﻿/*
+﻿////////////////////////////////////////////////////
+/*
+    File TestPlayerState.cs
+    class StateIdle_TestPlayer
+    class StateMove_TestPlayer
+    class StateAttack_TestPlayer
+    class StateAvoid_TestPlayer
+    class StateDie_TestPlayer
+    class StateSkillA_TestPlayer
+    class StateSkillB_TestPlayer
+    class StateSkillC_TestPlayer
+    
+    플레이어의 다양한 상태를 서술해놓은 클래스
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+/*
  * 
 using System.Collections;
 using System.Collections.Generic;

@@ -1,4 +1,15 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File View.cs
+    class View : UI 페이지의 단위. 캔버스 단위로 관리된다.
+    enum VIEWTYPE 
+
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,16 +23,23 @@ public enum VIEWTYPE
 public class View : MonoBehaviour
 {
     protected VIEWTYPE viewtype;
-    [SerializeField] private string _viewName; public string viewName { get { return _viewName; } }
+    private UIAnimator _animator;
+    [SerializeField] private string _viewName;
 
     // 튜토리얼 관련
     [SerializeField] protected Button tutorialButton;
     [SerializeField] protected Button tutorialExitButton;
     [SerializeField] protected GameObject tutorialPage;
 
-    private void OnEnable()
+    // property
+    public string viewName { get { return _viewName; } }
+
+
+    protected virtual void OnEnable()
     {
         _viewName = gameObject.name;
+        _animator = GetComponent<UIAnimator>();
+        if(_animator != null) _animator.SetupUIAnimator();
     }
 
     void Update()
@@ -47,8 +65,15 @@ public class View : MonoBehaviour
     {
         gameObject.SetActive(true);
         viewtype = VIEWTYPE.VIEWTYPE_ISAPPEARING;
-        
         viewtype = VIEWTYPE.VIEWTYPE_APPEARED;
+
+        if (_animator != null)
+        {
+            _animator.ResetFinalSequence();
+            Sequence seq = _animator.FadeInWithUp();
+            _animator.AppendSequence(seq);
+            _animator.FinalPlay();
+        }
     }
 
     public virtual void UIUpdate()
@@ -75,9 +100,11 @@ public class View : MonoBehaviour
     }
 
     protected virtual void TutorialClick(){
+        SoundManager.Instance.PlayEffect(SoundType.UI,"UI/ClickPage", 0.9f);
         tutorialPage.SetActive(true);
     }
     protected virtual void TutorialExit(){
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickPage", 0.9f);
         tutorialPage.SetActive(false);
     }
 }

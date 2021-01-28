@@ -3,7 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ToggleClick : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
+////////////////////////////////////////////////////
+/*
+    File ToggleClick.cs
+    class ToggleClick
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+
+public class ToggleClick : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] GameObject skill;
     MasteryScript mastery;
@@ -13,29 +24,28 @@ public class ToggleClick : MonoBehaviour, IPointerClickHandler, IPointerDownHand
         mastery = skill.GetComponent<MasteryScript>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-
-    }
-
+    /// <summary>
+    /// 토글키에 마우스 클릭 이벤트가 일어 날 경우 정보창에 출력하기 위한 함수를 호출한다.
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (transform.parent.name == "Mastery Card 1")
-        {
-            mastery.UpSkillOn();
-        }
+        SetMasterySound();
+        if (transform.parent.name == "Mastery Card 1") mastery.UpSkillOn();
         else mastery.DownSkillOn();
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    /// <summary>
+    /// 마스터리 선택 시 나오는 사운드
+    /// </summary>
+    private void SetMasterySound()
     {
-        //if (transform.parent.name == "Mastery Card 1") mastery.UpSkillMouseOff();
-        //else mastery.DownSkillMouseOff();
+        if (UILoaderManager.Instance.IsSceneDungeon()) SoundManager.Instance.PlayEffect(SoundType.UI, "UI/Locker", 0.8f); // 던전이면 락커 사운드
+
+        else // 마을이면 정상 사운드
+        {
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SetMastery", 0.9f);
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightHigh1", 0.3f);
+        }
     }
 }

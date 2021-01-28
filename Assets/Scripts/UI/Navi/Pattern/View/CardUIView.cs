@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// 카드 UI
@@ -48,6 +49,7 @@ public class CardUIView : View
     string iconPath = "Image/TonityEden/Skill Icons Megapack/";
 
     static int IsCardTutorial;
+
     private void Start()
     {
         _watchBtn.onClick.AddListener(delegate { ToogleCardViews(); });
@@ -86,7 +88,7 @@ public class CardUIView : View
 
         for (int i = 0; i < _roomAreaImg.Length; i++)
         {
-            Card cntCard = cardManager.dungeonCardData[cardManager.currentStage, i];
+            Card cntCard = cardManager.dungeonCardData[cardManager.currentFloor, i];
             _roomAreaImg[i].roomNumber = i;
             _roomAreaImg[i].InitCardRoomData(cntCard);
         } // 카드 갱신
@@ -119,15 +121,16 @@ public class CardUIView : View
         {
             UINaviationManager.Instance.PopToNav("SubUI_CardUIView"); // Navigation에서 UI를 지운다.
             CardManager.Instance.isAcceptCardData = false;
+            SoundManager.Instance.PlayEffect(SoundType.UI, "UI/CardEnd", 0.9f);
 
-            if(CardManager.Instance._cntDungeon == null)
+            if(CardManager.Instance.cntDungeon == null)
             {
                 UILoaderManager.Instance.LoadDungeon();
             } // 던전으로 가는것이면 던전으로 가도록
 
             else
             {
-                CardManager.Instance._cntDungeon.ToNextStage();
+                CardManager.Instance.cntDungeon.ToNextStage();
             } // 다음 층으로 가는거면 다음 층으로 가도록
         }
     }
@@ -141,10 +144,8 @@ public class CardUIView : View
     /// </summary>
     public void ToogleCardViews()
     {
-        foreach (CardUIRoomArea area in _roomAreaImg)
-        {
-            area.ToggleCardView();
-        }
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickMedium01", 1.0f);
+        for(int i=0; i<_roomAreaImg.Length; i++) _roomAreaImg[i].ToggleCardView();
     }
 
 
@@ -158,9 +159,9 @@ public class CardUIView : View
     {
         switch (card.level) // 테두리
         {
-            case 1: _tooltipImageFrameImg.sprite = _level1Sprite; break;
-            case 2: _tooltipImageFrameImg.sprite = _level2Sprite; break;
-            case 3: _tooltipImageFrameImg.sprite = _level3Sprite; break;
+            case 0: _tooltipImageFrameImg.sprite = _level1Sprite; break;
+            case 1: _tooltipImageFrameImg.sprite = _level2Sprite; break;
+            case 2: _tooltipImageFrameImg.sprite = _level3Sprite; break;
         }
 
         _tooltipCardImg.sprite = Resources.Load<Sprite>(iconPath + card.cardData.iconImg); // 카드 이미지
@@ -168,7 +169,7 @@ public class CardUIView : View
 
         for (int i = 0; i < 3; i++) // 레벨에 따른 별 이미지 변화
         {
-            if (card.level > i)
+            if (card.level >= i)
             {
                 _tooltipGradeStarImg[i].sprite = _starGold;
             }
@@ -206,7 +207,7 @@ public class CardUIView : View
             {
                 if (StatusManager.Instance.needToCardRerollCoin <= ItemManager.Instance.currentItems.coin) // 재화가 충분하면
                 {
-                    StartCoroutine(PlayRerollSound());
+                    if(StatusManager.Instance.rerollCount != 0) StartCoroutine(PlayRerollSound());
 
                     // 리롤을 하고, 버튼을 원래대로 돌린다.
                     ItemManager.Instance.currentItems.coin -= StatusManager.Instance.needToCardRerollCoin;
@@ -348,9 +349,9 @@ public class CardUIView : View
             SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 1.0f);
         }
 
-        foreach (int nums in bingoNums) // 세트임을 알리고 효과를 켠다.
+        for(int i=0; i<bingoNums.Count; i++) // 세트임을 알리고 효과를 켠다.
         {
-            _roomAreaImg[nums].OnOffBingoEffect(true);
+            _roomAreaImg[bingoNums.ElementAt(i)].OnOffBingoEffect(true);
         }
     }
 
@@ -367,19 +368,22 @@ public class CardUIView : View
         card3.AddNewSetEffect(card2.setEffect);
     }
 
+
+
+    ///////////////////// 튜토리얼 관련 ///////////////////////
+
     protected override void TutorialClick()
     {
         base.TutorialClick();
         tutorialIdx = 0;
-
         _tutorials[tutorialIdx].SetActive(true);
-
     }
+
     protected override void TutorialExit()
     {
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickPage", 0.9f);
 
         tutorialIdx++;
-
         if (tutorialIdx >= _tutorials.Length)
         {
             for (int i = 0; i < _tutorials.Length; i++)
@@ -393,7 +397,5 @@ public class CardUIView : View
             _tutorials[tutorialIdx - 1].SetActive(false);
             _tutorials[tutorialIdx].SetActive(true);
         }
-        
-       
     }
 }

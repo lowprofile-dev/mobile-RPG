@@ -1,4 +1,16 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File BatAction.cs
+    class BatAction
+    
+    담당자 : 이신홍
+    부 담당자 : 안영훈
+
+    박쥐의 행동을 정의한다.
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
 using System.Collections;
@@ -7,9 +19,6 @@ using System;
 public class BatAction : MonsterAction
 {
     bool canPanic;
-
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
 
     /////////// 기본 /////////////
 
@@ -32,26 +41,38 @@ public class BatAction : MonsterAction
 
     /////////// 탐색 관련 /////////////
 
+    /// <summary>
+    /// 패닉이 생겼으므로 오버라이딩
+    /// </summary>
     protected override void FindStart()
     {
         base.FindStart();
 
         if (canPanic)
         {
-            _monster.myAnimator.SetTrigger("Panic");
+            _monster.myAnimator.SetTrigger("Panic"); // 패닉이 생겼으므로 오버라이딩
         }
+    }
+
+    /// <summary>
+    /// 패닉 사운드를 재생한다. (애니메이션 이벤트로 호출)
+    /// </summary>
+    private void DoPanicSound()
+    {
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Panic " + UnityEngine.Random.Range(1, 4), 0.5f);
+        SoundManager.Instance.SetPitch(source, 0.8f);
     }
 
     protected override bool CheckFindAnimationOver()
     {
-        if (canPanic) return CheckAnimationOver("Panic", 1.0f);
+        if (canPanic) return CheckAnimationOver("Panic", 1.0f); // 패닉이 생겼으므로 오버라이딩
         else return true;
     }
 
     protected override void FindExit()
     {
         base.FindExit();
-        canPanic = false;
+        canPanic = false; // 패닉이 생겼으므로 오버라이딩
     }
 
     /////////// 추적 관련 /////////////
@@ -59,20 +80,17 @@ public class BatAction : MonsterAction
     protected override void DoReturn()
     {
         base.DoReturn();
-        canPanic = true;
+        canPanic = true; // 패닉이 생겼으므로 오버라이딩
     }
 
     /////////// 공격 관련 /////////////
-
-    protected override void DoAttack()
+    /// <summary>
+    /// 몬스터 공격 소리 재생
+    /// </summary>
+    protected override void AttackSound()
     {
-        GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-        obj.transform.SetParent(this.transform);
-        obj.transform.position = _baseMeleeAttackPos.position;
-
-        Attack atk = obj.GetComponent<Attack>();
-        atk.SetParent(gameObject);
-        atk.PlayAttackTimer(0.3f);
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Bite 2", 0.3f);
+        SoundManager.Instance.SetPitch(source, 1.6f);
     }
 
     /////////// 캐스팅 관련 /////////////

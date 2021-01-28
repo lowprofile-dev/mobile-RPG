@@ -19,7 +19,6 @@ public class ItemManager : SingletonBase<ItemManager>
     //착용중인 아이템 인덱스
     public CurrentItems currentItems;
     public CurrentItemKeys currentItemKeys;
-    //Dictionary<ItemData, int> playerInventory;
     public Dictionary<int, int> playerInventory;
     public Dictionary<int, ItemData> itemDictionary;
     public List<ItemData> itemCart = new List<ItemData>();
@@ -31,8 +30,8 @@ public class ItemManager : SingletonBase<ItemManager>
     public int inventorySize;
     public int dictionarySize;
 
-    List<ItemData> lowClassItems = new List<ItemData>();
-    List<ItemData> highClassItems = new List<ItemData>();
+    public List<ItemData> lowClassItems = new List<ItemData>();
+    public List<ItemData> highClassItems = new List<ItemData>();
     List<ItemData> rareClassItems = new List<ItemData>();
     List<ItemData> heroicClassItems = new List<ItemData>();
     List<ItemData> legendaryClassItems = new List<ItemData>();
@@ -335,6 +334,7 @@ public class ItemManager : SingletonBase<ItemManager>
     /// <param name="itemData">갈아낄 아이템 데이터</param>
     public void SetItemToPlayer(ItemData itemData)
     {
+        UnequipItems();
         switch (itemData.itemType)
         {
             case "Armor":
@@ -429,13 +429,21 @@ public class ItemManager : SingletonBase<ItemManager>
 
     private void EquipItems()
     {
-        statusManager.multiplicationStatus = new MultiplicationStatus();
-        statusManager.additionStatus = new AdditionStatus();
         EquipArmor(currentItemKeys.ArmorKey);
         EquipBottom(currentItemKeys.BottomKey);
         EquipHelmet(currentItemKeys.HelmetKey);
         EquipGloves(currentItemKeys.GlovesKey);
         EquipBoot(currentItemKeys.BootKey);
+        statusManager.UpdateFinalStatus();
+    }
+
+    private void UnequipItems()
+    {
+        UnequipArmor(currentItemKeys.ArmorKey);
+        UnequipBottom(currentItemKeys.BottomKey);
+        UnequipHelmet(currentItemKeys.HelmetKey);
+        UnequipGloves(currentItemKeys.GlovesKey);
+        UnequipBoot(currentItemKeys.BootKey);
         statusManager.UpdateFinalStatus();
     }
 
@@ -463,7 +471,7 @@ public class ItemManager : SingletonBase<ItemManager>
     private void EquipBottom(int bottomKey)
     {
         statusManager.additionStatus.stamina += itemDictionary[bottomKey].stamina;
-        statusManager.additionStatus.staminaRecovery += (1 + itemDictionary[bottomKey].staminaRecovery);
+        statusManager.additionStatus.staminaRecovery += (itemDictionary[bottomKey].staminaRecovery);
         statusManager.additionStatus.hp += itemDictionary[bottomKey].hp;
         statusManager.additionStatus.hpRecovery += itemDictionary[bottomKey].hpRecovery;
     }
@@ -475,6 +483,42 @@ public class ItemManager : SingletonBase<ItemManager>
         statusManager.additionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
     }
 
+    private void UnequipBoot(int bootKey)
+    {
+        statusManager.multiplicationStatus.moveSpeed -= itemDictionary[bootKey].moveSpeed;
+        statusManager.multiplicationStatus.dashCooldown -= itemDictionary[bootKey].dashCooldown;
+        statusManager.multiplicationStatus.dashStamina -= itemDictionary[bootKey].dashStamina;
+    }
+
+    private void UnequipGloves(int glovesKey)
+    {
+        statusManager.additionStatus.attackDamage -= itemDictionary[glovesKey].attackDamage;
+        statusManager.multiplicationStatus.attackSpeed -= itemDictionary[glovesKey].attackSpeed;
+        statusManager.multiplicationStatus.attackCooldown -= itemDictionary[glovesKey].attackCooldown;
+    }
+
+    private void UnequipHelmet(int helmetKey)
+    {
+        statusManager.additionStatus.rigidresistance -= itemDictionary[helmetKey].rigidresistance;
+        statusManager.additionStatus.stunresistance -= itemDictionary[helmetKey].stunresistance;
+        statusManager.additionStatus.fallresistance -= itemDictionary[helmetKey].fallresistance;
+    }
+
+    private void UnequipBottom(int bottomKey)
+    {
+        statusManager.additionStatus.stamina -= itemDictionary[bottomKey].stamina;
+        statusManager.additionStatus.staminaRecovery -= (itemDictionary[bottomKey].staminaRecovery);
+        statusManager.additionStatus.hp -= itemDictionary[bottomKey].hp;
+        statusManager.additionStatus.hpRecovery -= itemDictionary[bottomKey].hpRecovery;
+    }
+
+    private void UnequipArmor(int armorKey)
+    {
+        statusManager.additionStatus.hp -= itemDictionary[armorKey].hpIncreaseRate;
+        statusManager.additionStatus.armor -= itemDictionary[armorKey].armor;
+        statusManager.additionStatus.magicResistance -= itemDictionary[armorKey].magicResistance;
+    }
+
     /// <summary>
     /// 아이템 드랍 함수
     /// </summary>
@@ -482,9 +526,9 @@ public class ItemManager : SingletonBase<ItemManager>
     public void DropItem(Transform monsterTransform)
     {
         var roll = UnityEngine.Random.Range(0, 100.0f);
-        for (int i = 0; i < 5; i++)
+        for (int i = 4; i >= 0; i--)
         {
-            if (roll <= itemDropProbability[i])
+            if (roll <= itemDropProbability[i]) // 현재 확률에 들어간다면 
             {
                 GameObject dropItem = ObjectPoolManager.Instance.GetObject(dropItemPrefab);
                 dropItem.GetComponent<Item>().id = allClassItems[i][UnityEngine.Random.Range(0, allClassItems[i].Count)].id;
@@ -492,6 +536,7 @@ public class ItemManager : SingletonBase<ItemManager>
                 dropItem.transform.position = monsterTransform.position;
                 dropItem.transform.rotation = monsterTransform.rotation;
                 dropItem.transform.SetParent(null);
+                break; // 생성 후 break
             }
         }
     }

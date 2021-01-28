@@ -1,20 +1,32 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File Attack.cs
+    class Attack
+    
+    담당자 : 이신홍
+    부 담당자 : 
+
+    이펙트와 함께 콜라이더를 생성하여 공격을 표현하는 클래스
+*/
+////////////////////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
-    [SerializeField] protected Collider _collider;
-    [SerializeField] protected GameObject _particleEffectPrefab;
+    [SerializeField] protected Collider _collider;                  // 충돌체
+    [SerializeField] protected GameObject _particleEffectPrefab;    // 파티클 이펙트
 
-    protected HashSet<GameObject> _attackedTarget;
-    protected GameObject _baseParent;
+    protected HashSet<GameObject> _attackedTarget;  // 공격된 대상 리스트 (중복 피격 막음)
+    protected GameObject _baseParent;               // 공격을 한 개체
 
-    protected bool _isParentPlayer;
-    [SerializeField] protected bool _useFixedDmg;
-    [SerializeField] protected bool _useMeleeDmg;
+    protected bool _isParentPlayer;                 // 공격한 것이 플레이어인지
+    [SerializeField] protected bool _useFixedDmg;   // 고정 데미지 여부
+    [SerializeField] protected bool _useMeleeDmg;   // 물리 데미지 여부
 
-    [SerializeField] protected float _damage;
+    [SerializeField] protected float _damage;       // 데미지 (고뎀 : 그대로 적용, 물뎀 : 비율로 적용)
 
     protected virtual void Start()
     {
@@ -24,7 +36,7 @@ public class Attack : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        if(_attackedTarget != null) _attackedTarget.Clear();
+        if(_attackedTarget != null) _attackedTarget.Clear(); // 활성화될때마다 공격된 타깃을 
     }
 
     public void SetParent(GameObject parent)
@@ -51,6 +63,9 @@ public class Attack : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 충돌할 수 있는지 여부를 검사
+    /// </summary>
     private bool CanCollision(Collider other)
     {
         if ((_isParentPlayer && (other.CompareTag("Boss") || other.CompareTag("Monster"))) || // 부모가 플레이어 && 충돌체가 적
@@ -72,6 +87,9 @@ public class Attack : MonoBehaviour
         StartCoroutine(SetColliderTimer(time));
     }
 
+    /// <summary>
+    /// 일정 시간 충돌체를 켜고 없어진 후 소멸시킨다.
+    /// </summary>
     private IEnumerator SetColliderTimer(float time)
     {
         _collider.enabled = true;

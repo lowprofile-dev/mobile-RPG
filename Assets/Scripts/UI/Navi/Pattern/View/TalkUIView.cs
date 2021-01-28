@@ -50,7 +50,7 @@ public class TalkUIView : View
     
     public void AcceptRewardButton()
     {
-        _cntTalkChecker.RewardQuest();
+        _cntTalkChecker.FinishQuest();
     }
 
     public void AcceptQuest()

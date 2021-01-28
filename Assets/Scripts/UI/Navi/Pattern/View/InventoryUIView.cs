@@ -44,8 +44,9 @@ public class InventoryUIView : View
         quitBtn.onClick.AddListener( delegate{ OnClickQuitButton(); });
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         LoadPlayerInventory();
         gold.text = ItemManager.Instance.currentItems.gold.ToString();
         coin.text = ItemManager.Instance.currentItems.coin.ToString();
@@ -100,5 +101,6 @@ public class InventoryUIView : View
     {
         UINaviationManager.Instance.PopToNav("SubUI_Inventory");
         Player.Instance.FaceCam.InitFaceCam(Player.Instance.playerAvater);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 }

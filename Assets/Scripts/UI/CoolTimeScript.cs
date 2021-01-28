@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+////////////////////////////////////////////////////
+/*
+    File CoolTimeScript.cs
+    class CoolTimeScript
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
 
 public class CoolTimeScript : MonoBehaviour
 {
@@ -35,7 +44,10 @@ public class CoolTimeScript : MonoBehaviour
             lockImage.enabled = true;
         }
     }
-
+    /// <summary>
+    /// 무기 매너지에 있는 무기들의 쿨타임 시간을 가져온다.
+    /// </summary>
+    /// <returns></returns>
     public float GetCoolTime()
     {
         if (WeaponManager.Instance.GetWeapon() != null)
@@ -76,6 +88,9 @@ public class CoolTimeScript : MonoBehaviour
             }
     }
 
+    /// <summary>
+    /// 정해진 시간으로 쿨타임을 시작하는 함수
+    /// </summary>
     public void StartCoolTime()
     {
         if (isLock) return;
@@ -87,7 +102,9 @@ public class CoolTimeScript : MonoBehaviour
                 button.enabled = false;
         }
     }
-
+    /// <summary>
+    /// 각 스킬의 해금이 풀렸는지 체크하고 이미지와 버튼을 관리한다.
+    /// </summary>
     public void SkillRelease()
     {
         if (isLock)

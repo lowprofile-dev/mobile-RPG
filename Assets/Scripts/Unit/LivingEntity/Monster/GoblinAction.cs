@@ -1,16 +1,23 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File GoblinAction.cs
+    class GoblinAction
+    
+    담당자 : 이신홍
+    부 담당자 : 
+
+    고블린의 행동을 정의한다.
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
 public class GoblinAction : MonsterAction
 {
     bool _isDamaged = false;
-
-    [SerializeField] private Transform _baseMeleeAttackPos;
-    [SerializeField] private GameObject _baseMeleeAttackPrefab;
-
-    Collider _baseAtkCollision;
-
+    bool _canPlayPanicSound = true;
 
     /////////// 기본 /////////////
 
@@ -27,7 +34,7 @@ public class GoblinAction : MonsterAction
     protected override void IdleUpdate()
     {
         base.IdleUpdate();
-        ToStirr();
+        ToStirr(); // 자는 행동이 추가됨.
     }
 
     protected override void DoSomethingIdleSearchFind()
@@ -48,7 +55,7 @@ public class GoblinAction : MonsterAction
     {
         if (CheckAnimationOver("Sleep", 1.0f))
         {
-            ChangeState(MONSTER_STATE.STATE_IDLE);
+            ChangeState(MONSTER_STATE.STATE_IDLE); // 일정 시간 뒤 IDLE로 돌아옴.
         }
     }
 
@@ -62,7 +69,14 @@ public class GoblinAction : MonsterAction
 
     protected override void FindStart()
     {
-        ChangeState(MONSTER_STATE.STATE_TRACE);
+        ChangeState(MONSTER_STATE.STATE_TRACE); // 공격을 받으면 바로 추적하므로
+
+        if(_canPlayPanicSound)
+        {
+            AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Find Type 1-" + UnityEngine.Random.Range(1, 4), 0.8f);
+            SoundManager.Instance.SetPitch(source, 0.6f);
+            _canPlayPanicSound = false;
+        }
     }
 
     protected override void FindExit()
@@ -74,32 +88,35 @@ public class GoblinAction : MonsterAction
     {
         base.DoReturn();
         _isDamaged = false;
+        _canPlayPanicSound = true;
     }
 
     /////////// 추적 관련 /////////////
 
     /////////// 공격 관련 /////////////
-
-    protected override void DoAttack()
+    /// <summary>
+    /// 몬스터 공격 소리 재생
+    /// </summary>
+    protected override void AttackSound()
     {
-        if (_attackType == 0 || _attackType == 1)
-        {
-            GameObject obj = ObjectPoolManager.Instance.GetObject(_baseMeleeAttackPrefab);
-            obj.transform.SetParent(this.transform);
-            obj.transform.position = _baseMeleeAttackPos.position;
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Punch " + UnityEngine.Random.Range(1, 4), 0.6f);
+        SoundManager.Instance.SetPitch(source, 1.5f);
 
-            Attack atk = obj.GetComponent<Attack>();
-            atk.SetParent(gameObject);
-            atk.PlayAttackTimer(0.3f);
-        }
+        int randomSound = UnityEngine.Random.Range(0, 10);
+        if (randomSound < 2) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Growl " + 1, 0.5f);
+        else if (randomSound < 4) SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Small Monster Growl " + 2, 0.5f);
     }
-
+    /// <summary>
+    /// 몬스터 공격 애니메이션 선택
+    /// </summary>
     protected override void SetAttackAnimation()
     {
         if (_attackType == 0) _monster.myAnimator.SetTrigger("Attack");
         else if (_attackType == 1) _monster.myAnimator.SetTrigger("AttackSpecial");
     }
-
+    /// <summary>
+    /// 몬스터 공격 애니메이션 리셋
+    /// </summary>
     protected override void ResetAttackAnimation()
     {
         if (_attackType == 0) _monster.myAnimator.ResetTrigger("Attack");
@@ -107,6 +124,23 @@ public class GoblinAction : MonsterAction
     }
 
     /////////// 캐스팅 관련 /////////////
+    /// <summary>
+    /// 캐스팅이 시작되면 일정확률로 어떤 공격을 할지 정해짐
+    /// </summary>
+    protected override void CastStart()
+    {
+        int proc = Random.Range(0, 100);
+        if (proc <= 30)
+        {
+            _castTime = 2f;
+            _attackType = 1;
+        }
+        else
+        {
+            _castTime = 1f;
+            _attackType = 0;
+        }
+    }
 
     /////////// 피격 관련 /////////////
 
@@ -115,13 +149,13 @@ public class GoblinAction : MonsterAction
     /// </summary>
     protected override void DamagedProcess(float dmg, bool SetAnimation = true)
     {
-        _monster.Damaged(dmg);
-        _bar.HpUpdate();
+        _monster.Damaged(dmg); // 몬스터에게 데미지를 입힌다.
+        _bar.HpUpdate(); // 몬스터의 HP바를 갱신한다.
 
-        DamagedChangeState();
-        bool isDeath = DeathCheck();
+        DamagedChangeState();  // 고블린은 첫피격이 시작했을 때 부터 플레이어를 공격한다.
+        bool isDeath = DeathCheck(); // hp가 0이하인지 판별
 
-        if (isDeath) CheckDeathAndChange();
+        if (isDeath) CheckDeathAndChange(); // 죽었다고 판단될경우 사망상태로 변경하는 함수
     }
 
     /// <summary>

@@ -1,4 +1,16 @@
-﻿using Cinemachine;
+﻿////////////////////////////////////////////////////
+/*
+    File Player.cs
+    Class Player
+    Enum PLAYERSTATE
+
+    담당자 : 이신홍, 김의겸
+
+    플레이어의 행동 및 입력 등을 관리하는 클래스.
+*/
+////////////////////////////////////////////////////
+
+using Cinemachine;
 using SimpleInputNamespace;
 using System;
 using System.Collections.Generic;
@@ -15,149 +27,142 @@ public enum PLAYERSTATE
 /// </summary>
 public class Player : LivingEntity
 {
+    // 싱글톤
     public static Player Instance;
 
+    [Header("베이스")]
+    private PLAYERSTATE _cntState;                      // 현재 상태
+
+    [Header("캐싱")]
+    [SerializeField] private GameObject _playerAvatar;                  // 플레이어의 아바타 (껍데기)
+    [SerializeField] private CharacterController characterController;   // 캐릭터 컨트롤러
+    public Joystick joystick = null;                                    // 조이스틱
+    public PartSelection selection;                                     // 아바타 부품
+    private WeaponManager _weaponManager;                               // 무기 매니저
+    private ItemManager _itemManager;                                   // 아이템 매니저
+    private StatusManager _statusManager;                               // 스테이터스 매니저
+    private EPOOutline.Outlinable playerOutlinable;                     // 아웃라이너
+
+
+    [Header("상태 관련")]
+    bool _isdead = false;                                   // 사망 여부
+    private float _slowingFactor = 0f; public float SlowingFactor { get { return _slowingFactor; } set { _slowingFactor = value; } }
+
+    [Header("움직임")]
+    [SerializeField] private float turnSmoothTime = 0.1f;   // 부드럽게 움직이는 시간
+    float turnSmoothVelocity;                               // 부드럽게 움직이는 속도
+    private Vector3 direction;                              // 입력받은 움직임 방향
+    private Vector3 moveDir;                                // 변환된 움직임 방향
+    private float horizontal;                               // 조이스틱 X 입력
+    private float vertical;                                 // 조이스틱 Y 입력
+    private float vSpeed;                                   // 움직임 속도
+
+    [Header("카메라")]
+    [SerializeField] private Transform cam;                          // 메인 카메라
+    [SerializeField] private GameObject playerFollowCam;             // 플레이어를 쫓는 카메라
+    [SerializeField] private CinemachineFreeLook playerFreeLook;     // playerFollowCam에서의 캐싱
+    [SerializeField] private CinemachineFreeLook minimapFreeLook;    // 미니맵에 사용되는 카메라
+    [SerializeField] private FaceCam faceCam;                        // 얼굴 카메라
+
+    [Header("UI")]
+    [SerializeField] private GameObject _systemPanel;   // 시스템 알림 UI
+
+    [Header("회피 관련")]
+    [SerializeField] private float _initEvadeTime;      // 회피에 사용되는 시간
+    private float _evadeTime;                           // 현재 회피 시간
+
+    [Header("마스터리 관련")]
+    public bool[] masterySet = new bool[10];            // 마스터리 활성화 정보
+    private bool resurrection = false;                  // 부활
+    private bool rage = false;                  // 부활
+
+    [Header("공격 관련")]
+    [SerializeField] public Transform skillPoint;       // 스킬 발사 지점
+    private int _cntSkillType;                          // 현재 사용하는 스킬 정보
+    public int currentCombo;                            // 현재 콤보 수
+    private bool _canConnectCombo;                      // 콤보를 더 이을 수 있는지
+    private bool _canWalkAttackFrezzing;                // 공격상태에서 걸을 수 있게 되는 시점
+
+    [Header("무기 관련")]
+    public bool weaponChanged = false;                  // 무기가 바뀌었는지 여부
+
+    [Header("대쉬 관련")]
+    public float dashSpeed;                             // 대쉬 스피드
+    private bool _isRushing;                            // 대쉬하고 있는지 여부
+    private Vector3 _prevRushPos;                       // 대쉬를 시작했을 때의 위치
+    private float _rushTime;                            // 대쉬를 시작한 후의 시간
+
+    [Header("던전 관련")]
+    public int currentDungeonArea;                      // 현재 위치한 던전의 구역
+
+    [Header("사운드 관련")]
+    private float _footstepSoundTime = 0.3f;            // 발소리 간격
+    private float _cntFootStepSound = 0f;               // 현재의 발소리 진행 
+    private float _rushSoundTime = 0.24f;               // 대쉬소리 간격
+
+    [Header("시각 관련")]
+    [SerializeField] private ParticleSystem trailParticle1; // 횡 파티클 (회피 / 돌진)
+    [SerializeField] private ParticleSystem trailParticle2; // 종 파티클 (회피 / 돌진)
+    private List<Renderer> lRenderers;                      // 아웃라이너 목록
+
+    [Header("낙사 관련")]
+    private bool _isFalling = false;                        // 떨어졌는지 여부
+    [HideInInspector] public Vector3 lastRoomTransformPos;  // 최근에 있던 방의 위치
+
+    // property
+    public GameObject playerAvater { get { return _playerAvatar; } }
+    public bool canconnectCombo { get { return _canConnectCombo; } }
+    public Vector3 getMoveDir { get { return moveDir; } }
+    public bool isdead { get { return _isdead; } set { _isdead = value; } }
+    public PLAYERSTATE cntState { get { return _cntState; } }
     public GameObject GetPlayer { get { return this.gameObject; } }
-    private bool avoidButtonClick = false;
-    [SerializeField] private float _initEvadeTime;
-    private float _evadeTime;
-    [SerializeField] private GameObject _playerAvatar; public GameObject playerAvater { get { return _playerAvatar; } }
-    private PLAYERSTATE _cntState; public PLAYERSTATE cntState { get { return _cntState; } }
+    public FaceCam FaceCam { get { return faceCam; } }
+    public WeaponManager weaponManager { get { return _weaponManager; } }
+    public ItemManager itemManager { get { return _itemManager; } }
+    public StatusManager statusManager { get { return _statusManager; } }
 
-    [SerializeField] private GameObject systemPanel;
-
-    [Header("버튼 입력")]
-    private bool AttackButtonClick = false;
-    private bool SkillA_ButtonClick = false;
-    private bool SkillB_ButtonClick = false;
-    private bool SkillC_ButtonClick = false;
-
-    public bool[] masterySet = new bool[10]; 
-
-    private float skillA_Counter = 0f;
-    private float skillB_Counter = 0f;
-    private float skillC_Counter = 0f;
-
-    [SerializeField] public Transform firePoint;
-    [SerializeField] public Transform skillPoint;
-
-    [SerializeField] private CharacterController characterController;
-    //[SerializeField] private float speed = 6f;
-    [SerializeField] private float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
-    [SerializeField] private Transform cam;
-    [SerializeField] private GameObject playerFollowCam;
-    [SerializeField] private CinemachineFreeLook playerFreeLook;
-    [SerializeField] private CinemachineFreeLook minimapFreeLook;
-
-    [SerializeField] private ParticleSystem trailParticle1;
-    [SerializeField] private ParticleSystem trailParticle2;
-
-    public bool weaponChanged = false;
-
-    private Vector3 direction;
-    private Vector3 moveDir; public Vector3 getMoveDir { get { return moveDir; } }
-    [SerializeField] private Quaternion rotateAngle;
-
-    public Joystick joystick = null;
-
-    float horizontal;
-    float vertical;
-    float vSpeed;
-    bool _isdead = false; public bool isdead { get { return _isdead; } set { _isdead = value; } }
-    private int _cntSkillType;
-
-    public float dashSpeed; // 대쉬 스피드
-    public int currentCombo; // 현재 콤보 수
-    private bool _canConnectCombo; public bool canconnectCombo { get { return _canConnectCombo; } } // 콤보를 더 이을 수 있는지
+    [Header("카드 관련")]
+    public float fullHealthDamage;
+    public float proportionalDamage;
+    public float giantDamage;
+    public float annoyedDamage;
+    public float spellStrikeDamage;
+    public bool canDealFullHealth;              // 플레이어의 체력이 100%일 때 데미지 증가
+    public bool canDealProportional = false;    // 몬스터 남은 체력 비례 데미지
+    public bool canDealGiant = false;           // 몬스터 체력 80% 이상일 때 데미지 증가
+    public bool canDealAnnoyed = false;         // 피격 받았을 때 플레이어 가하는 데미지 2초간 증가
+    public bool canDealSpellStrike = false;
+    public bool hasSpellStrike = false;         // 스킬 사용 이후 1회 평타 강화
+    public bool isAnnoyed = false;
+    public float annoyedTime = 0f;
 
 
-    [SerializeField] private TrailRenderer _trailRenderer;
-
-    private bool _isRushing;
-    [SerializeField] private Collider _rushingCollider;
-    private Vector3 _prevRushPos;
-    private float _rushTime;
-
-    public PartSelection selection;
-    FaceCam faceCam; public FaceCam FaceCam { get { return faceCam; }}
-
-    private bool resurrection = false;
-
-    public WeaponManager weaponManager;
-    ItemManager itemManager;
-    StatusManager statusManager;
-
-    public int currentDungeonArea;
-
-    // 사운드 관련
-    private float _cntFootStepSound = 0f;
-    private float _footstepSoundTime = 0.3f;
-    private float _rushSoundTime = 0.24f;
-
-    //아웃라이너 관련
-    private EPOOutline.Outlinable playerOutlinable;
-    private List<Renderer> lRenderers = new List<Renderer>();
-
-    //낙사 관련
-    public bool isFalling = false;
-    public Vector3 lastRoomTransformPos;
+    ///////////////// 베이스 //////////////////
 
     private void Awake()
     {
         Instance = this;
     }
 
-    protected override void Start()
-    {
-        UILoaderManager.Instance.LoadUI();
-        itemManager = ItemManager.Instance;
-        statusManager = StatusManager.Instance;
-        var _player = this;
-        _CCManager = new CCManager(ref _player, "player");
-        base.Start();
-
-        _evadeTime = _initEvadeTime;
-
-        _rushTime = 0.6f;
-        _prevRushPos = Vector3.zero;
-        
-        moveDir = Vector3.forward;
-        OffTrailParticles();
-    }
-
-    public void InitOutline()
-    {
-        lRenderers.Clear();
-        playerOutlinable.outlineTargets.Clear();
-        GetRenderers(transform);
-        for (int i = 0; i < lRenderers.Count; i++)
-        {
-            EPOOutline.OutlineTarget outline = new EPOOutline.OutlineTarget(lRenderers[i], 0);
-            outline.CullMode = UnityEngine.Rendering.CullMode.Off;
-            playerOutlinable.outlineTargets.Add(outline);
-        }
-    }
-
-    private void GetRenderers(Transform parent)
-    {
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            Transform child = parent.GetChild(i);
-            if (child.gameObject.GetComponent<Renderer>() != null)
-            {
-                lRenderers.Add(child.gameObject.GetComponent<Renderer>());
-            }
-            if (child.childCount > 0)
-            {
-                GetRenderers(child);
-            }
-        }
-    }
-
     protected override void InitObject()
     {
         base.InitObject();
+
+        var _player = this;
+
+        UILoaderManager.Instance.LoadPlayerUI();
+
+        _itemManager = ItemManager.Instance;
+        _statusManager = StatusManager.Instance;
+
+        _CCManager = new CCManager(ref _player, "player");
+        lRenderers = new List<Renderer>();
+        _rushTime = 0.6f;
+        _evadeTime = _initEvadeTime;
+        _prevRushPos = Vector3.zero;
+        moveDir = Vector3.forward;
+
+        OffTrailParticles();
 
         _hp = StatusManager.Instance.finalStatus.maxHp;
         _stemina = StatusManager.Instance.finalStatus.maxStamina;
@@ -169,15 +174,16 @@ public class Player : LivingEntity
 
         myAnimator = GetComponent<Animator>();
 
+        _canWalkAttackFrezzing = true;
         _cntState = PLAYERSTATE.PS_IDLE;
         EnterState();
 
-        weaponManager = WeaponManager.Instance;
+        _weaponManager = WeaponManager.Instance;
         if (weaponManager.GetWeaponName() == null) weaponManager.SetWeapon("SWORD");
         else weaponManager.SetWeapon(weaponManager.GetWeaponName());
 
         SetUpPlayerCamera();
-
+        MasteryManager.Instance.UpdateCurrentExp();
         playerOutlinable = gameObject.GetComponent<EPOOutline.Outlinable>();
         InitOutline();
     }
@@ -192,205 +198,10 @@ public class Player : LivingEntity
         UpdateState();
         MasteryApply();
         ApplyGravity();
+        if (isAnnoyed)
+            annoyedTime += Time.deltaTime;
     }
-
-    private void ApplyGravity()
-    {
-        //낙사
-        if (transform.position.y < -70 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
-        {
-            isFalling = true;
-            //ChangeState(PLAYERSTATE.PS_DIE);
-            Damaged(statusManager.finalStatus.maxHp*0.1f);
-            ReturnToGround();
-            return;
-        }
-
-        //if (transform.position.y < -40 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
-        //{
-        //    ReturnToGround();
-        //}
-        if (characterController.isGrounded)
-        {
-            vSpeed = 0;
-        }
-
-        vSpeed = vSpeed - Time.deltaTime * 274f;
-        characterController.Move(Vector3.up * vSpeed * Time.deltaTime);
-    }
-
-    private void ReturnToGround()
-    {
-        Debug.Log("낙사!");
-        isFalling = false;
-        transform.position = lastRoomTransformPos;
-    }
-
-    //마스터리 강화 관련 
-    private void MasteryApply()
-    {
-
-        //카드 리롤 확률 증가
-        //CardManager.cs 187
-
-        //보스 처치 시 더 많은 코인 획득 미구현 -> 아이템 드랍 확률 증가
-        //DungeonRoom.cs 186
-
-        //마스터리 공격 증가 부분
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == -1)
-        {
-            if(masterySet[1] == false)
-            {
-                StatusManager.Instance.finalStatus.attackDamage *= 1.1f;
-                StatusManager.Instance.finalStatus.magicDamage *= 1.1f;
-                masterySet[1] = true;
-            }
-
-            
-        }
-        //방어력 증가 부분
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
-        {
-            if(masterySet[1] == false)
-            {
-                statusManager.finalStatus.armor *= 1.1f;
-                statusManager.finalStatus.magicResistance *= 1.1f;
-                masterySet[1] = true;
-            }
-        }
-        // 체력 증가
-        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == -1)
-        {
-            if(masterySet[2] == false)
-            {
-                statusManager.finalStatus.hpRecovery *= 1.2f;
-                masterySet[2] = true;
-            }
-            
-        }
-        //기력 증가
-
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
-        {
-            if(masterySet[2] == false)
-            {
-                statusManager.finalStatus.staminaRecovery *= 1.2f;
-                masterySet[2] = true;
-            }
-
-        }
-        //이속 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == -1)
-        {
-            if (masterySet[3] == false)
-            {
-                statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed * 2f;
-                masterySet[3] = true;
-            }
-        }
-        //공속 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
-        {
-            if (masterySet[3] == false)
-            {
-                statusManager.finalStatus.attackSpeed *= 1.2f;
-                masterySet[3] = true;
-            }
-        }
-
-        //골드 획득량 증가 미구현 && 아이템 확률 증가 통합
-        //DungeonRoom.cs 207
-
-        //모든 몬스터 피해량 10%
-        //MonsterAction.cs 778
-
-        //보스 피해량 20%
-        //BossSkeltonKingAction.cs 426
-        //BossSkeltonPase2.cs 416
-
-        //회피시 무적
-        //BossAttack.cs 87
-        //MonsterAction.cs 778
-        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
-        {
-            if(masterySet[6] == false)
-            {
-                masterySet[6] = true;
-            }
-        }
-        //회피 사용 기력 감소
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
-        {
-            if(masterySet[6] == false)
-            {
-                statusManager.playerStatus.dashStamina *= 0.8f;
-                masterySet[6] = true;
-            }
-        }
-        //기본공격 10% 강화, hp 2% 흡수
-        // PlayerAttack.cs 76;
-
-        //스킬 쿨타임 1초 감소
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == 1)
-        {
-            if(masterySet[7] == false)
-            {
-                weaponManager.WeaponCoolTimeReduce();
-                masterySet[7] = true;
-            }
-
-        }
-        // 물리 스킬 총 피해량 40% 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == -1)
-        {
-            if (masterySet[8] == false)
-            {
-                statusManager.finalStatus.attackDamage *= 1.4f;
-                masterySet[8] = true;
-            }
-        }
-        // 마법 스킬 총 피해량 20% 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == 1)
-        {
-            if (masterySet[8] == false)
-            {
-                if (masterySet[8] == false)
-                {
-                    statusManager.finalStatus.magicDamage *= 1.4f;
-                    masterySet[8] = true;
-                }
-            }
-        }
-
-        // HP 10% 이하 물리/마법 공격력 30% 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == -1)
-        {
-            if(masterySet[9] == false)
-            {
-                if (statusManager.GetCurrentHpPercent() <= 0.2f)
-                {
-                    statusManager.finalStatus.attackDamage *= 1.3f;
-                    statusManager.finalStatus.magicDamage *= 1.3f;
-                }
-                masterySet[9] = true;
-            }
-        }
-
-        //부활
-        //Player.cs 1043
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == 1)
-        {
-            if (masterySet[9] == false)
-            {
-                resurrection = true;
-                masterySet[9] = true;
-            }
-        }
-
-    }
-
-
-
+    
 
     ///////////////// 상태 관련 //////////////////
 
@@ -500,83 +311,6 @@ public class Player : LivingEntity
 
 
 
-
-    ///////////////// 테스트 관련 //////////////////
-
-    /// <summary>
-    /// 테스트를 실시하는 코드 모음
-    /// </summary>
-    private void TestCode()
-    {
-        ChangeWeaponTest();
-        ChangeMasteryLevelTest();
-        PopWeaponMasteryUITest();
-    }
-
-    private void PopWeaponMasteryUITest()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (UINaviationManager.Instance.FindTargetIsInNav("SubUI_WeaponMasteryView"))
-            {
-                UINaviationManager.Instance.PopToNav("SubUI_WeaponMasteryView");
-            }
-            else
-            {
-                UINaviationManager.Instance.PushToNav("SubUI_WeaponMasteryView");
-            }
-        }
-    }
-
-    /// <summary>
-    /// 마스터리 레벨을 올리는 테스트
-    /// </summary>
-    private void ChangeMasteryLevelTest()
-    {
-        //weaponManager.GetWeapon().MasteryLevelUp();
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            weaponManager.GetWeapon().exp += 80;
-            //weaponManager.GetWeapon().MasteryLevelUp();
-            switch (weaponManager.GetWeapon().name)
-            {
-                case "sword":
-                    MasteryManager.Instance.currentMastery.currentSwordMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-                case "dagger":
-                    MasteryManager.Instance.currentMastery.currentDaggerMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-                case "blunt":
-                    MasteryManager.Instance.currentMastery.currentBluntMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-                case "wand":
-                    MasteryManager.Instance.currentMastery.currentWandMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-                case "staff":
-                    MasteryManager.Instance.currentMastery.currentStaffMasteryExp = weaponManager.GetWeapon().exp;
-                    break;
-            }
-            MasteryManager.Instance.SaveCurrentMastery();
-        }
-    }
-
-    /// <summary>
-    /// 무기 테스트를 위한 변경 함수
-    /// </summary>
-    private void ChangeWeaponTest()
-    {
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            weaponManager.SetWeapon("WAND");
-            weaponChanged = true;
-        }
-        else weaponChanged = false;
-    }
-
-
-
-
     ///////////////// 공통 관련 //////////////////
 
     private void UpdateAll()
@@ -630,8 +364,6 @@ public class Player : LivingEntity
 
 
 
-
-
     ///////////////// 대기 관련 //////////////////
 
     private void IdleEnter()
@@ -657,6 +389,9 @@ public class Player : LivingEntity
     {
         myAnimator.ResetTrigger("Idle");
     }
+
+
+
 
     ///////////////// 이동 관련 //////////////////
 
@@ -702,17 +437,12 @@ public class Player : LivingEntity
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             characterController.Move(moveDir.normalized * statusManager.finalStatus.moveSpeed * Time.deltaTime);
         }
-
-        
-        //_myStateMachine.UpdateState();
     }
 
     public void MoveExit()
     {
         myAnimator.ResetTrigger("Move");
     }
-
-    
 
 
 
@@ -734,8 +464,10 @@ public class Player : LivingEntity
     /// </summary>
     public void EndAttack()
     {
+        hasSpellStrike = false;
         InitAttack();
         ChangeState(PLAYERSTATE.PS_IDLE);
+        UnlockAttackFreeze();
     }
 
     /// <summary>
@@ -781,10 +513,20 @@ public class Player : LivingEntity
     }
 
     /// <summary>
+    /// 공격상태에서 다시 움직일 수 있게 해준다.
+    /// </summary>
+    public void UnlockAttackFreeze()
+    {
+        _canWalkAttackFrezzing = true;
+    }
+
+    /// <summary>
     /// 현재 콤보 상태에 따라 공격 애니메이션을 재생한다.
     /// </summary>
     private void SetAttackAnimationTrigger()
     {
+        _canWalkAttackFrezzing = false;
+
         switch (currentCombo)
         {
             case 1: myAnimator.SetTrigger("Attack01"); break;
@@ -804,9 +546,9 @@ public class Player : LivingEntity
 
     public void AttackExit()
     {
+        UnlockAttackFreeze();
         InitAttack();
     }
-
 
 
 
@@ -850,8 +592,6 @@ public class Player : LivingEntity
         _evadeTime = _initEvadeTime;
         myAnimator.ResetTrigger("Avoid");
     }
-
-
 
 
 
@@ -974,6 +714,7 @@ public class Player : LivingEntity
         myAnimator.ResetTrigger("SkillB");
         myAnimator.ResetTrigger("SkillC");
         myAnimator.ResetTrigger("SkillBAttack");
+        hasSpellStrike = true;
     }
 
     /// <summary>
@@ -1054,28 +795,6 @@ public class Player : LivingEntity
 
 
 
-    /// <summary>
-    /// 스킬 쿨타임 체크
-    /// </summary>
-    private void PlayerSkillCheck()
-    {
-        switch (_cntSkillType)
-        {
-            case 0:
-                skillA_Counter += Time.deltaTime;
-                if (skillA_Counter >= weaponManager.GetWeapon().skillACool) SkillA_ButtonClick = false;
-                break;
-            case 1:
-                skillB_Counter += Time.deltaTime;
-                if (skillB_Counter >= weaponManager.GetWeapon().skillBCool) SkillB_ButtonClick = false;
-                break;
-            case 2:
-                skillC_Counter += Time.deltaTime;
-                if (skillC_Counter >= weaponManager.GetWeapon().skillCCool) SkillC_ButtonClick = false;
-                break;
-        }
-    }
-
     ///////////////// 상호작용 관련 //////////////////
 
     private void InteractEnter()
@@ -1125,6 +844,9 @@ public class Player : LivingEntity
 
     }
 
+
+
+
     ///////////////// 사망 관련 //////////////////
 
     private void DieEnter()
@@ -1134,8 +856,10 @@ public class Player : LivingEntity
         _isdead = true;
 
         myAnimator.SetTrigger("Die");
+
         _CCManager.Release();
         _DebuffManager.Release();
+        _slowingFactor = 0f;
 
         if (resurrection == false)
         {
@@ -1166,6 +890,9 @@ public class Player : LivingEntity
         else UILoaderManager.Instance.LoadVillage();
     }
 
+
+
+
     ///////////////// 전환 관련 //////////////////
 
     /// <summary>
@@ -1175,7 +902,7 @@ public class Player : LivingEntity
     {
         if (GetMove())
         {
-            if (_cntState == PLAYERSTATE.PS_IDLE)
+            if (_cntState == PLAYERSTATE.PS_IDLE || (_cntState == PLAYERSTATE.PS_ATTACK && _canWalkAttackFrezzing))
             {
                 ChangeState(PLAYERSTATE.PS_MOVE);
             }
@@ -1236,6 +963,8 @@ public class Player : LivingEntity
         }
     }
 
+
+
     ///////////////// 입력 관련 //////////////////
 
     /// <summary>
@@ -1243,8 +972,7 @@ public class Player : LivingEntity
     /// </summary>
     private void GetJoystickInput()
     {
-        if (joystick == null)
-            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        if (joystick == null) joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
         horizontal = joystick.GetX_axis().value;
         vertical = joystick.GetY_axis().value;
 
@@ -1335,6 +1063,219 @@ public class Player : LivingEntity
     }
 
 
+
+
+    ///////////////// 마스터리 관련 //////////////////
+
+    //마스터리 강화 관련 
+    private void MasteryApply()
+    {
+        //카드 리롤 확률 증가
+        //CardManager.cs 187
+
+        //보스 처치 시 더 많은 코인 획득 미구현 -> 아이템 드랍 확률 증가
+        //DungeonRoom.cs 186
+
+        //마스터리 공격 증가 부분
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == -1)
+        {
+            if (masterySet[1] == false)
+            {
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage *1.1f;
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.1f;
+                statusManager.finalStatus.armor = statusManager.playerStatus.armor;
+                statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance;
+                masterySet[1] = true;
+            }
+        }
+        //방어력 증가 부분
+        else if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
+        {
+            if (masterySet[1] == false)
+            {
+                statusManager.finalStatus.armor = statusManager.playerStatus.armor * 1.1f;
+                statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance * 1.1f;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage;
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage;
+                masterySet[1] = true;
+            }
+
+        }
+        else
+        {
+            statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage;
+            statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage;
+            statusManager.finalStatus.armor = statusManager.playerStatus.armor;
+            statusManager.finalStatus.magicResistance = statusManager.playerStatus.magicResistance;
+        }
+
+        // 체력 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == -1)
+        {
+            if (masterySet[2] == false)
+            {
+                statusManager.finalStatus.hpRecovery = statusManager.playerStatus.hpRecovery * 1.2f;
+                statusManager.finalStatus.staminaRecovery = statusManager.playerStatus.staminaRecovery;
+
+                masterySet[2] = true;
+            }
+
+        }
+        //기력 증가
+        else if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
+        {
+            if (masterySet[2] == false)
+            {
+                statusManager.finalStatus.staminaRecovery = statusManager.playerStatus.staminaRecovery * 1.2f;
+                statusManager.finalStatus.hpRecovery = statusManager.playerStatus.hpRecovery;
+                masterySet[2] = true;
+            }
+        }
+        else
+        {
+            statusManager.finalStatus.hpRecovery = statusManager.playerStatus.hpRecovery;
+            statusManager.finalStatus.staminaRecovery = statusManager.playerStatus.staminaRecovery;
+        }
+
+        //이속 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == -1)
+        {
+            if (masterySet[3] == false)
+            {
+                statusManager.finalStatus.moveSpeed = (statusManager.playerStatus.moveSpeed * 2f) - (((statusManager.playerStatus.moveSpeed * 2f) * _slowingFactor) / 100f);
+                statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
+                masterySet[3] = true;
+            }
+        }
+        //공속 증가
+        else if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
+        {
+            if (masterySet[3] == false)
+            {
+                statusManager.finalStatus.attackSpeed = (statusManager.playerStatus.attackSpeed * 1.2f) - (((statusManager.playerStatus.moveSpeed * 1.2f) * _slowingFactor) / 100f);
+                statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
+
+                masterySet[3] = true;
+            }
+        }
+        else
+        {
+            statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed - ((statusManager.playerStatus.moveSpeed * _slowingFactor) / 100f);
+            statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
+        }
+
+        //골드 획득량 증가 미구현 && 아이템 확률 증가 통합
+        //DungeonRoom.cs 207
+
+        //모든 몬스터 피해량 10%
+        //MonsterAction.cs 778
+
+        //보스 피해량 20%
+        //BossSkeltonKingAction.cs 426
+        //BossSkeltonPase2.cs 416
+
+        //회피시 무적
+        //BossAttack.cs 87
+        //MonsterAction.cs 778
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
+        {
+            if (masterySet[6] == false)
+            {
+                statusManager.finalStatus.dashStamina = statusManager.playerStatus.dashStamina;
+                masterySet[6] = true;
+            }
+        }
+        //회피 사용 기력 감소
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
+        {
+            if (masterySet[6] == false)
+            {
+                statusManager.finalStatus.dashStamina = statusManager.playerStatus.dashStamina * 0.8f;
+                masterySet[6] = true;
+            }
+        }
+        //기본공격 10% 강화, hp 2% 흡수
+        // PlayerAttack.cs 76;
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)
+        {
+            if (masterySet[7] == false)
+            {
+                weaponManager.WeaponCoolTimeincrease();
+                masterySet[7] = true;
+            }
+
+        }
+
+        //스킬 쿨타임 1초 감소
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == 1)
+        {
+            if (masterySet[7] == false)
+            {
+                weaponManager.WeaponCoolTimeReduce();
+                masterySet[7] = true;
+            }
+
+        }
+        // 물리 스킬 총 피해량 40% 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == -1)
+        {
+            if (masterySet[8] == false)
+            {
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage ;
+                statusManager.finalStatus.attackDamage *= statusManager.playerStatus.attackDamage * 1.4f;
+                masterySet[8] = true;
+            }
+        }
+        // 마법 스킬 총 피해량 20% 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == 1)
+        {
+            if (masterySet[8] == false)
+            {
+                if (masterySet[8] == false)
+                {
+                    statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.4f;
+                    statusManager.finalStatus.attackDamage *= statusManager.playerStatus.attackDamage;
+
+                    masterySet[8] = true;
+                }
+            }
+        }
+
+        // HP 20% 이하 물리/마법 공격력 30% 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == -1)
+        {
+            if (masterySet[9] == false)
+            {
+                rage = true;
+                resurrection = false;
+                masterySet[9] = true;
+            }
+
+            if(statusManager.GetCurrentHpPercent()<= 0.2)
+            {
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage * 1.3f;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage * 1.3f;
+            }
+            else
+            {
+                statusManager.finalStatus.magicDamage = statusManager.playerStatus.magicDamage;
+                statusManager.finalStatus.attackDamage = statusManager.playerStatus.attackDamage;
+            }
+        }
+
+        //부활
+        //Player.cs 1043
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == 1)
+        {
+            if (masterySet[9] == false)
+            {
+                rage = false;
+                resurrection = true;
+                masterySet[9] = true;
+            }
+        }
+    }
+
     ///////////////// 기타 //////////////////
 
     /// <summary>
@@ -1379,6 +1320,9 @@ public class Player : LivingEntity
         trailParticle1.Play();
         trailParticle2.Play();
     }
+
+
+
     ///////////////// 카메라 관련 //////////////////
 
     /// <summary>
@@ -1389,12 +1333,9 @@ public class Player : LivingEntity
         SetPlayerFaceCam();
         SetPlayerFollowCam();
         SetMinimapFreeLook();
-        if (cam != null)
-            return;
-        if (SceneManager.GetActiveScene().name == "DungeonScene")
-            cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
-        else
-            cam = GameObject.FindGameObjectWithTag("PlayerFollowCamera").transform;
+        if (cam != null) return;
+        if (SceneManager.GetActiveScene().name == "DungeonScene") cam = GameObject.FindGameObjectWithTag("DungeonMainCamera").transform;
+        else cam = GameObject.FindGameObjectWithTag("PlayerFollowCamera").transform;
     }
 
     /// <summary>
@@ -1402,10 +1343,8 @@ public class Player : LivingEntity
     /// </summary>
     private void SetPlayerFaceCam()
     {
-        if (faceCam != null)
-            return;
+        if (faceCam != null) return;
         faceCam = GameObject.Find("PlayerFaceCam").GetComponent<FaceCam>();
-        //faceCam.InitFaceCam(transform.Find("PlayerAvatar").gameObject);
         faceCam.InitFaceCam(_playerAvatar);
     }
 
@@ -1442,8 +1381,53 @@ public class Player : LivingEntity
         faceCam.InitFaceCam(_playerAvatar);
     }
 
+
+
+    ///////////////// 아웃라인 관련 //////////////////
+
+    public void InitOutline()
+    {
+        lRenderers.Clear();
+        playerOutlinable.outlineTargets.Clear();
+        GetRenderers(transform);
+        for (int i = 0; i < lRenderers.Count; i++)
+        {
+            EPOOutline.OutlineTarget outline = new EPOOutline.OutlineTarget(lRenderers[i], 0);
+            outline.CullMode = UnityEngine.Rendering.CullMode.Off;
+            playerOutlinable.outlineTargets.Add(outline);
+        }
+    }
+
+    private void GetRenderers(Transform parent)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.gameObject.GetComponent<Renderer>() != null)
+            {
+                lRenderers.Add(child.gameObject.GetComponent<Renderer>());
+            }
+            if (child.childCount > 0)
+            {
+                GetRenderers(child);
+            }
+        }
+    }
+
+
+
+
     ///////////////// 기타 캐릭터 기능들 //////////////////
 
+
+    public override void Damaged(float damage)
+    {
+        base.Damaged(damage);
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.6f);
+        SoundManager.Instance.SetPitch(source, 1.5f);
+        isAnnoyed = true;
+        annoyedTime = 0f;
+    }
 
     public void RestoreHP(float restoreHp)
     {
@@ -1456,46 +1440,67 @@ public class Player : LivingEntity
     }
 
 
-    ///////////////// 이전 사용 코드 //////////////////
-
-    public bool GetAttackButton()
+    private void ApplyGravity()
     {
-        return AttackButtonClick;
-    }
-
-    public void SetAttackButton(bool attackbutton)
-    {
-        AttackButtonClick = attackbutton;
-    }
-
-
-    public bool CheckCanAttack()
-    {
-        return AttackButtonClick == true;
-    }
-
-
-    public bool GetAvoidance()
-    {
-        return avoidButtonClick;
-    }
-
-    public void SetAvoidButton(bool avoidbutton)
-    {
-        avoidButtonClick = avoidbutton;
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Item")
+        //낙사
+        if (transform.position.y < -70 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
         {
-            Item itemInfo = other.gameObject.GetComponent<Item>();
-            itemManager.AddItem(itemInfo);
-            //Debug.Log(itemInfo.itemData.itemName + " 아이템 획득!");
-            SystemPanel.instance.SetText(itemInfo.itemData.itemName + " 아이템 획득!");
-            SystemPanel.instance.FadeOutStart();
-            other.gameObject.SetActive(false);
+            _isFalling = true;
+            Damaged(statusManager.finalStatus.maxHp * 0.1f);
+            ReturnToGround();
+            return;
         }
+
+        if (characterController.isGrounded)
+        {
+            vSpeed = 0;
+        }
+
+        vSpeed = vSpeed - Time.deltaTime * 274f;
+        characterController.Move(Vector3.up * vSpeed * Time.deltaTime);
+    }
+
+    private void ReturnToGround()
+    {
+        _isFalling = false;
+        transform.position = lastRoomTransformPos;
+    }
+
+    ///////////////// 테스트 관련 //////////////////
+
+    /// <summary>
+    /// 테스트를 실시하는 코드 모음
+    /// </summary>
+    private void TestCode()
+    {
+        ChangeWeaponTest();
+        ChangeMasteryLevelTest();
+    }
+
+    /// <summary>
+    /// 마스터리 레벨을 올리는 테스트
+    /// </summary>
+    private void ChangeMasteryLevelTest()
+    {
+        //weaponManager.GetWeapon().MasteryLevelUp();
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            weaponManager.AddExpToCurrentWeapon(80);
+            MasteryManager.Instance.SaveCurrentMastery();
+        }
+    }
+
+    /// <summary>
+    /// 무기 테스트를 위한 변경 함수
+    /// </summary>
+    private void ChangeWeaponTest()
+    {
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            weaponManager.SetWeapon("WAND");
+            weaponChanged = true;
+        }
+        else weaponChanged = false;
     }
 }

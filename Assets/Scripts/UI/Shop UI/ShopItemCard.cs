@@ -19,6 +19,8 @@ public class ShopItemCard : MonoBehaviour
     [SerializeField] Button cardBtn;
     [SerializeField] GameObject itemBag;
 
+    public ShopUIView shopUIView;
+
     public Image itemImage;
     public TextMeshProUGUI itemPrice;
     public ItemData itemData;
@@ -29,16 +31,20 @@ public class ShopItemCard : MonoBehaviour
 
     private void Awake()
     {
+        cardBtn.onClick.AddListener(delegate { OnClickItemCard(); });
+    }
+
+    public void InitShopItemCard()
+    {
         itemImage = transform.GetChild(0).GetChild(0).gameObject.GetComponent<Image>();
         itemPrice = transform.GetChild(1).GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
-        itemBag = transform.parent.parent.GetChild(8).gameObject;
-        cardBtn.onClick.AddListener(delegate { OnClickItemCard(); });
+        itemBag = shopUIView.itemBag;
     }
 
     private void OnClickItemCard()
     {
         itemBag.transform.position = transform.position;
-        itemBag.transform.parent.gameObject.GetComponent<ShopUIView>().currentCardIndex = index;
+        shopUIView.currentCardIndex = index;
         itemBag.SetActive(true);
     }
 

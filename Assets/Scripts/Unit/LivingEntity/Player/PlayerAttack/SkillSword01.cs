@@ -1,4 +1,16 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File SkillSword01.cs
+    class SkillSword01
+    
+    공격 데미지만큼 피흡을 시켜주는 스킬
+
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using System.Collections;
 
 public class SkillSword01 : PlayerAttack

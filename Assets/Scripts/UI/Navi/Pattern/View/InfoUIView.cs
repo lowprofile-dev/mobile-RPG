@@ -38,9 +38,9 @@ public class InfoUIView : View
         base.UIExit();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        //LoadCurrentEquip();
+        base.OnEnable();
     }
 
     private void Awake()
@@ -52,6 +52,7 @@ public class InfoUIView : View
     private void OnClick()
     {
         UINaviationManager.Instance.PopToNav(name);
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
 
     // Update is called once per frame

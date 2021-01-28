@@ -1,19 +1,27 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File NonLivingEntity.cs
+    class NonLivingEntity
+    
+    Object 및 NPC와 같은 개체들.
+    
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Object 및 NPC에 사용되는 클래스
-/// </summary>
 public class NonLivingEntity : Unit
 {
-    [SerializeField] private bool _isNpc;
+    [SerializeField] private bool _isNpc;   // 대상 오브젝트가 NPC인지 여부
 
-    private TalkManager _talkManager;   // 토크매니저 캐싱
-    private TalkChecker _myTalkChecker; // 해당 NPC의 토크체커 캐싱
+    private TalkManager _talkManager;       // 토크매니저 캐싱
+    private TalkChecker _myTalkChecker;     // 해당 NPC의 토크체커 캐싱
 
-    public Image  minimapIconSprite;
-
-    public GameObject canEndSquare;
+    public Image  minimapIconSprite;        // 미니맵에 표시도리 퀘스트 관련 아이콘
+    public GameObject canEndSquare;         // 퀘스트 진행가능 여부를 표시해주는 캐릭터 위의 사각형
     
     protected void OnDisable()
     {
@@ -36,25 +44,17 @@ public class NonLivingEntity : Unit
     {
         _myTalkChecker.Talk();
     }
-
+    
+    /// <summary>
+    /// 현재 퀘스트 정보에 따라 미니맵 아이콘과 캐릭터 위 사각형 여부를 바꿔준다.
+    /// </summary>
     public void CheckQuestVisibleInfo()
     {
         if(_myTalkChecker != null && minimapIconSprite != null)
         {
-            if (_myTalkChecker.canFinishQuest)
-            {
-                minimapIconSprite.sprite = GlobalDefine.Instance.questExitMinimapIcon;
-            }
-
-            else if (_myTalkChecker.canStartQuest)
-            {
-                minimapIconSprite.sprite = GlobalDefine.Instance.questStartMinimapIcon;
-            }
-
-            else
-            {
-                minimapIconSprite.sprite = GlobalDefine.Instance.npcBaseMinimapIcon;
-            }
+            if (_myTalkChecker.canFinishQuest) minimapIconSprite.sprite = GlobalDefine.Instance.questExitMinimapIcon;
+            else if (_myTalkChecker.canStartQuest) minimapIconSprite.sprite = GlobalDefine.Instance.questStartMinimapIcon;
+            else minimapIconSprite.sprite = GlobalDefine.Instance.npcBaseMinimapIcon;
         }
 
         if (_myTalkChecker.canFinishQuest || _myTalkChecker.canStartQuest) canEndSquare.SetActive(true);

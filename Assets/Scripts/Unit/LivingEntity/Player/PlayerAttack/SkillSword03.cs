@@ -1,4 +1,16 @@
-﻿using UnityEngine;
+﻿////////////////////////////////////////////////////
+/*
+    File SkillSword03.cs
+    class SkillSword03
+    
+    거대한 검을 생성하여 공격하는 스킬
+
+    담당자 : 이신홍
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
+using UnityEngine;
 using System.Collections;
 
 public class SkillSword03 : PlayerAttack

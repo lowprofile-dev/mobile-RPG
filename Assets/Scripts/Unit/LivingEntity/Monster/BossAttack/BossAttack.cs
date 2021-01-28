@@ -1,4 +1,15 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File BossAttack.cs
+    class BossAttack
+    
+    담당자 : 안영훈
+    부 담당자 : 
+
+    보스 공격 콜라이더 스크립트
+*/
+////////////////////////////////////////////////////
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,7 +43,7 @@ public class BossAttack : MonoBehaviour
 
 
         SetLocalRotation(start, target);
-        //Effect.transform.position = start.transform.position;
+
         if (_particleEffectPrefab != null)
         {
             GameObject Effect = ObjectPoolManager.Instance.GetObject(_particleEffectPrefab);
@@ -40,8 +51,6 @@ public class BossAttack : MonoBehaviour
             Effect.transform.localPosition = Vector3.zero;
             Effect.transform.rotation = Quaternion.identity;
         }
-        //Effect.transform.Rotate(Quaternion.LookRotation(Player.Instance.transform.forward).eulerAngles);
-
 
         if (_attackedTarget != null)
         {

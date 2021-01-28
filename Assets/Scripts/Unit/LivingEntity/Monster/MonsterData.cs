@@ -14,6 +14,6 @@ public class MonsterData
     public float attackrange;
     public float LimitTraceRange;
     public float AttackSpeed;
-    public float damage;
+    public int damage;
     public float speed;
 }

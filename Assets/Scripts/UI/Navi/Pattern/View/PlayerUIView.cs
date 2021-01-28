@@ -1,6 +1,9 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PlayerUIView : View
 {
@@ -12,14 +15,15 @@ public class PlayerUIView : View
 
     [SerializeField] private Button _cardTestBtn;
     [SerializeField] private Button _shopTestBtn;
+    [SerializeField] private Button _shopTestBtn1;
     [SerializeField] private Button _atkBtn;
     [SerializeField] private Image _atkImg;
     [SerializeField] private Button _invincibleBtn;
-    [SerializeField] private Button _skillAButton; public Button skillAButton { get { return _skillAButton; } }
+    [SerializeField] private Button _skillAButton; 
     [SerializeField] private Image _skillAImg;
-    [SerializeField] private Button _skillBButton; public Button skillBButton { get { return _skillBButton; } }
+    [SerializeField] private Button _skillBButton; 
     [SerializeField] private Image _skillBImg;
-    [SerializeField] private Button _skillCButton; public Button skillCButton { get { return _skillCButton; } }
+    [SerializeField] private Button _skillCButton; 
     [SerializeField] private Image _skillCImg;
     [SerializeField] private TextMeshProUGUI _masteryText;
     [SerializeField] private TextMeshProUGUI _weaponText;
@@ -30,19 +34,30 @@ public class PlayerUIView : View
     [SerializeField] private GameObject _buffFrame;
     [SerializeField] private GameObject _buffImgPrefab;
     [SerializeField] private Button _optionButton;
-    [SerializeField] private QuestDropdown _questDropdown; public QuestDropdown questDropdown { get { return _questDropdown; } }
-
+    [SerializeField] private QuestDropdown _questDropdown; 
     [SerializeField] private Sprite[] _swordSkiilsImg;
     [SerializeField] private Sprite[] _staffSkillsImg;
     [SerializeField] private Sprite[] _daggerSkillImg;
     [SerializeField] private Sprite[] _wandSkillImg;
     [SerializeField] private Sprite[] _bluntSkillImg;
+    [SerializeField] private Button _inventoryButton;
+    [SerializeField] private GameObject buffInfo;
+    private WeaponMasteryView weaponView;
+
+    // property
+    public Button invincibleBtn { get { return _invincibleBtn; } }
+    public Button skillAButton { get { return _skillAButton; } }
+    public Button skillBButton { get { return _skillBButton; } }
+    public Button skillCButton { get { return _skillCButton; } }
+    public Button inventoryButton { get { return _inventoryButton; } }
+    public QuestDropdown questDropdown { get { return _questDropdown; } }
 
     static int IsPlayerTutorial;
     private void Start()
     {
         _cardTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleCardUIView(); });
         _shopTestBtn.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleShopView(); });
+        _shopTestBtn1.onClick.AddListener(delegate { UINaviationManager.Instance.TogglePurchaseShopView(); });
         _atkBtn.onClick.AddListener(delegate { Player.Instance.CheckInteractObject(); });
         _invincibleBtn.onClick.AddListener(delegate { Player.Instance.EvadeBtnClicked(); });
         _optionButton.onClick.AddListener(delegate { AddOptionView(); });
@@ -53,8 +68,8 @@ public class PlayerUIView : View
         _skillBButton.onClick.AddListener(delegate { _skillBButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
         _skillCButton.onClick.AddListener(delegate { Player.Instance.SkillCBtnClicked(); });
         _skillCButton.onClick.AddListener(delegate { _skillCButton.GetComponent<CoolTimeScript>().StartCoolTime(); });
-        _masteryButton.onClick.AddListener(delegate { _masteryButton.GetComponent<MasteryButton>().onButtonClick(); });
-        _weaponButton.onClick.AddListener(delegate { _weaponButton.GetComponent<WeaponButton>().onButtonClick(); });
+        _masteryButton.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleMasteryView(); });
+        _weaponButton.onClick.AddListener(delegate { UINaviationManager.Instance.ToggleWeaponView(); });
 
         if (tutorialButton != null) tutorialButton.onClick.AddListener(delegate { TutorialClick(); });
         tutorialExitButton.onClick.AddListener(delegate { TutorialExit(); });
@@ -86,6 +101,21 @@ public class PlayerUIView : View
         SetMyStatusText();
         SetHpStemina();
         SetTalkOrAttackSprite();
+        ActivateShopBtn();
+    }
+
+    private void ActivateShopBtn()
+    {
+        if (SceneManager.GetSceneByName("VillageScene").isLoaded == false)
+        {
+            _shopTestBtn.gameObject.SetActive(false);
+            _shopTestBtn1.gameObject.SetActive(false);
+        }
+        else if (SceneManager.GetSceneByName("VillageScene").isLoaded == true)
+        {
+            _shopTestBtn.gameObject.SetActive(true);
+            _shopTestBtn1.gameObject.SetActive(true);
+        }
     }
 
     public void AddOptionView()
@@ -204,4 +234,5 @@ public class PlayerUIView : View
             }
         }
     }
+
 }

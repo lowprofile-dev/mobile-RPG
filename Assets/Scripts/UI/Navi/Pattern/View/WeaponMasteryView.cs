@@ -4,9 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 카드 UI
-/// </summary>
+////////////////////////////////////////////////////
+/*
+    File WeaponMasteryView.cs
+    class WeaponMasteryView
+
+    담당자 : 김의겸
+    부 담당자 : 
+*/
+////////////////////////////////////////////////////
+
 public class WeaponMasteryView : View
 {
     [SerializeField] private Image _basePanel;
@@ -55,6 +62,7 @@ public class WeaponMasteryView : View
 
     static int IsWeaponMasteryTutorial;
 
+
     private void Start()
     {
         _swordScript = new SkillScript[4];
@@ -78,10 +86,18 @@ public class WeaponMasteryView : View
         }
     }
 
+    /// <summary>
+    /// 무기 숙련도창 닫는 함수
+    /// </summary>
     private void ExitButtonClick()
     {
         UINaviationManager.Instance.PopToNav("SubUI_WeaponMasteryView");
+        SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
     }
+
+    /// <summary>
+    /// 각 무기별 스킬 스크립트 초기화
+    /// </summary>
 
     private void ScriptInit()
     {
@@ -95,15 +111,9 @@ public class WeaponMasteryView : View
         }
     }
 
-    public void UpgradePop()
-    {
-
-        //  Debug.Log("HELLO");
-
-    }
-
     private void Update()
     {
+        //출력되는 부분들을 초기화 해주는 부분
         if (WeaponManager.Instance != null && !isInit)
         {
             masteryManager = MasteryManager.Instance;
@@ -133,6 +143,7 @@ public class WeaponMasteryView : View
 
             isInit = true;
         }
+        // 초기화가 끝난 후 스킬 레벨과 무기 숙련도 레벨등을 업데이트 해주는 부분
         else if (WeaponManager.Instance != null && isInit)
         {
             LevelPrint();
@@ -141,9 +152,12 @@ public class WeaponMasteryView : View
         }
     }
 
+    /// <summary>
+    /// 각 무기별 스킬들의 레벨을 초기화 하고 출력
+    /// </summary>
     private void SkillLevelInit()
     {
-        for(int i =0; i <4; i++)
+        for (int i = 0; i < 4; i++)
         {
             _swordScript[i].skillLevel = sword.skillLevel[i];
             _swordScript[i].SkillLevelPrint();
@@ -162,6 +176,11 @@ public class WeaponMasteryView : View
         }
     }
 
+    /// <summary>
+    /// 각 무기별 스킬들의 레벨을 최신화 하여 출력
+    /// 각 무기가 가지고 있는 스킬 레벨과 스킬 스크립트 상의 레벨이 다를 경우
+    /// 무기의 레벨을 최신화하고 출력
+    /// </summary>
     private void SkillLevelPrint()
     {   
         for(int i =0; i <4; i++)
@@ -290,6 +309,9 @@ public class WeaponMasteryView : View
         }
     }
 
+    /// <summary>
+    /// 각 무기 별 스킬의 해금 조건이 만족할 경우 스킬 해금을 풀어주는 함수
+    /// </summary>
     private void SkillUnLock()
     {
         if(sword.skillBRelease && _swordScript[2].skillReleased == false)
@@ -334,6 +356,9 @@ public class WeaponMasteryView : View
         }
     }
 
+    /// <summary>
+    /// 무기별 숙련도 레벨을 출력해주는 함수
+    /// </summary>
     public void LevelPrint()
     {
         

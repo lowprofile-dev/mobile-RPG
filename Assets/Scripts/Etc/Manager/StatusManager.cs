@@ -3,7 +3,7 @@
     class StatusManager, AdditionStatus, MultiplicationStatus
     
     담당자 : 김기정
-    부 담당자 :
+    부 담당자 : 김의겸
  */
 
 using CSVReader;
@@ -14,6 +14,7 @@ using UnityEngine;
 /// <summary>
 /// 합연산용 스텟 클래스
 /// </summary>
+[System.Serializable]
 public class AdditionStatus
 {
     public float hp;                    //최대 체력 증가
@@ -45,11 +46,13 @@ public class AdditionStatus
 /// <summary>
 /// 곱연산용 스텟 클래스
 /// </summary>
+[System.Serializable]
 public class MultiplicationStatus
 {
     public float hpIncreaseRate;        //체력 % 증가
     public float attackSpeed;           //공격속도 % 증가
     public float attackCooldown;        //공격스킬 쿨타임 % 감소
+    public float attackDamage;          //공격력 % 증가
     public float armorIncreaseRate;     //방어력 % 증가
     public float moveSpeed;             //이동 속도 % 증가
     public float maxSpeed;
@@ -59,6 +62,7 @@ public class MultiplicationStatus
     public MultiplicationStatus()
     {
         hpIncreaseRate = 0;        //체력 % 증가
+        attackDamage = 0;           //공격력 % 증가
         attackSpeed = 0;           //공격속도 % 증가
         attackCooldown = 0;        //공격스킬 쿨타임 % 감소
         armorIncreaseRate = 0;     //방어력 % 증가
@@ -79,7 +83,6 @@ public class StatusManager : SingletonBase<StatusManager>
     public CurrentStatus playerStatus;
     public AdditionStatus additionStatus;
     public MultiplicationStatus multiplicationStatus;
-    public CurrentStatus itemAppliedStatus;
     public CurrentStatus finalStatus;
 
     // 카드 리롤
@@ -98,7 +101,6 @@ public class StatusManager : SingletonBase<StatusManager>
         playerStatus = new CurrentStatus();
         additionStatus = new AdditionStatus();
         multiplicationStatus = new MultiplicationStatus();
-        itemAppliedStatus = new CurrentStatus();
         finalStatus = new CurrentStatus();
         Table statusTable = CSVReader.Reader.ReadCSVToTable("CSVData/StatusDatabase");
         statusDictionary = statusTable.TableToDictionary<int, StatusData>();
@@ -111,36 +113,32 @@ public class StatusManager : SingletonBase<StatusManager>
         {
             player = Player.Instance;
         }
+        finalStatus = (CurrentStatus)playerStatus.Clone();
         AddCurrentStatus();
         MultiplyCurrentStatus();
-        SetFinalStatus();
-    }
-
-    private void SetFinalStatus()
-    {
-        finalStatus = itemAppliedStatus;
     }
 
     private void AddCurrentStatus()
     {
-        itemAppliedStatus.maxHp = playerStatus.maxHp + additionStatus.hp;
-        itemAppliedStatus.hpRecovery = playerStatus.hpRecovery + additionStatus.hpRecovery;
-        itemAppliedStatus.maxStamina = playerStatus.maxStamina + additionStatus.stamina;
-        itemAppliedStatus.staminaRecovery = playerStatus.staminaRecovery + additionStatus.staminaRecovery;
-        itemAppliedStatus.attackDamage = playerStatus.attackDamage + additionStatus.attackDamage;
-        itemAppliedStatus.armor = playerStatus.armor + additionStatus.armor;
-        itemAppliedStatus.magicResistance = playerStatus.magicResistance + additionStatus.magicResistance;
-        itemAppliedStatus.rigidresistance = playerStatus.rigidresistance + additionStatus.rigidresistance;
-        itemAppliedStatus.stunresistance = playerStatus.stunresistance + additionStatus.stunresistance;
-        itemAppliedStatus.fallresistance = playerStatus.fallresistance + additionStatus.fallresistance;
+        finalStatus.maxHp = playerStatus.maxHp + additionStatus.hp;
+        finalStatus.hpRecovery = playerStatus.hpRecovery + additionStatus.hpRecovery;
+        finalStatus.maxStamina = playerStatus.maxStamina + additionStatus.stamina;
+        finalStatus.staminaRecovery = playerStatus.staminaRecovery + additionStatus.staminaRecovery;
+        finalStatus.attackDamage = playerStatus.attackDamage + additionStatus.attackDamage;
+        finalStatus.armor = playerStatus.armor + additionStatus.armor;
+        finalStatus.magicResistance = playerStatus.magicResistance + additionStatus.magicResistance;
+        finalStatus.rigidresistance = playerStatus.rigidresistance + additionStatus.rigidresistance;
+        finalStatus.stunresistance = playerStatus.stunresistance + additionStatus.stunresistance;
+        finalStatus.fallresistance = playerStatus.fallresistance + additionStatus.fallresistance;
     }
 
     private void MultiplyCurrentStatus()
     {
-        itemAppliedStatus.armor = itemAppliedStatus.armor * (1 + multiplicationStatus.armorIncreaseRate / 100.0f);
-        itemAppliedStatus.attackCooldown = itemAppliedStatus.attackCooldown - (multiplicationStatus.armorIncreaseRate / 100.0f);
-        itemAppliedStatus.dashCooldown = itemAppliedStatus.dashCooldown - (multiplicationStatus.dashCooldown / 100.0f);
-        itemAppliedStatus.dashStamina = itemAppliedStatus.dashStamina * (1 - multiplicationStatus.dashStamina / 100f);
+        finalStatus.attackDamage = finalStatus.attackDamage * (1 + multiplicationStatus.attackDamage / 100.0f);
+        finalStatus.armor = finalStatus.armor * (1 + multiplicationStatus.armorIncreaseRate / 100.0f);
+        finalStatus.attackCooldown = finalStatus.attackCooldown - (multiplicationStatus.armorIncreaseRate / 100.0f);
+        finalStatus.dashCooldown = finalStatus.dashCooldown - (multiplicationStatus.dashCooldown / 100.0f);
+        finalStatus.dashStamina = finalStatus.dashStamina * (1 - multiplicationStatus.dashStamina / 100f);
     }
     
     private void LoadCurrentStatus()

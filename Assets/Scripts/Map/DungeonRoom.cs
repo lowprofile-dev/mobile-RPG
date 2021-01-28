@@ -3,14 +3,12 @@
     class DungeonRoom
     
     담당자 : 김기정
-    부 담당자 :
+    부 담당자 : 안영훈
  */
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class DungeonRoom : MonoBehaviour
@@ -27,7 +25,7 @@ public class DungeonRoom : MonoBehaviour
 
     Bounds bounds;
     Vector2 center;
-    DungeonManager dungeonManager;
+    DungeonManager dungeonManager; public DungeonManager DungeonManager { get { return dungeonManager; } }
 
     [Header("방별 몬스터 스폰 데이터")]
     [SerializeField] List<GameObject> monsterSpawnPoints = new List<GameObject>();
@@ -42,7 +40,7 @@ public class DungeonRoom : MonoBehaviour
     [SerializeField] GameObject bossSpawnPoint;
     private List<GameObject> doorways = new List<GameObject>();
     private List<GameObject> doors = new List<GameObject>();
-    private List<GameObject> monsters = new List<GameObject>();
+    private List<GameObject> monsters = new List<GameObject>(); public List<GameObject> MonsterList { get { return monsters; } }
     private List<GameObject> lights = new List<GameObject>();
     private List<GameObject> minimapIcons = new List<GameObject>();
     System.Random random = new System.Random();
@@ -53,14 +51,12 @@ public class DungeonRoom : MonoBehaviour
     private void Start()
     {
         dungeonManager = transform.parent.gameObject.GetComponent<DungeonManager>();
-        //StartCoroutine(roomSetAreaCodeCoroutine());
         GetMonsterSpawnPoints(transform);
         GetBossSpawnPoint(transform);
         GetMinimapImages(transform);
         if (dungeonManager.hasPlane && !isSetArea)
         {
             SetArea();
-            //this.enabled = false;
         }
     }
 
@@ -100,13 +96,15 @@ public class DungeonRoom : MonoBehaviour
 
     private void OnDestroy()
     {
-        for (int i = monsters.Count-1; i >= 0; i--)
+        for (int i = monsters.Count - 1; i >= 0; i--)
         {
             Destroy(monsters[i]);
+            //ObjectPoolManager.Instance.ReturnObject(monsters[i]);
         }
         for (int i = doors.Count - 1; i >= 0; i--)
         {
-            Destroy(doors[i]);
+            //Destroy(doors[i]);
+            ObjectPoolManager.Instance.ReturnObject(doors[i]);
         }
     }
 
@@ -115,9 +113,8 @@ public class DungeonRoom : MonoBehaviour
         GetLights(transform);
         for (int i = 0; i < lights.Count; i++)
         {
-            //lights[i].GetComponent<Light>().color
             Color color;
-            switch(this.areaCode-1)
+            switch (areaCode - 1)
             {
                 case 0:
                     lights[i].GetComponent<Light>().color = Color.red;
@@ -168,13 +165,15 @@ public class DungeonRoom : MonoBehaviour
         GetDoorways(transform);
         for (int i = 0; i < doorways.Count; i++)
         {
-            //GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
-            GameObject door = Instantiate(doorPrefab);
+            //GameObject door = Instantiate(doorPrefab);
+            GameObject door = ObjectPoolManager.Instance.GetObject(doorPrefab);
             door.transform.position = doorways[i].transform.TransformPoint(0, 0, 0);
             door.transform.rotation = doorways[i].transform.rotation;
             doors.Add(door);
         }
-        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomStart", 1.1f);
+
+        AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomStart", 0.9f);
+        SoundManager.Instance.SetAudioReverbEffect(source, AudioReverbPreset.Cave);
         isClosedPrev = true;
     }
 
@@ -182,14 +181,15 @@ public class DungeonRoom : MonoBehaviour
     {
         for (int i = 0; i < doors.Count; i++)
         {
-            doors[i].gameObject.SetActive(false);
-            //ObjectPoolManager.Instance.ReturnObject(doors[i].gameObject);
+            //doors[i].gameObject.SetActive(false);
+            ObjectPoolManager.Instance.ReturnObject(doors[i].gameObject);
         }
-        //doors.Clear();
+        doors.Clear();
 
-        if(isClosedPrev)
+        if (isClosedPrev)
         {
-            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomEnd", 1.1f);
+            AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Dungeon/DungeonRoomEnd", 0.9f);
+            SoundManager.Instance.SetAudioReverbEffect(source, AudioReverbPreset.Cave);
             isClosedPrev = false;
         }
     }
@@ -249,7 +249,7 @@ public class DungeonRoom : MonoBehaviour
         for (int i = 0; i < minimapIcons.Count; i++)
         {
             Color color;
-            switch (this.areaCode - 1)
+            switch (areaCode - 1)
             {
                 case 0:
                     minimapIcons[i].GetComponent<Image>().color = Color.red;
@@ -281,6 +281,9 @@ public class DungeonRoom : MonoBehaviour
                     minimapIcons[i].GetComponent<Image>().color = Color.black;
                     break;
             }
+            Color minimapColor = minimapIcons[i].GetComponent<Image>().color;
+            minimapColor.a = 0.5f;
+            minimapIcons[i].GetComponent<Image>().color = minimapColor;
         }
     }
 
@@ -289,15 +292,12 @@ public class DungeonRoom : MonoBehaviour
         if (dungeonManager.hasPlane && !isSetArea)
         {
             SetArea();
-            //this.enabled = false;
             ChangeLights();
             SetMinimapColor();
         }
         if (!isMinimapSet)
             SetMinimapColor();
         CheckPlayerInRoom();
-        //CheckClear();
-        //CheckMonstersInRoom();
     }
 
     public void CheckClear()
@@ -314,18 +314,19 @@ public class DungeonRoom : MonoBehaviour
     /// </summary>
     private void CheckMonstersInRoom()
     {
-        for (int i = monsters.Count -1; i >= 0; i--)
+        for (int i = monsters.Count - 1; i >= 0; i--)
         {
             if (monsters[i] == null) continue;
             if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center))
             {
-                monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 7, 0);
+                monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 1, 0);
             }
         }
     }
 
     private void CheckPlayerInRoom()
     {
+        if (Player.Instance == null) return;
         if (bounds.Contains(dungeonManager.player.GetComponent<CapsuleCollider>().bounds.center))
         {
             hasPlayer = true;
@@ -338,7 +339,7 @@ public class DungeonRoom : MonoBehaviour
                 if (isBossRoom)
                 {
                     //마스터리 스킬 보스 처치시 드랍율 향상
-                    if(MasteryManager.Instance.currentMastery.currentMasteryChoices[0] == 1)
+                    if (MasteryManager.Instance.currentMastery.currentMasteryChoices[0] == 1)
                     {
                         if (Player.Instance.masterySet[0] == false)
                         {
@@ -348,7 +349,7 @@ public class DungeonRoom : MonoBehaviour
                             }
                             Player.Instance.masterySet[0] = true;
                         }
-                        
+
                     }
                     else
                     {
@@ -358,7 +359,7 @@ public class DungeonRoom : MonoBehaviour
                 else if (dungeonManager.dungeonStage == 1)
                 {
                     //마스터리 스킬 골드, 아이템 획득량 증가
-                    if(MasteryManager.Instance.currentMastery.currentMasteryChoices[4]== -1 
+                    if (MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == -1
                         || MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == 1)
                     {
                         if (Player.Instance.masterySet[4] == false)
@@ -400,7 +401,7 @@ public class DungeonRoom : MonoBehaviour
                 Invoke("CloseDoors", 1f);
                 if (isBossRoom)
                 {
-                    Invoke("SpawnBoss", 1f);                  
+                    Invoke("SpawnBoss", 1f);
                 }
                 else
                     StartCoroutine(SpawnMonsterCoroutine());
@@ -421,13 +422,12 @@ public class DungeonRoom : MonoBehaviour
         }
         SoundManager.Instance.PlayBGM("BossBGM", 0.6f);
         GameObject boss = dungeonManager.SpawnBoss(bossSpawnPoint.transform);
-        boss.GetComponent<NavMeshAgent>().enabled = false;
         boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);
+        boss.GetComponent<MonsterAction>().parentRoom = this;
+        boss.GetComponent<Monster>().InitMonster();
         boss.transform.LookAt(Player.Instance.gameObject.transform);
         boss.transform.SetParent(null);
-        boss.GetComponent<NavMeshAgent>().enabled = true;
         monsters.Add(boss);
-        boss.GetComponent<MonsterAction>().parentRoom = this;
         nMonsterSpawned++;
         CameraManager.Instance.CameraSetTarget(boss);
     }
@@ -491,12 +491,12 @@ public class DungeonRoom : MonoBehaviour
             nMonsterAlive++;
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
             monsterIndex = random.Next(dungeonManager.currentStageMonsterPrefabs.Count);
-            var monster = Instantiate(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
-            monster.GetComponent<NavMeshAgent>().enabled = false;
-            monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 1, 0);
-            monster.GetComponent<NavMeshAgent>().enabled = true;
-            nMonsterSpawned += 1;
+            GameObject monster = ObjectPoolManager.Instance.GetObject(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
+            monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
             monster.GetComponent<MonsterAction>().parentRoom = this;
+            monster.GetComponent<Monster>().InitMonster();
+            nMonsterSpawned += 1;
+            monster.GetComponent<MonsterAction>().SpawnPos = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
             monsters.Add(monster);
         }
     }
@@ -518,7 +518,8 @@ public class DungeonRoom : MonoBehaviour
     /// <returns></returns>
     IEnumerator roomSetAreaCodeCoroutine()
     {
-        while (dungeonManager.hasPlane && !isSetArea) {
+        while (dungeonManager.hasPlane && !isSetArea)
+        {
 
             yield return null;
         }

@@ -12,11 +12,8 @@ public class EnemySliderBar : MonoBehaviour
     [SerializeField] protected Monster parent;
     protected MonsterAction parentAction;
 
-    float angle;
-    float velocity;
-
-    private void Start()
-    {
+    private void OnEnable()
+    {     
         cam = CameraManager.Instance.PlayerFollowCamera;
         StartCoroutine("LookTarget");
         parentAction = parent.GetComponent<MonsterAction>();
@@ -39,7 +36,6 @@ public class EnemySliderBar : MonoBehaviour
 
     public void CastUpdate() // 해당 오브젝트의 casting 업데이트
     {
-        //CastSlider.value = parent.GetComponent<MonsterAction>()._cntCastTime / parent.GetComponent<MonsterAction>()._castTime;
         CastSlider.value = parentAction._cntCastTime / parentAction._castTime;
     }
 }

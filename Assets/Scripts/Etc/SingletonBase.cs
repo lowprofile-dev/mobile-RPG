@@ -1,6 +1,17 @@
-﻿using UnityEngine;
+﻿//////////////////////////////////////////////
+/*
+    File SingletonBase.cs
+    class SingletonBase
+    
+    담당자 : 이신홍
+    부담당자 :
+    
+    싱글톤의 베이스가 될 클래스
+*/
+////////////////////////////////////////////////////
 
-// 싱글톤 클래스의 베이스가 될 클래스이다.
+using UnityEngine;
+
 public class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static bool shuttingDown = false;

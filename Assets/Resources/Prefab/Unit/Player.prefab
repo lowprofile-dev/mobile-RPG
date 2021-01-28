@@ -240,33 +240,40 @@ MonoBehaviour:
     type: 3}
   _speed: 6
   myAnimator: {fileID: 0}
-  _initEvadeTime: 0.3
   _playerAvatar: {fileID: 3920493311905665660}
-  systemPanel: {fileID: 3587841584078822156, guid: e433d219247e70f4ab7dc6ccce789155,
-    type: 3}
-  masterySet: 00000000000000000000
-  firePoint: {fileID: 1470817335}
-  skillPoint: {fileID: 362263809}
   characterController: {fileID: 3921490016967684025}
+  joystick: {fileID: 0}
+  selection: {fileID: 0}
   turnSmoothTime: 0.1
   cam: {fileID: 0}
   playerFollowCam: {fileID: 0}
   playerFreeLook: {fileID: 0}
   minimapFreeLook: {fileID: 0}
+  faceCam: {fileID: 0}
+  _systemPanel: {fileID: 0}
+  _initEvadeTime: 0.3
+  masterySet: 00000000000000000000
+  skillPoint: {fileID: 362263809}
+  currentCombo: 0
+  weaponChanged: 0
+  dashSpeed: 55
+  currentDungeonArea: 0
   trailParticle1: {fileID: 8724926161223023752}
   trailParticle2: {fileID: 3693034159762719421}
-  weaponChanged: 0
-  rotateAngle: {x: 0, y: 0, z: 0, w: 0}
-  joystick: {fileID: 0}
-  dashSpeed: 55
-  currentCombo: 0
-  _trailRenderer: {fileID: 0}
-  _rushingCollider: {fileID: 0}
-  selection: {fileID: 0}
-  weaponManager: {fileID: 0}
-  currentDungeonArea: 0
-  isFalling: 0
   lastRoomTransformPos: {x: 0, y: 0, z: 0}
+  fullHealthDamage: 0
+  proportionalDamage: 0
+  giantDamage: 0
+  annoyedDamage: 0
+  spellStrikeDamage: 0
+  canDealFullHealth: 0
+  canDealProportional: 0
+  canDealGiant: 0
+  canDealAnnoyed: 0
+  canDealSpellStrike: 0
+  hasSpellStrike: 0
+  isAnnoyed: 0
+  annoyedTime: 0
 --- !u!114 &3921490016967684023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,6 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45fc230a92150e248967bb697e5794fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterParts: {fileID: 0}
   isPlayer: 1
 --- !u!95 &3579303962046094622
 Animator:
@@ -348,7 +356,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3921490016967684021}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
   m_Name: 
@@ -367,15 +375,15 @@ MonoBehaviour:
       serializedProperties: []
   backParameters:
     enabled: 1
-    color: {r: 0.13852811, g: 1, b: 0, a: 1}
+    color: {r: 0.13725495, g: 1, b: 0, a: 1}
     dilateShift: 1
     blurShift: 1
     fillPass:
       shader: {fileID: 0}
       serializedProperties: []
   frontParameters:
-    enabled: 0
-    color: {r: 0.13725491, g: 1, b: 0, a: 1}
+    enabled: 1
+    color: {r: 0.06344805, g: 0.46226418, b: 0, a: 1}
     dilateShift: 1
     blurShift: 1
     fillPass:
