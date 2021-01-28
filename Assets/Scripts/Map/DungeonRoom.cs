@@ -430,7 +430,9 @@ public class DungeonRoom : MonoBehaviour
         }
         SoundManager.Instance.PlayBGM("BossBGM", 0.6f);
         GameObject boss = dungeonManager.SpawnBoss(bossSpawnPoint.transform);
+        boss.GetComponent<NavMeshAgent>().enabled = false;
         boss.transform.position = bossSpawnPoint.transform.TransformPoint(0, 0, 0);
+        boss.GetComponent<NavMeshAgent>().enabled = true;
         boss.GetComponent<MonsterAction>().parentRoom = this;
         boss.GetComponent<Monster>().InitMonster();
         boss.transform.LookAt(Player.Instance.gameObject.transform);
@@ -500,7 +502,9 @@ public class DungeonRoom : MonoBehaviour
             spawnPointIndex = random.Next(monsterSpawnPoints.Count);
             monsterIndex = random.Next(dungeonManager.currentStageMonsterPrefabs.Count);
             GameObject monster = ObjectPoolManager.Instance.GetObject(dungeonManager.currentStageMonsterPrefabs[monsterIndex]);
+            monster.GetComponent<NavMeshAgent>().enabled = false;
             monster.transform.position = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
+            monster.GetComponent<NavMeshAgent>().enabled = true;
             monster.GetComponent<MonsterAction>().parentRoom = this;
             monster.GetComponent<Monster>().InitMonster();
             nMonsterSpawned += 1;

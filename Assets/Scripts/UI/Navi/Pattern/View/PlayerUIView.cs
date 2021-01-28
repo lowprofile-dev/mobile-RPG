@@ -41,7 +41,7 @@ public class PlayerUIView : View
     [SerializeField] private Sprite[] _wandSkillImg;
     [SerializeField] private Sprite[] _bluntSkillImg;
     [SerializeField] private Button _inventoryButton;
-    [SerializeField] private GameObject buffInfo;
+    [SerializeField] private UIBuffInfo _buffInfo;
     private WeaponMasteryView weaponView;
 
     // property
@@ -51,6 +51,7 @@ public class PlayerUIView : View
     public Button skillCButton { get { return _skillCButton; } }
     public Button inventoryButton { get { return _inventoryButton; } }
     public QuestDropdown questDropdown { get { return _questDropdown; } }
+    public UIBuffInfo buffInfo { get { return _buffInfo; } }
 
     static int IsPlayerTutorial;
     private void Start()
@@ -215,22 +216,29 @@ public class PlayerUIView : View
                 {
                     GameObject buffImgObj = ObjectPoolManager.Instance.GetObject(_buffImgPrefab);
                     buffImgObj.transform.SetParent(_buffFrame.transform);
-                    buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>(iconPath + cardData.cardData.iconImg);
+                    Sprite sprite = Resources.Load<Sprite>(iconPath + cardData.cardData.iconImg);
+                    buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = sprite;
                     buffImgObj.GetComponent<RectTransform>().localScale = Vector3.one;
+                    buffImgObj.transform.GetChild(0).GetComponent<BuffFrame>().SetData(sprite, cardData.EffectToString(), cardData.cardData.cardName);
+
                 }
             }
         }
-
 
         for (int i = 0; i < 10; i++)
         {
             if (MasteryManager.Instance.currentMastery.currentMasteryChoices[i] != 0)
             {
+                int currentChoice = MasteryManager.Instance.currentMastery.currentMasteryChoices[i];
                 GameObject buffImgObj = ObjectPoolManager.Instance.GetObject(_buffImgPrefab);
                 buffImgObj.transform.SetParent(_buffFrame.transform);
-                string path = masteryIconPath + "MasteryIcon" + i.ToString() + (MasteryManager.Instance.currentMastery.currentMasteryChoices[i] + 1).ToString();
-                buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
+                string path = masteryIconPath + "MasteryIcon" + i.ToString() + (currentChoice + 1).ToString();
+                Sprite sprite = Resources.Load<Sprite>(path);
+                buffImgObj.transform.GetChild(0).GetComponent<Image>().sprite = sprite;
                 buffImgObj.GetComponent<RectTransform>().localScale = Vector3.one;
+
+                PlayerMasteryData data = MasteryManager.Instance.masteryDictionary[(i * 2) + (currentChoice == -1 ? 0 : 1) + 1];
+                buffImgObj.transform.GetChild(0).GetComponent<BuffFrame>().SetData(sprite, data.masteryDescription, data.masteryName);
             }
         }
     }

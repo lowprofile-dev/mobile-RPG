@@ -34,7 +34,6 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
 
     private void Start()
     {
-        PlayerPrefs.DeleteAll();
         SetProjectSettings();
         AddManagersToStartGame();
         InitManagers();
