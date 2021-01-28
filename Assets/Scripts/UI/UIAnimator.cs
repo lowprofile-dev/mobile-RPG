@@ -12,6 +12,7 @@
 
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIAnimator : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class UIAnimator : MonoBehaviour
     private Sequence _fadeInWithUpSequence; 
     private Sequence _fadeoutWithDownSequence;
     private Sequence _xScaleUpSequence;
+    private Sequence _colorChangeSequence;
 
     public void SetupUIAnimator()
     {
@@ -89,5 +91,16 @@ public class UIAnimator : MonoBehaviour
         _xScaleUpSequence.SetEase(Ease.OutExpo).easeOvershootOrAmplitude = 1.5f;
 
         return _xScaleUpSequence;
+    }
+
+    public Sequence ColorChange(Color color, Color initColor)
+    {
+        if (_colorChangeSequence != null) _colorChangeSequence.Kill();
+        _colorChangeSequence = DOTween.Sequence();
+        _colorChangeSequence.Append(GetComponent<Image>().DOColor(color, 0.1f).From(initColor));
+        _colorChangeSequence.Append(GetComponent<Image>().DOColor(initColor, 0.8f).From(color));
+        _colorChangeSequence.SetEase(Ease.InQuad);
+
+        return _colorChangeSequence;
     }
 }
