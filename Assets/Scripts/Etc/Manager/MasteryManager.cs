@@ -135,6 +135,11 @@ public class MasteryManager : SingletonBase<MasteryManager>
     public CurrentMastery currentMastery;
     public WeaponSkillLevel[] weaponSkillLevel;
     public Dictionary<int,PlayerMasteryData> masteryDictionary;
+    Player player;
+    StatusManager statusManager;
+    WeaponManager weaponManager;
+    public bool rage;
+    public bool resurrection;
 
     public void InitMasteryManager()
     {
@@ -143,6 +148,8 @@ public class MasteryManager : SingletonBase<MasteryManager>
         masteryDictionary = masteryTable.TableToDictionary<int, PlayerMasteryData>();
         LoadCurrentMastery();
         LoadSkillLevel();
+        rage = false;
+        resurrection = false;
     }
 
     public void SaveCurrentMastery()
@@ -393,4 +400,301 @@ public class MasteryManager : SingletonBase<MasteryManager>
         SaveCurrentMastery();
         SaveSkillLevel();
     }
+
+
+
+
+    ///////////////// 마스터리 관련 //////////////////
+
+    //마스터리 강화 관련 
+    public void MasteryApply()
+    {
+        if(StatusManager.Instance != null ) statusManager = StatusManager.Instance;
+        if (Player.Instance != null) player = Player.Instance;
+        //카드 리롤 확률 증가
+        //CardManager.cs 187
+
+        //보스 처치 시 더 많은 코인 획득 미구현 -> 아이템 드랍 확률 증가
+        //DungeonRoom.cs 186
+
+        //마스터리 공격 증가 부분
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == -1)
+        {
+
+            if (player.masterySet[1, 0] == false)
+            {
+                statusManager.multiplicationStatus.attackDamage += 10f;
+                // statusManager.multiplicationStatus.armorIncreaseRate -= 0.1f;
+                player.masterySet[1, 0] = true;
+            }
+        }
+        else
+        {
+            if (player.masterySet[1, 0] == true)
+            {
+                statusManager.multiplicationStatus.attackDamage -= 10f;
+                player.masterySet[1, 0] = false;
+            }
+        }
+        //방어력 증가 부분
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
+        {
+            if (player.masterySet[1, 1] == false)
+            {
+                statusManager.multiplicationStatus.armorIncreaseRate += 10f;
+                //statusManager.multiplicationStatus.attackDamage -= 0.1f;
+                player.masterySet[1, 1] = true;
+            }
+        }
+        else
+        {
+            if (player.masterySet[1, 1] == true)
+            {
+                statusManager.multiplicationStatus.armorIncreaseRate -= 10f;
+                player.masterySet[1, 1] = false;
+            }
+        }
+
+        // 체력 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == -1)
+        {
+            if (player.masterySet[2, 0] == false)
+            {
+                statusManager.additionStatus.hpRecovery += 2f;
+                statusManager.additionStatus.staminaRecovery -= 1f;
+                player.masterySet[2, 0] = true;
+            }
+
+        }
+
+        //기력 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
+        {
+            if (player.masterySet[2, 1] == false)
+            {
+                statusManager.additionStatus.hpRecovery -= 2f;
+                statusManager.additionStatus.staminaRecovery += 1f;
+                player.masterySet[2, 1] = true;
+            }
+        }
+
+
+        //이속 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == -1)
+        {
+            if (player.masterySet[3, 0] == false)
+            {
+                //statusManager.finalStatus.moveSpeed = (statusManager.playerStatus.moveSpeed * 2f) - (((statusManager.playerStatus.moveSpeed * 2f) * _slowingFactor) / 100f);
+                //statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
+                statusManager.multiplicationStatus.moveSpeed += 50f;
+                player.masterySet[3, 0] = true;
+            }
+        }
+        else
+        {
+            if (player.masterySet[3, 0] == true)
+            {
+                statusManager.multiplicationStatus.moveSpeed -= 50f;
+                player.masterySet[3, 0] = false;
+            }
+        }
+        //공속 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
+        {
+            if (player.masterySet[3, 1] == false)
+            {
+                //statusManager.finalStatus.attackSpeed = (statusManager.playerStatus.attackSpeed * 1.2f) - (((statusManager.playerStatus.moveSpeed * 1.2f) * _slowingFactor) / 100f);
+                //statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
+                statusManager.multiplicationStatus.attackSpeed += 50;
+                player.masterySet[3, 1] = true;
+            }
+        }
+        else
+        {
+            //statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed - ((statusManager.playerStatus.moveSpeed * _slowingFactor) / 100f);
+            //statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
+            if (player.masterySet[3, 1] == true)
+            {
+                //statusManager.finalStatus.attackSpeed = (statusManager.playerStatus.attackSpeed * 1.2f) - (((statusManager.playerStatus.moveSpeed * 1.2f) * _slowingFactor) / 100f);
+                //statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
+                statusManager.multiplicationStatus.attackSpeed -= 50;
+                player.masterySet[3, 1] = false;
+            }
+        }
+
+        //골드 획득량 증가 미구현 && 아이템 확률 증가 통합
+        //DungeonRoom.cs 207
+
+        //모든 몬스터 피해량 10%
+        //MonsterAction.cs 778
+
+        //보스 피해량 20%
+        //BossSkeltonKingAction.cs 426
+        //BossSkeltonPase2.cs 416
+
+        //회피시 무적
+        //BossAttack.cs 87
+        //MonsterAction.cs 778
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
+        {
+            if (player.masterySet[6, 0] == false)
+            {
+                //statusManager.multiplicationStatus.dashStamina += 50; 
+                player.masterySet[6, 0] = true;
+            }
+        }
+        else
+        {
+            if (player.masterySet[6, 0] == true)
+            {
+                //statusManager.multiplicationStatus.dashStamina += 50; 
+                player.masterySet[6, 0] = false;
+            }
+        }
+        //회피 사용 기력 감소
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
+        {
+            if (player.masterySet[6, 1] == false)
+            {
+                statusManager.multiplicationStatus.dashStamina += 50;
+                player.masterySet[6, 1] = true;
+            }
+        }
+        {
+            if (player.masterySet[6, 1] == true)
+            {
+                statusManager.multiplicationStatus.dashStamina -= 50;
+                player.masterySet[6, 1] = false;
+            }
+        }
+        //기본공격 10% 강화, hp 2% 흡수
+        // PlayerAttack.cs 76;
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)
+        {
+            if (player.masterySet[7, 0] == false)
+            {
+                StatusManager.Instance.additionStatus.attackDamage += 10f;
+                player.masterySet[7, 0] = true;
+            }
+        }
+        else
+        {
+            if (player.masterySet[7, 0] == true)
+            {
+                StatusManager.Instance.additionStatus.attackDamage -= 10f;
+                player.masterySet[7, 0] = false;
+            }
+
+        }
+        //스킬 쿨타임 1초 감소
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == 1)
+        {
+            if(weaponManager != null)
+            {
+                if (player.masterySet[7, 1] == false)
+                {
+                    weaponManager.WeaponCoolTimeReduce();
+                    player.masterySet[7, 1] = true;
+                }
+            }
+
+
+        }
+        else
+        {
+            if (weaponManager != null)
+            {
+                if (player.masterySet[7, 1] == true)
+                {
+                    weaponManager.WeaponCoolTimeincrease();
+                    player.masterySet[7, 1] = false;
+                }
+            }
+        }
+
+        // 물리 스킬 총 피해량 20% 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == -1)
+        {
+            if (player.masterySet[8, 0] == false)
+            {
+                statusManager.multiplicationStatus.attackDamage += 20f;
+                player.masterySet[8, 0] = true;
+            }
+        }
+        else
+        {
+            if (player.masterySet[8, 0] == true)
+            {
+                statusManager.multiplicationStatus.attackDamage -= 20f;
+                player.masterySet[8, 0] = false;
+            }
+        }
+
+        // 마법 스킬 총 피해량 20% 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == 1)
+        {
+            if (player.masterySet[8, 1] == false)
+            {
+                statusManager.multiplicationStatus.attackDamage += 20f;
+
+                player.masterySet[8, 1] = true;
+            }
+        }
+        else
+        {
+            if (player.masterySet[8, 1] == true)
+            {
+                statusManager.multiplicationStatus.attackDamage -= 20f;
+                player.masterySet[8, 1] = false;
+            }
+        }
+        // HP 20% 이하 물리/마법 공격력 30% 증가
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == -1)
+        {
+            if (player.masterySet[9, 0] == false)
+            {
+                rage = true;
+                player.masterySet[9, 0] = true;
+            }
+
+            if (statusManager.GetCurrentHpPercent() <= 0.2)
+            {
+                statusManager.multiplicationStatus.attackDamage += 30f;
+            }
+            else
+            {
+                statusManager.multiplicationStatus.attackDamage -= 30f;
+            }
+        }
+        else
+        {
+            if (player.masterySet[9, 0] == true)
+            {
+                rage = false;
+                player.masterySet[9, 0] = false;
+            }
+        }
+        //부활 
+        //Player.cs 1043
+        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == 1)
+        {
+            if (player.masterySet[9, 1] == false)
+            {
+                resurrection = true;
+                player.masterySet[9, 1] = true;
+            }
+        }
+        else
+        {
+            if (player.masterySet[9, 1] == true)
+            {
+                resurrection = false;
+                player.masterySet[9, 1] = false;
+            }
+        }
+        statusManager.UpdateFinalStatus();
+    }
+
 }
+
+
