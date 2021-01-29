@@ -78,7 +78,6 @@ public class Player : LivingEntity
     private float _evadeTime;                           // 현재 회피 시간
 
     [Header("마스터리 관련")]
-    public bool[,] masterySet = new bool[10,2];            // 마스터리 활성화 정보
     private bool resurrection = false;                  // 부활
     private bool rage = false;                  // 부활
 
@@ -203,10 +202,10 @@ public class Player : LivingEntity
         TestCode();
         UpdateAll();
         UpdateState();
-        MasteryApply();
         ApplyGravity();
         if (isAnnoyed)
             annoyedTime += Time.deltaTime;
+
     }
 
     ///////////////// 외견 관련 //////////////////
@@ -879,7 +878,7 @@ public class Player : LivingEntity
         _DebuffManager.Release();
         _slowingFactor = 0f;
 
-        if (resurrection == false)
+        if (MasteryManager.Instance.resurrection == false)
         {
             SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
             Invoke("DieExit", 3f);
@@ -888,10 +887,14 @@ public class Player : LivingEntity
 
     public void DieUpdate()
     {
-        if (resurrection == true)
+        if (MasteryManager.Instance.resurrection == true)
         {
             _isdead = false;
             //Debug.log("마스터리 특성 부활!");
+            GameObject resurrectionEffect = ObjectPoolManager.Instance.GetObject("SakuraTargetBuff");
+            resurrectionEffect.transform.position = transform.position + new Vector3(0f,-1f,0f);
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Player/Resurrection", 0.5f);
+
             _hp = statusManager.finalStatus.maxHp;
             ChangeState(PLAYERSTATE.PS_IDLE);
         }
@@ -901,9 +904,9 @@ public class Player : LivingEntity
     {
         _isdead = false;
         myAnimator.ResetTrigger("Die");
-        if (resurrection == true)
+        if (MasteryManager.Instance.resurrection == true)
         {
-            resurrection = false;
+            MasteryManager.Instance.resurrection = false;
         }
         else UILoaderManager.Instance.LoadVillage();
     }
@@ -1080,292 +1083,6 @@ public class Player : LivingEntity
         return _cntState;
     }
 
-
-
-
-    ///////////////// 마스터리 관련 //////////////////
-
-    //마스터리 강화 관련 
-    private void MasteryApply()
-    {
-        //카드 리롤 확률 증가
-        //CardManager.cs 187
-
-        //보스 처치 시 더 많은 코인 획득 미구현 -> 아이템 드랍 확률 증가
-        //DungeonRoom.cs 186
-
-        //마스터리 공격 증가 부분
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == -1)
-        {
-
-            if (masterySet[1,0] == false)
-            {
-                statusManager.multiplicationStatus.attackDamage += 10f;
-               // statusManager.multiplicationStatus.armorIncreaseRate -= 0.1f;
-                masterySet[1,0] = true;
-            }
-        }
-        else
-        {
-            if(masterySet[1,0] == true)
-            {
-                statusManager.multiplicationStatus.attackDamage -= 10f;
-                masterySet[1, 0] = false;
-            }
-        }
-        //방어력 증가 부분
-         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
-        {
-
-            if (masterySet[1,1] == false)
-            {
-                statusManager.multiplicationStatus.armorIncreaseRate += 10f;
-                //statusManager.multiplicationStatus.attackDamage -= 0.1f;
-                masterySet[1,1] = true;
-            }
-        }
-        else
-        {
-            if (masterySet[1, 1] == true)
-            {
-                statusManager.multiplicationStatus.armorIncreaseRate -= 10f;
-                masterySet[1, 0] = false;
-            }
-        }
-
-        // 체력 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == -1)
-        {
-            if (masterySet[2,0] == false)
-            {
-                statusManager.additionStatus.hpRecovery += 2f;
-                statusManager.additionStatus.staminaRecovery -= 1f;
-                masterySet[2,0] = true;
-            }
-
-        }
-
-        //기력 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
-        {
-            if (masterySet[2,1] == false)
-            {
-                statusManager.additionStatus.hpRecovery -= 2f;
-                statusManager.additionStatus.staminaRecovery += 1f;
-                masterySet[2,1] = true;
-            }
-        }
-
-
-        //이속 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == -1)
-        {
-            if (masterySet[3,0] == false)
-            {
-                //statusManager.finalStatus.moveSpeed = (statusManager.playerStatus.moveSpeed * 2f) - (((statusManager.playerStatus.moveSpeed * 2f) * _slowingFactor) / 100f);
-                //statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
-                statusManager.multiplicationStatus.moveSpeed += 50f;
-                masterySet[3,0] = true;
-            }
-        }
-        else
-        {
-            if (masterySet[3,0] == true)
-            {
-                statusManager.multiplicationStatus.moveSpeed -= 50f;
-                masterySet[3,0] = false; 
-            }
-        }
-        //공속 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
-        {
-            if (masterySet[3,1] == false)
-            {
-                //statusManager.finalStatus.attackSpeed = (statusManager.playerStatus.attackSpeed * 1.2f) - (((statusManager.playerStatus.moveSpeed * 1.2f) * _slowingFactor) / 100f);
-                //statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
-                statusManager.multiplicationStatus.attackSpeed += 50;
-                masterySet[3,1] = true;
-            }
-        }
-        else
-        {
-            //statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed - ((statusManager.playerStatus.moveSpeed * _slowingFactor) / 100f);
-            //statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
-            if (masterySet[3, 1] == true)
-            {
-                //statusManager.finalStatus.attackSpeed = (statusManager.playerStatus.attackSpeed * 1.2f) - (((statusManager.playerStatus.moveSpeed * 1.2f) * _slowingFactor) / 100f);
-                //statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
-                statusManager.multiplicationStatus.attackSpeed -= 50;
-                masterySet[3, 1] = false;
-            }
-        }
-
-        //골드 획득량 증가 미구현 && 아이템 확률 증가 통합
-        //DungeonRoom.cs 207
-
-        //모든 몬스터 피해량 10%
-        //MonsterAction.cs 778
-
-        //보스 피해량 20%
-        //BossSkeltonKingAction.cs 426
-        //BossSkeltonPase2.cs 416
-
-        //회피시 무적
-        //BossAttack.cs 87
-        //MonsterAction.cs 778
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
-        {
-            if (masterySet[6,0] == false)
-            {
-                //statusManager.multiplicationStatus.dashStamina += 50; 
-                masterySet[6,0] = true;
-            }
-        }
-        else
-        {
-            if (masterySet[6, 0] == true)
-            {
-                //statusManager.multiplicationStatus.dashStamina += 50; 
-                masterySet[6, 0] = false;
-            }
-        }
-        //회피 사용 기력 감소
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[6] == -1)
-        {
-            if (masterySet[6,1] == false)
-            {
-                statusManager.multiplicationStatus.dashStamina += 50;
-                masterySet[6,1] = true;
-            }
-        }
-        {
-            if (masterySet[6, 1] == true)
-            {
-                statusManager.multiplicationStatus.dashStamina -= 50;
-                masterySet[6, 1] = false;
-            }
-        }
-        //기본공격 10% 강화, hp 2% 흡수
-        // PlayerAttack.cs 76;
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == -1)
-        {
-            if (masterySet[7,0] == false)
-            {
-                StatusManager.Instance.additionStatus.attackDamage += 10f;
-                masterySet[7,0] = true;
-            }
-        }
-        else
-        {
-            if(masterySet[7,0] == true)
-            {
-                StatusManager.Instance.additionStatus.attackDamage -= 10f;
-                masterySet[7, 0] = false;
-            }
-
-        }
-        //스킬 쿨타임 1초 감소
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == 1)
-        {
-            if (masterySet[7,1] == false)
-            {
-                weaponManager.WeaponCoolTimeReduce();
-                masterySet[7,1] = true;
-            }
-
-        }
-        else
-        {
-            if (masterySet[7, 1] == true)
-            {
-                weaponManager.WeaponCoolTimeincrease();
-                masterySet[7, 1] = false;
-            }
-        }
-
-        // 물리 스킬 총 피해량 20% 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == -1)
-        {
-            if (masterySet[8,0] == false)
-            {
-                statusManager.multiplicationStatus.attackDamage += 20f;
-                masterySet[8,0] = true;
-            }
-        }
-        else
-        {
-            if (masterySet[8, 0] == true)
-            {
-                statusManager.multiplicationStatus.attackDamage -= 20f;
-                masterySet[8, 0] = false;
-            }
-        }
-
-        // 마법 스킬 총 피해량 20% 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == 1)
-        {
-            if (masterySet[8,1] == false)
-            {
-                statusManager.multiplicationStatus.attackDamage += 20f;
-
-                masterySet[8,1] = true;
-            }
-        }
-        else
-        {
-            if (masterySet[8, 1] == true)
-            {
-                statusManager.multiplicationStatus.attackDamage -= 20f;
-                masterySet[8, 1] = false;
-            }
-        }
-        // HP 20% 이하 물리/마법 공격력 30% 증가
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == -1)
-        {
-            if (masterySet[9,0] == false)
-            {
-                rage = true;
-                masterySet[9,0] = true;
-            }
-
-            if(statusManager.GetCurrentHpPercent()<= 0.2)
-            {
-                statusManager.multiplicationStatus.attackDamage += 30f;
-            }
-            else
-            {
-                statusManager.multiplicationStatus.attackDamage -= 30f;
-            }
-        }
-        else
-        {
-            if (masterySet[9, 0] == true)
-            {
-                rage = false;
-                masterySet[9, 0] = false;
-            }
-        }
-        //부활
-        //Player.cs 1043
-        if (MasteryManager.Instance.currentMastery.currentMasteryChoices[9] == 1)
-        {
-            if (masterySet[9,1] == false)
-            {
-                resurrection = true;
-                masterySet[9,1] = true;
-            }
-        }
-        else
-        {
-            if (masterySet[9, 1] == true)
-            {
-                resurrection = false;
-                masterySet[9, 1] = false;
-            }
-        }
-        statusManager.UpdateFinalStatus();
-    }
-
     ///////////////// 기타 //////////////////
 
     /// <summary>
@@ -1509,15 +1226,19 @@ public class Player : LivingEntity
 
     ///////////////// 기타 캐릭터 기능들 //////////////////
 
-
-    public override void Damaged(float damage)
+    public override void Damaged(float damage, bool noArmorDmg)
     {
-        base.Damaged(damage);
+        base.Damaged(damage, noArmorDmg);
         UIVignette.Instance.ShowDamagedAnimation();
         AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.6f);
         SoundManager.Instance.SetPitch(source, 1.5f);
         isAnnoyed = true;
         annoyedTime = 0f;
+    }
+
+    public override float GetArmorFromDamaged(float damage)
+    {
+        return damage * (float)((100 - (statusManager.finalStatus.armor)) / 100); // Armor만큼의 비율만큼 데미지를 덜 받는다 (armor 30 = 30% 데미지 감소)
     }
 
     public void RestoreHP(float restoreHp)
@@ -1537,7 +1258,7 @@ public class Player : LivingEntity
         if (transform.position.y < -70 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
         {
             _isFalling = true;
-            Damaged(statusManager.finalStatus.maxHp * 0.1f);
+            Damaged(statusManager.finalStatus.maxHp * 0.1f, true);
             ReturnToGround();
             return;
         }

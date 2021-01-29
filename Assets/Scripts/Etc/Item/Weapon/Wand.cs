@@ -28,8 +28,7 @@ public class Wand : Weapon
 
         masteryLevel = MasteryManager.Instance.currentMastery.currentWandMasteryLevel;
 
-        attackDamage = 0;
-        magicDamage = 1;
+        attackDamage = 1;
         skillSpeed = 0;
       
         exp = MasteryManager.Instance.currentMastery.currentWandMasteryExp;

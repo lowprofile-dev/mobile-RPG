@@ -1,4 +1,16 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File BuffFrame.cs
+    class BuffFrame
+    
+    담당자 : 이신홍
+    부 담당자 : 김의겸
+
+    버프 / 디버프의 정보에 접근하고, 이들을 이미지로 표현해놓은 클래스
+*/
+////////////////////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,10 +20,10 @@ using System;
 
 public class BuffFrame : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
 {
-    private UIBuffInfo buffInfo;
-    private Sprite _mySprite;
-    private string _myDescription;
-    private string _myName;
+    private UIBuffInfo buffInfo;    // UI 버프정보 툴팁
+    private Sprite _mySprite;       // 이 버프의 이미지
+    private string _myDescription;  // 이 버프의 설명
+    private string _myName;         // 이 버프의 이름
 
     private void Start()
     {

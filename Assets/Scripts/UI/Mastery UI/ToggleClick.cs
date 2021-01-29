@@ -14,7 +14,7 @@ using UnityEngine.EventSystems;
 ////////////////////////////////////////////////////
 
 
-public class ToggleClick : MonoBehaviour, IPointerDownHandler
+public class ToggleClick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] GameObject skill;
     MasteryScript mastery;
@@ -47,5 +47,9 @@ public class ToggleClick : MonoBehaviour, IPointerDownHandler
             SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SetMastery", 0.9f);
             SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightHigh1", 0.3f);
         }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
     }
 }

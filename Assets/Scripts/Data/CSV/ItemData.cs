@@ -35,19 +35,14 @@ public class ItemData
 
     [Header("공격 관련 계수")]
     public float attackDamage;          //공격력 증가
-    public float attackSpeed;           //공격속도 % 증가
     public float attackCooldown;        //공격스킬 쿨타임 % 감소
-
+    public float criticalDamage;        //크리티컬 데미지 (1.5 = 1.5배 데미지)
+    public float criticalPercent;       //크리티컬 확률 (최대 100)
+    
     [Header("방어 및 이동 관련 계수")]
     public float armor;                 //방어력 증가
-    public float magicResistance;       //마법 방어력 증가
-    public float armorIncreaseRate;     //방어력 % 증가
     public float moveSpeed;             //이동 속도 % 증가
-    public float dashCooldown;          //대쉬 스킬 쿨타임 % 감소
     public float dashStamina;           //대쉬 스킬 스태미너 % 감소
-    public float rigidresistance;       //경직 cc 저항
-    public float stunresistance;        //스턴 cc 저항
-    public float fallresistance;        //넘어짐 cc 저항
     public float buyprice;              //구매가
     public float sellprice;             //판매가
 }

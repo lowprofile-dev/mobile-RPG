@@ -373,6 +373,7 @@ public class ItemManager : SingletonBase<ItemManager>
                 currentItemKeys.BootKey = itemData.id;
                 break;
         }
+
         SaveCurrentItems();
         SaveCurrentItemKeys();
         EquipItems();
@@ -429,24 +430,58 @@ public class ItemManager : SingletonBase<ItemManager>
 
     private void EquipItems()
     {
-        EquipArmor(currentItemKeys.ArmorKey);
-        EquipBottom(currentItemKeys.BottomKey);
-        EquipHelmet(currentItemKeys.HelmetKey);
-        EquipGloves(currentItemKeys.GlovesKey);
-        EquipBoot(currentItemKeys.BootKey);
+        EquipItem(currentItemKeys.ArmorKey);
+        EquipItem(currentItemKeys.BottomKey);
+        EquipItem(currentItemKeys.HelmetKey);
+        EquipItem(currentItemKeys.GlovesKey);
+        EquipItem(currentItemKeys.BootKey);
         statusManager.UpdateFinalStatus();
     }
 
     private void UnequipItems()
     {
-        UnequipArmor(currentItemKeys.ArmorKey);
-        UnequipBottom(currentItemKeys.BottomKey);
-        UnequipHelmet(currentItemKeys.HelmetKey);
-        UnequipGloves(currentItemKeys.GlovesKey);
-        UnequipBoot(currentItemKeys.BootKey);
+        UnEquipItem(currentItemKeys.ArmorKey);
+        UnEquipItem(currentItemKeys.BottomKey);
+        UnEquipItem(currentItemKeys.HelmetKey);
+        UnEquipItem(currentItemKeys.GlovesKey);
+        UnEquipItem(currentItemKeys.BootKey);
         statusManager.UpdateFinalStatus();
     }
 
+    private void EquipItem(int key)
+    {
+        statusManager.additionStatus.hp += itemDictionary[key].hp;
+        statusManager.multiplicationStatus.hpIncreaseRate += itemDictionary[key].hpIncreaseRate;
+        statusManager.additionStatus.hpRecovery += itemDictionary[key].hpRecovery;
+        statusManager.additionStatus.stamina += itemDictionary[key].stamina;
+        statusManager.additionStatus.staminaRecovery += (itemDictionary[key].staminaRecovery);
+        statusManager.additionStatus.attackDamage += itemDictionary[key].attackDamage;
+        statusManager.multiplicationStatus.attackCooldown += itemDictionary[key].attackCooldown;
+        statusManager.additionStatus.criticalDamage += itemDictionary[key].criticalDamage;
+        statusManager.additionStatus.criticalPercent += itemDictionary[key].criticalPercent;
+        statusManager.additionStatus.armor += itemDictionary[key].armor;
+        statusManager.multiplicationStatus.moveSpeed += itemDictionary[key].moveSpeed;
+        statusManager.multiplicationStatus.dashStamina += itemDictionary[key].dashStamina;
+    }
+
+    private void UnEquipItem(int key)
+    {
+        statusManager.additionStatus.hp -= itemDictionary[key].hp;
+        statusManager.multiplicationStatus.hpIncreaseRate -= itemDictionary[key].hpIncreaseRate;
+        statusManager.additionStatus.hpRecovery -= itemDictionary[key].hpRecovery;
+        statusManager.additionStatus.stamina -= itemDictionary[key].stamina;
+        statusManager.additionStatus.staminaRecovery -= (itemDictionary[key].staminaRecovery);
+        statusManager.additionStatus.attackDamage -= itemDictionary[key].attackDamage;
+        statusManager.multiplicationStatus.attackCooldown -= itemDictionary[key].attackCooldown;
+        statusManager.additionStatus.criticalDamage -= itemDictionary[key].criticalDamage;
+        statusManager.additionStatus.criticalPercent -= itemDictionary[key].criticalPercent;
+        statusManager.additionStatus.armor -= itemDictionary[key].armor;
+        statusManager.multiplicationStatus.moveSpeed -= itemDictionary[key].moveSpeed;
+        statusManager.multiplicationStatus.dashStamina -= itemDictionary[key].dashStamina;
+    }
+
+
+    /*
     private void EquipBoot(int bootKey)
     {
         statusManager.multiplicationStatus.moveSpeed += itemDictionary[bootKey].moveSpeed;
@@ -457,7 +492,6 @@ public class ItemManager : SingletonBase<ItemManager>
     private void EquipGloves(int glovesKey)
     {
         statusManager.additionStatus.attackDamage += itemDictionary[glovesKey].attackDamage;
-        statusManager.multiplicationStatus.attackSpeed += itemDictionary[glovesKey].attackSpeed;
         statusManager.multiplicationStatus.attackCooldown += itemDictionary[glovesKey].attackCooldown;
     }
 
@@ -480,7 +514,6 @@ public class ItemManager : SingletonBase<ItemManager>
     {
         statusManager.additionStatus.hp += itemDictionary[armorKey].hpIncreaseRate;
         statusManager.additionStatus.armor += itemDictionary[armorKey].armor;
-        statusManager.additionStatus.magicResistance += itemDictionary[armorKey].magicResistance;
     }
 
     private void UnequipBoot(int bootKey)
@@ -493,7 +526,6 @@ public class ItemManager : SingletonBase<ItemManager>
     private void UnequipGloves(int glovesKey)
     {
         statusManager.additionStatus.attackDamage -= itemDictionary[glovesKey].attackDamage;
-        statusManager.multiplicationStatus.attackSpeed -= itemDictionary[glovesKey].attackSpeed;
         statusManager.multiplicationStatus.attackCooldown -= itemDictionary[glovesKey].attackCooldown;
     }
 
@@ -516,8 +548,8 @@ public class ItemManager : SingletonBase<ItemManager>
     {
         statusManager.additionStatus.hp -= itemDictionary[armorKey].hpIncreaseRate;
         statusManager.additionStatus.armor -= itemDictionary[armorKey].armor;
-        statusManager.additionStatus.magicResistance -= itemDictionary[armorKey].magicResistance;
     }
+    */
 
     /// <summary>
     /// 아이템 드랍 함수
@@ -531,7 +563,38 @@ public class ItemManager : SingletonBase<ItemManager>
             if (roll <= itemDropProbability[i]) // 현재 확률에 들어간다면 
             {
                 GameObject dropItem = ObjectPoolManager.Instance.GetObject(dropItemPrefab);
-                dropItem.GetComponent<Item>().id = allClassItems[i][UnityEngine.Random.Range(0, allClassItems[i].Count)].id;
+                int itemTypeDice = UnityEngine.Random.Range(0, 5);
+                string dropType;
+                List<ItemData> possibleDropList = new List<ItemData>();
+                switch (itemTypeDice)
+                {
+                    case 0:
+                        dropType = "Armor";
+                        break;
+                    case 1:
+                        dropType = "Bottom";
+                        break;
+                    case 2:
+                        dropType = "Helmet";
+                        break;
+                    case 3:
+                        dropType = "Gloves";
+                        break;
+                    case 4:
+                        dropType = "Boot";
+                        break;
+                    default:
+                        dropType = "Helmet";
+                        break;
+                }
+                for (int j = 0; j < allClassItems[i].Count; j++)
+                {
+                    if (allClassItems[i][j].itemType == dropType)
+                    {
+                        possibleDropList.Add(allClassItems[i][j]);
+                    }
+                }
+                dropItem.GetComponent<Item>().id = allClassItems[i][UnityEngine.Random.Range(0, possibleDropList.Count)].id;
                 dropItem.GetComponent<Item>().LoadItemData();
                 dropItem.transform.position = monsterTransform.position;
                 dropItem.transform.rotation = monsterTransform.rotation;

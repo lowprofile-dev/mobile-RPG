@@ -101,7 +101,7 @@ public class BossAttack : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
             thisSkillsDamage += _baseParent.GetComponent<Monster>().attackDamage * _damage;
-            player.Damaged(_baseParent.GetComponent<Monster>().attackDamage * _damage);
+            player.Damaged(_baseParent.GetComponent<Monster>().attackDamage * _damage, false);
             yield return new WaitForSeconds(0.05f);
         }
     }

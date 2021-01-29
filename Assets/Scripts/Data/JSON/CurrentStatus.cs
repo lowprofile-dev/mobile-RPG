@@ -20,24 +20,23 @@ public class CurrentStatus : ICloneable
     //public string name;
 
     [Header("체력 스텟")]
-    public float maxHp;                 //최대 체력
-    public float hpRecovery;            //체력 회복량
+    public float maxHp;                 // 최대 체력
+    public float hpRecovery;            // 체력 회복량
 
     [Header("스태미너 스텟")]
-    public float maxStamina;            //최대 스태미너
-    public float staminaRecovery;       //스태미너 회복량
+    public float maxStamina;            // 최대 스태미너
+    public float staminaRecovery;       // 스태미너 회복량
 
     [Header("공격 관련 스텟")]
-    public float attackDamage;          //공격력
-    public float attackSpeed;           //공격속도 (= 공격속도 쿨타임)
-    public float attackCooldown;        //공격스킬 쿨타임 % 감소
-    public float magicDamage;
+    public float attackDamage;          // 공격력
+    public float attackCooldown;        // 공격스킬 쿨타임 % 감소
     public float minDamagePer;          // 최종 데미지 랜덤 수치
     public float maxDamagePer;          // 최종 데미지 랜덤 수치
+    public float criticalDamage;        // 크리티컬 데미지 (Default 1)
+    public float criticalPercent;       // 크리티컬 확률 (Default 15)
 
     [Header("방어 및 이동 관련 스텟")]
     public float armor;                 //방어력
-    public float magicResistance;       //마법 방어력
     public float rigidresistance;       //경직 cc 저항
     public float stunresistance;        //스턴 cc 저항
     public float fallresistance;        //넘어짐 cc 저항
@@ -53,19 +52,19 @@ public class CurrentStatus : ICloneable
         maxStamina = 10;
         staminaRecovery = 0.5f;
         attackDamage = 250;
-        attackSpeed = 0.5f;
         attackCooldown = 1;
-        armor = 3;
-        magicResistance = 4;
-        rigidresistance = 40;
-        stunresistance = 40;
-        fallresistance = 40;
-        moveSpeed = 6;
+        armor = 0;
+        rigidresistance = 0;
+        stunresistance = 0;
+        fallresistance = 0;
+        moveSpeed = 8;
         maxSpeed = moveSpeed;
         dashCooldown = 1;
         dashStamina = 2;
-        minDamagePer = 0.7f;
-        maxDamagePer = 1.3f;
+        minDamagePer = 0.8f;
+        maxDamagePer = 1.2f;
+        criticalDamage = 1.5f;
+        criticalPercent = 15;
     }
 
     /// <summary>

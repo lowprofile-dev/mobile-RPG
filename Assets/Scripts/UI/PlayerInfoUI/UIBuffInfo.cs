@@ -1,4 +1,16 @@
-﻿using System.Collections;
+﻿////////////////////////////////////////////////////
+/*
+    File UIBuffInfo.cs
+    class UIBuffInfo
+    
+    담당자 : 이신홍
+    부 담당자 : 
+
+    버프를 표현하는 툴팁 클래스
+*/
+////////////////////////////////////////////////////
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

@@ -112,23 +112,19 @@ public class MonsterAction : MonoBehaviour
 
     protected virtual void InitStatus()
     {
-        float currentStage;
+        float currentStage = 0f;
 
-        if (parentRoom != null)
-        {
-            currentStage = parentRoom.DungeonManager.dungeonStage;
-            if (currentStage > 2) currentStage *= 0.5f;
-        }
-        else
-        {
-            currentStage = 1;
-        }
-        _monster.Hp = _monster.initHp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp * currentStage;
+        if (parentRoom != null) currentStage = (parentRoom.DungeonManager.dungeonStage - 1) * 0.2f; // 매 스테이지당 20%씩 증가
+
+        float tempHp = MonsterManager.Instance.MonsterDictionary[_monster.id].hp;
+        float tempDamage = MonsterManager.Instance.MonsterDictionary[_monster.id].damage;
+
+        _monster.Hp = _monster.initHp = tempHp + tempHp * currentStage;
         _findRange = MonsterManager.Instance.MonsterDictionary[_monster.id].findrange;
         _attackRange = MonsterManager.Instance.MonsterDictionary[_monster.id].attackrange;
         _limitTraceRange = MonsterManager.Instance.MonsterDictionary[_monster.id].LimitTraceRange;
         _attackSpeed = MonsterManager.Instance.MonsterDictionary[_monster.id].AttackSpeed;
-        _monster.attackDamage = (int)(MonsterManager.Instance.MonsterDictionary[_monster.id].damage * currentStage);
+        _monster.attackDamage = (int)(tempDamage + tempDamage * currentStage);
         _navMeshAgent.speed = MonsterManager.Instance.MonsterDictionary[_monster.id].speed;
     }
 
@@ -781,15 +777,8 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void DamagedProcess(float dmg, bool SetAnimation = true)
     {
-        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[5] == -1)
-        {
-            _monster.Damaged(dmg * 1.1f);
-
-        }
-        else
-        {
-            _monster.Damaged(dmg);
-        }
+        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[5] == -1) _monster.Damaged(dmg * 1.1f, false);
+        else _monster.Damaged(dmg, false);
 
 
         _bar.HpUpdate();

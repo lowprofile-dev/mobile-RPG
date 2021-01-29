@@ -113,8 +113,9 @@ public class PlayerAttack: MonoBehaviour
     {
         for (int i=0; i<_damageCount; i++)
         {
-            thisSkillsDamage += DoDamage(monster);
-            DoRestoreFromDamage();
+            float damageNum = DoDamage(monster);
+            DoRestoreFromDamage(damageNum);
+            thisSkillsDamage += damageNum;
 
             yield return new WaitForSeconds(waitTime);
         }
@@ -152,11 +153,11 @@ public class PlayerAttack: MonoBehaviour
     /// <summary>
     /// 데미지로부터 흡혈을 실시한다.
     /// </summary>
-    public void DoRestoreFromDamage()
+    public void DoRestoreFromDamage(float damage)
     {
-        if (Player.Instance.masterySet[7,0] == true)
+        if (MasteryManager.Instance.masterySet[7,0] == true)
         {
-            Player.Instance.RestoreHP(StatusManager.Instance.finalStatus.attackDamage);
+            Player.Instance.RestoreHP(damage * 0.02f);
         }
     }
 
