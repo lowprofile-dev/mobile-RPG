@@ -22,8 +22,7 @@ public class BossSkeletonKingAction : MonsterAction
     [SerializeField] private GameObject attackPos;
 
     AttackType attackType;
-    [Header("스킬 이펙트, 범위")]
-  
+    [Header("스킬 이펙트, 범위")] 
     [SerializeField] private GameObject JumpSkillRange;
     [SerializeField] private GameObject AttackRange;
     [SerializeField] private GameObject AttackEffect;
@@ -59,9 +58,8 @@ public class BossSkeletonKingAction : MonsterAction
     }
 
 
-    protected override void DoAttack()
+    protected override void DoAttack() // 공격 마무리 행동
     {
-
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _readyCast = false;
 
@@ -74,10 +72,11 @@ public class BossSkeletonKingAction : MonsterAction
         ChangeState(MONSTER_STATE.STATE_TRACE);
 
     }
-
+    /// <summary>
+    /// 스킬 이펙트 생성 관련
+    /// </summary>
     private void MakeEffect()
     {
-
         switch (attackType)
         {
             case AttackType.ATTACK1:
@@ -125,7 +124,6 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void SetAttackAnimation()
     {
-
         switch (attackType)
         {
             case AttackType.ATTACK1:
@@ -139,7 +137,6 @@ public class BossSkeletonKingAction : MonsterAction
             default:
                 break;
         }
-
     }
 
     protected override void SpawnStart()
@@ -201,6 +198,7 @@ public class BossSkeletonKingAction : MonsterAction
             _monster.myAnimator.SetTrigger("Walk");
         }
 
+        //캐스팅을 시작할 때 공격 패턴을 정하고 그에 따른 공격타입과 캐스팅 시간을 정해준다.
         int proc = UnityEngine.Random.Range(0, 100);
 
         if (monsterList.Count == 0 && !IsSummonSpawn) // 필드에 소환된 소환수들이 없을경우
@@ -403,6 +401,9 @@ public class BossSkeletonKingAction : MonsterAction
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/KingSkeleton/Spawn", 0.5f);
     }
 
+    /// <summary>
+    /// 패턴 공격 관련
+    /// </summary>
     private IEnumerator SummonAction() // 소환 스킬 행동
     {
         yield return null;
@@ -508,6 +509,9 @@ public class BossSkeletonKingAction : MonsterAction
         DoAttack();
     }
 
+    /// <summary>
+    /// 타겟 추적 관련
+    /// </summary>
     protected override void TraceStart()
     {
         _navMeshAgent.SetDestination(_target.transform.position);
@@ -547,6 +551,9 @@ public class BossSkeletonKingAction : MonsterAction
     {
     }
 
+    /// <summary>
+    /// CC관련
+    /// </summary>
     protected override void RigidStart()
     {
     }
