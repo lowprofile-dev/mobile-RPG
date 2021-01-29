@@ -563,7 +563,38 @@ public class ItemManager : SingletonBase<ItemManager>
             if (roll <= itemDropProbability[i]) // 현재 확률에 들어간다면 
             {
                 GameObject dropItem = ObjectPoolManager.Instance.GetObject(dropItemPrefab);
-                dropItem.GetComponent<Item>().id = allClassItems[i][UnityEngine.Random.Range(0, allClassItems[i].Count)].id;
+                int itemTypeDice = UnityEngine.Random.Range(0, 5);
+                string dropType;
+                List<ItemData> possibleDropList = new List<ItemData>();
+                switch (itemTypeDice)
+                {
+                    case 0:
+                        dropType = "Armor";
+                        break;
+                    case 1:
+                        dropType = "Bottom";
+                        break;
+                    case 2:
+                        dropType = "Helmet";
+                        break;
+                    case 3:
+                        dropType = "Gloves";
+                        break;
+                    case 4:
+                        dropType = "Boot";
+                        break;
+                    default:
+                        dropType = "Helmet";
+                        break;
+                }
+                for (int j = 0; j < allClassItems[i].Count; j++)
+                {
+                    if (allClassItems[i][j].itemType == dropType)
+                    {
+                        possibleDropList.Add(allClassItems[i][j]);
+                    }
+                }
+                dropItem.GetComponent<Item>().id = allClassItems[i][UnityEngine.Random.Range(0, possibleDropList.Count)].id;
                 dropItem.GetComponent<Item>().LoadItemData();
                 dropItem.transform.position = monsterTransform.position;
                 dropItem.transform.rotation = monsterTransform.rotation;
