@@ -99,8 +99,10 @@ public class DungeonRoom : MonoBehaviour
     {
         for (int i = monsters.Count - 1; i >= 0; i--)
         {
+            if (monsters[i] == null) continue;
+            monsters[i].GetComponent<MonsterAction>().parentRoom = null;
             ObjectPoolManager.Instance.ReturnObject(monsters[i]);
-            monsters[i].GetComponent<MonsterAction>().ChangeState(MONSTER_STATE.STATE_DIE);
+            monsters[i].GetComponent<MonsterAction>().ChangeState(MONSTER_STATE.STATE_IDLE);
             
         }
         monsters.Clear();
