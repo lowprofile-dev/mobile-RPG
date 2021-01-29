@@ -457,13 +457,11 @@ public class ItemManager : SingletonBase<ItemManager>
         statusManager.additionStatus.staminaRecovery += (itemDictionary[key].staminaRecovery);
         statusManager.additionStatus.attackDamage += itemDictionary[key].attackDamage;
         statusManager.multiplicationStatus.attackCooldown += itemDictionary[key].attackCooldown;
+        statusManager.additionStatus.criticalDamage += itemDictionary[key].criticalDamage;
+        statusManager.additionStatus.criticalPercent += itemDictionary[key].criticalPercent;
         statusManager.additionStatus.armor += itemDictionary[key].armor;
         statusManager.multiplicationStatus.moveSpeed += itemDictionary[key].moveSpeed;
-        statusManager.multiplicationStatus.dashCooldown += itemDictionary[key].dashCooldown;
         statusManager.multiplicationStatus.dashStamina += itemDictionary[key].dashStamina;
-        statusManager.additionStatus.rigidresistance += itemDictionary[key].rigidresistance;
-        statusManager.additionStatus.stunresistance += itemDictionary[key].stunresistance;
-        statusManager.additionStatus.fallresistance += itemDictionary[key].fallresistance;
     }
 
     private void UnEquipItem(int key)
@@ -475,13 +473,11 @@ public class ItemManager : SingletonBase<ItemManager>
         statusManager.additionStatus.staminaRecovery -= (itemDictionary[key].staminaRecovery);
         statusManager.additionStatus.attackDamage -= itemDictionary[key].attackDamage;
         statusManager.multiplicationStatus.attackCooldown -= itemDictionary[key].attackCooldown;
+        statusManager.additionStatus.criticalDamage -= itemDictionary[key].criticalDamage;
+        statusManager.additionStatus.criticalPercent -= itemDictionary[key].criticalPercent;
         statusManager.additionStatus.armor -= itemDictionary[key].armor;
         statusManager.multiplicationStatus.moveSpeed -= itemDictionary[key].moveSpeed;
-        statusManager.multiplicationStatus.dashCooldown -= itemDictionary[key].dashCooldown;
         statusManager.multiplicationStatus.dashStamina -= itemDictionary[key].dashStamina;
-        statusManager.additionStatus.rigidresistance -= itemDictionary[key].rigidresistance;
-        statusManager.additionStatus.stunresistance -= itemDictionary[key].stunresistance;
-        statusManager.additionStatus.fallresistance -= itemDictionary[key].fallresistance;
     }
 
 

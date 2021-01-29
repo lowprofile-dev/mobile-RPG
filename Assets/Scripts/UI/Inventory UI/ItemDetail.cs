@@ -38,13 +38,11 @@ public class ItemDetail : MonoBehaviour
         if (itemData.staminaRecovery != 0) allData += UIManager.Instance.AddFontData("스태미너 회복 \t +" + itemData.staminaRecovery, "white", 18) + "\n";
         if (itemData.attackDamage != 0) allData += UIManager.Instance.AddFontData("공격력 \t\t +" + itemData.attackDamage + "%", "white", 18) + "\n";
         if (itemData.attackCooldown != 0) allData += UIManager.Instance.AddFontData("공격 쿨타임 \t\t -" + itemData.attackCooldown + "%", "white", 18) + "\n";
+        if (itemData.criticalDamage != 0) allData += UIManager.Instance.AddFontData("크리티컬 데미지 \t +" + (itemData.criticalDamage * 100) + "%", "white", 18) + "\n";
+        if (itemData.criticalPercent != 0) allData += UIManager.Instance.AddFontData("크리티컬 확률 \t +" + itemData.criticalPercent + "%", "white", 18) + "\n";
         if (itemData.armor != 0) allData += UIManager.Instance.AddFontData("방어력 \t\t +" + itemData.armor + "%", "white", 18) + "\n";
         if (itemData.moveSpeed != 0) allData += UIManager.Instance.AddFontData("이동 속도 \t\t +" + itemData.moveSpeed + "%", "white", 18) + "\n";
-        if (itemData.dashCooldown != 0) allData += UIManager.Instance.AddFontData("대쉬 쿨타임 \t\t -" + itemData.dashCooldown + "%", "white", 18) + "\n";
         if (itemData.dashStamina != 0) allData += UIManager.Instance.AddFontData("대쉬 스태미너 \t -" + itemData.dashStamina + "%", "white", 18) + "\n";
-        if (itemData.rigidresistance != 0) allData += UIManager.Instance.AddFontData("경직 저항 \t -" + itemData.rigidresistance + "%", "white", 18) + "\n";
-        if (itemData.stunresistance != 0) allData += UIManager.Instance.AddFontData("기절 저항 \t -" + itemData.stunresistance + "%", "white", 18) + "\n";
-        if (itemData.fallresistance != 0) allData += UIManager.Instance.AddFontData("넉백 저항 \t -" + itemData.fallresistance + "%", "white", 18) + "\n";
 
         allData = allData.Remove(allData.Length - 1, 1);
         itemText.text = allData;
