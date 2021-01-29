@@ -151,7 +151,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
         LoadSkillLevel();
         rage = false;
         resurrection = false;
-        MasteryManager.Instance.MasteryApply();
+        MasteryApply();
     }
 
     public void SaveCurrentMastery()
