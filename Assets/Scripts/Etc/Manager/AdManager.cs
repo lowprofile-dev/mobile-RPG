@@ -5,15 +5,15 @@ using UnityEngine.Advertisements;
 
 public class AdManager : SingletonBase<AdManager>
 {
-    private void Awake()
-    {
-        Advertisement.Initialize("3988287", true);
-    }
-    public void ShowAd()
-    {
-        if (Advertisement.IsReady())
-        {
-            Advertisement.Show();
-        }
-    }
+    //private void Awake()
+    //{
+    //    Advertisement.Initialize("3988287", true);
+    //}
+    //public void ShowAd()
+    //{
+    //    if (Advertisement.IsReady())
+    //    {
+    //        Advertisement.Show();
+    //    }
+    //}
 }

@@ -47,7 +47,7 @@ public class UILoaderManager : SingletonBase<UILoaderManager>
         SoundManager.Instance.StopEffect("Fire Loop");
         SoundManager.Instance.StopEffect("Cave 1 Loop");
         StartCoroutine(VillageMusicPlay());
-        AdManager.Instance.ShowAd();
+        //AdManager.Instance.ShowAd();
     }
 
     IEnumerator VillageMusicPlay() // 마을 음악 재생
