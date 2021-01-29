@@ -93,10 +93,10 @@ public class MonsterAction : MonoBehaviour
     /// 오브젝트 초기화
     /// </summary>
 
-    private void OnDestroy()
-    {
-        ObjectPoolManager.Instance.ReturnObject(gameObject);
-    }
+    //private void OnDestroy()
+    //{
+    //    ObjectPoolManager.Instance.ReturnObject(gameObject);
+    //}
 
     public virtual void InitObject()
     {
