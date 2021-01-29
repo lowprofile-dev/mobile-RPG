@@ -28,7 +28,7 @@ public class MasteryScript : MonoBehaviour
     [SerializeField] GameObject upPanel;
     [SerializeField] GameObject downPanel;
     [SerializeField] ToggleGroup toggleGroup;
-
+    private bool clicked = false;
     MasteryManager masteryManager;
     GameObject[] infoWindow;
     PlayerMasteryData[] masteryData;
@@ -43,9 +43,20 @@ public class MasteryScript : MonoBehaviour
         levelLimit = 5;
         upPanel.SetActive(false);
         downPanel.SetActive(false);
-
+        upSkill.onValueChanged.AddListener(delegate { ToggleChange(upSkill); });
+        downSkill.onValueChanged.AddListener(delegate { ToggleChange(downSkill); });
     }
 
+    public void ToggleChange(Toggle temp)
+    {
+        if(temp != null && isInit == true)
+        {
+            if (temp == upSkill && temp.isOn) masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = -1;
+            else if (temp == downSkill && temp.isOn) masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 1;
+            else masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 0;
+            MasteryManager.Instance.MasteryApply();
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -68,9 +79,19 @@ public class MasteryScript : MonoBehaviour
                   masteryData[1] = masteryManager.masteryDictionary[2];
                     if (masteryManager.currentMastery.currentMasteryChoices[0] == -1)
                     {
+                        Player.Instance.masterySet[0, 0] = true;
+                        Player.Instance.masterySet[0, 1] = false;
                         upSkill.isOn = true;
+                        clicked = true;
                     }
-                    else if(masteryManager.currentMastery.currentMasteryChoices[0] == 1) downSkill.isOn = true ;
+                    else if (masteryManager.currentMastery.currentMasteryChoices[0] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[0, 0] = false;
+                        Player.Instance.masterySet[0, 1] = true;
+                    }
+                    else clicked = false;
                   levelLimit = 5;
                   break;
                 case "Level10":
@@ -79,9 +100,19 @@ public class MasteryScript : MonoBehaviour
                     if (masteryManager.currentMastery.currentMasteryChoices[1] == -1)
                     {
                         upSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[1, 0] = true;
+                        Player.Instance.masterySet[1, 1] = false;
                     }
-                    else if (masteryManager.currentMastery.currentMasteryChoices[1] == 1) downSkill.isOn = true;
-                    levelLimit = 10; 
+                    else if (masteryManager.currentMastery.currentMasteryChoices[1] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[1, 0] = false;
+                        Player.Instance.masterySet[1, 1] = true;
+                    }
+                    else clicked = false;
+                        levelLimit = 10; 
                     break;           
                 case "Level15":      
                     masteryData[0] = masteryManager.masteryDictionary[5];
@@ -89,9 +120,18 @@ public class MasteryScript : MonoBehaviour
                     if (masteryManager.currentMastery.currentMasteryChoices[2] == -1)
                     {
                         upSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[2, 0] = true;
+                        Player.Instance.masterySet[2, 1] = false;
                     }
-                    else if (masteryManager.currentMastery.currentMasteryChoices[2] == 1) downSkill.isOn = true;
-
+                    else if (masteryManager.currentMastery.currentMasteryChoices[2] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[2, 0] = false;
+                        Player.Instance.masterySet[2, 1] = true;
+                    }
+                    else clicked = false;
                     levelLimit = 15; 
                     break;           
                 case "Level20":      
@@ -100,9 +140,21 @@ public class MasteryScript : MonoBehaviour
                     if (masteryManager.currentMastery.currentMasteryChoices[3] == -1)
                     {
                         upSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[3, 0] = true;
+                        Player.Instance.masterySet[3, 1] = false;
+
                     }
-                    else if (masteryManager.currentMastery.currentMasteryChoices[3] == 1) downSkill.isOn = true;
-                    levelLimit = 20; 
+                    else if (masteryManager.currentMastery.currentMasteryChoices[3] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[3, 0] = false;
+                        Player.Instance.masterySet[3, 1] = true;
+
+                    }
+                    else clicked = false;
+                        levelLimit = 20; 
                     break;           
                 case "Level25":      
                     masteryData[0] = masteryManager.masteryDictionary[9];
@@ -110,9 +162,19 @@ public class MasteryScript : MonoBehaviour
                     if (masteryManager.currentMastery.currentMasteryChoices[4] == -1)
                     {
                         upSkill.isOn = true;
-                    }
-                    else if (masteryManager.currentMastery.currentMasteryChoices[4] == 1) downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[4, 0] = true;
+                        Player.Instance.masterySet[4, 1] = false;
 
+                    }
+                    else if (masteryManager.currentMastery.currentMasteryChoices[4] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[4, 0] = false;
+                        Player.Instance.masterySet[4, 1] = true;
+                    }
+                    else clicked = false;
                     levelLimit = 25; 
                     break;           
                 case "Level30":      
@@ -121,9 +183,18 @@ public class MasteryScript : MonoBehaviour
                     if (masteryManager.currentMastery.currentMasteryChoices[5] == -1)
                     {
                         upSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[5, 0] = true;
+                        Player.Instance.masterySet[5, 1] = false;
                     }
-                    else if (masteryManager.currentMastery.currentMasteryChoices[5] == 1) downSkill.isOn = true;
-
+                    else if (masteryManager.currentMastery.currentMasteryChoices[5] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[5, 0] = false;
+                        Player.Instance.masterySet[5, 1] = true;
+                    }
+                    else clicked = false;
                     levelLimit = 30; 
                     break;           
                 case "Level35":      
@@ -132,9 +203,18 @@ public class MasteryScript : MonoBehaviour
                     if (masteryManager.currentMastery.currentMasteryChoices[6] == -1)
                     {
                         upSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[6, 0] = true;
+                        Player.Instance.masterySet[6, 1] = false;
                     }
-                    else if (masteryManager.currentMastery.currentMasteryChoices[6] == 1) downSkill.isOn = true;
-
+                    else if (masteryManager.currentMastery.currentMasteryChoices[6] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[6, 0] = false;
+                        Player.Instance.masterySet[6, 1] = true;
+                    }
+                    else clicked = false;
                     levelLimit = 35; 
                     break;           
                 case "Level40":      
@@ -143,9 +223,18 @@ public class MasteryScript : MonoBehaviour
                     if (masteryManager.currentMastery.currentMasteryChoices[7] == -1)
                     {
                         upSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[7, 0] = true;
+                        Player.Instance.masterySet[7, 1] = false;
                     }
-                    else if (masteryManager.currentMastery.currentMasteryChoices[7] == 1) downSkill.isOn = true;
-
+                    else if (masteryManager.currentMastery.currentMasteryChoices[7] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[7, 0] = false;
+                        Player.Instance.masterySet[7, 1] = true;
+                    }
+                    else clicked = false;
                     levelLimit = 40; 
                     break;           
                 case "Level45":      
@@ -154,9 +243,18 @@ public class MasteryScript : MonoBehaviour
                     if (masteryManager.currentMastery.currentMasteryChoices[8] == -1)
                     {
                         upSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[8, 0] = true;
+                        Player.Instance.masterySet[8, 1] = false;
                     }
-                    else if (masteryManager.currentMastery.currentMasteryChoices[8] == 1) downSkill.isOn = true;
-
+                    else if (masteryManager.currentMastery.currentMasteryChoices[8] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[8, 0] = false;
+                        Player.Instance.masterySet[8, 1] = true;
+                    }
+                    else clicked = false;
                     levelLimit = 45; 
                     break;           
                 case "Level50":      
@@ -165,13 +263,21 @@ public class MasteryScript : MonoBehaviour
                     if (masteryManager.currentMastery.currentMasteryChoices[9] == -1)
                     {
                         upSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[9, 0] = true;
+                        Player.Instance.masterySet[9, 1] = false;
                     }
-                    else if (masteryManager.currentMastery.currentMasteryChoices[9] == 1) downSkill.isOn = true;
-
+                    else if (masteryManager.currentMastery.currentMasteryChoices[9] == 1)
+                    {
+                        downSkill.isOn = true;
+                        clicked = true;
+                        Player.Instance.masterySet[9, 0] = false;
+                        Player.Instance.masterySet[9, 1] = true;
+                    }
+                    else clicked = false;
                     levelLimit = 50;
                     break;
             }
-
             isInit = true;
         }
     }
@@ -187,7 +293,6 @@ public class MasteryScript : MonoBehaviour
             upPanel.SetActive(true);
             downPanel.SetActive(true);
         }
-
         else
         {
             if (levelLimit <= MasteryManager.Instance.currentMastery.currentMasteryLevel)
@@ -200,23 +305,23 @@ public class MasteryScript : MonoBehaviour
 
                 if (upSkill.isOn)
                 {
-                    if (masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] == 1)
-                    {
-                        //Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
-                    }
-                    masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = -1;
+                    //if (masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] == 1)
+                    //{
+                    //    //Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
+                    //}
+                    //masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = -1;
                 }
                 else if (downSkill.isOn)
                 {
-                    if (masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] == -1)
-                    {
-                        //Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
-                    }
-                    masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 1;
+                    //if (masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] == -1)
+                    //{
+                    //    //Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
+                    //}
+                    //masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 1;
                 }
                 else
                 {
-                    masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 0;
+                    //masteryManager.currentMastery.currentMasteryChoices[(levelLimit - 1) / 5] = 0;
                     //Player.Instance.masterySet[(levelLimit - 1) / 5] = false;
                 }
                 masteryManager.SaveCurrentMastery();
@@ -237,10 +342,12 @@ public class MasteryScript : MonoBehaviour
     /// </summary>
     public void UpSkillOn()
     {
+
         masteryInfo.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = masteryData[0].masteryName;
         masteryInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = masteryData[0].masteryDescription;
         masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = upSkill.transform.GetChild(0).GetComponent<Image>().sprite;
         masteryInfo.SetActive(true);
+
     }
     
     //public void UpSkillMouseOff()
@@ -254,10 +361,12 @@ public class MasteryScript : MonoBehaviour
     /// </summary>
     public void DownSkillOn()
     {
+       
         masteryInfo.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryName;
         masteryInfo.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = masteryData[1].masteryDescription;
         masteryInfo.transform.GetChild(1).GetComponent<Image>().sprite = downSkill.transform.GetChild(0).GetComponent<Image>().sprite;
         masteryInfo.SetActive(true);
+
     }
 
     //public void DownSkillMouseOff()
