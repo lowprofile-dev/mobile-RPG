@@ -34,6 +34,10 @@ public class Weapon
     public float skillBCoef;
     public float skillCCoef;
 
+    public float skillACoolSave;
+    public float skillBCoolSave;
+    public float skillCCoolSave;
+
     public float skillACool;
     public float skillBCool;
     public float skillCCool;
@@ -68,6 +72,14 @@ public class Weapon
     {
         OutfitGradeCheck();
         MasteryLevelUp();
+        SKillCoolTime();
+    }
+
+    private void SKillCoolTime()
+    {
+        skillACool = skillACoolSave - StatusManager.Instance.finalStatus.attackCooldown;
+        skillBCool = skillBCoolSave - StatusManager.Instance.finalStatus.attackCooldown;
+        skillCCool = skillCCoolSave - StatusManager.Instance.finalStatus.attackCooldown;
     }
 
 

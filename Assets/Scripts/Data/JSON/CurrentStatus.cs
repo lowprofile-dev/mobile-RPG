@@ -52,7 +52,7 @@ public class CurrentStatus : ICloneable
         maxStamina = 10;
         staminaRecovery = 0.5f;
         attackDamage = 250;
-        attackCooldown = 1;
+        attackCooldown = 0;
         armor = 0;
         rigidresistance = 0;
         stunresistance = 0;

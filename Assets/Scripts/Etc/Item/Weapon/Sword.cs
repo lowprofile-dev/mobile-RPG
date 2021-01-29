@@ -57,9 +57,9 @@ public class Sword : Weapon
         skillCCoef = 0;
 
         // 스킬 쿨타임
-        skillACool = 7;
-        skillBCool = 8;
-        skillCCool = 11;
+        skillACoolSave = skillACool = 7;
+        skillBCoolSave = skillBCool = 8;
+        skillCCoolSave = skillCCool = 11;
 
         // 스킬 프리팹
         AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Sword Attack Effect 1");

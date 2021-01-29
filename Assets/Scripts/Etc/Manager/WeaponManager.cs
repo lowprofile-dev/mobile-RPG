@@ -32,6 +32,7 @@ public class WeaponManager : SingletonBase<WeaponManager>
     private void Start()
     {
        statusManager = StatusManager.Instance;
+        MasteryManager.Instance.weaponManager = this;
     }
     /// <summary>
     /// 무기매니저 초기화
@@ -53,6 +54,8 @@ public class WeaponManager : SingletonBase<WeaponManager>
         AddWeapon("BLUNT", Blunt as Blunt);
         AddWeapon("STAFF", Staff as Staff);
         AddWeapon("WAND", Wand as Wand);
+
+        MasteryManager.Instance.MasteryApply();
     }
 
     /// <summary>
@@ -98,6 +101,9 @@ public class WeaponManager : SingletonBase<WeaponManager>
     public void UpdateWeapon()
     {
         if (_currentWeapon != null) _currentWeapon.Update();
+        Debug.Log(_currentWeaponName + " A cooltime : " + _weaponDic[_currentWeaponName].skillACool);
+        Debug.Log(_currentWeaponName + " B cooltime : " + _weaponDic[_currentWeaponName].skillBCool);
+        Debug.Log(_currentWeaponName + " C cooltime : " + _weaponDic[_currentWeaponName].skillCCool);
     }
 
     /// <summary>
@@ -148,9 +154,9 @@ public class WeaponManager : SingletonBase<WeaponManager>
     {
         foreach (string key in _weaponDic.Keys)
         {
-            _weaponDic[key].skillACool -= 1;
-            _weaponDic[key].skillBCool -= 1;
-            _weaponDic[key].skillCCool -= 1;
+            _weaponDic[key].skillACool = _weaponDic[key].skillACoolSave - StatusManager.Instance.finalStatus.attackCooldown;
+            _weaponDic[key].skillBCool = _weaponDic[key].skillBCoolSave - StatusManager.Instance.finalStatus.attackCooldown;
+            _weaponDic[key].skillCCool = _weaponDic[key].skillCCoolSave - StatusManager.Instance.finalStatus.attackCooldown;
         }
     }
     /// <summary>
@@ -160,9 +166,9 @@ public class WeaponManager : SingletonBase<WeaponManager>
     {
         foreach (string key in _weaponDic.Keys)
         {
-            _weaponDic[key].skillACool += 1;
-            _weaponDic[key].skillBCool += 1;
-            _weaponDic[key].skillCCool += 1;
+            _weaponDic[key].skillACool += StatusManager.Instance.finalStatus.attackCooldown;
+            _weaponDic[key].skillBCool += StatusManager.Instance.finalStatus.attackCooldown;
+            _weaponDic[key].skillCCool += StatusManager.Instance.finalStatus.attackCooldown;
         }
     }
 }

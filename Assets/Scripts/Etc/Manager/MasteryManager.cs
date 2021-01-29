@@ -137,7 +137,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
     public Dictionary<int,PlayerMasteryData> masteryDictionary;
     //Player player; // 마스터리 매니저는 플레이어에 종속되어서는 안됨.
     StatusManager statusManager;
-    WeaponManager weaponManager;
+    public WeaponManager weaponManager;
     public bool rage;
     public bool resurrection;
     public bool[,] masterySet = new bool[10, 2]; // 마스터리 활성화 정보, 플레이어에 있으면 플레이어에 종속되기에 옮겨놓음.
@@ -151,7 +151,6 @@ public class MasteryManager : SingletonBase<MasteryManager>
         LoadSkillLevel();
         rage = false;
         resurrection = false;
-        MasteryApply();
     }
 
     public void SaveCurrentMastery()
@@ -590,31 +589,27 @@ public class MasteryManager : SingletonBase<MasteryManager>
             }
         }
 
-        //스킬 쿨타임 1초 감소
-        if (currentMastery.currentMasteryChoices[7] == 1)
-        {
-            if(weaponManager != null)
+        //if(weaponManager != null)
+        //{
+            //스킬 쿨타임 1초 감소
+            if (currentMastery.currentMasteryChoices[7] == 1)
             {
                 if (masterySet[7, 1] == false)
                 {
-                    weaponManager.WeaponCoolTimeReduce();
+                    StatusManager.Instance.multiplicationStatus.attackCooldown += 100f;
                     masterySet[7, 1] = true;
                 }
             }
-        }
 
-        else
-        {
-            if (weaponManager != null)
+            else
             {
                 if (masterySet[7, 1] == true)
                 {
-                    weaponManager.WeaponCoolTimeincrease();
-                    masterySet[7, 1] = false;
+                StatusManager.Instance.multiplicationStatus.attackCooldown -= 100f;
+                masterySet[7, 1] = false;
                 }
             }
-        }
-
+        //}
         // 물리 스킬 총 피해량 20% 증가
         if (currentMastery.currentMasteryChoices[8] == -1)
         {
