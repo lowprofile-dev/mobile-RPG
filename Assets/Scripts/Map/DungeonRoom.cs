@@ -319,11 +319,14 @@ public class DungeonRoom : MonoBehaviour
         for (int i = monsters.Count - 1; i >= 0; i--)
         {
             if (monsters[i] == null) continue;
-            if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center))
+            if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center) || monsters[i].transform.position.y < -50)
             {
                 monsters[i].GetComponent<NavMeshAgent>().enabled = false;
                 monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 1, 0);
                 monsters[i].GetComponent<NavMeshAgent>().enabled = true;
+                monsters[i].GetComponent<Collider>().enabled = true;
+                monsters[i].GetComponent<EPOOutline.Outlinable>().enabled = true;
+                monsters[i].SetActive(true);
             }
         }
     }
@@ -509,6 +512,9 @@ public class DungeonRoom : MonoBehaviour
             monster.GetComponent<Monster>().InitMonster();
             nMonsterSpawned += 1;
             monster.GetComponent<MonsterAction>().SpawnPos = monsterSpawnPoints[spawnPointIndex].transform.TransformPoint(0, 0, 0);
+            monster.GetComponent<Collider>().enabled = true;
+            monster.GetComponent<EPOOutline.Outlinable>().enabled = true;
+            monster.SetActive(true);
             monsters.Add(monster);
         }
     }
