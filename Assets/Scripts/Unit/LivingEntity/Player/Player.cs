@@ -878,7 +878,7 @@ public class Player : LivingEntity
         _DebuffManager.Release();
         _slowingFactor = 0f;
 
-        if (resurrection == false)
+        if (MasteryManager.Instance.resurrection == false)
         {
             SoundManager.Instance.PlayBGM("FailBGM", 0.6f);
             Invoke("DieExit", 3f);
@@ -887,10 +887,14 @@ public class Player : LivingEntity
 
     public void DieUpdate()
     {
-        if (resurrection == true)
+        if (MasteryManager.Instance.resurrection == true)
         {
             _isdead = false;
             //Debug.log("마스터리 특성 부활!");
+            GameObject resurrectionEffect = ObjectPoolManager.Instance.GetObject("SakuraTargetBuff");
+            resurrectionEffect.transform.position = transform.position + new Vector3(0f,-1f,0f);
+            SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Player/Resurrection", 0.5f);
+
             _hp = statusManager.finalStatus.maxHp;
             ChangeState(PLAYERSTATE.PS_IDLE);
         }
@@ -900,9 +904,9 @@ public class Player : LivingEntity
     {
         _isdead = false;
         myAnimator.ResetTrigger("Die");
-        if (resurrection == true)
+        if (MasteryManager.Instance.resurrection == true)
         {
-            resurrection = false;
+            MasteryManager.Instance.resurrection = false;
         }
         else UILoaderManager.Instance.LoadVillage();
     }
