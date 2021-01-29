@@ -57,7 +57,10 @@ public class NonLivingEntity : Unit
             else minimapIconSprite.sprite = GlobalDefine.Instance.npcBaseMinimapIcon;
         }
 
-        if (_myTalkChecker.canFinishQuest || _myTalkChecker.canStartQuest) canEndSquare.SetActive(true);
-        else canEndSquare.SetActive(false);
+        if (_myTalkChecker != null)
+        {
+            if (_myTalkChecker.canFinishQuest || _myTalkChecker.canStartQuest) canEndSquare.SetActive(true);
+            else canEndSquare.SetActive(false);
+        }
     }
 }
