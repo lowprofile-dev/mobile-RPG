@@ -101,9 +101,6 @@ public class WeaponManager : SingletonBase<WeaponManager>
     public void UpdateWeapon()
     {
         if (_currentWeapon != null) _currentWeapon.Update();
-        Debug.Log(_currentWeaponName + " A cooltime : " + _weaponDic[_currentWeaponName].skillACool);
-        Debug.Log(_currentWeaponName + " B cooltime : " + _weaponDic[_currentWeaponName].skillBCool);
-        Debug.Log(_currentWeaponName + " C cooltime : " + _weaponDic[_currentWeaponName].skillCCool);
     }
 
     /// <summary>

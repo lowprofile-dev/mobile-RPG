@@ -161,7 +161,6 @@ public class StatusManager : SingletonBase<StatusManager>
     
     private void LoadCurrentStatus()
     {
-        PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("LoadCurrentStatusCount", PlayerPrefs.GetInt("LoadCurrentStatusCount", 0));
         if (PlayerPrefs.GetInt("LoadCurrentStatusCount") == 0)
         {

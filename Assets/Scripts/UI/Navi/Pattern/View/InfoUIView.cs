@@ -98,15 +98,22 @@ public class InfoUIView : View
 
     private void FindIconList()
     {
-        int i = 0;
+        int i = 5;
         string[] strarr = new string[5];
         strarr[0] = "Armors";
         strarr[1] = "Boots";
         strarr[2] = "Bottoms";
         strarr[3] = "Gloves";
         strarr[4] = "Helmets";
-        iconList = new Transform[80];
-        while (i < 80)
+        iconList = new Transform[125];
+
+        iconList[0] = Resources.Load<GameObject>("Prefab/Items/0Backup/Armors/Basic Armor").transform;
+        iconList[1] = Resources.Load<GameObject>("Prefab/Items/0Backup/Bottoms/Basic Bottom").transform;
+        iconList[2] = Resources.Load<GameObject>("Prefab/Items/0Backup/Helmets/Basic Helmet").transform;
+        iconList[3] = Resources.Load<GameObject>("Prefab/Items/0Backup/Gloves/Basic Gloves").transform;
+        iconList[4] = Resources.Load<GameObject>("Prefab/Items/0Backup/Boots/Basic Boot").transform;
+        
+        while (i < 125)
         {
             GameObject temp = null;
             if (i < 9)
