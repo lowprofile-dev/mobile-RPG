@@ -130,7 +130,6 @@ public class BossSkeletonWarrior : MonsterAction
         MakeEffect();
 
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-        _attackCoroutine = null;
         _readyCast = false;
 
         _navMeshAgent.speed = _monster.speed;
@@ -402,8 +401,7 @@ public class BossSkeletonWarrior : MonsterAction
 
     protected override void TraceStart()
     {
-        if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-        _attackCoroutine = null;
+        //if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
         _monster.myAnimator.ResetTrigger("Walk");       
 
         if (Vector3.Distance(transform.position, _target.transform.position) >= _navMeshAgent.stoppingDistance)
@@ -421,16 +419,6 @@ public class BossSkeletonWarrior : MonsterAction
     protected override void TraceUpdate()
     {
         MoveToTarget();
-    }
-    protected override void AttackStart()
-    {
-        if (!_readyCast && ToCast()) return;
-        else
-        {
-            if (_attackCoroutine == null)
-                _attackCoroutine = StartCoroutine(AttackTarget());
-        }
-        
     }
 
     public override void Damaged(float dmg, bool SetAnimation = false)
