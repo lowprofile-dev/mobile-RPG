@@ -30,6 +30,11 @@ public class Sword : Weapon
 
         masteryLevel = MasteryManager.Instance.currentMastery.currentSwordMasteryLevel;
 
+        skillLevel[0] = MasteryManager.Instance.weaponSkillLevel[0].autoAttackLevel;
+        skillLevel[1] = MasteryManager.Instance.weaponSkillLevel[0].skillALevel;
+        skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[0].skillBLevel;
+        skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[0].skillCLevel;
+
         attackDamage = 1;
         skillSpeed = 0;
 
@@ -46,11 +51,6 @@ public class Sword : Weapon
     {
         skillBRelease = MasteryManager.Instance.currentMastery.currentSwordSkillBReleased;
         skillCRelease = MasteryManager.Instance.currentMastery.currentSwordSkillCReleased;
-
-        skillLevel[0] = MasteryManager.Instance.weaponSkillLevel[0].autoAttackLevel;
-        skillLevel[1] = MasteryManager.Instance.weaponSkillLevel[0].skillALevel;
-        skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[0].skillBLevel;
-        skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[0].skillCLevel;
 
         skillACoef = 0;
         skillBCoef = 0;
@@ -79,7 +79,7 @@ public class Sword : Weapon
     {
         // 체력 회복 스킬
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillAEffect).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[0].skillALevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
         
@@ -100,7 +100,7 @@ public class Sword : Weapon
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 2 Swing", 0.55f);
         CameraManager.Instance.ShakeCamera(10, 3, 0.25f); // 카메라 흔들기 연출
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillBEffect).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[0].skillBLevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
 
@@ -114,7 +114,7 @@ public class Sword : Weapon
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Skill 3 Holy", 0.55f);
 
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillCEffect).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[0].skillCLevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
 
@@ -126,7 +126,7 @@ public class Sword : Weapon
         // 공격 콤보 3
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 3", 0.5f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect3).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[0].autoAttackLevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
 
@@ -138,7 +138,7 @@ public class Sword : Weapon
         // 공격 콤보 2
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 2", 0.5f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect2).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[0].autoAttackLevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
 
@@ -150,7 +150,7 @@ public class Sword : Weapon
         // 공격 콤보 1
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Sword Attack 1", 0.5f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[0].autoAttackLevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
         

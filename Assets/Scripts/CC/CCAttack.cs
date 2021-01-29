@@ -20,6 +20,12 @@ public class CCAttack : MonoBehaviour
     [Tooltip("경직 확률 0 ~ 1")]
     [SerializeField] float FirgProc;
 
+    [HideInInspector] public int _level;
+    [SerializeField] private float _levelFallProc; // 레벨 별 추가되는 수치 : fall
+    [SerializeField] private float _levelStunProc; // 레벨 별 추가되는 수치 : stun
+    [SerializeField] private float _levelFrigProc; // 레벨 별 추가되는 수치 : frig
+
+    
 
     /// <summary>
     /// 대상이 CC를 받을 수 있는 상태인지 체크한다.
@@ -43,6 +49,15 @@ public class CCAttack : MonoBehaviour
          *  확률 계산 우선순위
          *  넘어짐 > 스턴 > 경직 순으로 계산됨
          */
+
+        fstun += _level * _levelStunProc;
+        ffall += _level * _levelFallProc;
+        frig += _level * _levelFrigProc;
+
+        if (fstun > 1) fstun = 1;
+        if (ffall > 1) ffall = 1;
+        if (frig > 1) frig = 1;
+
         float roll = Random.Range(0, 100);
 
         float fallRate = ffall * 100f;

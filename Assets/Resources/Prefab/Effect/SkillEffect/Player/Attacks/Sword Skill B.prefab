@@ -48,11 +48,13 @@ MonoBehaviour:
   _collider: {fileID: 1669010254743391729}
   _particleEffectPrefab: {fileID: 1044528419629608, guid: fbfc444644d1fcc4bb567a9b9e0b8336,
     type: 3}
-  targetNumber: 7
+  _targetNumber: 4
   _useFixedDmg: 0
   _useMeleeDmg: 1
   _damage: 1.1
   _damageCount: 1
+  _levelAtkCount: 0.12
+  _levelMultiCount: 0
 --- !u!114 &4589728124114341467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +70,10 @@ MonoBehaviour:
   FallProc: 0.2
   StunProc: 0
   FirgProc: 0
+  _level: 0
+  _levelFallProc: 0.01
+  _levelStunProc: 0
+  _levelFrigProc: 0
 --- !u!136 &1669010254743391729
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -46,6 +46,7 @@ public class Weapon
     public int exp =0;
 
     public float attackDamage;
+    public float magicDamage;
     public float skillSpeed;
 
     private bool levelUp = false;

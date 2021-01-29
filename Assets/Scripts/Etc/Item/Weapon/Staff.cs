@@ -37,6 +37,7 @@ public class Staff : Weapon
         exp = MasteryManager.Instance.currentMastery.currentStaffMasteryExp;
 
         attackDamage = 1;
+        magicDamage = 0;
         skillSpeed = 0;
 
         skillACoef = 0;

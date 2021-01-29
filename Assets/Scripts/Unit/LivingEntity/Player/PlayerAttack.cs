@@ -15,18 +15,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttack: MonoBehaviour
+public class PlayerAttack : MonoBehaviour
 {
     [Header("기본")]
     [SerializeField] protected Collider _collider;                  // 충돌체
     [SerializeField] protected GameObject _particleEffectPrefab;    // 생성할 파티클 오브젝트
+    protected int _skillLevel;                                      // 스킬의 레벨
 
     [Header("공격 속성")]
-    [SerializeField] private int targetNumber;                      // 타격한 수
+    [SerializeField] private int _targetNumber;                      // 타격한 수
     [SerializeField] protected bool _useFixedDmg;                   // 고정 데미지인지 
     [SerializeField] protected bool _useMeleeDmg;                   // 물리 데미지인지
     [SerializeField] protected float _damage;                       // 데미지 수치
     [SerializeField] protected float _damageCount;                  // 데미지 입히는 횟수
+    [SerializeField] protected float _levelAtkCount;                // 레벨 별 추가되는 데미지 수치                   
+    [SerializeField] protected float _levelMultiCount;              // 레벨 별 추가되는 다중 공격 수치
 
     protected HashSet<GameObject> _attackedTarget;                  // 타격한 몬스터 목록 (중복 방지)
     protected GameObject _baseParent;                               // 공격을 생성한 대상
@@ -76,11 +79,14 @@ public class PlayerAttack: MonoBehaviour
     /// <summary>
     /// 부모를 설정하고 이에 따라 위치를 설정한다.
     /// </summary>
-    public void SetParent(GameObject parent)
+    public void SetParent(GameObject parent, int level)
     {
         _baseParent = parent;
         transform.SetParent(parent.transform);
         transform.localPosition = Vector3.zero;
+
+        _skillLevel = level;
+        if (GetComponent<CCAttack>()) GetComponent<CCAttack>()._level = level;
     }
     
     /// <summary>
@@ -90,7 +96,7 @@ public class PlayerAttack: MonoBehaviour
     {
         if (CanCollision(other))
         {
-            if (_attackedTarget.Count <= targetNumber)
+            if (_attackedTarget.Count <= _targetNumber)
             {
                 _attackedTarget.Add(other.gameObject);
                 CallMultiDamageCoroutine(other);
@@ -111,7 +117,9 @@ public class PlayerAttack: MonoBehaviour
     /// </summary>
     public virtual IEnumerator DoMultiDamage(MonsterAction monster, float waitTime)
     {
-        for (int i=0; i<_damageCount; i++)
+        int tempDamageCount = (int)(_damageCount + (_levelMultiCount * _skillLevel));
+
+        for (int i=0; i<tempDamageCount; i++)
         {
             float damageNum = DoDamage(monster);
             DoRestoreFromDamage(damageNum);
@@ -126,10 +134,12 @@ public class PlayerAttack: MonoBehaviour
     /// </summary>
     public virtual float DoDamage(MonsterAction monster)
     {
-        float finalDamage = _useFixedDmg ? _damage : _damage * StatusManager.Instance.GetFinalDamageRandomly();
+        float tempDamage = _damage + (_skillLevel * _levelAtkCount);
+        float finalDamage = _useFixedDmg ? tempDamage : tempDamage * StatusManager.Instance.GetFinalDamageRandomly();
+
         if (Player.Instance.canDealFullHealth)
         {
-            finalDamage += _damage * Player.Instance.fullHealthDamage;
+            finalDamage += tempDamage * Player.Instance.fullHealthDamage;
         }
         if (Player.Instance.canDealProportional)
         {
@@ -137,15 +147,15 @@ public class PlayerAttack: MonoBehaviour
         }
         if (Player.Instance.canDealGiant && monster.monster.Hp / monster.monster.initHp >= 0.8f)
         {
-            finalDamage += _damage * Player.Instance.giantDamage;
+            finalDamage += tempDamage * Player.Instance.giantDamage;
         }
         if (Player.Instance.canDealAnnoyed && Player.Instance.isAnnoyed && Player.Instance.annoyedTime <= 2.0f)
         {
-            finalDamage += _damage * Player.Instance.annoyedDamage;
+            finalDamage += tempDamage * Player.Instance.annoyedDamage;
         }
         if (Player.Instance.canDealSpellStrike && Player.Instance.hasSpellStrike)
         {
-            finalDamage += _damage * Player.Instance.spellStrikeDamage;
+            finalDamage += tempDamage * Player.Instance.spellStrikeDamage;
         }
         return monster.DamageCheck(finalDamage);
     }
