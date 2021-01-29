@@ -874,6 +874,7 @@ public class MonsterAction : MonoBehaviour
             parentRoom.MonsterList.Remove(gameObject);
             parentRoom.MonsterDeathCheck();
         }
+        Debug.Log("몬스터가 죽었다!" + parentRoom.MonsterList.Count);
 
         TalkManager.Instance.SetQuestCondition(1, monster.id, 1);
 
