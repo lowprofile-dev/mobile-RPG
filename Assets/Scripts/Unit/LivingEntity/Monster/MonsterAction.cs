@@ -877,11 +877,23 @@ public class MonsterAction : MonoBehaviour
 
         TalkManager.Instance.SetQuestCondition(1, monster.id, 1);
 
+        GetReward();
         DeathSound();
         StopAllCoroutines();
         StartCoroutine(DoDeathAction());
 
         //StartCoroutine("DestroyMonster");
+    }
+
+    /// <summary>
+    /// 대상이 죽었을때 보상을 받는다.
+    /// </summary>
+    private void GetReward()
+    {
+        ItemManager.Instance.AddCoin((int)(MonsterManager.Instance.MonsterDictionary[_monster.id].coin * UnityEngine.Random.Range(0.8f, 1.2f)));
+        ItemManager.Instance.AddGold((int)(MonsterManager.Instance.MonsterDictionary[_monster.id].gold * UnityEngine.Random.Range(0.8f, 1.2f)));
+        WeaponManager.Instance.AddExpToCurrentWeapon((int)(MonsterManager.Instance.MonsterDictionary[_monster.id].xp * UnityEngine.Random.Range(0.8f, 1.2f)));
+        MasteryManager.Instance.UpdateCurrentExp();
     }
 
     private IEnumerator DestroyMonster()
@@ -939,8 +951,6 @@ public class MonsterAction : MonoBehaviour
     {
         if (DeathCheck())
         {
-            WeaponManager.Instance.AddExpToCurrentWeapon(10);
-            MasteryManager.Instance.UpdateCurrentExp();
             ChangeState(MONSTER_STATE.STATE_DIE);
             return true;
         }

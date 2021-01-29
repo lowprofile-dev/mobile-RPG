@@ -45,12 +45,7 @@ public class Wand : Weapon
     {
         skillBRelease = MasteryManager.Instance.currentMastery.currentWandSkillBReleased;
         skillCRelease = MasteryManager.Instance.currentMastery.currentWandSkillCReleased;
-
-        skillLevel[0] = MasteryManager.Instance.weaponSkillLevel[3].autoAttackLevel;
-        skillLevel[1] = MasteryManager.Instance.weaponSkillLevel[3].skillALevel;
-        skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[3].skillBLevel;
-        skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[3].skillCLevel;
-
+        
         skillACoef = 0;
         skillBCoef = 0;
         skillCCoef = 0;
@@ -59,6 +54,11 @@ public class Wand : Weapon
         skillACool = 7;
         skillBCool = 9;
         skillCCool = 12;
+
+        skillLevel[0] = MasteryManager.Instance.weaponSkillLevel[3].autoAttackLevel;
+        skillLevel[1] = MasteryManager.Instance.weaponSkillLevel[3].skillALevel;
+        skillLevel[2] = MasteryManager.Instance.weaponSkillLevel[3].skillBLevel;
+        skillLevel[3] = MasteryManager.Instance.weaponSkillLevel[3].skillCLevel;
 
         // 스킬 프리팹
         AttackEffect = Resources.Load<GameObject>("Prefab/Effect/SkillEffect/Player/Attacks/Wand Attack Effect 1");
@@ -75,7 +75,7 @@ public class Wand : Weapon
         // 어둠 구체를 생성하여 공격
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Skill 1", 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillAEffect).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[3].skillALevel);
         atk.PlayAttackTimer(1.4f);
         atk.OnLoad();
 
@@ -86,7 +86,7 @@ public class Wand : Weapon
     {
         // 빠른 다중타격 공격
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillBEffect).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[3].skillBLevel);
         atk.PlayAttackTimer(1.0f);
         atk.OnLoad();
 
@@ -100,7 +100,7 @@ public class Wand : Weapon
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Skill 3 Ice", 0.6f);
 
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(SkillCEffect).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[3].skillCLevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
 
@@ -112,7 +112,7 @@ public class Wand : Weapon
         // 공격 콤보 3
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Attack " + UnityEngine.Random.Range(1, 6), 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect3).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[3].autoAttackLevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
 
@@ -124,7 +124,7 @@ public class Wand : Weapon
         // 공격 콤보 2
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Attack " + UnityEngine.Random.Range(1, 6), 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect2).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[3].autoAttackLevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
 
@@ -136,7 +136,7 @@ public class Wand : Weapon
         // 공격 콤보 1
         SoundManager.Instance.PlayEffect(SoundType.EFFECT, "SkillEffect/Wand Attack " + UnityEngine.Random.Range(1, 6), 0.6f);
         PlayerAttack atk = ObjectPoolManager.Instance.GetObject(AttackEffect).GetComponent<PlayerAttack>();
-        atk.SetParent(Player.Instance.skillPoint.gameObject);
+        atk.SetParent(Player.Instance.skillPoint.gameObject, MasteryManager.Instance.weaponSkillLevel[3].autoAttackLevel);
         atk.PlayAttackTimer(0.4f);
         atk.OnLoad();
 
