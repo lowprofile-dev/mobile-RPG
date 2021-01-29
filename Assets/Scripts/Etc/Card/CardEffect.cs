@@ -78,7 +78,7 @@ public class CardEffect
         else if (effectData.id == 6) // 대쉬 속도 증가
         {
             originalValues.Add(Player.Instance.dashSpeed);
-            Player.Instance.dashSpeed *= (gradeNum[level] / 100.0f);
+            Player.Instance.dashSpeed += Player.Instance.dashSpeed * (gradeNum[level] / 100.0f);
         }
         else if (effectData.id == 15) // 플레이어의 데미지 증가
         {
