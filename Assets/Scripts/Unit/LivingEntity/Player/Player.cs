@@ -78,7 +78,6 @@ public class Player : LivingEntity
     private float _evadeTime;                           // 현재 회피 시간
 
     [Header("마스터리 관련")]
-    public bool[,] masterySet = new bool[10,2];            // 마스터리 활성화 정보
     private bool resurrection = false;                  // 부활
     private bool rage = false;                  // 부활
 
@@ -193,8 +192,6 @@ public class Player : LivingEntity
         MasteryManager.Instance.UpdateCurrentExp();
         playerOutlinable = gameObject.GetComponent<EPOOutline.Outlinable>();
         InitOutline();
-
-        MasteryManager.Instance.MasteryApply();
     }
 
     protected override void Update()
@@ -205,7 +202,6 @@ public class Player : LivingEntity
         TestCode();
         UpdateAll();
         UpdateState();
-        //MasteryApply();
         ApplyGravity();
         if (isAnnoyed)
             annoyedTime += Time.deltaTime;

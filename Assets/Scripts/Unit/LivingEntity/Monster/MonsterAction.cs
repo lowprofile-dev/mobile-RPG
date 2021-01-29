@@ -781,15 +781,8 @@ public class MonsterAction : MonoBehaviour
     /// </summary>
     protected virtual void DamagedProcess(float dmg, bool SetAnimation = true)
     {
-        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[5] == -1)
-        {
-            _monster.Damaged(dmg * 1.1f, false);
-
-        }
-        else
-        {
-            _monster.Damaged(dmg, false);
-        }
+        if(MasteryManager.Instance.currentMastery.currentMasteryChoices[5] == -1) _monster.Damaged(dmg * 1.1f, false);
+        else _monster.Damaged(dmg, false);
 
 
         _bar.HpUpdate();

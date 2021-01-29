@@ -154,7 +154,7 @@ public class PlayerAttack: MonoBehaviour
     /// </summary>
     public void DoRestoreFromDamage()
     {
-        if (Player.Instance.masterySet[7,0] == true)
+        if (MasteryManager.Instance.masterySet[7,0] == true)
         {
             Player.Instance.RestoreHP(StatusManager.Instance.finalStatus.attackDamage);
         }

@@ -66,6 +66,7 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     {
         resourceManager = (ResourceManager)AddManager<ResourceManager>();
         objectPoolManager = (ObjectPoolManager)AddManager<ObjectPoolManager>();
+        statusManager = (StatusManager)AddManager<StatusManager>();
         masteryManager = (MasteryManager)AddManager<MasteryManager>();
         weaponManager = (WeaponManager)AddManager<WeaponManager>();
         uiLoaderManager = (UILoaderManager)AddManager<UILoaderManager>();
@@ -75,7 +76,6 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
         soundManager = (SoundManager)AddManager<SoundManager>();
         uiNavationManager = (UINaviationManager)AddManager<UINaviationManager>();
         uiManager = (UIManager)AddManager<UIManager>();
-        statusManager = (StatusManager)AddManager<StatusManager>();
         itemManager = (ItemManager)AddManager<ItemManager>();
         monsterManager = (MonsterManager)AddManager<MonsterManager>();
         adManager = (AdManager)AddManager<AdManager>();
@@ -88,9 +88,9 @@ public class ManagerHolder : SingletonBase<ManagerHolder>
     {
         resourceManager.InitResourceManager();
         objectPoolManager.InitObjectPoolManager();
+        statusManager.InitStatusManager();
         masteryManager.InitMasteryManager();
         weaponManager.InitWeaponManager();
-        statusManager.InitStatusManager();
         uiLoaderManager.InitUILoaderManager();
         talkManager.InitTalkManager();
         cardManager.InitCardManager();
