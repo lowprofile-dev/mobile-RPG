@@ -594,7 +594,7 @@ public class ItemManager : SingletonBase<ItemManager>
                         possibleDropList.Add(allClassItems[i][j]);
                     }
                 }
-                dropItem.GetComponent<Item>().id = allClassItems[i][UnityEngine.Random.Range(0, possibleDropList.Count)].id;
+                dropItem.GetComponent<Item>().id = possibleDropList[UnityEngine.Random.Range(0, possibleDropList.Count)].id;
                 dropItem.GetComponent<Item>().LoadItemData();
                 dropItem.transform.position = monsterTransform.position;
                 dropItem.transform.rotation = monsterTransform.rotation;
