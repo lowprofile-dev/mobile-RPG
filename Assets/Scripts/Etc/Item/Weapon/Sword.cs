@@ -31,7 +31,6 @@ public class Sword : Weapon
         masteryLevel = MasteryManager.Instance.currentMastery.currentSwordMasteryLevel;
 
         attackDamage = 1;
-        magicDamage = 0;
         skillSpeed = 0;
 
         exp = MasteryManager.Instance.currentMastery.currentSwordMasteryExp;

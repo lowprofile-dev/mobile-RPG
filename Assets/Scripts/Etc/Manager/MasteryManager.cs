@@ -409,7 +409,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
     //마스터리 강화 관련 
     public void MasteryApply()
     {
-        if(StatusManager.Instance != null ) statusManager = StatusManager.Instance;
+        if (StatusManager.Instance != null ) statusManager = StatusManager.Instance;
         if (Player.Instance != null) player = Player.Instance;
         //카드 리롤 확률 증가
         //CardManager.cs 187
@@ -417,14 +417,12 @@ public class MasteryManager : SingletonBase<MasteryManager>
         //보스 처치 시 더 많은 코인 획득 미구현 -> 아이템 드랍 확률 증가
         //DungeonRoom.cs 186
 
-        //마스터리 공격 증가 부분
+        //크리티컬 확률 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == -1)
         {
-
             if (player.masterySet[1, 0] == false)
             {
-                statusManager.multiplicationStatus.attackDamage += 10f;
-                // statusManager.multiplicationStatus.armorIncreaseRate -= 0.1f;
+                statusManager.additionStatus.criticalPercent += 20f;
                 player.masterySet[1, 0] = true;
             }
         }
@@ -432,17 +430,17 @@ public class MasteryManager : SingletonBase<MasteryManager>
         {
             if (player.masterySet[1, 0] == true)
             {
-                statusManager.multiplicationStatus.attackDamage -= 10f;
+                statusManager.additionStatus.criticalPercent -= 20f;
                 player.masterySet[1, 0] = false;
             }
         }
-        //방어력 증가 부분
+
+        //크리티컬 데미지 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[1] == 1)
         {
             if (player.masterySet[1, 1] == false)
             {
-                statusManager.multiplicationStatus.armorIncreaseRate += 10f;
-                //statusManager.multiplicationStatus.attackDamage -= 0.1f;
+                statusManager.additionStatus.criticalDamage += 0.5f;
                 player.masterySet[1, 1] = true;
             }
         }
@@ -450,7 +448,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
         {
             if (player.masterySet[1, 1] == true)
             {
-                statusManager.multiplicationStatus.armorIncreaseRate -= 10f;
+                statusManager.additionStatus.criticalDamage -= 0.5f;
                 player.masterySet[1, 1] = false;
             }
         }
@@ -464,9 +462,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
                 statusManager.additionStatus.staminaRecovery -= 1f;
                 player.masterySet[2, 0] = true;
             }
-
         }
-
         //기력 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[2] == 1)
         {
@@ -484,9 +480,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
         {
             if (player.masterySet[3, 0] == false)
             {
-                //statusManager.finalStatus.moveSpeed = (statusManager.playerStatus.moveSpeed * 2f) - (((statusManager.playerStatus.moveSpeed * 2f) * _slowingFactor) / 100f);
-                //statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
-                statusManager.multiplicationStatus.moveSpeed += 50f;
+                statusManager.multiplicationStatus.moveSpeed += 25f;
                 player.masterySet[3, 0] = true;
             }
         }
@@ -494,30 +488,24 @@ public class MasteryManager : SingletonBase<MasteryManager>
         {
             if (player.masterySet[3, 0] == true)
             {
-                statusManager.multiplicationStatus.moveSpeed -= 50f;
+                statusManager.multiplicationStatus.moveSpeed -= 25f;
                 player.masterySet[3, 0] = false;
             }
         }
-        //공속 증가
+        //방어 증가
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[3] == 1)
         {
             if (player.masterySet[3, 1] == false)
             {
-                //statusManager.finalStatus.attackSpeed = (statusManager.playerStatus.attackSpeed * 1.2f) - (((statusManager.playerStatus.moveSpeed * 1.2f) * _slowingFactor) / 100f);
-                //statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
-                statusManager.multiplicationStatus.attackSpeed += 50;
+                statusManager.additionStatus.armor += 15;
                 player.masterySet[3, 1] = true;
             }
         }
         else
         {
-            //statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed - ((statusManager.playerStatus.moveSpeed * _slowingFactor) / 100f);
-            //statusManager.finalStatus.attackSpeed = statusManager.playerStatus.attackSpeed;
             if (player.masterySet[3, 1] == true)
             {
-                //statusManager.finalStatus.attackSpeed = (statusManager.playerStatus.attackSpeed * 1.2f) - (((statusManager.playerStatus.moveSpeed * 1.2f) * _slowingFactor) / 100f);
-                //statusManager.finalStatus.moveSpeed = statusManager.playerStatus.moveSpeed;
-                statusManager.multiplicationStatus.attackSpeed -= 50;
+                statusManager.additionStatus.armor -= 15;
                 player.masterySet[3, 1] = false;
             }
         }
@@ -586,6 +574,7 @@ public class MasteryManager : SingletonBase<MasteryManager>
             }
 
         }
+
         //스킬 쿨타임 1초 감소
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[7] == 1)
         {
@@ -597,9 +586,8 @@ public class MasteryManager : SingletonBase<MasteryManager>
                     player.masterySet[7, 1] = true;
                 }
             }
-
-
         }
+
         else
         {
             if (weaponManager != null)
@@ -630,12 +618,13 @@ public class MasteryManager : SingletonBase<MasteryManager>
             }
         }
 
-        // 마법 스킬 총 피해량 20% 증가
+        // 크리티컬 강화
         if (MasteryManager.Instance.currentMastery.currentMasteryChoices[8] == 1)
         {
             if (player.masterySet[8, 1] == false)
             {
-                statusManager.multiplicationStatus.attackDamage += 20f;
+                statusManager.additionStatus.criticalPercent += 10f;
+                statusManager.additionStatus.criticalDamage += 0.3f;
 
                 player.masterySet[8, 1] = true;
             }
@@ -644,7 +633,8 @@ public class MasteryManager : SingletonBase<MasteryManager>
         {
             if (player.masterySet[8, 1] == true)
             {
-                statusManager.multiplicationStatus.attackDamage -= 20f;
+                statusManager.additionStatus.criticalPercent -= 10f;
+                statusManager.additionStatus.criticalDamage -= 0.3f;
                 player.masterySet[8, 1] = false;
             }
         }

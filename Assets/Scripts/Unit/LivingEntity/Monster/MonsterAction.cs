@@ -783,12 +783,12 @@ public class MonsterAction : MonoBehaviour
     {
         if(MasteryManager.Instance.currentMastery.currentMasteryChoices[5] == -1)
         {
-            _monster.Damaged(dmg * 1.1f);
+            _monster.Damaged(dmg * 1.1f, false);
 
         }
         else
         {
-            _monster.Damaged(dmg);
+            _monster.Damaged(dmg, false);
         }
 
 

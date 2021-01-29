@@ -59,10 +59,30 @@ public class LivingEntity : Unit
     /// <summary>
     /// 피해 처리, 데미지 UI도 생성해준다.
     /// </summary>
-    public virtual void Damaged(float damage)
+    public virtual void Damaged(float damage, bool noArmorDmg)
     {
-        _hp -= damage;
-        ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayDamage((int)damage, true);
+        bool isCritical = false;
+        if (IsCritical())
+        {
+            damage = StatusManager.Instance.GetCriticalDamageRandomly(); // 플레이어의 공격에서만 적용이 된다. (Monster.cs)
+            isCritical = true;
+        }
+
+        int resultDmg = (int)(noArmorDmg ? damage : GetArmorFromDamaged(damage));
+        _hp -= resultDmg;
+
+        if (isCritical) ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayCriticalDamage(resultDmg, true);
+        else ObjectPoolManager.Instance.GetObject(DamageText, transform.position, Quaternion.identity).GetComponent<DamageText>().PlayDamage(resultDmg, true);
+    }
+
+    public virtual bool IsCritical()
+    {
+        return false;
+    }
+
+    public virtual float GetArmorFromDamaged(float damage)
+    {
+        return damage;
     }
 
     public virtual void UseStemina(float skillmp)

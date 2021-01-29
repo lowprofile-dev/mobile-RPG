@@ -23,23 +23,25 @@ public class AdditionStatus
     public float staminaRecovery;       //스태미너 회복량
     public float attackDamage;          //공격력 증가
     public float armor;                 //방어력 증가
-    public float magicResistance;       //마법 방어력 증가
     public float rigidresistance;       //경직 cc 저항
     public float stunresistance;        //스턴 cc 저항
     public float fallresistance;        //넘어짐 cc 저항 
+    public float criticalPercent;       //크리티컬 확률
+    public float criticalDamage;        //크리티컬 데미지
 
     public AdditionStatus()
     {
-        hp = 0;                    //최대 체력 증가
-        hpRecovery = 0;            //체력 회복량
-        stamina = 0;               //최대 스태미너 증가
-        staminaRecovery = 0;       //스태미너 회복량
-        attackDamage = 0;          //공격력 증가
-        armor = 0;                 //방어력 증가
-        magicResistance = 0;       //마법 방어력 증가
-        rigidresistance = 0;       //경직 cc 저항
-        stunresistance = 0;        //스턴 cc 저항
-        fallresistance = 0;        //넘어짐 cc 저항 
+        hp = 0;                     //최대 체력 증가
+        hpRecovery = 0;             //체력 회복량
+        stamina = 0;                //최대 스태미너 증가
+        staminaRecovery = 0;        //스태미너 회복량
+        attackDamage = 0;           //공격력 증가
+        armor = 0;                  //방어력 증가
+        rigidresistance = 0;        //경직 cc 저항
+        stunresistance = 0;         //스턴 cc 저항
+        fallresistance = 0;         //넘어짐 cc 저항 
+        criticalDamage = 0;         //크리티컬 데미지
+        criticalPercent = 0;        //크리티컬 확률
     }
 }
 
@@ -50,7 +52,6 @@ public class AdditionStatus
 public class MultiplicationStatus
 {
     public float hpIncreaseRate;        //체력 % 증가
-    public float attackSpeed;           //공격속도 % 증가
     public float attackCooldown;        //공격스킬 쿨타임 % 감소
     public float attackDamage;          //공격력 % 증가
     public float armorIncreaseRate;     //방어력 % 증가
@@ -58,18 +59,21 @@ public class MultiplicationStatus
     public float maxSpeed;
     public float dashCooldown;          //대쉬 스킬 쿨타임 % 감소
     public float dashStamina;           //대쉬 스킬 스태미너 % 감소
+    public float criticalDamage;        //크리티컬 데미지 % 증가
+    public float criticalPercent;       //크리티컬 확률 % 증가
 
     public MultiplicationStatus()
     {
-        hpIncreaseRate = 0;        //체력 % 증가
+        hpIncreaseRate = 0;         //체력 % 증가
         attackDamage = 0;           //공격력 % 증가
-        attackSpeed = 0;           //공격속도 % 증가
-        attackCooldown = 0;        //공격스킬 쿨타임 % 감소
-        armorIncreaseRate = 0;     //방어력 % 증가
-        moveSpeed = 0;             //이동 속도 % 증가
+        attackCooldown = 0;         //공격스킬 쿨타임 % 감소
+        armorIncreaseRate = 0;      //방어력 % 증가
+        moveSpeed = 0;              //이동 속도 % 증가
         maxSpeed = moveSpeed;
-        dashCooldown = 0;          //대쉬 스킬 쿨타임 % 감소
-        dashStamina = 0;           //대쉬 스킬 스태미너 % 감소
+        dashCooldown = 0;           //대쉬 스킬 쿨타임 % 감소
+        dashStamina = 0;            //대쉬 스킬 스태미너 % 감소
+        criticalPercent = 1;        //크리티컬 확률 % 증가
+        criticalDamage = 1;         //크리티컬 데미지 % 증가
     }
 }
 
@@ -113,9 +117,16 @@ public class StatusManager : SingletonBase<StatusManager>
         {
             player = Player.Instance;
         }
+
         finalStatus = (CurrentStatus)playerStatus.Clone();
         AddCurrentStatus();
         MultiplyCurrentStatus();
+        SetLimitToStatus();
+    }
+
+    private void SetLimitToStatus()
+    {
+        finalStatus.armor = finalStatus.armor > 80 ? 80 : finalStatus.armor; // 아머는 최대 80
     }
 
     private void AddCurrentStatus()
@@ -126,20 +137,24 @@ public class StatusManager : SingletonBase<StatusManager>
         finalStatus.staminaRecovery = playerStatus.staminaRecovery + additionStatus.staminaRecovery;
         finalStatus.attackDamage = playerStatus.attackDamage + additionStatus.attackDamage;
         finalStatus.armor = playerStatus.armor + additionStatus.armor;
-        finalStatus.magicResistance = playerStatus.magicResistance + additionStatus.magicResistance;
         finalStatus.rigidresistance = playerStatus.rigidresistance + additionStatus.rigidresistance;
         finalStatus.stunresistance = playerStatus.stunresistance + additionStatus.stunresistance;
         finalStatus.fallresistance = playerStatus.fallresistance + additionStatus.fallresistance;
+        finalStatus.criticalDamage = playerStatus.criticalDamage + additionStatus.criticalDamage;
+        finalStatus.criticalPercent = playerStatus.criticalPercent + additionStatus.criticalPercent;
     }
 
     private void MultiplyCurrentStatus()
     {
+        finalStatus.maxHp = finalStatus.maxHp * (1 + (multiplicationStatus.hpIncreaseRate / 100.0f));
         finalStatus.attackDamage = finalStatus.attackDamage * (1 + multiplicationStatus.attackDamage / 100.0f);
         finalStatus.armor = finalStatus.armor * (1 + multiplicationStatus.armorIncreaseRate / 100.0f);
         finalStatus.attackCooldown = finalStatus.attackCooldown - (multiplicationStatus.armorIncreaseRate / 100.0f);
         finalStatus.dashCooldown = finalStatus.dashCooldown - (multiplicationStatus.dashCooldown / 100.0f);
         finalStatus.dashStamina = finalStatus.dashStamina * (1 - multiplicationStatus.dashStamina / 100f);
         finalStatus.moveSpeed = finalStatus.moveSpeed * (1 + multiplicationStatus.moveSpeed / 100f);
+        finalStatus.criticalPercent = finalStatus.criticalPercent * multiplicationStatus.criticalPercent;
+        finalStatus.criticalDamage = finalStatus.criticalDamage * multiplicationStatus.criticalDamage;
     }
     
     private void LoadCurrentStatus()
@@ -203,5 +218,13 @@ public class StatusManager : SingletonBase<StatusManager>
     public int GetFinalDamageRandomly(float minDamagePer, float maxDamagePer)
     {
         return (int)UnityEngine.Random.Range(finalStatus.attackDamage * minDamagePer, finalStatus.attackDamage * maxDamagePer);
+    }
+
+    /// <summary>
+    /// 크리티컬 적용 데미지
+    /// </summary>
+    public int GetCriticalDamageRandomly()
+    {
+        return (int)(GetFinalDamageRandomly() * finalStatus.criticalDamage);
     }
 }

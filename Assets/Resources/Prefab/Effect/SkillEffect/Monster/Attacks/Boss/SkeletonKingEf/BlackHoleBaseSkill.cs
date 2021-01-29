@@ -14,7 +14,7 @@ public class BlackHoleBaseSkill : BossAttack
             {
              
                 thisSkillsDamage += Mathf.Round(_baseParent.GetComponent<Monster>().attackDamage * _damage);
-                player.Damaged(Mathf.Round(_baseParent.GetComponent<Monster>().attackDamage * _damage));
+                player.Damaged(Mathf.Round(_baseParent.GetComponent<Monster>().attackDamage * _damage), false);
                 yield return new WaitForSeconds(0.05f);
             }
         }

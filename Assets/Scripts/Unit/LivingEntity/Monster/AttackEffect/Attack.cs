@@ -55,10 +55,10 @@ public class Attack : MonoBehaviour
                 return;
             }
             _attackedTarget.Add(other.gameObject);
-            if (_useFixedDmg) other.GetComponent<LivingEntity>().Damaged(_damage);
+            if (_useFixedDmg) other.GetComponent<LivingEntity>().Damaged(_damage, false);
             else
             { 
-                 other.GetComponent<LivingEntity>().Damaged(_baseParent.GetComponent<Monster>().attackDamage * _damage);
+                 other.GetComponent<LivingEntity>().Damaged(_baseParent.GetComponent<Monster>().attackDamage * _damage, false);
             }
         }
     }

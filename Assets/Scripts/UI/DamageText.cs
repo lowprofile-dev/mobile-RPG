@@ -35,6 +35,7 @@ public class DamageText : MonoBehaviour
         txt = gameObject.GetComponent<TextMeshPro>(); 
         txt.transform.localScale = Vector3.one;
         txt.color = new Color(txt.color.r, txt.color.g, txt.color.b, 1);
+        txt.fontSize = 11;
 
         cam = GameObject.FindGameObjectWithTag("PlayerFollowCamera").GetComponent<CinemachineFreeLook>();
         SetDotween();
@@ -81,6 +82,26 @@ public class DamageText : MonoBehaviour
             txt.text = damage.ToString();
         }
     }
+
+    /// <summary>
+    /// 데미지 텍스트
+    /// </summary>
+    public void PlayCriticalDamage(int damage, bool IsCritical)
+    {
+        txt.colorGradient = new VertexGradient(GlobalDefine.Instance.textColorGradientCriticalBottom, GlobalDefine.Instance.textColorGradientCriticalTop, GlobalDefine.Instance.textColorGradientCriticalBottom, GlobalDefine.Instance.textColorGradientCriticalTop);
+        txt.fontSize += 3.0f;
+
+        if (IsCritical)
+        {
+            txt.text = damage.ToString();
+        }
+        else
+        {
+            txt.text = damage.ToString();
+        }
+    }
+
+
 
     /// <summary>
     /// 기타 텍스트

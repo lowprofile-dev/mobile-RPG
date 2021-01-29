@@ -66,24 +66,23 @@ public class Monster : LivingEntity
         base.Update();       
     }
 
-    //protected override void InitObject()
-    //{
-    //    base.InitObject();
-    //    gameObject.GetComponent<Collider>().enabled = true;
-    //    myAnimator = GetComponent<Animator>();
-
-    //    _hp = _initHp;
-    //    _monsterAction = GetComponent<MonsterAction>();
-    //    _monsterAction.InitObject();
-    //}
-
     public void InitMonster()
     {
         gameObject.GetComponent<Collider>().enabled = true;
         myAnimator = GetComponent<Animator>();
 
-        //_hp = _initHp;
         _monsterAction = GetComponent<MonsterAction>();
         _monsterAction.InitObject();
     }
+
+    public override void Damaged(float damage, bool noArmorDmg)
+    {
+        base.Damaged(damage, noArmorDmg);
+    }
+
+    public override bool IsCritical()
+    {
+        return UnityEngine.Random.Range(0, 100) < StatusManager.Instance.finalStatus.criticalPercent; 
+    }
+
 }

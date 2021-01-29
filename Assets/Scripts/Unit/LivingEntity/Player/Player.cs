@@ -1226,15 +1226,19 @@ public class Player : LivingEntity
 
     ///////////////// 기타 캐릭터 기능들 //////////////////
 
-
-    public override void Damaged(float damage)
+    public override void Damaged(float damage, bool noArmorDmg)
     {
-        base.Damaged(damage);
+        base.Damaged(damage, noArmorDmg);
         UIVignette.Instance.ShowDamagedAnimation();
         AudioSource source = SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Etc/Hit " + UnityEngine.Random.Range(1, 6), 0.6f);
         SoundManager.Instance.SetPitch(source, 1.5f);
         isAnnoyed = true;
         annoyedTime = 0f;
+    }
+
+    public override float GetArmorFromDamaged(float damage)
+    {
+        return damage * (float)((100 - (statusManager.finalStatus.armor)) / 100); // Armor만큼의 비율만큼 데미지를 덜 받는다 (armor 30 = 30% 데미지 감소)
     }
 
     public void RestoreHP(float restoreHp)
@@ -1254,7 +1258,7 @@ public class Player : LivingEntity
         if (transform.position.y < -70 && !_isdead && _cntState != PLAYERSTATE.PS_DIE)
         {
             _isFalling = true;
-            Damaged(statusManager.finalStatus.maxHp * 0.1f);
+            Damaged(statusManager.finalStatus.maxHp * 0.1f, true);
             ReturnToGround();
             return;
         }

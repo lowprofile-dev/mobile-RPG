@@ -149,7 +149,7 @@ public class GoblinAction : MonsterAction
     /// </summary>
     protected override void DamagedProcess(float dmg, bool SetAnimation = true)
     {
-        _monster.Damaged(dmg); // 몬스터에게 데미지를 입힌다.
+        _monster.Damaged(dmg, false); // 몬스터에게 데미지를 입힌다.
         _bar.HpUpdate(); // 몬스터의 HP바를 갱신한다.
 
         DamagedChangeState();  // 고블린은 첫피격이 시작했을 때 부터 플레이어를 공격한다.

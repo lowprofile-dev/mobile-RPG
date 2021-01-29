@@ -21,9 +21,11 @@ public class GlobalDefine : SingletonBase<GlobalDefine>
     public Sprite questExitMinimapIcon;
     public Sprite npcBaseMinimapIcon;
 
-    // 텍스트 색 관련
+    // 텍스트 색 관련 (Top이 Bottom보다 연하다)
     public Color textColorGradientDamagedTop = new Color(1, 0.7216f, 0.7216f);
     public Color textColorGradientDamagedBottom = new Color(1, 0, 0);
     public Color textColorGradientRestoreTop = new Color(0.7215f, 1, 0.7683f);
     public Color textColorGradientRestoreBottom = new Color(0.1257f, 1, 0.0235f);
+    public Color textColorGradientCriticalTop = new Color(0.5f, 0.5f, 1f);
+    public Color textColorGradientCriticalBottom = new Color(0.1f, 0.1f, 1f);
 }
