@@ -321,12 +321,14 @@ public class DungeonRoom : MonoBehaviour
             if (monsters[i] == null) continue;
             if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center) || monsters[i].transform.position.y < Player.Instance.transform.position.y - 12)
             {
-                monsters[i].GetComponent<NavMeshAgent>().enabled = false;
-                monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 1, 0);
-                monsters[i].GetComponent<NavMeshAgent>().enabled = true;
-                monsters[i].GetComponent<Collider>().enabled = true;
-                monsters[i].GetComponent<EPOOutline.Outlinable>().enabled = true;
-                monsters[i].SetActive(true);
+                //monsters[i].GetComponent<NavMeshAgent>().enabled = false;
+                //monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 1, 0);
+                //monsters[i].GetComponent<NavMeshAgent>().enabled = true;
+                //monsters[i].GetComponent<Collider>().enabled = true;
+                //monsters[i].GetComponent<EPOOutline.Outlinable>().enabled = true;
+
+                monsters[i].GetComponent<MonsterAction>().ChangeState(MONSTER_STATE.STATE_DIE);
+                // DEATH로 강제 Change 시킨다.
             }
         }
     }
