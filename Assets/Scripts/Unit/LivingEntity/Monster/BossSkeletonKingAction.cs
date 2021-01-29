@@ -63,7 +63,6 @@ public class BossSkeletonKingAction : MonsterAction
     {
 
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-        _attackCoroutine = null;
         _readyCast = false;
 
         MakeEffect();
@@ -462,7 +461,7 @@ public class BossSkeletonKingAction : MonsterAction
 
         yield return null;
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++) // 경고 범위 설정
         {
             GameObject range = ObjectPoolManager.Instance.GetObject(AirSkillRange);
             range.GetComponent<BossSkillRange>().RemovedRange(gameObject, _attackSpeed);
@@ -511,8 +510,8 @@ public class BossSkeletonKingAction : MonsterAction
 
     protected override void TraceStart()
     {
-        if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-        _attackCoroutine = null;
+        _navMeshAgent.SetDestination(_target.transform.position);
+
         _monster.myAnimator.ResetTrigger("Walk");
 
         if (Vector3.Distance(transform.position, _target.transform.position) >= _navMeshAgent.stoppingDistance)
@@ -529,16 +528,6 @@ public class BossSkeletonKingAction : MonsterAction
     protected override void TraceUpdate()
     {
         MoveToTarget();
-    }
-
-    protected override void AttackStart()
-    {
-        if (!_readyCast && ToCast()) return;
-        else
-        {
-            if (_attackCoroutine == null)
-                _attackCoroutine = StartCoroutine(AttackTarget());
-        }
     }
 
     public override void Damaged(float dmg, bool SetAnimation = false)
