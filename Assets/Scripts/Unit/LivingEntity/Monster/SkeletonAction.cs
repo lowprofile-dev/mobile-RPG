@@ -9,14 +9,12 @@
 
 */
 ////////////////////////////////////////////////////
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SkeletonAction : MonsterAction
 {
     bool canPanic;
-    enum MOHICANATTACKTYPE { LEFT_ATTACK , RIGHT_ATTACK , SLAM} // 3가지 공격패턴
+    enum MOHICANATTACKTYPE { LEFT_ATTACK, RIGHT_ATTACK, SLAM } // 3가지 공격패턴
     MOHICANATTACKTYPE atktype;
 
     /////////// 탐색 관련 /////////////
@@ -33,7 +31,16 @@ public class SkeletonAction : MonsterAction
         if (canPanic)
         {
             _monster.myAnimator.SetTrigger("Panic");
+            DoPanicSound();
         }
+    }
+
+    /// <summary>
+    /// 패닉일때 소리
+    /// </summary>
+    private void DoPanicSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Panic " + UnityEngine.Random.Range(1, 3), 0.6f);
     }
 
     protected override bool CheckFindAnimationOver()
@@ -93,7 +100,7 @@ public class SkeletonAction : MonsterAction
                 break;
             case MOHICANATTACKTYPE.LEFT_ATTACK:
                 _monster.myAnimator.SetTrigger("Attack1");
-                break;         
+                break;
             case MOHICANATTACKTYPE.SLAM:
                 _monster.myAnimator.SetTrigger("Attack2");
                 break;
@@ -101,6 +108,24 @@ public class SkeletonAction : MonsterAction
                 break;
         }
     }
+
+
+    /// <summary>
+    /// 휘두르기 시작할 때 소리
+    /// </summary>
+    private void AttackSoundWhooshStart()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh Start " + UnityEngine.Random.Range(1, 4), 0.9f);
+    }
+
+    /// <summary>
+    /// 휘두른 후의 소리
+    /// </summary>
+    private void AttackSoundWhooshAfter()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Whoosh " + UnityEngine.Random.Range(1, 6), 1);
+    }
+
     protected override void LookTarget() { }
 
     protected override void KillStart()
@@ -108,4 +133,8 @@ public class SkeletonAction : MonsterAction
         _monster.myAnimator.SetTrigger("Laugh");
     }
 
+    public override void DeathSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Big Death " + UnityEngine.Random.Range(1, 3), 0.8f);
+    }
 }

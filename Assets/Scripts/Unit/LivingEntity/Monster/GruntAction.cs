@@ -50,6 +50,11 @@ public class GruntAction : MonsterAction
         }
     }
 
+    public override void DeathSound()
+    {
+        SoundManager.Instance.PlayEffect(SoundType.EFFECT, "Monster/Monster Medium Die " + UnityEngine.Random.Range(1, 3), 0.8f);
+    }
+
     protected override bool CheckFindAnimationOver()
     {
         if (canPanic) return CheckAnimationOver("Panic", 1.0f);
@@ -172,5 +177,4 @@ public class GruntAction : MonsterAction
     {
         _monster.myAnimator.SetTrigger("Laugh");
     }
-
 }
