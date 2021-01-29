@@ -319,7 +319,7 @@ public class DungeonRoom : MonoBehaviour
         for (int i = monsters.Count - 1; i >= 0; i--)
         {
             if (monsters[i] == null) continue;
-            if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center) || monsters[i].transform.position.y < -50)
+            if (!bounds.Contains(monsters[i].GetComponent<CapsuleCollider>().bounds.center) || monsters[i].transform.position.y < Player.Instance.transform.position.y - 12)
             {
                 monsters[i].GetComponent<NavMeshAgent>().enabled = false;
                 monsters[i].transform.position = monsterSpawnPoints[i].transform.TransformPoint(0, 1, 0);

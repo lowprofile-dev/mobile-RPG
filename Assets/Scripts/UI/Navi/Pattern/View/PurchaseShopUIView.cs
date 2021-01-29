@@ -33,6 +33,11 @@ public class PurchaseShopUIView : View
         _purchaseGoldTripleBtn.onClick.AddListener(delegate { PurchaseGold(); } );
     }
 
+    private void Update()
+    {
+        SetAsset();
+    }
+
     private void SetAsset()
     {
         _gold.text = ItemManager.Instance.currentItems.gold.ToString();
