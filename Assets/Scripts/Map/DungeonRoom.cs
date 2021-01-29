@@ -99,14 +99,16 @@ public class DungeonRoom : MonoBehaviour
     {
         for (int i = monsters.Count - 1; i >= 0; i--)
         {
-            Destroy(monsters[i]);
-            //ObjectPoolManager.Instance.ReturnObject(monsters[i]);
+            ObjectPoolManager.Instance.ReturnObject(monsters[i]);
+            monsters[i].GetComponent<MonsterAction>().ChangeState(MONSTER_STATE.STATE_DIE);
+            
         }
+        monsters.Clear();
         for (int i = doors.Count - 1; i >= 0; i--)
         {
-            //Destroy(doors[i]);
             ObjectPoolManager.Instance.ReturnObject(doors[i]);
         }
+        doors.Clear();
     }
 
     private void ChangeLights()
