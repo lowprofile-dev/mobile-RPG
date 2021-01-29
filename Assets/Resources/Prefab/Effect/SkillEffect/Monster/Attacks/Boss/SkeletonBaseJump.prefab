@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7272716978575010873}
   - component: {fileID: 5171821733068526506}
   - component: {fileID: -3866795064135353955}
+  - component: {fileID: 6795464888811798427}
   m_Layer: 0
   m_Name: SkeletonBaseJump
   m_TagString: BossAttack
@@ -65,3 +66,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 7
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6795464888811798427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2992171377281156633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67822e4c6a407446a4be89a22176740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debuffDuration: 3
+  proc: 50
+  slowingFactor: 50
