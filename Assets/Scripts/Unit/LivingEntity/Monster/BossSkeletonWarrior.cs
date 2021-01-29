@@ -130,7 +130,6 @@ public class BossSkeletonWarrior : MonsterAction
         MakeEffect();
 
         if (_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-        _attackCoroutine = null;
         _readyCast = false;
 
         _navMeshAgent.speed = _monster.speed;
@@ -203,7 +202,7 @@ public class BossSkeletonWarrior : MonsterAction
         ChangeState(MONSTER_STATE.STATE_TRACE);
     }
 
-    protected override void CastStart()
+    protected override void CastStart() 
     {
 
         if(Vector3.Distance(transform.position , _target.transform.position) <= _navMeshAgent.stoppingDistance)
@@ -215,8 +214,8 @@ public class BossSkeletonWarrior : MonsterAction
         _monster.myAnimator.SetTrigger("Walk");
         }
        
+        //캐스팅을 시작할 때 공격 패턴을 정하고 그에 따른 공격타입과 캐스팅 시간을 정해준다.
         int proc = UnityEngine.Random.Range(0, 100);
-
 
         if (proc <= 25)
         {
@@ -288,7 +287,7 @@ public class BossSkeletonWarrior : MonsterAction
 
     }
 
-    protected override IEnumerator AttackTarget()
+    protected override IEnumerator AttackTarget() // 공격 액션
     {     
        yield return null;
 
@@ -305,7 +304,9 @@ public class BossSkeletonWarrior : MonsterAction
 
        ChangeState(MONSTER_STATE.STATE_TRACE);        
     }
-
+    /// <summary>
+    /// 공격 패턴 행동 관련
+    /// </summary>
     private void AttackAction() // 공격 패턴 선정
     {
         if (attackType != AttackType.DASH_ATTACK)
@@ -396,14 +397,10 @@ public class BossSkeletonWarrior : MonsterAction
         GameObject range = ObjectPoolManager.Instance.GetObject(ShokeSkillRange2);
         range.GetComponent<BossSkillRangeFill>().RemovedRange(gameObject, _target, _attackSpeed);
         range.GetComponent<BossSkillRangeFill>().setFollow();
-
     }
-
 
     protected override void TraceStart()
     {
-        if(_attackCoroutine != null) StopCoroutine(_attackCoroutine);
-        _attackCoroutine = null;
         _monster.myAnimator.ResetTrigger("Walk");       
 
         if (Vector3.Distance(transform.position, _target.transform.position) >= _navMeshAgent.stoppingDistance)
@@ -422,16 +419,6 @@ public class BossSkeletonWarrior : MonsterAction
     {
         MoveToTarget();
     }
-    protected override void AttackStart()
-    {
-        if (!_readyCast && ToCast()) return;
-        else
-        {
-            if (_attackCoroutine == null)
-                _attackCoroutine = StartCoroutine(AttackTarget());
-        }
-        
-    }
 
     public override void Damaged(float dmg, bool SetAnimation = false)
     {
@@ -447,7 +434,9 @@ public class BossSkeletonWarrior : MonsterAction
     }
 
     protected override void AttackUpdate() { }
-
+    /// <summary>
+    /// CC 관련
+    /// </summary>
     protected override void FallStart()
     {
         GameObject txt = ObjectPoolManager.Instance.GetObject(_monster.DamageText);
@@ -455,8 +444,7 @@ public class BossSkeletonWarrior : MonsterAction
         txt.transform.localPosition = Vector3.zero;
         txt.transform.rotation = Quaternion.identity;
         txt.GetComponent<DamageText>().PlayText("CC 면역!", "monster");
-    }
-
+    }  
     protected override void RigidStart() { }
     protected override void StunStart() { }
     protected override void IdleStart() { }
