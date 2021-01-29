@@ -30,7 +30,11 @@ public class Wand : Weapon
 
         attackDamage = 1;
         skillSpeed = 0;
-      
+
+        skillACoolSave = skillACool = 7;
+        skillBCoolSave = skillBCool = 8;
+        skillCCoolSave = skillCCool = 11;
+
         exp = MasteryManager.Instance.currentMastery.currentWandMasteryExp;
         WeaponAnimation = Resources.Load<RuntimeAnimatorController>("Animation/Animator/Player/Wand Animator");
 

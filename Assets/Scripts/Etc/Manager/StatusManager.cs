@@ -28,7 +28,7 @@ public class AdditionStatus
     public float fallresistance;        //넘어짐 cc 저항 
     public float criticalPercent;       //크리티컬 확률
     public float criticalDamage;        //크리티컬 데미지
-
+    public float skillCool;             //스킬 쿨타임
     public AdditionStatus()
     {
         hp = 0;                     //최대 체력 증가
@@ -42,6 +42,7 @@ public class AdditionStatus
         fallresistance = 0;         //넘어짐 cc 저항 
         criticalDamage = 0;         //크리티컬 데미지
         criticalPercent = 0;        //크리티컬 확률
+        skillCool = 0;              //스킬 쿨타임 감소
     }
 }
 
@@ -142,6 +143,7 @@ public class StatusManager : SingletonBase<StatusManager>
         finalStatus.fallresistance = playerStatus.fallresistance + additionStatus.fallresistance;
         finalStatus.criticalDamage = playerStatus.criticalDamage + additionStatus.criticalDamage;
         finalStatus.criticalPercent = playerStatus.criticalPercent + additionStatus.criticalPercent;
+        finalStatus.attackCooldown = playerStatus.attackCooldown + additionStatus.skillCool;
     }
 
     private void MultiplyCurrentStatus()
@@ -149,7 +151,7 @@ public class StatusManager : SingletonBase<StatusManager>
         finalStatus.maxHp = finalStatus.maxHp * (1 + (multiplicationStatus.hpIncreaseRate / 100.0f));
         finalStatus.attackDamage = finalStatus.attackDamage * (1 + multiplicationStatus.attackDamage / 100.0f);
         finalStatus.armor = finalStatus.armor * (1 + multiplicationStatus.armorIncreaseRate / 100.0f);
-        finalStatus.attackCooldown = finalStatus.attackCooldown - (multiplicationStatus.armorIncreaseRate / 100.0f);
+        finalStatus.attackCooldown = finalStatus.attackCooldown + (multiplicationStatus.attackCooldown / 100.0f);
         finalStatus.dashCooldown = finalStatus.dashCooldown - (multiplicationStatus.dashCooldown / 100.0f);
         finalStatus.dashStamina = finalStatus.dashStamina * (1 - multiplicationStatus.dashStamina / 100f);
         finalStatus.moveSpeed = finalStatus.moveSpeed * (1 + multiplicationStatus.moveSpeed / 100f);
@@ -159,6 +161,7 @@ public class StatusManager : SingletonBase<StatusManager>
     
     private void LoadCurrentStatus()
     {
+        PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("LoadCurrentStatusCount", PlayerPrefs.GetInt("LoadCurrentStatusCount", 0));
         if (PlayerPrefs.GetInt("LoadCurrentStatusCount") == 0)
         {
