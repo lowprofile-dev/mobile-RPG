@@ -13,6 +13,10 @@ public class OptionUIView : View
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _returnVillageButton;
     [SerializeField] private Button _exitGameButton;
+    [SerializeField] private Image _resetView;
+    [SerializeField] private Button _resetViewBtn;
+    [SerializeField] private Button _cancelBtn;
+    [SerializeField] private Button _resetBtn;
 
     private void Start()
     {
@@ -30,6 +34,10 @@ public class OptionUIView : View
         _exitButton.onClick.AddListener(delegate { QuitView(); });
         _exitGameButton.onClick.AddListener(delegate { QuitGame(); });
         _returnVillageButton.onClick.AddListener(delegate { ReturnToVillage(); });
+
+        _resetViewBtn.onClick.AddListener(delegate { ViewDataClearPanel(); });
+        _cancelBtn.onClick.AddListener(delegate { CloseDataClearPanel(); });
+        _resetBtn.onClick.AddListener(delegate { DataClear(); });
     }
 
     /// <summary>
@@ -65,6 +73,23 @@ public class OptionUIView : View
             SoundManager.Instance.PlayEffect(SoundType.UI, "UI/ClickLightBase2", 1.0f);
             UILoaderManager.Instance.LoadVillage();
         }
+    }
+
+    private void ViewDataClearPanel()
+    {
+        _resetView.gameObject.SetActive(true);
+    }
+
+    private void CloseDataClearPanel()
+    {
+        _resetView.gameObject.SetActive(false);
+    }
+
+    private void DataClear()
+    {
+        PlayerPrefs.DeleteAll();
+        QuitGame();
+        PlayerPrefs.DeleteAll();
     }
 
     public override void UIExit()

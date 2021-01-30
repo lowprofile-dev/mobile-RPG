@@ -38,9 +38,9 @@ public class ItemManager : SingletonBase<ItemManager>
     List<List<ItemData>> allClassItems = new List<List<ItemData>>();
 
     //아이템 드랍률
-    public float[] itemDropProbability = { 5, 3, 1.5f, 0.5f, 0};
+    public float[] itemDropProbability = { 11f, 9f, 6.5f, 4.5f, 1.5f };
     public float[] stage1Probability = { 5, 3, 1.5f, 0.5f, 0 };
-    public float[] stage2Probability = { 2, 4, 2, 1.5f, 0.5f };
+    public float[] stage2Probability = { 11f, 9f, 6.5f, 4.5f, 1.5f };
     public float[] bossProbability = { 0, 0, 60, 25, 15 };
 
     private void Update()

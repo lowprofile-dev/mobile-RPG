@@ -22,16 +22,15 @@ public class SystemPanel : MonoBehaviour
     public TextMeshProUGUI text;
     [SerializeField] private GameObject panel;
     private Image image;
-    private Sequence sequence;
-    private UIAnimator animator;
+    UIAnimator animator;
 
     void Start()
     {
         instance = this;
         image = panel.transform.GetComponent<Image>();
+        panel.SetActive(false);
         animator = GetComponent<UIAnimator>();
         animator.SetupUIAnimator();
-        panel.SetActive(false);
     }
 
     /// <summary>
@@ -52,11 +51,11 @@ public class SystemPanel : MonoBehaviour
         AudioSource sound = SoundManager.Instance.PlayEffect(SoundType.UI, "UI/SpecialText", 0.5f);
         SoundManager.Instance.SetAudioReverbEffect(sound, AudioReverbPreset.Cave);
 
+        
         panel.SetActive(true);
         animator.ResetFinalSequence();
-        animator.AppendSequence(animator.XScaleUp());
-        Sequence seq = animator.FadeOutWithDown();
-        animator.AppendSequence(seq.OnComplete(delegate { panel.SetActive(false); }), 0.3f);
+        animator.AppendSequence(animator.XScaleUp().AppendInterval(0.7f));
+        animator.AppendSequence(animator.FadeOut().OnComplete(delegate { panel.SetActive(false); }));
         animator.FinalPlay();
     }
 }

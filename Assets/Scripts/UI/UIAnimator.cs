@@ -26,6 +26,7 @@ public class UIAnimator : MonoBehaviour
     public Sequence finalSequence;
     private Sequence _fadeInWithUpSequence; 
     private Sequence _fadeoutWithDownSequence;
+    private Sequence _fadeout;
     private Sequence _xScaleUpSequence;
     private Sequence _colorChangeSequence;
 
@@ -82,6 +83,18 @@ public class UIAnimator : MonoBehaviour
 
         return _fadeoutWithDownSequence;
     }
+
+
+    public Sequence FadeOut()
+    {
+        if (_fadeout != null) _fadeout.Kill();
+        _fadeout = DOTween.Sequence();
+        _fadeout.Append(_canvasGroup.DOFade(0.0f, 1.0f).From(1.0f));
+        _fadeout.SetEase(Ease.InSine);
+
+        return _fadeout;
+    }
+
 
     public Sequence XScaleUp()
     {

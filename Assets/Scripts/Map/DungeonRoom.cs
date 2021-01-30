@@ -353,6 +353,7 @@ public class DungeonRoom : MonoBehaviour
             if (!isCleared && !isSpawning)
             {
                 ItemManager itemManager = ItemManager.Instance;
+                /*
                 if (isBossRoom)
                 {
                     //마스터리 스킬 보스 처치시 드랍율 향상
@@ -395,6 +396,7 @@ public class DungeonRoom : MonoBehaviour
                 }
                 else
                 {
+                */
                     //마스터리 스킬 골드, 아이템 획득량 증가
                     if (MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == -1
                         || MasteryManager.Instance.currentMastery.currentMasteryChoices[4] == 1)
@@ -403,7 +405,7 @@ public class DungeonRoom : MonoBehaviour
                         {
                             for (int i = 0; i < itemManager.itemDropProbability.Length; i++)
                             {
-                                itemManager.itemDropProbability[i] = itemManager.stage2Probability[i] * 1.1f;
+                                itemManager.itemDropProbability[i] = itemManager.stage2Probability[i] * 1.2f;
                             }
                             MasteryManager.Instance.masterySet[4,0] = true;
                         }
@@ -412,7 +414,7 @@ public class DungeonRoom : MonoBehaviour
                     {
                         itemManager.itemDropProbability = itemManager.stage2Probability;
                     }
-                }
+                //}
 
                 isSpawning = true;
                 Invoke("CloseDoors", 1f);
